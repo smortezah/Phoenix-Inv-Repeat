@@ -3,5 +3,5 @@ project(phoenix)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
-set(SOURCE_FILES phoenix.cpp)
+set(SOURCE_FILES phoenix.cpp messages.cpp)
 add_executable(phoenix ${SOURCE_FILES})

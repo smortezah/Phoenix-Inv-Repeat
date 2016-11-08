@@ -1,7 +1,11 @@
 #include <iostream>
 
-int main ()
+#include "messages.h"
+
+
+int main (int argc, char *argv[])
 {
-    std::cout << "Hello, World!" << std::endl;
+    UsageGuide();
+    
     return 0;
 }
