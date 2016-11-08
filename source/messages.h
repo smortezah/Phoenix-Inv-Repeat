@@ -2,7 +2,8 @@
 #define PHOENIX_MESSAGES_H
 
 
-void UsageGuide (void); // shows usage guide
+void PrintUsageGuide    (void); // shows usage guide
+void PrintVersion       (void); // shows version number
 
 
 #endif //PHOENIX_MESSAGES_H
