@@ -1,34 +1,56 @@
 #include <iostream>
-#include <unistd.h>
-#include <vector>
-#include <array>
-#include <string>
+#include <getopt.h>
 
-#include "def.h"
 #include "messages.h"
 
 
-
-
 /* Flag set by ‘--verbose’. */
-static int verbose_flag;
-
-
-
+static int something_flag;
 
 ////  command line parser ////////////////////////////////////////////
-int32_t CommandLineParser (int argc, char **argv)
+static int32_t CommandLineParser (int argc, char **argv)
 {
-    int index;
     int c;
+    int option_index;
     
+    opterr = 0; // force getopt_long() to remain silent when it finds a problem
     
-    std::string numberStr;
+    static struct option long_options[] =
+            {
+                    /* These options set a flag. */
+                    {"something", no_argument,       &something_flag, 1}, // for long-only options
+                    /* These options don’t set a flag.
+                       We distinguish them by their indices. */
+                    {"help",      no_argument,       0,               'h'},
+                    {"version",   no_argument,       0,               'V'},
+                    {"verbose",   no_argument,       0,               'v'},
+                    {"number",    required_argument, 0,               'n'},
+                    {0, 0,                           0,               0}
+            };
     
-    opterr = 0;
-    while ((c = getopt(argc, argv, "hVvn:")) != -1)
+    while (1)
+    {
+        /* getopt_long stores the option index here. */
+        option_index = 0;
+        
+        c = getopt_long(argc, argv, ":hVvn:", long_options, &option_index);
+        
+        /* Detect the end of the options. */
+        if (c == -1)
+            break;
+        
         switch (c)
         {
+            case 0:
+                /* If this option set a flag, do nothing else now. */
+                if (long_options[ option_index ].flag != 0)
+                    break;
+                
+                std::cout << "option '" << long_options[ option_index ].name << "'\n";
+                if (optarg)
+                    std::cout << " with arg " << optarg << "\n";
+                break;
+            
             case 'h':
                 PrintUsageGuide();
                 break;
@@ -41,91 +63,46 @@ int32_t CommandLineParser (int argc, char **argv)
                 break;
             
             case 'n':
-                numberStr = optarg;
+                if (optarg[ 0 ] == '-')
+                    std::cout << "Option 'n' requires an argument.\n";
+                else
+                    std::cout << "Argument of 'n' is " << optarg << std::endl; // for test
+                break;
+
+            case ':':   /* missing option argument */
+                std::cout << "Option '" << (char) optopt << "' requires an argument.\n";
                 break;
             
-            
-            
-            
-            case '?':
-                if (optopt == 'c')
-                    fprintf(stderr, "Option -%c requires an argument.\n", optopt);
-                else if (isprint(optopt))
-                    fprintf(stderr, "Unknown option `-%c'.\n", optopt);
-                else
-                    fprintf(stderr,
-                            "Unknown option character `\\x%x'.\n",
-                            optopt);
-                return 1;
-            
+            case '?':   /* invalid option */
             default:
-                abort();
+                std::cout << "Option '" << (char) optopt << "' is invalid.\n";
+                break;
         }
+    }
     
-    std::cout << numberStr;
+    /* Instead of reporting ‘--verbose' as they are encountered,
+       we report the final status resulting from them. */
+    if (something_flag)
+        std::cout << "something flag is set\n";
     
-    
-    
-    
-    for (index = optind; index < argc; index++)
-        printf("Non-option argument %s\n", argv[ index ]);
+    /* Print any remaining command line arguments (not options). */
+    if (optind < argc)
+    {
+        std::cout << "non-option ARGV-element(s): ";
+        while (optind < argc)
+            std::cout << argv[ optind++ ] << " ";
+        std::cout << std::endl;
+    }
 }
 
 
-
-///////////////////////////////////////////////////////////////
-///////////                 M A I N                 ///////////
-///////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////
+/////////                 M A I N                 /////////
+///////////////////////////////////////////////////////////
 
 int32_t main (int argc, char *argv[])
 {
     CommandLineParser(argc, argv);
-    
-    
-    
-
-//
-//    int aflag = 0;
-//    int bflag = 0;
-//    char *cvalue = NULL;
-//    int index;
-//    int c;
-//
-//    opterr = 0;
-//    while ((c = getopt (argc, argv, "abc:")) != -1)
-//        switch (c)
-//        {
-//            case 'a':
-//                aflag = 1;
-//                break;
-//            case 'b':
-//                bflag = 1;
-//                break;
-//            case 'c':
-//                cvalue = optarg;
-//                break;
-//            case '?':
-//                if (optopt == 'c')
-//                    fprintf (stderr, "Option -%c requires an argument.\n", optopt);
-//                else if (isprint (optopt))
-//                    fprintf (stderr, "Unknown option `-%c'.\n", optopt);
-//                else
-//                    fprintf (stderr,
-//                             "Unknown option character `\\x%x'.\n",
-//                             optopt);
-//                return 1;
-//            default:
-//                abort ();
-//        }
-//    printf ("aflag = %d, bflag = %d, cvalue = %s\n",
-//            aflag, bflag, cvalue);
-//
-//    for (index = optind; index < argc; index++)
-//        printf ("Non-option argument %s\n", argv[index]);
-    
-    
-    
-    
     
     return 0;
 }

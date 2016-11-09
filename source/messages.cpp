@@ -21,8 +21,9 @@ void PrintUsageGuide (void)
             << "    -v,  --verbose"                         << "\n"
             << "         verbose mode (more information)"   << "\n"
                                                             << "\n"
-            << "    -n,  --number"                          << "\n"
-            << "         number"                            << "\n"
+            << "    -n [NUMBER],  --number [NUMBER]"        << "\n"
+            << "         number of something."              << "\n"
+            << "         requires a number (NUMBER) between 1 and 100" << "\n"
                                                             << "\n"
             << "    [FILE1]"                                << "\n"
             << "         reference file"                    << "\n"
@@ -35,9 +36,8 @@ void PrintUsageGuide (void)
 void PrintVersion(void)
 {
     std::cout
-                                                                                        <<"\n"
-                                                                                        <<"\n"
-            <<"                ===================="                                    <<"\n"
-            <<"                ==  PHOENIX v" << VERSION << "." << RELEASE << "  =="    <<"\n"
-            <<"                ===================="                                    <<"\n";
+                                                                                      <<"\n"
+            <<"              ===================="                                    <<"\n"
+            <<"              ==  PHOENIX v" << VERSION << "." << RELEASE << "  =="    <<"\n"
+            <<"              ===================="                                    <<"\n";
 }
