@@ -7,6 +7,7 @@ class Messages
 public:
     static void help    (void); // shows usage guide. 'static' => no need to class instance
     static void version (void); // shows version number.
+    static void verbose (void); // shows verbose mode.
 };
 
 

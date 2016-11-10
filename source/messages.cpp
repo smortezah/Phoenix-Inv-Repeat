@@ -41,3 +41,9 @@ void Messages::version (void)
             <<"              ==  PHOENIX v" << VERSION << "." << RELEASE << "  =="  <<"\n"
             <<"              ===================="                                  <<"\n";
 }
+
+////    shows verbose mode    ////////////////////////////////////////////
+void Messages::verbose (void)
+{
+    std::cout << "verbose mode.\n";
+}
