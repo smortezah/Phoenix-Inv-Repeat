@@ -2,19 +2,13 @@
 #include <getopt.h>
 #include <cstring>
 #include <stdint.h>
-
 #define __STDC_FORMAT_MACROS
-
 #include <inttypes.h>
-
 #if defined(_MSC_VER)
 #include <io.h>
 #else
-
 #include <unistd.h>
-
 #endif
-
 #include "messages.h"
 
 
@@ -35,11 +29,11 @@ static int32_t CommandLineParser (int argc, char **argv)
                     {"something", no_argument,       &something_flag, 1}, // for long-only options
                     /* These options don’t set a flag.
                        We distinguish them by their indices. */
-                    {"help",      no_argument,       0,               'h'},
-                    {"version",   no_argument,       0,               'V'},
-                    {"verbose",   no_argument,       0,               'v'},
-                    {"number",    required_argument, 0,               'n'},
-                    {0, 0,                           0,               0}
+                    {"help",    no_argument,        0, 'h'},
+                    {"version", no_argument,        0, 'V'},
+                    {"verbose", no_argument,        0, 'v'},
+                    {"number",  required_argument,  0, 'n'},
+                    {0, 0, 0, 0}
             };
     
     while (1)
@@ -92,7 +86,7 @@ static int32_t CommandLineParser (int argc, char **argv)
                     // argument is a negative number
                     if ( (optargSize > 1) && (numberOfDigits == (optargSize-1)) )
                         std::cout << "Argument of 'n' is " << optarg << ".\n";  // for test
-                    else
+                    else    // argument is not a number
                         std::cout << "Option 'n' has an invalid argument.\n";
                 }
                 else
@@ -104,7 +98,7 @@ static int32_t CommandLineParser (int argc, char **argv)
                     // argument is a positive number
                     if (numberOfDigits == optargSize)
                         std::cout << "Argument of 'n' is " << optarg << ".\n";  // for test
-                    else
+                    else    // argument is not a number
                         std::cout << "Option 'n' has an invalid argument.\n";
                 }
                 break;
