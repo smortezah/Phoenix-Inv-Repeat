@@ -1,12 +1,18 @@
 #include <iostream>
 #include <getopt.h>
+#include <cstring>
 #include <stdint.h>
+
 #define __STDC_FORMAT_MACROS
+
 #include <inttypes.h>
+
 #if defined(_MSC_VER)
 #include <io.h>
 #else
+
 #include <unistd.h>
+
 #endif
 
 #include "messages.h"
@@ -71,12 +77,38 @@ static int32_t CommandLineParser (int argc, char **argv)
                 break;
             
             case 'n':   // needs an argument
-                if (optarg[ 0 ] == '-')
-                    std::cout << "Option 'n' requires an argument.\n";
-                else
-                    std::cout << "Argument of 'n' is " << optarg << ".\n"; // for test
-                break;
+                int numberOfDigits; // number of digits of the argument
+                int optargSize;     // size of the argument
 
+                numberOfDigits = 0;
+                optargSize = (int) strlen(optarg);
+
+                if (optarg[ 0 ] == '-')
+                {
+                    for (int i = 1; i < optargSize; ++i)
+                        if (isdigit((int) optarg[ i ]))
+                            ++numberOfDigits;
+
+                    // argument is a negative number
+                    if ( (optargSize > 1) && (numberOfDigits == (optargSize-1)) )
+                        std::cout << "Argument of 'n' is " << optarg << ".\n";  // for test
+                    else
+                        std::cout << "Option 'n' has an invalid argument.\n";
+                }
+                else
+                {
+                    for (int i = 0; i < optargSize; ++i)
+                        if ( isdigit((int) optarg[ i ]) )
+                            ++numberOfDigits;
+
+                    // argument is a positive number
+                    if (numberOfDigits == optargSize)
+                        std::cout << "Argument of 'n' is " << optarg << ".\n";  // for test
+                    else
+                        std::cout << "Option 'n' has an invalid argument.\n";
+                }
+                break;
+            
             case ':':   /* missing option argument */
                 std::cout << "Option '" << (char) optopt << "' requires an argument.\n";
                 break;
@@ -111,6 +143,7 @@ static int32_t CommandLineParser (int argc, char **argv)
 int32_t main (int argc, char *argv[])
 {
     CommandLineParser(argc, argv);
+    
     
     return 0;
 }
