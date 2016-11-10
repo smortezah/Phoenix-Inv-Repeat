@@ -12,7 +12,7 @@
 #include "messages.h"
 
 
-/* Flag set by ‘--verbose’. */
+/* Flag set by ‘--something’. */
 static int something_flag;
 
 ////  command line parser ////////////////////////////////////////////
@@ -59,22 +59,22 @@ static int32_t CommandLineParser (int argc, char **argv)
                     std::cout << " with arg " << optarg << "\n";
                 break;
             
-            case 'h':
-                PrintUsageGuide();
+            case 'h':   // shows usage guide
+                Messages::help(); // 'static' > no need to class instance
                 break;
             
-            case 'V':
-                PrintVersion();
+            case 'V':   // shows version number
+                Messages::version();    // 'static' > no need to class instance
                 break;
             
             case 'v':
                 break;
             
-            case 'n':
+            case 'n':   // needs an argument
                 if (optarg[ 0 ] == '-')
                     std::cout << "Option 'n' requires an argument.\n";
                 else
-                    std::cout << "Argument of 'n' is " << optarg << std::endl; // for test
+                    std::cout << "Argument of 'n' is " << optarg << ".\n"; // for test
                 break;
 
             case ':':   /* missing option argument */
@@ -88,7 +88,7 @@ static int32_t CommandLineParser (int argc, char **argv)
         }
     }
     
-    /* Instead of reporting ‘--verbose' as they are encountered,
+    /* Instead of reporting ‘--something' as they are encountered,
        we report the final status resulting from them. */
     if (something_flag)
         std::cout << "something flag is set\n";
