@@ -6,6 +6,11 @@
 #include <cstring>
 
 
+
+#include <string>
+#include <vector>
+
+
 /***********************************************************
     constructor
 ************************************************************/
@@ -24,12 +29,12 @@ int32_t functions::commandLineParser (int argc, char **argv)
     static int h_flag;          // argument 'h'
     static int verbose_flag;    // argument 'verbose'
     static int v_flag;          // argument 'v'
-    
+
     int c;              // deal with getopt_long()
     int option_index;
-    
+
     opterr = 0;         // force getopt_long() to remain silent when it finds a problem
-    
+
     static struct option long_options[] =
             {
                     /* These options set a flag. */
@@ -44,55 +49,55 @@ int32_t functions::commandLineParser (int argc, char **argv)
                     {"number",  no_argument, 0,             'n'}, // number
                     {0, 0, 0, 0}
             };
-    
+
     while (1)
     {
         /* getopt_long() stores the option index here. */
         option_index = 0;
-        
+
         c = getopt_long(argc, argv, ":hVvn:", long_options, &option_index);
-        
+
         /* Detect the end of the options. */
         if (c == -1)
             break;
-        
+
         switch (c)
         {
             case 0:
                 /* If this option set a flag, do nothing else now. */
                 if (long_options[ option_index ].flag != 0)
                     break;
-                
+
                 std::cout << "option '" << long_options[ option_index ].name << "'\n";
                 if (optarg)
                     std::cout << " with arg " << optarg << "\n";
                 break;
-            
+
             case 'h':   // shows usage guide
                 h_flag = 1;
                 break;
-            
+
             case 'V':   // shows version number
                 V_flag = 1;
                 break;
-            
+
             case 'v':
                 v_flag = 1;
                 break;
-            
+
             case 'n':   // needs an argument
                 int numberOfDigits; // number of digits of the argument
                 int optargSize;     // size of the argument
-                
+
                 numberOfDigits = 0;
                 optargSize = (int) strlen(optarg);
-                
+
                 if (optarg[ 0 ] == '-')
                 {
                     for (int i = 1; i < optargSize; ++i)
                         if (isdigit((int) optarg[ i ]))
                             ++numberOfDigits;
-                    
+
                     // argument is a negative number
                     if ( (optargSize > 1) && (numberOfDigits == (optargSize-1)) )
                         std::cout << "Argument of 'n' is " << optarg << ".\n";  // for test
@@ -104,7 +109,7 @@ int32_t functions::commandLineParser (int argc, char **argv)
                     for (int i = 0; i < optargSize; ++i)
                         if ( isdigit((int) optarg[ i ]) )
                             ++numberOfDigits;
-                    
+
                     // argument is a positive number
                     if (numberOfDigits == optargSize)
                         std::cout << "Argument of 'n' is " << optarg << ".\n";  // for test
@@ -112,27 +117,27 @@ int32_t functions::commandLineParser (int argc, char **argv)
                         std::cout << "Option 'n' has an invalid argument.\n";
                 }
                 break;
-            
+
             case ':':   /* missing option argument */
                 std::cout << "Option '" << (char) optopt << "' requires an argument.\n";
                 break;
-            
+
             case '?':   /* invalid option */
             default:
                 std::cout << "Option '" << (char) optopt << "' is invalid.\n";
                 break;
         }
     }
-    
+
     if (help_flag || h_flag)
         Messages::help();
-    
+
     if (version_flag || V_flag)
         Messages::version();
-    
+
     if (verbose_flag || v_flag)
         Messages::verbose();
-    
+
     /* Print any remaining command line arguments (not options). */
     if (optind < argc)
     {
