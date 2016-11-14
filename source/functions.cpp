@@ -13,6 +13,47 @@ functions::functions () {}
 
 
 /***********************************************************
+    detects numerical arguments --> command line parser
+************************************************************/
+int functions::argumentNumberDetector(const char& option, const std::string argument)
+{
+    // "option argument" example: -n 20
+    
+    int numberOfDigits; // number of digits of the argument
+    int argumentSize;   // size of the argument (number of digits in the argument)
+    
+    numberOfDigits = 0;
+    argumentSize = (int) argument.size();
+    
+    
+    if (argument[ 0 ] == '-')
+    {
+        for (int i = 1; i < argumentSize; ++i)
+            if (isdigit((int) argument[ i ]))
+                ++numberOfDigits;
+        
+        // argument is a negative number
+        if ( (argumentSize > 1) && (numberOfDigits == (argumentSize-1)) )
+            std::cout << "Argument of '" << option << "' is " << argument << ".\n";  // for test
+        else    // argument is not a number
+            std::cout << "Option '" << option << "' has an invalid argument.\n";
+    }
+    else
+    {
+        for (int i = 0; i < argumentSize; ++i)
+            if ( isdigit((int) argument[ i ]) )
+                ++numberOfDigits;
+
+        // argument is a positive number
+        if (numberOfDigits == argumentSize)
+            std::cout << "Argument of '" << option << "' is " << argument << ".\n";  // for test
+        else    // argument is not a number
+            std::cout << "Option '" << option << "' has an invalid argument.\n";
+    }
+}
+
+
+/***********************************************************
     command line parser
 ************************************************************/
 int32_t functions::commandLineParser (int argc, char **argv)
@@ -81,36 +122,7 @@ int32_t functions::commandLineParser (int argc, char **argv)
                 break;
 
             case 'n':   // needs an argument
-                int numberOfDigits; // number of digits of the argument
-                int optargSize;     // size of the argument
-
-                numberOfDigits = 0;
-                optargSize = (int) strlen(optarg);
-
-                if (optarg[ 0 ] == '-')
-                {
-                    for (int i = 1; i < optargSize; ++i)
-                        if (isdigit((int) optarg[ i ]))
-                            ++numberOfDigits;
-
-                    // argument is a negative number
-                    if ( (optargSize > 1) && (numberOfDigits == (optargSize-1)) )
-                        std::cout << "Argument of 'n' is " << optarg << ".\n";  // for test
-                    else    // argument is not a number
-                        std::cout << "Option 'n' has an invalid argument.\n";
-                }
-                else
-                {
-                    for (int i = 0; i < optargSize; ++i)
-                        if ( isdigit((int) optarg[ i ]) )
-                            ++numberOfDigits;
-
-                    // argument is a positive number
-                    if (numberOfDigits == optargSize)
-                        std::cout << "Argument of 'n' is " << optarg << ".\n";  // for test
-                    else    // argument is not a number
-                        std::cout << "Option 'n' has an invalid argument.\n";
-                }
+                functions::argumentNumberDetector('n', optarg);
                 break;
 
             case ':':   /* missing option argument */
