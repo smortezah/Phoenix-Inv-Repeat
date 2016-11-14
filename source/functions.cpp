@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <getopt.h>
-#include <cstring>
+//#include <cstring>
 
 
 /***********************************************************
@@ -19,37 +19,23 @@ int functions::argumentNumberDetector(const char& option, const std::string argu
 {
     // "option argument" example: -n 20
     
-    int numberOfDigits; // number of digits of the argument
-    int argumentSize;   // size of the argument (number of digits in the argument)
+    std::string::const_iterator i = argument.begin();   // iterator for moving inside argument
     
-    numberOfDigits = 0;
-    argumentSize = (int) argument.size();
+    if (argument[ 0 ] == '-')   ++i;
     
+    while ( (i != argument.end()) && (std::isdigit(*i)) )   ++i;
     
-    if (argument[ 0 ] == '-')
+    if ( (!argument.empty()) && (i == argument.end()) ) // argument is a number
     {
-        for (int i = 1; i < argumentSize; ++i)
-            if (isdigit((int) argument[ i ]))
-                ++numberOfDigits;
-        
-        // argument is a negative number
-        if ( (argumentSize > 1) && (numberOfDigits == (argumentSize-1)) )
-            std::cout << "Argument of '" << option << "' is " << argument << ".\n";  // for test
-        else    // argument is not a number
-            std::cout << "Option '" << option << "' has an invalid argument.\n";
+        if (argument[ 0 ] == '-')   // negative number
+            std::cout << "Argument of '" << option << "' is " << argument
+                      << " (negative).\n";  // for test
+        else                        // positive number
+            std::cout << "Argument of '" << option << "' is " << argument
+                      << " (positive).\n";  // for test
     }
-    else
-    {
-        for (int i = 0; i < argumentSize; ++i)
-            if ( isdigit((int) argument[ i ]) )
-                ++numberOfDigits;
-
-        // argument is a positive number
-        if (numberOfDigits == argumentSize)
-            std::cout << "Argument of '" << option << "' is " << argument << ".\n";  // for test
-        else    // argument is not a number
-            std::cout << "Option '" << option << "' has an invalid argument.\n";
-    }
+    else    // argument is not a number
+        std::cout << "Option '" << option << "' has an invalid argument.\n";
 }
 
 
