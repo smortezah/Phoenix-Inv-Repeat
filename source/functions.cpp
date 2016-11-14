@@ -18,13 +18,13 @@ functions::functions () {}
 int functions::argumentNumberDetector(const char& option, const std::string argument)
 {
     // "option argument" example: -n 20
-    
+
     std::string::const_iterator i = argument.begin();   // iterator for moving inside argument
-    
+
     if (argument[ 0 ] == '-')   ++i;
-    
+
     while ( (i != argument.end()) && (std::isdigit(*i)) )   ++i;
-    
+
     if ( (!argument.empty()) && (i == argument.end()) ) // argument is a number
     {
         if (argument[ 0 ] == '-')   // negative number
