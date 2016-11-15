@@ -1,4 +1,4 @@
-#include "functions.h"
+#include "Functions.h"
 #include "messages.h"
 
 #include <iostream>
@@ -9,13 +9,13 @@
 /***********************************************************
     constructor
 ************************************************************/
-functions::functions () {}
+Functions::Functions () {}
 
 
 /***********************************************************
     command line parser
 ************************************************************/
-int32_t functions::commandLineParser (int argc, char **argv)
+int32_t Functions::commandLineParser (int argc, char **argv)
 {
     // flags for both short and long arguments
     static int version_flag;    // argument 'version'
@@ -84,7 +84,7 @@ int32_t functions::commandLineParser (int argc, char **argv)
             case 'n':   // needs an integer argument
                 try
                 {
-                    std::cout << std::stoi((std::string) optarg, nullptr) << "\n";//for test
+                    std::cout << std::stoi((std::string) optarg) << "\n";//for test
                 }
                 catch (const std::invalid_argument& ia)
                 {
@@ -95,7 +95,7 @@ int32_t functions::commandLineParser (int argc, char **argv)
             case 'd':   // needs a float argument
                 try
                 {
-                    std::cout << std::stof((std::string) optarg, nullptr) << "\n";//for test
+                    std::cout << std::stof((std::string) optarg) << "\n";//for test
                 }
                 catch (const std::invalid_argument& ia)
                 {

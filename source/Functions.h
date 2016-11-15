@@ -4,10 +4,10 @@
 #include <iostream>
 
 
-class functions
+class Functions
 {
 public:
-    functions ();                                   // constructor
+    Functions ();                                   // constructor
     static int32_t commandLineParser (int, char**); // command line parser
 };
 

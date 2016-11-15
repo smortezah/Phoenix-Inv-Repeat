@@ -12,7 +12,7 @@
 
 #include "def.h"
 #include "messages.h"
-#include "functions.h"
+#include "Functions.h"
 
 
 ///////////////////////////////////////////////////////////
@@ -21,7 +21,7 @@
 
 int32_t main (int argc, char *argv[])
 {
-    functions::commandLineParser(argc, argv);
+    Functions::commandLineParser(argc, argv);
     
     
     return 0;
