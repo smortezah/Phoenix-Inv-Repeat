@@ -84,7 +84,7 @@ int32_t functions::commandLineParser (int argc, char **argv)
             case 'n':   // needs an integer argument
                 try
                 {
-                    std::cout << (int) std::stof((std::string) optarg, nullptr) << "\n";//for test
+                    std::cout << std::stoi((std::string) optarg, nullptr) << "\n";//for test
                 }
                 catch (const std::invalid_argument& ia)
                 {
