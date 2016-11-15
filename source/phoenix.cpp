@@ -16,6 +16,14 @@
 #include "functions.h"
 
 
+
+/***********************************************************
+    for test
+************************************************************/
+#include <array>
+
+
+
 ///////////////////////////////////////////////////////////
 /////////                 M A I N                 /////////
 ///////////////////////////////////////////////////////////
@@ -45,12 +53,20 @@ int32_t main (int argc, char *argv[])
     while (std::getline(myFile, strEachLine))
         strDataset += strEachLine;
 
-    std::cout << strDataset << std::endl;
+//    std::cout << strDataset << std::endl;
     
     myFile.close();
     // file closed
     
+    uint8_t CONTEXT_DEPTH = 2;
+    uint8_t ROW = 16;
+    uint8_t COL = 9;
     
+    int table[ROW][COL];
+    
+    for (size_t i = 0; i < ROW; ++i)
+        for (size_t j = 0; j < COL; ++j)
+            table[ i ][ j ] = 0;
     
     
     return 0;
