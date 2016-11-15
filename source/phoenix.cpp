@@ -12,7 +12,7 @@
 
 #include "def.h"
 #include "messages.h"
-#include "Functions.h"
+#include "functions.h"
 
 
 ///////////////////////////////////////////////////////////
