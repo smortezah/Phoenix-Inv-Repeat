@@ -3,40 +3,13 @@
 
 #include <iostream>
 #include <getopt.h>
-//#include <cstring>
+#include <string>
 
 
 /***********************************************************
     constructor
 ************************************************************/
 functions::functions () {}
-
-
-/***********************************************************
-    detects numerical arguments --> command line parser
-************************************************************/
-int functions::argumentNumberDetector(const char& option, const std::string argument)
-{
-    // "option argument" example: -n 20
-
-    std::string::const_iterator i = argument.begin();   // iterator for moving inside argument
-
-    if (argument[ 0 ] == '-')   ++i;
-
-    while ( (i != argument.end()) && (std::isdigit(*i)) )   ++i;
-
-    if ( (!argument.empty()) && (i == argument.end()) ) // argument is a number
-    {
-        if (argument[ 0 ] == '-')   // negative number
-            std::cout << "Argument of '" << option << "' is " << argument
-                      << " (negative).\n";  // for test
-        else                        // positive number
-            std::cout << "Argument of '" << option << "' is " << argument
-                      << " (positive).\n";  // for test
-    }
-    else    // argument is not a number
-        std::cout << "Option '" << option << "' has an invalid argument.\n";
-}
 
 
 /***********************************************************
@@ -68,7 +41,8 @@ int32_t functions::commandLineParser (int argc, char **argv)
                     {"",        no_argument, &h_flag, (int) 'h'}, // help
                     {"",        no_argument, &V_flag, (int) 'V'}, // version
                     {"",        no_argument, &v_flag, (int) 'v'}, // verbose
-                    {"number",  no_argument, 0,             'n'}, // number
+                    {"number",  required_argument, 0,       'n'}, // number (integer)
+                    {"fnumber", required_argument, 0,       'd'}, // number (float)
                     {0, 0, 0, 0}
             };
 
@@ -77,7 +51,7 @@ int32_t functions::commandLineParser (int argc, char **argv)
         /* getopt_long() stores the option index here. */
         option_index = 0;
 
-        c = getopt_long(argc, argv, ":hVvn:", long_options, &option_index);
+        c = getopt_long(argc, argv, ":hVvn:d:", long_options, &option_index);
 
         /* Detect the end of the options. */
         if (c == -1)
@@ -107,17 +81,35 @@ int32_t functions::commandLineParser (int argc, char **argv)
                 v_flag = 1;
                 break;
 
-            case 'n':   // needs an argument
-                functions::argumentNumberDetector('n', optarg);
+            case 'n':   // needs an integer argument
+                try
+                {
+                    std::cout << (int) std::stof((std::string) optarg, nullptr) << "\n";//for test
+                }
+                catch (const std::invalid_argument& ia)
+                {
+                    std::cerr << "Option 'n' has an invalid argument.\n";
+                }
                 break;
-
+    
+            case 'd':   // needs a float argument
+                try
+                {
+                    std::cout << std::stof((std::string) optarg, nullptr) << "\n";//for test
+                }
+                catch (const std::invalid_argument& ia)
+                {
+                    std::cerr << "Option 'd' has an invalid argument.\n";
+                }
+                break;
+                
             case ':':   /* missing option argument */
-                std::cout << "Option '" << (char) optopt << "' requires an argument.\n";
+                std::cerr << "Option '" << (char) optopt << "' requires an argument.\n";
                 break;
 
             case '?':   /* invalid option */
             default:
-                std::cout << "Option '" << (char) optopt << "' is invalid.\n";
+                std::cerr << "Option '" << (char) optopt << "' is invalid.\n";
                 break;
         }
     }
@@ -134,9 +126,9 @@ int32_t functions::commandLineParser (int argc, char **argv)
     /* Print any remaining command line arguments (not options). */
     if (optind < argc)
     {
-        std::cout << "non-option ARGV-element(s): ";
+        std::cerr << "non-option ARGV-element(s): ";
         while (optind < argc)
-            std::cout << argv[ optind++ ] << " ";
-        std::cout << std::endl;
+            std::cerr << argv[ optind++ ] << " ";
+        std::cerr << std::endl;
     }
 }
