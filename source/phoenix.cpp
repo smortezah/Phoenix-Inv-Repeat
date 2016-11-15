@@ -21,7 +21,9 @@
 
 int32_t main (int argc, char *argv[])
 {
-    Functions::commandLineParser(argc, argv);
+//    Functions::commandLineParser(argc, argv);
+    
+    
     
     
     return 0;
