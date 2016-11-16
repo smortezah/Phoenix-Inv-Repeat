@@ -22,23 +22,42 @@
     for test
 ************************************************************/
 #include <array>
+#include <vector>
 
-int baseCharToNum(std::string s)
+
+void print_permutations (char alphabet[], char prefix[], int ALPHABET_SIZE, int k)
 {
-    std::string intStr(s);
+    int count = 0;
     
-    for (size_t i = 0; i < s.size(); ++i)
-        switch (s[ i ])
-        {
-            case 'A':   intStr[ i ] = '0';    break;
-            case 'C':   intStr[ i ] = '1';    break;
-            case 'T':   intStr[ i ] = '2';    break;
-            case 'G':   intStr[ i ] = '3';    break;
-            default:    break;
-        }
+    int i, j, prefixLength = strlen(prefix);
+    char newprefix[ prefixLength + 2 ];
     
-    return std::stoi(intStr);
+    if (k == 0)
+    {
+        std::cout << ++count << "\t" << prefix << "\n";
+        return;
+    }
+    
+    for (i = 0; i < ALPHABET_SIZE; i++)
+    {
+        for (j = 0; j < prefixLength; j++)
+            newprefix[ j ] = prefix[ j ];
+        
+        newprefix[ prefixLength ] = alphabet[ i ];
+        newprefix[ prefixLength + 1 ] = '\0';
+        
+        print_permutations(alphabet, newprefix, ALPHABET_SIZE, k - 1);
+    }
 }
+
+
+
+
+//int baseCharToNum(std::string s)
+//{
+
+//}
+    
 
 
 
@@ -49,33 +68,39 @@ int baseCharToNum(std::string s)
 int32_t main (int argc, char *argv[])
 {
 //    Functions::commandLineParser(argc, argv);
-    
 
-    
+
 /***********************************************************
     for test
 ************************************************************/
+    int context_size = 2;
+    char alphabet[5] = "ACTG";
     
+//    print_permutations(alphabet, "", ALPHABET_SIZE, context_size);
+
+    
+
     // file opened
     std::ifstream myFile("c.fa", std::ios::in);
-    
+
     if (!myFile)
     {
         std::cerr << "File could not be opened.\n";
         return 1;
     }
-    
+
     std::string strEachLine;
     std::string strDataset;
-    
+
     while (std::getline(myFile, strEachLine))
         strDataset += strEachLine;
 
     std::cout << strDataset << std::endl;
-    
+
     myFile.close(); // file closed
+
     
-    
+    const int ALPHABET_SIZE = 4;  // alphabet = A, C, T, G
     const int CONTEXT_DEPTH = 2;
     const uint8_t ROW = 16;
     const uint8_t COL = 4;
@@ -85,10 +110,10 @@ int32_t main (int argc, char *argv[])
 
 
     char DNAbase[4] = {'A', 'C', 'T', 'G'};
-    
+
     std::string context (CONTEXT_DEPTH, '0');
     int index = 0;
-    
+
     strDataset = context + strDataset;
 
     for (size_t i = CONTEXT_DEPTH; i < strDataset.size()-1; ++i)
@@ -101,16 +126,16 @@ int32_t main (int argc, char *argv[])
             case 'G':   table[ index ][ 3 ] += 1;   break;
             default:    break;
         }
-    
+
         context = strDataset.substr(i - CONTEXT_DEPTH + 1, CONTEXT_DEPTH);
 
-        index = baseCharToNum(context);
-        
+//        index = baseCharToNum(context);
+
         std::cout << context << " " << index << "\n";
     }
-    
 
-    
+
+
     for (size_t i = 0; i < ROW; ++i)
     {
         std::cout << "[" << i << "]:\t";
@@ -119,7 +144,7 @@ int32_t main (int argc, char *argv[])
 
         std::cout << "\n";
     }
-    
+
     
     return 0;
 }
