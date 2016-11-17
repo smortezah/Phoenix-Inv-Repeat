@@ -62,7 +62,7 @@ int32_t main (int argc, char *argv[])
 ************************************************************/
 
     // file opened
-    std::ifstream myFile("c.fa", std::ios::in);
+    std::ifstream myFile("b.fa", std::ios::in);
 
     if (!myFile)
     {
@@ -76,7 +76,7 @@ int32_t main (int argc, char *argv[])
     while (std::getline(myFile, strEachLine))
         strDataset += strEachLine;
 
-    std::cout << strDataset << std::endl;
+    std::cout << "Dataset:\n" << strDataset << std::endl;
 
     myFile.close(); // file closed
     
