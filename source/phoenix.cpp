@@ -82,19 +82,8 @@ int32_t main (int argc, char *argv[])
     
     int alphabetSize = (int) alphabet.size();
     permutation(alphabet, "", alphabetSize, CONTEXT_DEPTH);
-    for (std::string s : permuteVector)
-        std::cout << s << "\n";
-    
-    
-//    std::vector< std::string >::iterator location;
-//    location = std::find( permuteVector.begin(), permuteVector.end(), "GG" );
-//
-//    if ( location != permuteVector.end() ) // found 16
-//        std::cout << "\n\nFound 16 at location " << ( location - permuteVector.begin() ) << "\n";
-//    else // 16 not found
-//        std::cout << "\n\n16 not found";
-    
-    
+//    for (std::string s : permuteVector)
+//        std::cout << s << "\n";
     
     
     int ROW = pow(alphabetSize, CONTEXT_DEPTH);
@@ -107,7 +96,6 @@ int32_t main (int argc, char *argv[])
     strDataset = context + strDataset;
     
     std::vector< std::string >::iterator indexIterator;
-    
     for (size_t i = CONTEXT_DEPTH; i < strDataset.size(); ++i)
     {
         switch (strDataset[ i ])
@@ -118,17 +106,14 @@ int32_t main (int argc, char *argv[])
             case 'G':   table[ index ][ 3 ] += 1;   break;
             default:    break;
         }
-
+    
         context = strDataset.substr(i - CONTEXT_DEPTH + 1, CONTEXT_DEPTH);
     
-        indexIterator = std::find( permuteVector.begin(), permuteVector.end(), context );
+        indexIterator = std::find(permuteVector.begin(), permuteVector.end(), context);
         index = indexIterator - permuteVector.begin();
-
-        std::cout << context << " " << index << "\n";
     }
-
-
-
+    
+    
     for (size_t i = 0; i < ROW; ++i)
     {
         std::cout << "[" << i << "]:\t";
