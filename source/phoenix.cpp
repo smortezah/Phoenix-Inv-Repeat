@@ -39,7 +39,7 @@ const uint8_t COL = 4;  // number of columns of the table
 static std::vector< std::string > permuteVector;
 
 // produces all permutations of the alphabet with the CONTEXT_SIZE size
-void permutation (std::string alphabet, const std::string &prefix,
+void permutation (std::string alphabet, const std::string& prefix,
                   const int alphabetSize, int iterCtxDepth)
 {
     if (iterCtxDepth == 0)
