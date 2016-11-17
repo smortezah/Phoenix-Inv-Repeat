@@ -77,7 +77,7 @@ int32_t Functions::commandLineParser (int argc, char **argv)
                 V_flag = 1;
                 break;
 
-            case 'v':
+            case 'v':   // verbose mode
                 v_flag = 1;
                 break;
 
