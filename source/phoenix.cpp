@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <cstring>
-#include <getopt.h>
+#include <getopt.h>     // for command line parsing
 #include <stdint.h>
 #define __STDC_FORMAT_MACROS
 #include <inttypes.h>
