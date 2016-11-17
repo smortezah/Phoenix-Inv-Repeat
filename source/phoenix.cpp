@@ -23,42 +23,29 @@
 ************************************************************/
 #include <array>
 #include <vector>
+#include <algorithm>
+#include <cmath>
+#include <iterator>
+
+const std::string alphabet{"ACTG"};
+const uint8_t CONTEXT_DEPTH = 2;
+const uint8_t COL = 4;  // number of columns of the table
+
+static std::vector< std::string > permuteVector;
 
 
-void print_permutations (char alphabet[], char prefix[], int ALPHABET_SIZE, int k)
+void permutation (std::string alphabet, const std::string& prefix,
+                  const int alphabetSize, int iterCtxDepth)
 {
-    int count = 0;
-    
-    int i, j, prefixLength = strlen(prefix);
-    char newprefix[ prefixLength + 2 ];
-    
-    if (k == 0)
+    if (iterCtxDepth == 0)
     {
-        std::cout << ++count << "\t" << prefix << "\n";
+        permuteVector.push_back(prefix);
         return;
     }
     
-    for (i = 0; i < ALPHABET_SIZE; i++)
-    {
-        for (j = 0; j < prefixLength; j++)
-            newprefix[ j ] = prefix[ j ];
-        
-        newprefix[ prefixLength ] = alphabet[ i ];
-        newprefix[ prefixLength + 1 ] = '\0';
-        
-        print_permutations(alphabet, newprefix, ALPHABET_SIZE, k - 1);
-    }
+    for (size_t i = 0; i < alphabetSize; ++i)
+        permutation(alphabet, prefix + alphabet[ i ], alphabetSize, iterCtxDepth - 1);
 }
-
-
-
-
-//int baseCharToNum(std::string s)
-//{
-
-//}
-    
-
 
 
 ///////////////////////////////////////////////////////////
@@ -73,12 +60,6 @@ int32_t main (int argc, char *argv[])
 /***********************************************************
     for test
 ************************************************************/
-    int context_size = 2;
-    char alphabet[5] = "ACTG";
-    
-//    print_permutations(alphabet, "", ALPHABET_SIZE, context_size);
-
-    
 
     // file opened
     std::ifstream myFile("c.fa", std::ios::in);
@@ -98,25 +79,36 @@ int32_t main (int argc, char *argv[])
     std::cout << strDataset << std::endl;
 
     myFile.close(); // file closed
-
     
-    const int ALPHABET_SIZE = 4;  // alphabet = A, C, T, G
-    const int CONTEXT_DEPTH = 2;
-    const uint8_t ROW = 16;
-    const uint8_t COL = 4;
-
+    int alphabetSize = (int) alphabet.size();
+    permutation(alphabet, "", alphabetSize, CONTEXT_DEPTH);
+    for (std::string s : permuteVector)
+        std::cout << s << "\n";
+    
+    
+//    std::vector< std::string >::iterator location;
+//    location = std::find( permuteVector.begin(), permuteVector.end(), "GG" );
+//
+//    if ( location != permuteVector.end() ) // found 16
+//        std::cout << "\n\nFound 16 at location " << ( location - permuteVector.begin() ) << "\n";
+//    else // 16 not found
+//        std::cout << "\n\n16 not found";
+    
+    
+    
+    
+    int ROW = pow(alphabetSize, CONTEXT_DEPTH);
     int table[ROW][COL];
     memset(table, 0, sizeof(table[ 0 ][ 0 ]) * ROW * COL);
-
-
-    char DNAbase[4] = {'A', 'C', 'T', 'G'};
-
-    std::string context (CONTEXT_DEPTH, '0');
+    
+    std::string context(CONTEXT_DEPTH, 'A');
     int index = 0;
 
     strDataset = context + strDataset;
-
-    for (size_t i = CONTEXT_DEPTH; i < strDataset.size()-1; ++i)
+    
+    std::vector< std::string >::iterator indexIterator;
+    
+    for (size_t i = CONTEXT_DEPTH; i < strDataset.size(); ++i)
     {
         switch (strDataset[ i ])
         {
@@ -128,8 +120,9 @@ int32_t main (int argc, char *argv[])
         }
 
         context = strDataset.substr(i - CONTEXT_DEPTH + 1, CONTEXT_DEPTH);
-
-//        index = baseCharToNum(context);
+    
+        indexIterator = std::find( permuteVector.begin(), permuteVector.end(), context );
+        index = indexIterator - permuteVector.begin();
 
         std::cout << context << " " << index << "\n";
     }
@@ -141,9 +134,10 @@ int32_t main (int argc, char *argv[])
         std::cout << "[" << i << "]:\t";
         for (size_t j = 0; j < COL; ++j)
             std::cout << table[ i ][ j ] << "\t";
-
         std::cout << "\n";
     }
+    std::cout << "*************************************************\n"
+              << "*************************************************\n";
 
     
     return 0;
