@@ -51,10 +51,10 @@ void Messages::help (void)
 void Messages::version (void)
 {
     std::cout
-            <<"\n"
-            <<"              ====================\n"
-            <<"              ==  PHOENIX v" << VERSION << "." << RELEASE << "  ==\n"
-            <<"              ====================\n";
+      <<"\n"
+      <<"              ====================\n"
+      <<"              ==  PHOENIX v" << VERSION_PHOENIX << "." << RELEASE_PHOENIX << "  ==\n"
+      <<"              ====================\n";
 }
 
 

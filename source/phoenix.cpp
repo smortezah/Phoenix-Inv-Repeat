@@ -27,6 +27,11 @@
 #include <cmath>
 #include <iterator>
 
+#include "bitio.h"
+#include "arith.h"
+#include "arith_aux.h"
+
+
 const std::string alphabet{"ACTG"};
 const uint8_t CONTEXT_DEPTH = 2;
 const uint8_t COL = 4;  // number of columns of the table
@@ -34,7 +39,7 @@ const uint8_t COL = 4;  // number of columns of the table
 static std::vector< std::string > permuteVector;
 
 // produces all permutations of the alphabet with the CONTEXT_SIZE size
-void permutation (std::string alphabet, const std::string& prefix,
+void permutation (std::string alphabet, const std::string &prefix,
                   const int alphabetSize, int iterCtxDepth)
 {
     if (iterCtxDepth == 0)
@@ -75,6 +80,7 @@ int32_t main (int argc, char *argv[])
     while (std::getline(myFile, strEachLine))
         strDataset += strEachLine;
     
+    // show the dataset
     std::cout << "Dataset:\n" << strDataset << std::endl;
     
     myFile.close();
