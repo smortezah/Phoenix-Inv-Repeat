@@ -110,10 +110,11 @@ int32_t main (int argc, char *argv[])
     // an iterator for iterating in the permuteVector
     std::vector< std::string >::iterator indexIterator;
 
-    int counters[4];    memset(counters, 0, sizeof(counters[ 0 ]) * 4);
-    int totalCount = 0;
-    int symbol = 0;
-    FILE *writer = fopen("mori", "w");
+//    int counters[4];
+//    memset(counters, 0, sizeof(counters[ 0 ]) * 4);
+//    int totalCount = 0;
+//    int symbol = 0;
+//    FILE *writer = fopen("mori", "w");
     
     for (size_t i = CONTEXT_DEPTH; i < strDataset.size(); ++i)
     {
@@ -122,26 +123,38 @@ int32_t main (int argc, char *argv[])
         {
             case 'A':
                 table[ index ][ 0 ] += 1;
-                counters[ 0 ] += ALPHA_DENUMERATOR * table[ index ][ 0 ] + ALPHA_NUMERATOR;
+//                counters[ 0 ] += ALPHA_DENUMERATOR * table[ index ][ 0 ] + ALPHA_NUMERATOR;
+//                totalCount = (ALPHA_DENUMERATOR * (table[ index ][ 0 ] + table[ index ][ 1 ] +
+//                                                   table[ index ][ 2 ] + table[ index ][ 3 ])) +
+//                             (4 * ALPHA_NUMERATOR);
+////                AESym(3, counters, totalCount, writer);
                 break;
                 
             case 'C':
                 table[ index ][ 1 ] += 1;
-                counters[ 1 ] += ALPHA_DENUMERATOR * table[ index ][ 1 ] + ALPHA_NUMERATOR;
+//                counters[ 1 ] += ALPHA_DENUMERATOR * table[ index ][ 1 ] + ALPHA_NUMERATOR;
+//                totalCount = (ALPHA_DENUMERATOR * (table[ index ][ 0 ] + table[ index ][ 1 ] +
+//                                                   table[ index ][ 2 ] + table[ index ][ 3 ])) +
+//                             (4 * ALPHA_NUMERATOR);
+////                AESym(3, counters, totalCount, writer);
                 break;
                 
             case 'T':
                 table[ index ][ 2 ] += 1;
-                counters[ 2 ] += ALPHA_DENUMERATOR * table[ index ][ 2 ] + ALPHA_NUMERATOR;
+//                counters[ 2 ] += ALPHA_DENUMERATOR * table[ index ][ 2 ] + ALPHA_NUMERATOR;
+//                totalCount = (ALPHA_DENUMERATOR * (table[ index ][ 0 ] + table[ index ][ 1 ] +
+//                                                   table[ index ][ 2 ] + table[ index ][ 3 ])) +
+//                             (4 * ALPHA_NUMERATOR);
+////                AESym(3, counters, totalCount, writer);
                 break;
                 
             case 'G':
                 table[ index ][ 3 ] += 1;
-                counters[ 3 ] += ALPHA_DENUMERATOR * table[ index ][ 3 ] + ALPHA_NUMERATOR;
-                totalCount = (ALPHA_DENUMERATOR * (table[ index ][ 0 ] + table[ index ][ 1 ] +
-                                                   table[ index ][ 2 ] + table[ index ][ 3 ])) +
-                             (4 * ALPHA_NUMERATOR);
-//                AESym(3, (int*) counters, totalCount, writer);
+//                counters[ 3 ] += ALPHA_DENUMERATOR * table[ index ][ 3 ] + ALPHA_NUMERATOR;
+//                totalCount = (ALPHA_DENUMERATOR * (table[ index ][ 0 ] + table[ index ][ 1 ] +
+//                                                   table[ index ][ 2 ] + table[ index ][ 3 ])) +
+//                             (4 * ALPHA_NUMERATOR);
+////                AESym(3, counters, totalCount, writer);
                 break;
                 
             default:
