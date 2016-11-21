@@ -18,14 +18,13 @@ Functions::Functions () {}
 int32_t Functions::commandLineParser (int argc, char **argv)
 {
     // flags for both short and long arguments
-    static int version_flag;            // argument 'version'
-    static int V_flag;                  // argument 'V'
-    static int help_flag;               // argument 'help'
-    static int h_flag;                  // argument 'h'
-    static int verbose_flag;            // argument 'verbose'
-    static int v_flag;                  // argument 'v'
-    static int inverted_repeat_flag;    // argument 'inverted_repeat'
-    static int i_flag;                  // argument 'i'
+    static int V_flag;                  // argument 'V' (version)
+    static int h_flag;                  // argument 'h' (help)
+    static int v_flag;                  // argument 'v' (verbose)
+    static int i_flag;                  // argument 'i' (inverted_repeat)
+    
+    
+    static int t_flag;                  // argument 't'
 
     int c;              // deal with getopt_long()
     int option_index;
@@ -34,19 +33,15 @@ int32_t Functions::commandLineParser (int argc, char **argv)
 
     static struct option long_options[] =
             {
-                    /* These options set a flag. */
-                    {"help",            no_argument, &help_flag,            1},
-                    {"version",         no_argument, &version_flag,         1},
-                    {"verbose",         no_argument, &verbose_flag,         1},
-                    {"inverted_repeat", no_argument, &inverted_repeat_flag, 1},
-                    /* These options don’t set a flag.
-                       We distinguish them by their indices. */
-                    {"",        no_argument, &h_flag, (int) 'h'}, // help
-                    {"",        no_argument, &V_flag, (int) 'V'}, // version
-                    {"",        no_argument, &v_flag, (int) 'v'}, // verbose
-                    {"",        no_argument, &i_flag, (int) 'i'}, // inverted_repeat
-                    {"number",  required_argument, 0,       'n'}, // number (integer)
-                    {"fnumber", required_argument, 0,       'd'}, // number (float)
+                    {"help",            no_argument, &h_flag, (int) 'h'}, // help
+                    {"version",         no_argument, &V_flag, (int) 'V'}, // version
+                    {"verbose",         no_argument, &v_flag, (int) 'v'}, // verbose
+                    {"inverted_repeat", no_argument, &i_flag, (int) 'i'}, // inverted_repeat
+                    {"number",          required_argument, 0,       'n'}, // number (integer)
+                    {"fnumber",         required_argument, 0,       'd'}, // number (float)
+//                    {"target",      required_argument, 0,       't'}, // target file
+//                    {"reference",   required_argument, 0,       'r'}, // reference file
+                    {"target",          required_argument, &t_flag,(int)'t'}, // target file
                     {0, 0, 0, 0}
             };
 
@@ -55,7 +50,7 @@ int32_t Functions::commandLineParser (int argc, char **argv)
         /* getopt_long() stores the option index here. */
         option_index = 0;
 
-        c = getopt_long(argc, argv, ":hVvin:d:", long_options, &option_index);
+        c = getopt_long(argc, argv, ":hVvin:d:t:r:", long_options, &option_index);
 
         /* Detect the end of the options. */
         if (c == -1)
@@ -110,6 +105,47 @@ int32_t Functions::commandLineParser (int argc, char **argv)
                     std::cerr << "Option 'd' has an invalid argument.\n";
                 }
                 break;
+    
+            case 't':   // needs target file name
+//                try
+//                {
+////                    std::cout << (std::string) optarg << "\n";//for test
+//
+                t_flag=1;
+//                std::string q=(std::string) optarg;
+//                    std::ifstream targetFile(q, std::ios::in);
+    
+//                    if (!targetFile)
+//                    {
+//                        std::cerr << "File could not be opened.\n";
+//                        return 1;
+//                    }
+//
+//                    std::string strEachLine;
+//                    std::string strDataset;
+//
+//                    while (std::getline(targetFile, strEachLine))
+//                        strDataset += strEachLine;
+//
+//                    targetFile.close();
+//                    // file closed
+//                }
+//                catch (const std::invalid_argument& ia)
+//                {
+//                    std::cerr << "Option 't' has an invalid argument.\n";
+//                }
+                break;
+    
+            case 'r':   // needs reference file name
+                try
+                {
+                    std::cout << (std::string) optarg << "\n";//for test
+                }
+                catch (const std::invalid_argument& ia)
+                {
+                    std::cerr << "Option 'r' has an invalid argument.\n";
+                }
+                break;
                 
             case ':':   /* missing option argument */
                 std::cerr << "Option '" << (char) optopt << "' requires an argument.\n";
@@ -121,19 +157,12 @@ int32_t Functions::commandLineParser (int argc, char **argv)
                 break;
         }
     }
-
-    if (help_flag || h_flag)
-        Messages::help();
-
-    if (version_flag || V_flag)
-        Messages::version();
-
-    if (verbose_flag || v_flag)
-        Messages::verbose();
     
-    if (inverted_repeat_flag || i_flag)
-        Messages::inverted_repeat();
-
+    if (h_flag) Messages::help();
+    if (V_flag) Messages::version();
+    if (v_flag) Messages::verbose();
+    if (i_flag) Messages::inverted_repeat();
+    
     /* Print any remaining command line arguments (not options). */
     if (optind < argc)
     {

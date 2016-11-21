@@ -17,7 +17,7 @@ void Messages::help (void)
 {
     std::cout
             << "Synopsis:\n"
-            << "    phoenix [OPTION]... [FILE1] [FILE2]\n"
+            << "    phoenix [OPTION]... -t [TARGET] -r [REFERENCE]\n"
             << "\n"
             << "Options:\n"
             << "    -h,  --help\n"
@@ -40,7 +40,10 @@ void Messages::help (void)
             << "         number of something.\n"
             << "         requires a float number (NUMBER)\n"
             << "\n"
-            << "    [FILE1]\n"
+            << "    -t [TARGET],  --target [TARGET]\n"
+            << "         target file\n"
+            << "\n"
+            << "    -r [REFERENCE],  --reference [REFERENCE]\n"
             << "         reference file\n"
             << "\n"
             << "    [FILE2]\n"

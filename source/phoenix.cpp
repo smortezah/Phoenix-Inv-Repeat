@@ -64,179 +64,179 @@ const uint8_t CONTEXT_DEPTH = 2;
 int32_t main (int argc, char *argv[])
 {
     Functions::commandLineParser(argc, argv);
-    
-    
-    std::unordered_map< std::string, std::array< int, 4> > hashTable;
-
-/***********************************************************
-    for test
-************************************************************/
-    // file opened
-    std::ifstream myFile("d.fa", std::ios::in);
-
-    if (!myFile)
-    {
-        std::cerr << "File could not be opened.\n";
-        return 1;
-    }
-
-    std::string strEachLine;
-    std::string strDataset;
-
-    while (std::getline(myFile, strEachLine))
-        strDataset += strEachLine;
-
-//    // show the dataset
-//    std::cout << "Dataset: " << strDataset << std::endl;
-
-    myFile.close();
-    // file closed
 //
 //
-//    // all permutations of the alphabet with the CONTEXT_SIZE size
-//    int alphabetSize = (int) alphabet.size();
-//    permutation(alphabet, "", alphabetSize, CONTEXT_DEPTH);
-////    for (std::string s : permuteVector)
-////        std::cout << s << "\n";
+//    std::unordered_map< std::string, std::array< int, 4> > hashTable;
 //
-//    // a table to save the number of occurrences
-//    int ROW = pow(alphabetSize, CONTEXT_DEPTH);
-//    int table[ROW][COL];
-//    memset(table, 0, sizeof(table[ 0 ][ 0 ]) * ROW * COL);
+///***********************************************************
+//    for test
+//************************************************************/
+//    // file opened
+//    std::ifstream myFile("d.fa", std::ios::in);
 //
-    // context, that slides in the dataset
-    std::string context(CONTEXT_DEPTH, 'A');
-    int index = 0;
-
-    // add "AA..." (with the size of CONTEXT_DEPTH) to the beginning of the dataset
-    strDataset = context + strDataset;
-//
-//    // an iterator for iterating in the permuteVector
-//    std::vector< std::string >::iterator indexIterator;
-//
-////    int counters[4];
-////    memset(counters, 0, sizeof(counters[ 0 ]) * 4);
-////    int totalCount = 0;
-////    int symbol = 0;
-////    FILE *writer = fopen("mori", "w");
-//
-    
-//    // show the dataset
-//    std::cout << "Dataset: " << strDataset << std::endl;
-    
-    hashTable.insert( {context, {0, 0, 0, 0}} );
-    
-    for (size_t i = CONTEXT_DEPTH; i < strDataset.size(); ++i)
-    {
-        // add 1 to the number of occurrences if a specific symbol is seen
-        switch (strDataset[ i ])
-        {
-            case 'A':
-                // incrementing number of "A"s
-                ++(hashTable[ context ])[ 0 ];  // order: {A, C, T, G}
-
-
-
-//                table[ index ][ 0 ] += 1;
-////                counters[ 0 ] += ALPHA_DENUMERATOR * table[ index ][ 0 ] + ALPHA_NUMERATOR;
-////                totalCount = (ALPHA_DENUMERATOR * (table[ index ][ 0 ] + table[ index ][ 1 ] +
-////                                                   table[ index ][ 2 ] + table[ index ][ 3 ])) +
-////                             (4 * ALPHA_NUMERATOR);
-//////                AESym(3, counters, totalCount, writer);
-                break;
-
-            case 'C':
-                // incrementing number of "C"s
-                ++(hashTable[ context ])[ 1 ];  // order: {A, C, T, G}
-
-
-////                table[ index ][ 1 ] += 1;
-//////                counters[ 1 ] += ALPHA_DENUMERATOR * table[ index ][ 1 ] + ALPHA_NUMERATOR;
-//////                totalCount = (ALPHA_DENUMERATOR * (table[ index ][ 0 ] + table[ index ][ 1 ] +
-//////                                                   table[ index ][ 2 ] + table[ index ][ 3 ])) +
-//////                             (4 * ALPHA_NUMERATOR);
-////////                AESym(3, counters, totalCount, writer);
-                break;
-
-            case 'T':
-                // incrementing number of "T"s
-                ++(hashTable[ context ])[ 2 ];  // order: {A, C, T, G}
-//
-////                table[ index ][ 2 ] += 1;
-//////                counters[ 2 ] += ALPHA_DENUMERATOR * table[ index ][ 2 ] + ALPHA_NUMERATOR;
-//////                totalCount = (ALPHA_DENUMERATOR * (table[ index ][ 0 ] + table[ index ][ 1 ] +
-//////                                                   table[ index ][ 2 ] + table[ index ][ 3 ])) +
-//////                             (4 * ALPHA_NUMERATOR);
-////////                AESym(3, counters, totalCount, writer);
-                break;
-
-            case 'G':
-                // incrementing number of "G"s
-                ++(hashTable[ context ])[ 3 ];  // order: {A, C, T, G}
-
-////                table[ index ][ 3 ] += 1;
-//////                counters[ 3 ] += ALPHA_DENUMERATOR * table[ index ][ 3 ] + ALPHA_NUMERATOR;
-//////                totalCount = (ALPHA_DENUMERATOR * (table[ index ][ 0 ] + table[ index ][ 1 ] +
-//////                                                   table[ index ][ 2 ] + table[ index ][ 3 ])) +
-//////                             (4 * ALPHA_NUMERATOR);
-////////                AESym(3, counters, totalCount, writer);
-                break;
-
-            default:
-                break;
-        }
-//
-////        totalCount = (ALPHA_DENUMERATOR * (table[ index ][ 0 ] + table[ index ][ 1 ] +
-////                                           table[ index ][ 2 ] + table[ index ][ 3 ])) +
-////                     (4 * ALPHA_NUMERATOR);
-////
-////        memset(counters, 0, sizeof(counters[ 0 ]) * 4);
-//
-
-        // slides in the dataset
-        context = strDataset.substr(i - CONTEXT_DEPTH + 1, CONTEXT_DEPTH);
-//
-//        // index of the context
-//        indexIterator = std::find(permuteVector.begin(), permuteVector.end(), context);
-//        index = indexIterator - permuteVector.begin();
-    }
-    
-    
-    // type definition: unordered_map iterator
-    typedef std::unordered_map< std::string, std::array< int, 4 > >::iterator umit;
-//    typedef std::unordered_map< std::string, int >::iterator umit;
-    
-    int ind=1;
-    std::cout << "\t" << "A\tC\tT\tG\n"
-              << "-----------------------------------\n";
-    for (umit it = hashTable.begin(); it != hashTable.end(); ++it)
-    {
-        std::cout << ind << ":\t" << it->first << "\t";
-//        std::cout << it->second << "\t";
-        for (int i : it->second)
-            std::cout << i << "\t";
-        std::cout << "\n";
-        ++ind;
-    }
-    std::cout << "bucket size = " << hashTable.bucket_count() << "\n";
-
-
-
-
-
-
-
-
-//
-//    // show the table
-//    for (size_t i = 0; i < ROW; ++i)
+//    if (!myFile)
 //    {
-//        std::cout << "[" << i << "]:\t";
-//        for (size_t j = 0; j < COL; ++j)
-//            std::cout << table[ i ][ j ] << "\t";
-//        std::cout << "\n";
+//        std::cerr << "File could not be opened.\n";
+//        return 1;
 //    }
-//    std::cout << "*************************************************\n";
+//
+//    std::string strEachLine;
+//    std::string strDataset;
+//
+//    while (std::getline(myFile, strEachLine))
+//        strDataset += strEachLine;
+//
+////    // show the dataset
+////    std::cout << "Dataset: " << strDataset << std::endl;
+//
+//    myFile.close();
+//    // file closed
+////
+////
+////    // all permutations of the alphabet with the CONTEXT_SIZE size
+////    int alphabetSize = (int) alphabet.size();
+////    permutation(alphabet, "", alphabetSize, CONTEXT_DEPTH);
+//////    for (std::string s : permuteVector)
+//////        std::cout << s << "\n";
+////
+////    // a table to save the number of occurrences
+////    int ROW = pow(alphabetSize, CONTEXT_DEPTH);
+////    int table[ROW][COL];
+////    memset(table, 0, sizeof(table[ 0 ][ 0 ]) * ROW * COL);
+////
+//    // context, that slides in the dataset
+//    std::string context(CONTEXT_DEPTH, 'A');
+//    int index = 0;
+//
+//    // add "AA..." (with the size of CONTEXT_DEPTH) to the beginning of the dataset
+//    strDataset = context + strDataset;
+////
+////    // an iterator for iterating in the permuteVector
+////    std::vector< std::string >::iterator indexIterator;
+////
+//////    int counters[4];
+//////    memset(counters, 0, sizeof(counters[ 0 ]) * 4);
+//////    int totalCount = 0;
+//////    int symbol = 0;
+//////    FILE *writer = fopen("mori", "w");
+////
+//
+////    // show the dataset
+////    std::cout << "Dataset: " << strDataset << std::endl;
+//
+//    hashTable.insert( {context, {0, 0, 0, 0}} );
+//
+//    for (size_t i = CONTEXT_DEPTH; i < strDataset.size(); ++i)
+//    {
+//        // add 1 to the number of occurrences if a specific symbol is seen
+//        switch (strDataset[ i ])
+//        {
+//            case 'A':
+//                // incrementing number of "A"s
+//                ++(hashTable[ context ])[ 0 ];  // order: {A, C, T, G}
+//
+//
+//
+////                table[ index ][ 0 ] += 1;
+//////                counters[ 0 ] += ALPHA_DENUMERATOR * table[ index ][ 0 ] + ALPHA_NUMERATOR;
+//////                totalCount = (ALPHA_DENUMERATOR * (table[ index ][ 0 ] + table[ index ][ 1 ] +
+//////                                                   table[ index ][ 2 ] + table[ index ][ 3 ])) +
+//////                             (4 * ALPHA_NUMERATOR);
+////////                AESym(3, counters, totalCount, writer);
+//                break;
+//
+//            case 'C':
+//                // incrementing number of "C"s
+//                ++(hashTable[ context ])[ 1 ];  // order: {A, C, T, G}
+//
+//
+//////                table[ index ][ 1 ] += 1;
+////////                counters[ 1 ] += ALPHA_DENUMERATOR * table[ index ][ 1 ] + ALPHA_NUMERATOR;
+////////                totalCount = (ALPHA_DENUMERATOR * (table[ index ][ 0 ] + table[ index ][ 1 ] +
+////////                                                   table[ index ][ 2 ] + table[ index ][ 3 ])) +
+////////                             (4 * ALPHA_NUMERATOR);
+//////////                AESym(3, counters, totalCount, writer);
+//                break;
+//
+//            case 'T':
+//                // incrementing number of "T"s
+//                ++(hashTable[ context ])[ 2 ];  // order: {A, C, T, G}
+////
+//////                table[ index ][ 2 ] += 1;
+////////                counters[ 2 ] += ALPHA_DENUMERATOR * table[ index ][ 2 ] + ALPHA_NUMERATOR;
+////////                totalCount = (ALPHA_DENUMERATOR * (table[ index ][ 0 ] + table[ index ][ 1 ] +
+////////                                                   table[ index ][ 2 ] + table[ index ][ 3 ])) +
+////////                             (4 * ALPHA_NUMERATOR);
+//////////                AESym(3, counters, totalCount, writer);
+//                break;
+//
+//            case 'G':
+//                // incrementing number of "G"s
+//                ++(hashTable[ context ])[ 3 ];  // order: {A, C, T, G}
+//
+//////                table[ index ][ 3 ] += 1;
+////////                counters[ 3 ] += ALPHA_DENUMERATOR * table[ index ][ 3 ] + ALPHA_NUMERATOR;
+////////                totalCount = (ALPHA_DENUMERATOR * (table[ index ][ 0 ] + table[ index ][ 1 ] +
+////////                                                   table[ index ][ 2 ] + table[ index ][ 3 ])) +
+////////                             (4 * ALPHA_NUMERATOR);
+//////////                AESym(3, counters, totalCount, writer);
+//                break;
+//
+//            default:
+//                break;
+//        }
+////
+//////        totalCount = (ALPHA_DENUMERATOR * (table[ index ][ 0 ] + table[ index ][ 1 ] +
+//////                                           table[ index ][ 2 ] + table[ index ][ 3 ])) +
+//////                     (4 * ALPHA_NUMERATOR);
+//////
+//////        memset(counters, 0, sizeof(counters[ 0 ]) * 4);
+////
+//
+//        // slides in the dataset
+//        context = strDataset.substr(i - CONTEXT_DEPTH + 1, CONTEXT_DEPTH);
+////
+////        // index of the context
+////        indexIterator = std::find(permuteVector.begin(), permuteVector.end(), context);
+////        index = indexIterator - permuteVector.begin();
+//    }
+//
+//
+//    // type definition: unordered_map iterator
+//    typedef std::unordered_map< std::string, std::array< int, 4 > >::iterator umit;
+////    typedef std::unordered_map< std::string, int >::iterator umit;
+//
+//    int ind=1;
+//    std::cout << "\t" << "A\tC\tT\tG\n"
+//              << "-----------------------------------\n";
+//    for (umit it = hashTable.begin(); it != hashTable.end(); ++it)
+//    {
+//        std::cout << ind << ":\t" << it->first << "\t";
+////        std::cout << it->second << "\t";
+//        for (int i : it->second)
+//            std::cout << i << "\t";
+//        std::cout << "\n";
+//        ++ind;
+//    }
+//    std::cout << "bucket size = " << hashTable.bucket_count() << "\n";
+//
+//
+//
+//
+//
+//
+//
+//
+////
+////    // show the table
+////    for (size_t i = 0; i < ROW; ++i)
+////    {
+////        std::cout << "[" << i << "]:\t";
+////        for (size_t j = 0; j < COL; ++j)
+////            std::cout << table[ i ][ j ] << "\t";
+////        std::cout << "\n";
+////    }
+////    std::cout << "*************************************************\n";
 
     
     return 0;
