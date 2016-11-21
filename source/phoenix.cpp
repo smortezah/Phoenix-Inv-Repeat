@@ -63,7 +63,7 @@ const uint8_t CONTEXT_DEPTH = 2;
 #include <array>
 int32_t main (int argc, char *argv[])
 {
-//    Functions::commandLineParser(argc, argv);
+    Functions::commandLineParser(argc, argv);
     
     
     std::unordered_map< std::string, std::array< int, 4> > hashTable;
@@ -72,7 +72,7 @@ int32_t main (int argc, char *argv[])
     for test
 ************************************************************/
     // file opened
-    std::ifstream myFile("a.fa", std::ios::in);
+    std::ifstream myFile("d.fa", std::ios::in);
 
     if (!myFile)
     {
@@ -206,16 +206,19 @@ int32_t main (int argc, char *argv[])
     typedef std::unordered_map< std::string, std::array< int, 4 > >::iterator umit;
 //    typedef std::unordered_map< std::string, int >::iterator umit;
     
+    int ind=1;
     std::cout << "\t" << "A\tC\tT\tG\n"
               << "-----------------------------------\n";
     for (umit it = hashTable.begin(); it != hashTable.end(); ++it)
     {
-        std::cout << it->first << "\t";
+        std::cout << ind << ":\t" << it->first << "\t";
 //        std::cout << it->second << "\t";
         for (int i : it->second)
             std::cout << i << "\t";
         std::cout << "\n";
+        ++ind;
     }
+    std::cout << "bucket size = " << hashTable.bucket_count() << "\n";
 
 
 

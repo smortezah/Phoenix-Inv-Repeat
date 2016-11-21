@@ -18,12 +18,14 @@ Functions::Functions () {}
 int32_t Functions::commandLineParser (int argc, char **argv)
 {
     // flags for both short and long arguments
-    static int version_flag;    // argument 'version'
-    static int V_flag;          // argument 'V'
-    static int help_flag;       // argument 'help'
-    static int h_flag;          // argument 'h'
-    static int verbose_flag;    // argument 'verbose'
-    static int v_flag;          // argument 'v'
+    static int version_flag;            // argument 'version'
+    static int V_flag;                  // argument 'V'
+    static int help_flag;               // argument 'help'
+    static int h_flag;                  // argument 'h'
+    static int verbose_flag;            // argument 'verbose'
+    static int v_flag;                  // argument 'v'
+    static int inverted_repeat_flag;    // argument 'inverted_repeat'
+    static int i_flag;                  // argument 'i'
 
     int c;              // deal with getopt_long()
     int option_index;
@@ -33,14 +35,16 @@ int32_t Functions::commandLineParser (int argc, char **argv)
     static struct option long_options[] =
             {
                     /* These options set a flag. */
-                    {"help",    no_argument, &help_flag,    1},
-                    {"version", no_argument, &version_flag, 1},
-                    {"verbose", no_argument, &verbose_flag, 1},
+                    {"help",            no_argument, &help_flag,            1},
+                    {"version",         no_argument, &version_flag,         1},
+                    {"verbose",         no_argument, &verbose_flag,         1},
+                    {"inverted_repeat", no_argument, &inverted_repeat_flag, 1},
                     /* These options don’t set a flag.
                        We distinguish them by their indices. */
                     {"",        no_argument, &h_flag, (int) 'h'}, // help
                     {"",        no_argument, &V_flag, (int) 'V'}, // version
                     {"",        no_argument, &v_flag, (int) 'v'}, // verbose
+                    {"",        no_argument, &i_flag, (int) 'i'}, // inverted_repeat
                     {"number",  required_argument, 0,       'n'}, // number (integer)
                     {"fnumber", required_argument, 0,       'd'}, // number (float)
                     {0, 0, 0, 0}
@@ -51,7 +55,7 @@ int32_t Functions::commandLineParser (int argc, char **argv)
         /* getopt_long() stores the option index here. */
         option_index = 0;
 
-        c = getopt_long(argc, argv, ":hVvn:d:", long_options, &option_index);
+        c = getopt_long(argc, argv, ":hVvin:d:", long_options, &option_index);
 
         /* Detect the end of the options. */
         if (c == -1)
@@ -79,6 +83,10 @@ int32_t Functions::commandLineParser (int argc, char **argv)
 
             case 'v':   // verbose mode
                 v_flag = 1;
+                break;
+    
+            case 'i':   // inverted_repeat mode
+                i_flag = 1;
                 break;
 
             case 'n':   // needs an integer argument
@@ -122,6 +130,9 @@ int32_t Functions::commandLineParser (int argc, char **argv)
 
     if (verbose_flag || v_flag)
         Messages::verbose();
+    
+    if (inverted_repeat_flag || i_flag)
+        Messages::inverted_repeat();
 
     /* Print any remaining command line arguments (not options). */
     if (optind < argc)

@@ -29,6 +29,9 @@ void Messages::help (void)
             << "    -v,  --verbose\n"
             << "         verbose mode (more information)\n"
             << "\n"
+            << "    -i,  --inverted_repeat\n"
+            << "         considers inverted repeats\n"
+            << "\n"
             << "    -n [NUMBER],  --number [NUMBER]\n"
             << "         number of something.\n"
             << "         requires an integer number (NUMBER)\n"
@@ -64,4 +67,13 @@ void Messages::version (void)
 void Messages::verbose (void)
 {
     std::cout << "verbose mode.\n"; // for test
+}
+
+
+/***********************************************************
+    shows inverted_repeat mode
+************************************************************/
+void Messages::inverted_repeat (void)
+{
+    std::cout << "inverted repeat mode.\n"; // for test
 }
