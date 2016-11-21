@@ -33,7 +33,7 @@
 //
 //
 //const std::string alphabet{"ACTG"};
-//const uint8_t CONTEXT_DEPTH = 2;
+const uint8_t CONTEXT_DEPTH = 2;
 //const uint8_t ALPHA_NUMERATOR = 1;
 //const uint8_t ALPHA_DENUMERATOR = 1;
 //const uint8_t COL = 4;  // number of columns of the table
@@ -60,49 +60,40 @@
 ///////////////////////////////////////////////////////////
 
 #include <unordered_map>
+#include <array>
 int32_t main (int argc, char *argv[])
 {
 //    Functions::commandLineParser(argc, argv);
     
-    std::unordered_map<std::string, int> months;
-    months["january"] = 31;
-    months["february"] = 28;
-    months["march"] = 31;
-    months["april"] = 30;
-    months["may"] = 31;
-    months["june"] = 30;
-    months["july"] = 31;
-    months["august"] = 31;
-    months["september"] = 30;
-    months["october"] = 31;
-    months["november"] = 30;
-    months["december"] = 31;
-    std::cout << "september -> " << months["september"] << std::endl;
-    std::cout << "april     -> " << months["april"] << std::endl;
+//    std::unordered_map< std::string, std::array< int, 4> > hashTable;
+    std::unordered_map< std::string, int > hashTable;
+
+    
+//    hashTable.insert({"AA", {0, 0, 0, 1}});
 
 /***********************************************************
     for test
 ************************************************************/
-//    // file opened
-//    std::ifstream myFile("c.fa", std::ios::in);
-//
-//    if (!myFile)
-//    {
-//        std::cerr << "File could not be opened.\n";
-//        return 1;
-//    }
-//
-//    std::string strEachLine;
-//    std::string strDataset;
-//
-//    while (std::getline(myFile, strEachLine))
-//        strDataset += strEachLine;
-//
-//    // show the dataset
-//    std::cout << "Dataset:\n" << strDataset << std::endl;
-//
-//    myFile.close();
-//    // file closed
+    // file opened
+    std::ifstream myFile("d.fa", std::ios::in);
+
+    if (!myFile)
+    {
+        std::cerr << "File could not be opened.\n";
+        return 1;
+    }
+
+    std::string strEachLine;
+    std::string strDataset;
+
+    while (std::getline(myFile, strEachLine))
+        strDataset += strEachLine;
+
+    // show the dataset
+    std::cout << "Dataset:\n" << strDataset << std::endl;
+
+    myFile.close();
+    // file closed
 //
 //
 //    // all permutations of the alphabet with the CONTEXT_SIZE size
@@ -116,12 +107,12 @@ int32_t main (int argc, char *argv[])
 //    int table[ROW][COL];
 //    memset(table, 0, sizeof(table[ 0 ][ 0 ]) * ROW * COL);
 //
-//    // context, that slides in the dataset
-//    std::string context(CONTEXT_DEPTH, 'A');
-//    int index = 0;
-//
-//    // add "AA..." (with the size of CONTEXT_DEPTH) to the beginning of the dataset
-//    strDataset = context + strDataset;
+    // context, that slides in the dataset
+    std::string context(CONTEXT_DEPTH, 'A');
+    int index = 0;
+
+    // add "AA..." (with the size of CONTEXT_DEPTH) to the beginning of the dataset
+    strDataset = context + strDataset;
 //
 //    // an iterator for iterating in the permuteVector
 //    std::vector< std::string >::iterator indexIterator;
@@ -132,19 +123,22 @@ int32_t main (int argc, char *argv[])
 ////    int symbol = 0;
 ////    FILE *writer = fopen("mori", "w");
 //
-//    for (size_t i = CONTEXT_DEPTH; i < strDataset.size(); ++i)
-//    {
-//        // add 1 to the number of occurrences if a specific symbol is seen
-//        switch (strDataset[ i ])
-//        {
-//            case 'A':
+    for (size_t i = CONTEXT_DEPTH; i < strDataset.size(); ++i)
+    {
+        // add 1 to the number of occurrences if a specific symbol is seen
+        switch (strDataset[ i ])
+        {
+            case 'A':
+                hashTable.insert({"mori", 1});
+//                hashTable.insert({context, {1, 0, 0, 0}}); // order: {A, C, T, G}
+
 //                table[ index ][ 0 ] += 1;
 ////                counters[ 0 ] += ALPHA_DENUMERATOR * table[ index ][ 0 ] + ALPHA_NUMERATOR;
 ////                totalCount = (ALPHA_DENUMERATOR * (table[ index ][ 0 ] + table[ index ][ 1 ] +
 ////                                                   table[ index ][ 2 ] + table[ index ][ 3 ])) +
 ////                             (4 * ALPHA_NUMERATOR);
 //////                AESym(3, counters, totalCount, writer);
-//                break;
+                break;
 //
 //            case 'C':
 //                table[ index ][ 1 ] += 1;
@@ -175,7 +169,7 @@ int32_t main (int argc, char *argv[])
 //
 //            default:
 //                break;
-//        }
+        }
 //
 ////        totalCount = (ALPHA_DENUMERATOR * (table[ index ][ 0 ] + table[ index ][ 1 ] +
 ////                                           table[ index ][ 2 ] + table[ index ][ 3 ])) +
@@ -190,7 +184,23 @@ int32_t main (int argc, char *argv[])
 //        // index of the context
 //        indexIterator = std::find(permuteVector.begin(), permuteVector.end(), context);
 //        index = indexIterator - permuteVector.begin();
-//    }
+    }
+    
+    
+    // type definition: unordered_map iterator
+//    typedef std::unordered_map< std::string, std::array< int, 4 > >::iterator umit;
+    typedef std::unordered_map< std::string, int >::iterator umit;
+    
+    for (umit it = hashTable.begin(); it != hashTable.end(); ++it)
+        std::cout << it->first << ":" << it->second << "\n";
+
+
+
+
+
+
+
+
 //
 //    // show the table
 //    for (size_t i = 0; i < ROW; ++i)
