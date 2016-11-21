@@ -72,7 +72,7 @@ int32_t main (int argc, char *argv[])
     for test
 ************************************************************/
     // file opened
-    std::ifstream myFile("b.fa", std::ios::in);
+    std::ifstream myFile("a.fa", std::ios::in);
 
     if (!myFile)
     {
@@ -121,8 +121,8 @@ int32_t main (int argc, char *argv[])
 ////    FILE *writer = fopen("mori", "w");
 //
     
-    // show the dataset
-    std::cout << "Dataset: " << strDataset << std::endl;
+//    // show the dataset
+//    std::cout << "Dataset: " << strDataset << std::endl;
     
     hashTable.insert( {context, {0, 0, 0, 0}} );
     
