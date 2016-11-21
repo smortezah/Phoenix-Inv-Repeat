@@ -65,17 +65,14 @@ int32_t main (int argc, char *argv[])
 {
 //    Functions::commandLineParser(argc, argv);
     
-//    std::unordered_map< std::string, std::array< int, 4> > hashTable;
-    std::unordered_map< std::string, int > hashTable;
-
     
-//    hashTable.insert({"AA", {0, 0, 0, 1}});
+    std::unordered_map< std::string, std::array< int, 4> > hashTable;
 
 /***********************************************************
     for test
 ************************************************************/
     // file opened
-    std::ifstream myFile("d.fa", std::ios::in);
+    std::ifstream myFile("b.fa", std::ios::in);
 
     if (!myFile)
     {
@@ -89,8 +86,8 @@ int32_t main (int argc, char *argv[])
     while (std::getline(myFile, strEachLine))
         strDataset += strEachLine;
 
-    // show the dataset
-    std::cout << "Dataset:\n" << strDataset << std::endl;
+//    // show the dataset
+//    std::cout << "Dataset: " << strDataset << std::endl;
 
     myFile.close();
     // file closed
@@ -123,14 +120,22 @@ int32_t main (int argc, char *argv[])
 ////    int symbol = 0;
 ////    FILE *writer = fopen("mori", "w");
 //
+    
+    // show the dataset
+    std::cout << "Dataset: " << strDataset << std::endl;
+    
+    hashTable.insert( {context, {0, 0, 0, 0}} );
+    
     for (size_t i = CONTEXT_DEPTH; i < strDataset.size(); ++i)
     {
         // add 1 to the number of occurrences if a specific symbol is seen
         switch (strDataset[ i ])
         {
             case 'A':
-                hashTable.insert({"mori", 1});
-//                hashTable.insert({context, {1, 0, 0, 0}}); // order: {A, C, T, G}
+                // incrementing number of "A"s
+                ++(hashTable[ context ])[ 0 ];  // order: {A, C, T, G}
+
+
 
 //                table[ index ][ 0 ] += 1;
 ////                counters[ 0 ] += ALPHA_DENUMERATOR * table[ index ][ 0 ] + ALPHA_NUMERATOR;
@@ -139,36 +144,46 @@ int32_t main (int argc, char *argv[])
 ////                             (4 * ALPHA_NUMERATOR);
 //////                AESym(3, counters, totalCount, writer);
                 break;
+
+            case 'C':
+                // incrementing number of "C"s
+                ++(hashTable[ context ])[ 1 ];  // order: {A, C, T, G}
+
+
+////                table[ index ][ 1 ] += 1;
+//////                counters[ 1 ] += ALPHA_DENUMERATOR * table[ index ][ 1 ] + ALPHA_NUMERATOR;
+//////                totalCount = (ALPHA_DENUMERATOR * (table[ index ][ 0 ] + table[ index ][ 1 ] +
+//////                                                   table[ index ][ 2 ] + table[ index ][ 3 ])) +
+//////                             (4 * ALPHA_NUMERATOR);
+////////                AESym(3, counters, totalCount, writer);
+                break;
+
+            case 'T':
+                // incrementing number of "T"s
+                ++(hashTable[ context ])[ 2 ];  // order: {A, C, T, G}
 //
-//            case 'C':
-//                table[ index ][ 1 ] += 1;
-////                counters[ 1 ] += ALPHA_DENUMERATOR * table[ index ][ 1 ] + ALPHA_NUMERATOR;
-////                totalCount = (ALPHA_DENUMERATOR * (table[ index ][ 0 ] + table[ index ][ 1 ] +
-////                                                   table[ index ][ 2 ] + table[ index ][ 3 ])) +
-////                             (4 * ALPHA_NUMERATOR);
-//////                AESym(3, counters, totalCount, writer);
-//                break;
-//
-//            case 'T':
-//                table[ index ][ 2 ] += 1;
-////                counters[ 2 ] += ALPHA_DENUMERATOR * table[ index ][ 2 ] + ALPHA_NUMERATOR;
-////                totalCount = (ALPHA_DENUMERATOR * (table[ index ][ 0 ] + table[ index ][ 1 ] +
-////                                                   table[ index ][ 2 ] + table[ index ][ 3 ])) +
-////                             (4 * ALPHA_NUMERATOR);
-//////                AESym(3, counters, totalCount, writer);
-//                break;
-//
-//            case 'G':
-//                table[ index ][ 3 ] += 1;
-////                counters[ 3 ] += ALPHA_DENUMERATOR * table[ index ][ 3 ] + ALPHA_NUMERATOR;
-////                totalCount = (ALPHA_DENUMERATOR * (table[ index ][ 0 ] + table[ index ][ 1 ] +
-////                                                   table[ index ][ 2 ] + table[ index ][ 3 ])) +
-////                             (4 * ALPHA_NUMERATOR);
-//////                AESym(3, counters, totalCount, writer);
-//                break;
-//
-//            default:
-//                break;
+////                table[ index ][ 2 ] += 1;
+//////                counters[ 2 ] += ALPHA_DENUMERATOR * table[ index ][ 2 ] + ALPHA_NUMERATOR;
+//////                totalCount = (ALPHA_DENUMERATOR * (table[ index ][ 0 ] + table[ index ][ 1 ] +
+//////                                                   table[ index ][ 2 ] + table[ index ][ 3 ])) +
+//////                             (4 * ALPHA_NUMERATOR);
+////////                AESym(3, counters, totalCount, writer);
+                break;
+
+            case 'G':
+                // incrementing number of "G"s
+                ++(hashTable[ context ])[ 3 ];  // order: {A, C, T, G}
+
+////                table[ index ][ 3 ] += 1;
+//////                counters[ 3 ] += ALPHA_DENUMERATOR * table[ index ][ 3 ] + ALPHA_NUMERATOR;
+//////                totalCount = (ALPHA_DENUMERATOR * (table[ index ][ 0 ] + table[ index ][ 1 ] +
+//////                                                   table[ index ][ 2 ] + table[ index ][ 3 ])) +
+//////                             (4 * ALPHA_NUMERATOR);
+////////                AESym(3, counters, totalCount, writer);
+                break;
+
+            default:
+                break;
         }
 //
 ////        totalCount = (ALPHA_DENUMERATOR * (table[ index ][ 0 ] + table[ index ][ 1 ] +
@@ -177,9 +192,9 @@ int32_t main (int argc, char *argv[])
 ////
 ////        memset(counters, 0, sizeof(counters[ 0 ]) * 4);
 //
-//
-//        // slides in the dataset
-//        context = strDataset.substr(i - CONTEXT_DEPTH + 1, CONTEXT_DEPTH);
+
+        // slides in the dataset
+        context = strDataset.substr(i - CONTEXT_DEPTH + 1, CONTEXT_DEPTH);
 //
 //        // index of the context
 //        indexIterator = std::find(permuteVector.begin(), permuteVector.end(), context);
@@ -188,11 +203,19 @@ int32_t main (int argc, char *argv[])
     
     
     // type definition: unordered_map iterator
-//    typedef std::unordered_map< std::string, std::array< int, 4 > >::iterator umit;
-    typedef std::unordered_map< std::string, int >::iterator umit;
+    typedef std::unordered_map< std::string, std::array< int, 4 > >::iterator umit;
+//    typedef std::unordered_map< std::string, int >::iterator umit;
     
+    std::cout << "\t" << "A\tC\tT\tG\n"
+              << "-----------------------------------\n";
     for (umit it = hashTable.begin(); it != hashTable.end(); ++it)
-        std::cout << it->first << ":" << it->second << "\n";
+    {
+        std::cout << it->first << "\t";
+//        std::cout << it->second << "\t";
+        for (int i : it->second)
+            std::cout << i << "\t";
+        std::cout << "\n";
+    }
 
 
 
