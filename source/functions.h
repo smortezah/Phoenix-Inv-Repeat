@@ -12,6 +12,7 @@ public:
 
 private:
     static std::string fileRead (std::string); // reads a file
+    int  a;
 };
 
 

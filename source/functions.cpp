@@ -18,6 +18,8 @@ Functions::Functions () {}
 ************************************************************/
 int32_t Functions::commandLineParser (int argc, char **argv)
 {
+    Messages message;   // for showing messages
+    
     // using these flags, if both short and long arguments
     // are entered, just one of them is considered
     static int h_flag;  // option 'h' (help)
@@ -125,7 +127,7 @@ int32_t Functions::commandLineParser (int argc, char **argv)
         }
     }
     
-    if (h_flag) Messages::help();
+    if (h_flag) message.help();//Messages::help();
     if (V_flag) Messages::version();
     if (v_flag) Messages::verbose();
     if (i_flag) Messages::inverted_repeat();
