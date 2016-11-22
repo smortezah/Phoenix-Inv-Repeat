@@ -2,6 +2,7 @@
 #include "def.h"
 
 #include <iostream>
+#include <fstream>
 
 
 /***********************************************************
@@ -51,7 +52,7 @@ void Messages::help (void)
 /***********************************************************
     shows version number
 ************************************************************/
-void Messages::version (void)
+void Messages::version ()
 {
     std::cout
       <<"\n"
@@ -94,4 +95,62 @@ void Messages::number (int num)
 void Messages::fnumber (float num)
 {
     std::cout << "float number mode (d=" << num << ")\n"; // for test
+}
+
+
+/***********************************************************
+    reads target file
+************************************************************/
+void Messages::targetRead (std::string fileName)
+{
+    // file opened
+    std::ifstream targetFile(fileName, std::ios::in);
+
+    if (!targetFile)
+    {
+        std::cerr << "Option 't': target file ("
+                  << fileName << ") could not be opened.\n";
+        return;
+    }
+
+    std::string strEachLine;
+    std::string strDataset;
+    
+    while (std::getline(targetFile, strEachLine))
+        strDataset += strEachLine;
+
+    // show the dataset
+    std::cout << "Dataset: " << strDataset << std::endl;
+    
+    targetFile.close();
+    // file closed
+}
+
+
+/***********************************************************
+    reads reference file
+************************************************************/
+void Messages::referenceRead (std::string fileName)
+{
+    // file opened
+    std::ifstream targetFile(fileName, std::ios::in);
+    
+    if (!targetFile)
+    {
+        std::cerr << "Option 't': target file ("
+                  << fileName << ") could not be opened.\n";
+        return;
+    }
+    
+    std::string strEachLine;
+    std::string strDataset;
+    
+    while (std::getline(targetFile, strEachLine))
+        strDataset += strEachLine;
+    
+    // show the dataset
+    std::cout << "Dataset: " << strDataset << std::endl;
+    
+    targetFile.close();
+    // file closed
 }

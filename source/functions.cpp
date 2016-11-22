@@ -24,8 +24,6 @@ int32_t Functions::commandLineParser (int argc, char **argv)
     static int v_flag;  // option 'v' (verbose)
     static int i_flag;  // option 'i' (inverted_repeat)
     
-    static int t_flag;                  // argument 't'
-
     int c;              // deal with getopt_long()
     int option_index;
 
@@ -39,9 +37,8 @@ int32_t Functions::commandLineParser (int argc, char **argv)
                     {"inverted_repeat", no_argument, &i_flag, (int) 'i'},   // inverted_repeat
                     {"number",    required_argument,       0,       'n'},   // number (integer)
                     {"fnumber",   required_argument,       0,       'd'},   // number (float)
-//                    {"target",      required_argument, 0,       't'}, // target file
-//                    {"reference",   required_argument, 0,       'r'}, // reference file
-                    {"target", required_argument, &t_flag, (int)'t'},       // target file
+                    {"target",    required_argument,       0,       't'},   // target file
+                    {"reference", required_argument,       0,       'r'},   // reference file
                     {0, 0, 0, 0}
             };
     
@@ -107,44 +104,11 @@ int32_t Functions::commandLineParser (int argc, char **argv)
                 break;
     
             case 't':   // needs target file name
-//                try
-//                {
-////                    std::cout << (std::string) optarg << "\n";//for test
-//
-                t_flag=1;
-//                std::string q=(std::string) optarg;
-//                    std::ifstream targetFile(q, std::ios::in);
-    
-//                    if (!targetFile)
-//                    {
-//                        std::cerr << "File could not be opened.\n";
-//                        return 1;
-//                    }
-//
-//                    std::string strEachLine;
-//                    std::string strDataset;
-//
-//                    while (std::getline(targetFile, strEachLine))
-//                        strDataset += strEachLine;
-//
-//                    targetFile.close();
-//                    // file closed
-//                }
-//                catch (const std::invalid_argument& ia)
-//                {
-//                    std::cerr << "Option 't' ('target') has an invalid argument.\n";
-//                }
+                Messages::targetRead((std::string) optarg);
                 break;
     
             case 'r':   // needs reference file name
-                try
-                {
-                    std::cout << (std::string) optarg << "\n";//for test
-                }
-                catch (const std::invalid_argument& ia)
-                {
-                    std::cerr << "Option 'r' ('reference') has an invalid argument.\n";
-                }
+                Messages::referenceRead((std::string) optarg);
                 break;
                 
             case ':':   /* missing option argument */
