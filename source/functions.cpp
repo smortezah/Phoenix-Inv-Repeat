@@ -105,11 +105,13 @@ int32_t Functions::commandLineParser (int argc, char **argv)
                 break;
     
             case 't':   // needs target file name
-                Functions::fileRead( (std::string) optarg );
+                if (Functions::fileRead( (std::string) optarg) != "")
+                    std::cout << "Dataset: " << Functions::fileRead((std::string) optarg) << "\n";
                 break;
     
             case 'r':   // needs reference file name
-                Functions::fileRead( (std::string) optarg );
+                if (Functions::fileRead( (std::string) optarg) != "")
+                    std::cout << "Dataset: " << Functions::fileRead((std::string) optarg) << "\n";
                 break;
                 
             case ':':   /* missing option argument */
@@ -127,7 +129,7 @@ int32_t Functions::commandLineParser (int argc, char **argv)
     if (V_flag) Messages::version();
     if (v_flag) Messages::verbose();
     if (i_flag) Messages::inverted_repeat();
-    
+
     /* Print any remaining command line arguments (not options). */
     if (optind < argc)
     {
@@ -142,7 +144,7 @@ int32_t Functions::commandLineParser (int argc, char **argv)
 /***********************************************************
     reads a file
 ************************************************************/
-void Functions::fileRead (std::string fileName)
+std::string Functions::fileRead (std::string fileName)
 {
     // open file
     std::ifstream myFile(fileName, std::ios::in);
@@ -150,7 +152,7 @@ void Functions::fileRead (std::string fileName)
     if (!myFile)
     {
         std::cerr << "File \"" << fileName << "\" could not be opened.\n";
-        return;
+        return "";
     }
     
     std::string strEachLine;
@@ -161,6 +163,8 @@ void Functions::fileRead (std::string fileName)
     
     myFile.close();     // close file
     
-    // show the dataset
-    std::cout << "Dataset: " << strDataset << std::endl;
+//    // show the dataset
+//    std::cout << "Dataset: " << strDataset << std::endl;
+    
+    return strDataset;
 }

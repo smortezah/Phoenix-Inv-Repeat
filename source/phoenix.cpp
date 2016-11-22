@@ -49,8 +49,8 @@ int32_t main (int argc, char *argv[])
     Functions::commandLineParser(argc, argv);
 
 
-    std::unordered_map< std::string, std::array< int, 4> > hashTable;
-
+//    std::unordered_map< std::string, std::array< int, 4> > hashTable;
+//
 ///***********************************************************
 //    for test
 //************************************************************/

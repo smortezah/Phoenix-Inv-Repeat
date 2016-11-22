@@ -11,7 +11,7 @@ public:
     static int32_t commandLineParser (int, char**); // command line parser
 
 private:
-    static void fileRead (std::string); // reads a file
+    static std::string fileRead (std::string); // reads a file
 };
 
 
