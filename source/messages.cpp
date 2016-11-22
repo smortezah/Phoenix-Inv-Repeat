@@ -16,7 +16,7 @@ Messages::Messages () {}
 void Messages::help (void)
 {
     std::cout
-            << "Synopsis:\n"
+            << "\nSynopsis:\n"
             << "    phoenix [OPTION]... -t [TARGET] -r [REFERENCE]\n"
             << "\n"
             << "Options:\n"
@@ -44,10 +44,7 @@ void Messages::help (void)
             << "         target file\n"
             << "\n"
             << "    -r [REFERENCE],  --reference [REFERENCE]\n"
-            << "         reference file\n"
-            << "\n"
-            << "    [FILE2]\n"
-            << "         target file\n";
+            << "         reference file\n\n";
 }
 
 
@@ -79,4 +76,22 @@ void Messages::verbose (void)
 void Messages::inverted_repeat (void)
 {
     std::cout << "inverted repeat mode.\n"; // for test
+}
+
+
+/***********************************************************
+    shows integer number mode
+************************************************************/
+void Messages::number (int num)
+{
+    std::cout << "integer number mode (n=" << num << ")\n"; // for test
+}
+
+
+/***********************************************************
+    shows float number mode
+************************************************************/
+void Messages::fnumber (float num)
+{
+    std::cout << "float number mode (d=" << num << ")\n"; // for test
 }

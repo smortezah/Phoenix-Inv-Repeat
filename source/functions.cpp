@@ -18,11 +18,10 @@ Functions::Functions () {}
 int32_t Functions::commandLineParser (int argc, char **argv)
 {
     // flags for both short and long arguments
-    static int V_flag;                  // argument 'V' (version)
-    static int h_flag;                  // argument 'h' (help)
-    static int v_flag;                  // argument 'v' (verbose)
-    static int i_flag;                  // argument 'i' (inverted_repeat)
-    
+    static int h_flag;  // option 'h' (help)
+    static int V_flag;  // option 'V' (version)
+    static int v_flag;  // option 'v' (verbose)
+    static int i_flag;  // option 'i' (inverted_repeat)
     
     static int t_flag;                  // argument 't'
 
@@ -33,15 +32,15 @@ int32_t Functions::commandLineParser (int argc, char **argv)
 
     static struct option long_options[] =
             {
-                    {"help",            no_argument, &h_flag, (int) 'h'}, // help
-                    {"version",         no_argument, &V_flag, (int) 'V'}, // version
-                    {"verbose",         no_argument, &v_flag, (int) 'v'}, // verbose
-                    {"inverted_repeat", no_argument, &i_flag, (int) 'i'}, // inverted_repeat
-                    {"number",          required_argument, 0,       'n'}, // number (integer)
-                    {"fnumber",         required_argument, 0,       'd'}, // number (float)
+                    {"help",            no_argument, &h_flag, (int) 'h'},   // help
+                    {"version",         no_argument, &V_flag, (int) 'V'},   // version
+                    {"verbose",         no_argument, &v_flag, (int) 'v'},   // verbose
+                    {"inverted_repeat", no_argument, &i_flag, (int) 'i'},   // inverted_repeat
+                    {"number",    required_argument,       0,       'n'},   // number (integer)
+                    {"fnumber",   required_argument,       0,       'd'},   // number (float)
 //                    {"target",      required_argument, 0,       't'}, // target file
 //                    {"reference",   required_argument, 0,       'r'}, // reference file
-                    {"target",          required_argument, &t_flag,(int)'t'}, // target file
+                    {"target", required_argument, &t_flag, (int)'t'},       // target file
                     {0, 0, 0, 0}
             };
 
@@ -87,18 +86,18 @@ int32_t Functions::commandLineParser (int argc, char **argv)
             case 'n':   // needs an integer argument
                 try
                 {
-                    std::cout << std::stoi((std::string) optarg) << "\n";//for test
+                    Messages::number( std::stoi((std::string) optarg) );    //for test
                 }
                 catch (const std::invalid_argument& ia)
                 {
-                    std::cerr << "Option 'n' has an invalid argument.\n";
+                    std::cerr << "Option 'n' ('number') has an invalid argument.\n";
                 }
                 break;
     
             case 'd':   // needs a float argument
                 try
                 {
-                    std::cout << std::stof((std::string) optarg) << "\n";//for test
+                    Messages::fnumber( std::stof((std::string) optarg) );   //for test
                 }
                 catch (const std::invalid_argument& ia)
                 {
@@ -162,6 +161,7 @@ int32_t Functions::commandLineParser (int argc, char **argv)
     if (V_flag) Messages::version();
     if (v_flag) Messages::verbose();
     if (i_flag) Messages::inverted_repeat();
+//    if (n_flag) Messages::number( nArg );
     
     /* Print any remaining command line arguments (not options). */
     if (optind < argc)
