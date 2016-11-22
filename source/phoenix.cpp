@@ -46,7 +46,8 @@ const uint8_t CONTEXT_DEPTH = 2;
 
 int32_t main (int argc, char *argv[])
 {
-    Functions::commandLineParser(argc, argv);
+    Functions function; // for having access to functions (object 'function' on memory stack)
+    function.commandLineParser(argc, argv);
 
 
 //    std::unordered_map< std::string, std::array< int, 4> > hashTable;

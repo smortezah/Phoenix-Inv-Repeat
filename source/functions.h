@@ -7,12 +7,11 @@
 class Functions
 {
 public:
-    Functions ();                                   // constructor
-    static int32_t commandLineParser (int, char**); // command line parser
+    Functions ();                               // constructor
+    int32_t commandLineParser (int, char**);    // parse command line
 
 private:
-    static std::string fileRead (std::string); // reads a file
-    int  a;
+    std::string fileRead (std::string);         // read a file
 };
 
 

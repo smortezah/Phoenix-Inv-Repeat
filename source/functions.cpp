@@ -87,7 +87,7 @@ int32_t Functions::commandLineParser (int argc, char **argv)
             case 'n':   // needs an integer argument
                 try
                 {
-                    Messages::number( std::stoi((std::string) optarg) );    //for test
+                    message.number(std::stoi((std::string) optarg));    //for test
                 }
                 catch (const std::invalid_argument& ia)
                 {
@@ -98,7 +98,7 @@ int32_t Functions::commandLineParser (int argc, char **argv)
             case 'd':   // needs a float argument
                 try
                 {
-                    Messages::fnumber( std::stof((std::string) optarg) );   //for test
+                    message.fnumber( std::stof((std::string) optarg) );   //for test
                 }
                 catch (const std::invalid_argument& ia)
                 {
@@ -127,10 +127,10 @@ int32_t Functions::commandLineParser (int argc, char **argv)
         }
     }
     
-    if (h_flag) message.help();//Messages::help();
-    if (V_flag) Messages::version();
-    if (v_flag) Messages::verbose();
-    if (i_flag) Messages::inverted_repeat();
+    if (h_flag) message.help();
+    if (V_flag) message.version();
+    if (v_flag) message.verbose();
+    if (i_flag) message.inverted_repeat();
 
     /* Print any remaining command line arguments (not options). */
     if (optind < argc)
