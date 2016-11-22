@@ -1,5 +1,6 @@
 #include "functions.h"
 #include "messages.h"
+#include "hash.h"
 
 #include <iostream>
 #include <getopt.h>     // for command line parsing
@@ -18,7 +19,9 @@ Functions::Functions () {}
 ************************************************************/
 int32_t Functions::commandLineParser (int argc, char **argv)
 {
-    Messages message;   // for showing messages
+    Messages messageObj;    // object for showing messages
+    Hash hashObj;           // object for hash table
+    
     
     // using these flags, if both short and long arguments
     // are entered, just one of them is considered
@@ -87,7 +90,7 @@ int32_t Functions::commandLineParser (int argc, char **argv)
             case 'n':   // needs an integer argument
                 try
                 {
-                    message.number(std::stoi((std::string) optarg));    //for test
+                    messageObj.number(std::stoi((std::string) optarg));    //for test
                 }
                 catch (const std::invalid_argument& ia)
                 {
@@ -98,7 +101,7 @@ int32_t Functions::commandLineParser (int argc, char **argv)
             case 'd':   // needs a float argument
                 try
                 {
-                    message.fnumber( std::stof((std::string) optarg) );   //for test
+                    messageObj.fnumber( std::stof((std::string) optarg) );   //for test
                 }
                 catch (const std::invalid_argument& ia)
                 {
@@ -108,7 +111,8 @@ int32_t Functions::commandLineParser (int argc, char **argv)
     
             case 't':   // needs target file name
                 if (Functions::fileRead( (std::string) optarg) != "")
-                    std::cout << "Dataset: " << Functions::fileRead((std::string) optarg) << "\n";
+//                    std::cout << "Dataset: " << Functions::fileRead((std::string) optarg) << "\n";
+                    hashObj.hashTableBuild( Functions::fileRead( (std::string) optarg) );
                 break;
     
             case 'r':   // needs reference file name
@@ -127,10 +131,10 @@ int32_t Functions::commandLineParser (int argc, char **argv)
         }
     }
     
-    if (h_flag) message.help();
-    if (V_flag) message.version();
-    if (v_flag) message.verbose();
-    if (i_flag) message.inverted_repeat();
+    if (h_flag) messageObj.help();
+    if (V_flag) messageObj.version();
+    if (v_flag) messageObj.verbose();
+    if (i_flag) messageObj.inverted_repeat();
 
     /* Print any remaining command line arguments (not options). */
     if (optind < argc)
