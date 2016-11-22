@@ -2,8 +2,16 @@
 
 #include <unordered_map>
 #include <iostream>
+//#include <array>
+//#include <vector>
+//#include <algorithm>
+//#include <cmath>
+//#include <iterator>
 
-//const uint8_t CONTEXT_DEPTH = 2;
+
+const uint8_t CONTEXT_DEPTH = 2;
+
+
 
 /***********************************************************
     constructor
@@ -16,14 +24,14 @@ Hash::Hash () {}
 ************************************************************/
 void Hash::hashTableBuild (std::string strDataset)
 {
-    std::cout << "Dataset: " << strDataset << "\n";
+//    std::cout << "Dataset: " << strDataset << "\n";
 
 
-//    std::unordered_map< std::string, std::array< int, 4> > hashTable;
-//
-//    // context, that slides in the dataset
-//    std::string context(CONTEXT_DEPTH, 'A');
-//
+    std::unordered_map< std::string, std::array< int, 4> > hashTable;
+
+    // context, that slides in the dataset
+    std::string context(CONTEXT_DEPTH, 'A');
+
 //    // add "AA..." (with the size of CONTEXT_DEPTH) to the beginning of the dataset
 //    strDataset = context + strDataset;
 //
@@ -36,7 +44,7 @@ void Hash::hashTableBuild (std::string strDataset)
 //
 //
 //    hashTable.insert( {context, {0, 0, 0, 0}} );
-//
+
 //    // fill hash table by number of occurrences of symbols A, C, T, G
 //    for (size_t i = CONTEXT_DEPTH; i < strDataset.size(); ++i)
 //    {
