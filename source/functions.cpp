@@ -17,7 +17,8 @@ Functions::Functions () {}
 ************************************************************/
 int32_t Functions::commandLineParser (int argc, char **argv)
 {
-    // flags for both short and long arguments
+    // using these flags, if both short and long arguments
+    // are entered, just one of them is considered
     static int h_flag;  // option 'h' (help)
     static int V_flag;  // option 'V' (version)
     static int v_flag;  // option 'v' (verbose)
