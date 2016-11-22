@@ -52,7 +52,7 @@ void Messages::help (void)
 /***********************************************************
     shows version number
 ************************************************************/
-void Messages::version ()
+void Messages::version (void)
 {
     std::cout
       <<"\n"
