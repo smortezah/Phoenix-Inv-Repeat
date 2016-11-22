@@ -24,6 +24,8 @@ int32_t Functions::commandLineParser (int argc, char **argv)
     static int v_flag;  // option 'v' (verbose)
     static int i_flag;  // option 'i' (inverted_repeat)
     
+    static int n_flag;  // option 'i' (inverted_repeat)
+    
     static int t_flag;                  // argument 't'
 
     int c;              // deal with getopt_long()
@@ -37,7 +39,8 @@ int32_t Functions::commandLineParser (int argc, char **argv)
                     {"version",         no_argument, &V_flag, (int) 'V'},   // version
                     {"verbose",         no_argument, &v_flag, (int) 'v'},   // verbose
                     {"inverted_repeat", no_argument, &i_flag, (int) 'i'},   // inverted_repeat
-                    {"number",    required_argument,       0,       'n'},   // number (integer)
+                    {"number",    required_argument,      &n_flag, (int)      'n'},   // number (integer)
+//                    {"number",    required_argument,       0,       'n'},   // number (integer)
                     {"fnumber",   required_argument,       0,       'd'},   // number (float)
 //                    {"target",      required_argument, 0,       't'}, // target file
 //                    {"reference",   required_argument, 0,       'r'}, // reference file
@@ -87,7 +90,12 @@ int32_t Functions::commandLineParser (int argc, char **argv)
             case 'n':   // needs an integer argument
                 try
                 {
-                    Messages::number( std::stoi((std::string) optarg) );    //for test
+                    if ( !std::stoi((std::string) optarg) );
+                    else
+                    {
+                        n_flag = 1;
+                        Messages::number(std::stoi((std::string) optarg));    //for test
+                    }
                 }
                 catch (const std::invalid_argument& ia)
                 {
@@ -102,7 +110,7 @@ int32_t Functions::commandLineParser (int argc, char **argv)
                 }
                 catch (const std::invalid_argument& ia)
                 {
-                    std::cerr << "Option 'd' has an invalid argument.\n";
+                    std::cerr << "Option 'd' ('fnumber') has an invalid argument.\n";
                 }
                 break;
     
@@ -132,7 +140,7 @@ int32_t Functions::commandLineParser (int argc, char **argv)
 //                }
 //                catch (const std::invalid_argument& ia)
 //                {
-//                    std::cerr << "Option 't' has an invalid argument.\n";
+//                    std::cerr << "Option 't' ('target') has an invalid argument.\n";
 //                }
                 break;
     
@@ -143,7 +151,7 @@ int32_t Functions::commandLineParser (int argc, char **argv)
                 }
                 catch (const std::invalid_argument& ia)
                 {
-                    std::cerr << "Option 'r' has an invalid argument.\n";
+                    std::cerr << "Option 'r' ('reference') has an invalid argument.\n";
                 }
                 break;
                 
@@ -162,7 +170,7 @@ int32_t Functions::commandLineParser (int argc, char **argv)
     if (V_flag) Messages::version();
     if (v_flag) Messages::verbose();
     if (i_flag) Messages::inverted_repeat();
-//    if (n_flag) Messages::number( nArg );
+    if (n_flag) Messages::number( 123 );
     
     /* Print any remaining command line arguments (not options). */
     if (optind < argc)
