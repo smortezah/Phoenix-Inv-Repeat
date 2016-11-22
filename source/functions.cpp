@@ -4,6 +4,7 @@
 #include <iostream>
 #include <getopt.h>     // for command line parsing
 #include <string>
+#include <fstream>
 
 
 /***********************************************************
@@ -104,11 +105,11 @@ int32_t Functions::commandLineParser (int argc, char **argv)
                 break;
     
             case 't':   // needs target file name
-                Messages::targetRead((std::string) optarg);
+                Functions::fileRead( (std::string) optarg );
                 break;
     
             case 'r':   // needs reference file name
-                Messages::referenceRead((std::string) optarg);
+                Functions::fileRead( (std::string) optarg );
                 break;
                 
             case ':':   /* missing option argument */
@@ -137,3 +138,29 @@ int32_t Functions::commandLineParser (int argc, char **argv)
     }
 }
 
+
+/***********************************************************
+    reads a file
+************************************************************/
+void Functions::fileRead (std::string fileName)
+{
+    // open file
+    std::ifstream myFile(fileName, std::ios::in);
+    
+    if (!myFile)
+    {
+        std::cerr << "File \"" << fileName << "\" could not be opened.\n";
+        return;
+    }
+    
+    std::string strEachLine;
+    std::string strDataset;
+    
+    while (std::getline(myFile, strEachLine))
+        strDataset += strEachLine;
+    
+    myFile.close();     // close file
+    
+    // show the dataset
+    std::cout << "Dataset: " << strDataset << std::endl;
+}
