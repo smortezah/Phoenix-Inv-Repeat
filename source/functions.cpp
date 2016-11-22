@@ -111,13 +111,15 @@ int32_t Functions::commandLineParser (int argc, char **argv)
     
             case 't':   // needs target file name
                 if (Functions::fileRead( (std::string) optarg) != "")
-//                    std::cout << "Dataset: " << Functions::fileRead((std::string) optarg) << "\n";
-                    hashObj.hashTableBuild( Functions::fileRead( (std::string) optarg) );
+                {
+                    mori hashTableForPrint = hashObj.hashTableBuild( Functions::fileRead((std::string) optarg) );
+                    hashObj.hashTablePrint( hashTableForPrint );
+                }
                 break;
     
             case 'r':   // needs reference file name
                 if (Functions::fileRead( (std::string) optarg) != "")
-                    std::cout << "Dataset: " << Functions::fileRead((std::string) optarg) << "\n";
+                    hashObj.hashTableBuild( Functions::fileRead( (std::string) optarg) );
                 break;
                 
             case ':':   /* missing option argument */

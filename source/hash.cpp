@@ -31,7 +31,7 @@ Hash::Hash () {}
 /***********************************************************
     build hash table
 ************************************************************/
-void Hash::hashTableBuild (std::string strDataset)
+std::unordered_map< std::string, std::array< int, 4> > Hash::hashTableBuild (std::string strDataset)
 {
     std::unordered_map< std::string, std::array< int, 4> > hashTable;
 
@@ -118,14 +118,19 @@ void Hash::hashTableBuild (std::string strDataset)
         context = strDataset.substr(i - CONTEXT_DEPTH + 1, CONTEXT_DEPTH);
     }
     
-    /* show hash table */
-    // type definition: unordered_map iterator
-    typedef std::unordered_map< std::string, std::array< int, 4 > >::iterator umit;
+    return hashTable;
+}
 
+
+/***********************************************************
+    print hash table
+************************************************************/
+void Hash::hashTablePrint (mori hashTable)
+{
     int ind = 1;  // for test
     std::cout << "\t\tA\tC\tT\tG\n"
               << "        --------------------------------------\n";
-    for (umit it = hashTable.begin(); it != hashTable.end(); ++it)
+    for (mori::iterator it = hashTable.begin(); it != hashTable.end(); ++it)
     {
         std::cout << ind << ":\t" << it->first << "\t";
         for (int i : it->second)    std::cout << i << "\t";
