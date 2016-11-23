@@ -119,7 +119,7 @@ int32_t Functions::commandLineParser (int argc, char **argv)
                 {
                     // build a hash table for the input file
                     hashTable_t hTable = hashObj.hashTableBuild( Functions::fileRead((std::string) optarg) );
-                    hashObj.hashTablePrint( hTable );   // print the built hash table
+                    hashObj.hashTablePrint( hTable );   // print hash table
                 }
                 break;
     
@@ -128,7 +128,7 @@ int32_t Functions::commandLineParser (int argc, char **argv)
                 {
                     // build a hash table for the input file
                     hashTable_t hTable = hashObj.hashTableBuild( Functions::fileRead((std::string) optarg) );
-                    hashObj.hashTablePrint( hTable );   // print the built hash table
+                    hashObj.hashTablePrint( hTable );   // print hash table
                 }
                 break;
                 
