@@ -70,7 +70,7 @@ hashTable_t Hash::hashTableBuild (std::string strDataset, bool isInvertedRepeat)
                     std::replace(invRepBegin, invRepEnd, 'C', 'G'); // replace all 'C' to 'G'
                     std::reverse(invRepBegin, invRepEnd);
     
-//                    switch (invRepContext.substr(0,invRepContext.size()))
+//                    switch ( invertedRepeat.substr(0, invertedRepeat.size()-1) )
 //                    {
 //                        case :
 //                    }
