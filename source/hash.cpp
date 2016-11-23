@@ -47,13 +47,13 @@ hashTable_t Hash::hashTableBuild (std::string strDataset)
 
     hTable.insert( {context, {0, 0, 0, 0}} );   // initialize hash table with 0'z
 
-    // fill hash table by number of occurrences of symbols A, C, T, G
+    // fill hash table by number of occurrences of symbols A, C, T, G, N
     for (size_t i = CONTEXT_DEPTH; i < strDataset.size(); ++i)
     {
         switch (strDataset[ i ])
         {
             case 'A':
-                ++(hTable[ context ])[ 0 ];  // increment number of 'A's. order: {A, C, T, G}
+                ++(hTable[ context ])[ 0 ];  // increment number of 'A's. order: {A, C, T, G, N}
 
 
 //                counters[ 0 ] += ALPHA_DENUMERATOR * table[ index ][ 0 ] + ALPHA_NUMERATOR;
@@ -64,7 +64,7 @@ hashTable_t Hash::hashTableBuild (std::string strDataset)
                 break;
 
             case 'C':
-                ++(hTable[ context ])[ 1 ];  // increment number of 'C's. order: {A, C, T, G}
+                ++(hTable[ context ])[ 1 ];  // increment number of 'C's. order: {A, C, T, G, N}
 
 
 //                counters[ 1 ] += ALPHA_DENUMERATOR * table[ index ][ 1 ] + ALPHA_NUMERATOR;
@@ -75,7 +75,7 @@ hashTable_t Hash::hashTableBuild (std::string strDataset)
                 break;
 
             case 'T':
-                ++(hTable[ context ])[ 2 ];  // increment number of 'T's. order: {A, C, T, G}
+                ++(hTable[ context ])[ 2 ];  // increment number of 'T's. order: {A, C, T, G, N}
 
 
 //                counters[ 2 ] += ALPHA_DENUMERATOR * table[ index ][ 2 ] + ALPHA_NUMERATOR;
@@ -86,7 +86,18 @@ hashTable_t Hash::hashTableBuild (std::string strDataset)
                 break;
 
             case 'G':
-                ++(hTable[ context ])[ 3 ];  // increment number of 'G's. order: {A, C, T, G}
+                ++(hTable[ context ])[ 3 ];  // increment number of 'G's. order: {A, C, T, G, N}
+
+
+//                counters[ 3 ] += ALPHA_DENUMERATOR * table[ index ][ 3 ] + ALPHA_NUMERATOR;
+//                totalCount = (ALPHA_DENUMERATOR * (table[ index ][ 0 ] + table[ index ][ 1 ] +
+//                                                   table[ index ][ 2 ] + table[ index ][ 3 ])) +
+//                             (4 * ALPHA_NUMERATOR);
+////                AESym(3, counters, totalCount, writer);
+                break;
+    
+            case 'N':
+                ++(hTable[ context ])[ 4 ];  // increment number of 'N's. order: {A, C, T, G, N}
 
 
 //                counters[ 3 ] += ALPHA_DENUMERATOR * table[ index ][ 3 ] + ALPHA_NUMERATOR;
@@ -119,8 +130,8 @@ hashTable_t Hash::hashTableBuild (std::string strDataset)
 void Hash::hashTablePrint (hashTable_t hTable)
 {
     int ind = 1;  // for test
-    std::cout << "\t\tA\tC\tT\tG\n"
-              << "\t--------------------------------------\n";
+    std::cout << "\t\tA\tC\tT\tG\tN\n"
+              << "\t-------------------------------------------\n";
     for (hashTable_t::iterator it = hTable.begin(); it != hTable.end(); ++it)
     {
         std::cout << ind << ":\t" << it->first << "\t";

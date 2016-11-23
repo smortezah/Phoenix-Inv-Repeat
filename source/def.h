@@ -12,7 +12,7 @@
 /***********************************************************
     constants
 ************************************************************/
-#define ALPHABET_SIZE   4     // alphabet {A, C, T, G}
+#define ALPHABET_SIZE   5     // alphabet {A, C, T, G, N}
 #define CONTEXT_DEPTH   2
 
 
