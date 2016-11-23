@@ -27,7 +27,7 @@ Hash::Hash () {}
 /***********************************************************
     build hash table
 ************************************************************/
-hashTable_t Hash::hashTableBuild (std::string strDataset)
+hashTable_t Hash::hashTableBuild (std::string strDataset, bool isInvertedRepeat)
 {
     hashTable_t hTable;
 
@@ -54,7 +54,11 @@ hashTable_t Hash::hashTableBuild (std::string strDataset)
         {
             case 'A':
                 ++(hTable[ context ])[ 0 ];  // increment number of 'A's. order: {A, C, T, G, N}
-
+        
+                if (isInvertedRepeat)
+                {
+//                    std::cout << "invert";
+                }
 
 //                counters[ 0 ] += ALPHA_DENUMERATOR * table[ index ][ 0 ] + ALPHA_NUMERATOR;
 //                totalCount = (ALPHA_DENUMERATOR * (table[ index ][ 0 ] + table[ index ][ 1 ] +

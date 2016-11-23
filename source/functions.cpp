@@ -23,7 +23,6 @@ int32_t Functions::commandLineParser (int argc, char **argv)
     Messages messageObj;    // object for showing messages
     Hash hashObj;           // object of hash table
     
-    
     // using these flags, if both short and long arguments
     // are entered, just one of them is considered
     static int h_flag;  // option 'h' (help)
@@ -31,8 +30,13 @@ int32_t Functions::commandLineParser (int argc, char **argv)
     static int v_flag;  // option 'v' (verbose)
     static int i_flag;  // option 'i' (inverted_repeat)
     
+    bool t_flag = false;                // target file name entered
+    bool r_flag = false;                // reference file name entered
+    std::string targetFileName = "";    // argument of option 't'
+    std::string referenceFileName = ""; // argument of option 'r'
+    
     int c;              // deal with getopt_long()
-    int option_index;
+    int option_index;   // option index stored by getopt_long()
 
     opterr = 0;         // force getopt_long() to remain silent when it finds a problem
 
@@ -89,7 +93,6 @@ int32_t Functions::commandLineParser (int argc, char **argv)
     
             case 'i':   // inverted_repeat mode
                 i_flag = 1;
-                messageObj.inverted_repeat();
                 break;
 
             case 'n':   // needs an integer argument
@@ -115,21 +118,13 @@ int32_t Functions::commandLineParser (int argc, char **argv)
                 break;
     
             case 't':   // needs target file name
-                if (Functions::fileRead((std::string) optarg) != "")
-                {
-                    // build a hash table for the input file
-                    hashTable_t hTable = hashObj.hashTableBuild( Functions::fileRead((std::string) optarg) );
-                    hashObj.hashTablePrint( hTable );   // print hash table
-                }
+                t_flag = true;
+                targetFileName = (std::string) optarg; // keep argument = target file name
                 break;
     
             case 'r':   // needs reference file name
-                if (Functions::fileRead((std::string) optarg) != "")
-                {
-                    // build a hash table for the input file
-                    hashTable_t hTable = hashObj.hashTableBuild( Functions::fileRead((std::string) optarg) );
-                    hashObj.hashTablePrint( hTable );   // print hash table
-                }
+                r_flag = true;
+                referenceFileName = (std::string) optarg; // keep argument = reference file name
                 break;
                 
             case ':':   /* missing option argument */
@@ -142,7 +137,30 @@ int32_t Functions::commandLineParser (int argc, char **argv)
                 break;
         }
     }
-
+    
+    
+    if (t_flag)
+    {
+        std::string targetFile = Functions::fileRead(targetFileName);
+        if (targetFile != "")
+        {
+            // build a hash table for the input file, considering inverted repeat mode
+            hashTable_t hTable = hashObj.hashTableBuild(targetFile, (bool) i_flag);
+            hashObj.hashTablePrint(hTable);   // print hash table
+        }
+    }
+    
+    if (r_flag)
+    {
+        std::string referenceFile = Functions::fileRead(referenceFileName);
+        if (referenceFile != "")
+        {
+            // build a hash table for the input file, considering inverted repeat mode
+            hashTable_t hTable = hashObj.hashTableBuild(referenceFile, (bool) i_flag);
+            hashObj.hashTablePrint(hTable);   // print hash table
+        }
+    }
+    
     /* Print any remaining command line arguments (not options). */
     if (optind < argc)
     {

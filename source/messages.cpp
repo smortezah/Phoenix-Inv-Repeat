@@ -82,15 +82,6 @@ void Messages::verbose (void)
 
 
 /***********************************************************
-    show inverted_repeat mode
-************************************************************/
-void Messages::inverted_repeat (void)
-{
-    std::cout << "inverted repeat mode.\n"; // for test
-}
-
-
-/***********************************************************
     show integer number mode
 ************************************************************/
 void Messages::number (int num)
