@@ -56,21 +56,17 @@ void Messages::about (void)
 {
     std::cout
             << "\n"
-            << "           ======================\n"
-            << "           ===  PHOENIX v" << VERSION_PHOENIX << "."
-                                            << RELEASE_PHOENIX << "  ===\n"
-            << "           ======================\n"
-            << "         A compression-based method\n"
+            << "PHOENIX v" << VERSION_PHOENIX << "." << RELEASE_PHOENIX << "\n"
+            << "================\n"
+            << "A compression-based method\n"
             << "\n"
-            << "   Copyright (C) 2016 University of Aveiro\n"
+            << "Morteza Hosseini, Diogo Pratas\n"
+            << "Copyright (C) 2016 University of Aveiro\n"
             << "\n"
-            << "This is a Free software, under GPLv3. You may\n"
-            << "redistribute copies of it under the terms of \n"
-            << "the GNU - General Public License v3 \n"
-            << "<http://www.gnu.org/licenses/gpl.html>. There \n"
-            << "is NOT ANY WARRANTY, to the extent permitted by \n"
-            << "law. Developed and Written by Morteza Hosseini \n"
-            << "and Diogo Pratas.\n\n";
+            << "This is a Free software, under GPLv3. You may redistribute copies \n"
+            << "of it under the terms of the GNU - General Public License v3 \n"
+            << "<http://www.gnu.org/licenses/gpl.html>. There is NOT ANY WARRANTY,\n"
+            << "to the extent permitted by law.\n\n";
 }
 
 
