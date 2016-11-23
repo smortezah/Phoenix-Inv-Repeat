@@ -13,7 +13,7 @@ Messages::Messages () {}
 
 
 /***********************************************************
-    shows usage guide
+    show usage guide
 ************************************************************/
 void Messages::help (void)
 {
@@ -50,20 +50,32 @@ void Messages::help (void)
 
 
 /***********************************************************
-    shows version number
+    show About Phoenix
 ************************************************************/
-void Messages::version (void)
+void Messages::about (void)
 {
     std::cout
-      <<"\n"
-      <<"\t======================\n"
-      <<"\t===  PHOENIX v" << VERSION_PHOENIX << "." << RELEASE_PHOENIX << "  ===\n"
-      <<"\t======================\n\n";
+            << "\n"
+            << "           ======================\n"
+            << "           ===  PHOENIX v" << VERSION_PHOENIX << "."
+                                            << RELEASE_PHOENIX << "  ===\n"
+            << "           ======================\n"
+            << "         A compression-based method\n"
+            << "\n"
+            << "   Copyright (C) 2016 University of Aveiro\n"
+            << "\n"
+            << "This is a Free software, under GPLv3. You may\n"
+            << "redistribute copies of it under the terms of \n"
+            << "the GNU - General Public License v3 \n"
+            << "<http://www.gnu.org/licenses/gpl.html>. There \n"
+            << "is NOT ANY WARRANTY, to the extent permitted by \n"
+            << "law. Developed and Written by Morteza Hosseini \n"
+            << "and Diogo Pratas.\n\n";
 }
 
 
 /***********************************************************
-    shows verbose mode
+    show verbose mode
 ************************************************************/
 void Messages::verbose (void)
 {
@@ -72,7 +84,7 @@ void Messages::verbose (void)
 
 
 /***********************************************************
-    shows inverted_repeat mode
+    show inverted_repeat mode
 ************************************************************/
 void Messages::inverted_repeat (void)
 {
@@ -81,7 +93,7 @@ void Messages::inverted_repeat (void)
 
 
 /***********************************************************
-    shows integer number mode
+    show integer number mode
 ************************************************************/
 void Messages::number (int num)
 {
@@ -90,7 +102,7 @@ void Messages::number (int num)
 
 
 /***********************************************************
-    shows float number mode
+    show float number mode
 ************************************************************/
 void Messages::fnumber (float num)
 {

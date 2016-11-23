@@ -27,7 +27,7 @@ int32_t Functions::commandLineParser (int argc, char **argv)
     // using these flags, if both short and long arguments
     // are entered, just one of them is considered
     static int h_flag;  // option 'h' (help)
-    static int V_flag;  // option 'V' (version)
+    static int A_flag;  // option 'A' (about)
     static int v_flag;  // option 'v' (verbose)
     static int i_flag;  // option 'i' (inverted_repeat)
     
@@ -39,7 +39,7 @@ int32_t Functions::commandLineParser (int argc, char **argv)
     static struct option long_options[] =
             {
                     {"help",            no_argument, &h_flag, (int) 'h'},   // help
-                    {"version",         no_argument, &V_flag, (int) 'V'},   // version
+                    {"about",           no_argument, &A_flag, (int) 'A'},   // About
                     {"verbose",         no_argument, &v_flag, (int) 'v'},   // verbose
                     {"inverted_repeat", no_argument, &i_flag, (int) 'i'},   // inverted_repeat
                     {"number",    required_argument,       0,       'n'},   // number (integer)
@@ -54,7 +54,7 @@ int32_t Functions::commandLineParser (int argc, char **argv)
         /* getopt_long() stores the option index here. */
         option_index = 0;
 
-        c = getopt_long(argc, argv, ":hVvin:d:t:r:", long_options, &option_index);
+        c = getopt_long(argc, argv, ":hAvin:d:t:r:", long_options, &option_index);
 
         /* Detect the end of the options. */
         if (c == -1)
@@ -72,14 +72,14 @@ int32_t Functions::commandLineParser (int argc, char **argv)
                     std::cout << " with arg " << optarg << "\n";
                 break;
 
-            case 'h':   // shows usage guide
+            case 'h':   // show usage guide
                 h_flag = 1;
                 messageObj.help();
                 break;
-
-            case 'V':   // shows version number
-                V_flag = 1;
-                messageObj.version();
+    
+            case 'A':   // show About Phoenix
+                A_flag = 1;
+                messageObj.about();
                 break;
 
             case 'v':   // verbose mode
