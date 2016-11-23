@@ -4,8 +4,10 @@
 #include <iostream>
 #include <unordered_map>
 
+#include "def.h"
 
-typedef std::unordered_map< std::string, std::array<int, 4> > hashTable_t;
+
+typedef std::unordered_map< std::string, std::array<int, ALPHABET_SIZE> > hashTable_t;
 
 
 class Hash

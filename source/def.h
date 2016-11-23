@@ -12,6 +12,13 @@
 /***********************************************************
     constants
 ************************************************************/
+#define ALPHABET_SIZE   4     // alphabet {A, C, T, G}
+#define CONTEXT_DEPTH   2
+
+
+//#define ALPHA_NUMERATOR     1
+//#define ALPHA_DENUMERATOR   1
+//#define COL                 4   // number of columns of the table
 
 
 #endif //PHOENIX_DEF_H
