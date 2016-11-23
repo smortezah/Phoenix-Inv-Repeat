@@ -24,9 +24,41 @@
 
 int32_t main (int argc, char *argv[])
 {
-    Functions function; // for access to Functions (object 'function' on memory stack)
-    function.commandLineParser(argc, argv);
+//    Functions function; // for access to Functions (object 'function' on memory stack)
+//    function.commandLineParser(argc, argv);
+    std::string s="atntcaggn";
+    std::cout<<s<<"\n";
     
+//    for (int i = 0; i < s.size(); ++i)
+//    {
+//        (s[ i ] == 'a') ? (s[ i ] = 't') :
+//        (
+//                (s[ i ] == 'c') ? (s[ i ] = 'g') :
+//                (
+//                        (s[ i ] == 't') ? (s[ i ] = 'a') :
+//                        (
+//                                (s[ i ] == 'g') ? (s[ i ] = 'c') :
+//                                true
+//                        )
+//                )
+//        );
+//    }
+    
+//    for (int i = 0; i < s.size(); ++i)
+//    {
+//        if (s[ i ] == 'a')  s[ i ] = 't';
+//    }
+    
+    for (int i = 0; i < s.size(); ++i)
+//    {
+        (s[ i ] == 'a') ? (s[ i ] = 't')
+                        : ((s[ i ] == 'c') ? (s[ i ] = 'g')
+                                           : ((s[ i ] == 't') ? (s[ i ] = 'a')
+                                                              : ((s[ i ] == 'g') ? (s[ i ] = 'c')
+                                                                                 : true)));
+//    }
+
+    std::cout<<s<<"\n";
     
     return 0;
 }
