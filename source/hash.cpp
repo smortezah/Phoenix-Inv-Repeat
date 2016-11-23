@@ -33,7 +33,7 @@ Hash::Hash () {}
 ************************************************************/
 std::unordered_map< std::string, std::array< int, 4> > Hash::hashTableBuild (std::string strDataset)
 {
-    std::unordered_map< std::string, std::array< int, 4> > hashTable;
+    std::unordered_map< std::string, std::array< int, 4> > hTable;
 
     // context, that slides in the dataset
     std::string context(CONTEXT_DEPTH, 'A');
@@ -49,7 +49,7 @@ std::unordered_map< std::string, std::array< int, 4> > Hash::hashTableBuild (std
 //    FILE *writer = fopen("mori", "w");
 
 
-    hashTable.insert( {context, {0, 0, 0, 0}} );
+    hTable.insert( {context, {0, 0, 0, 0}} );
 
     // fill hash table by number of occurrences of symbols A, C, T, G
     for (size_t i = CONTEXT_DEPTH; i < strDataset.size(); ++i)
@@ -58,7 +58,7 @@ std::unordered_map< std::string, std::array< int, 4> > Hash::hashTableBuild (std
         {
             case 'A':
                 // incrementing number of 'A's
-                ++(hashTable[ context ])[ 0 ];  // order: {A, C, T, G}
+                ++(hTable[ context ])[ 0 ];  // order: {A, C, T, G}
 
 
 //                counters[ 0 ] += ALPHA_DENUMERATOR * table[ index ][ 0 ] + ALPHA_NUMERATOR;
@@ -70,7 +70,7 @@ std::unordered_map< std::string, std::array< int, 4> > Hash::hashTableBuild (std
 
             case 'C':
                 // incrementing number of 'C's
-                ++(hashTable[ context ])[ 1 ];  // order: {A, C, T, G}
+                ++(hTable[ context ])[ 1 ];  // order: {A, C, T, G}
 
 
 //                counters[ 1 ] += ALPHA_DENUMERATOR * table[ index ][ 1 ] + ALPHA_NUMERATOR;
@@ -82,7 +82,7 @@ std::unordered_map< std::string, std::array< int, 4> > Hash::hashTableBuild (std
 
             case 'T':
                 // incrementing number of 'T's
-                ++(hashTable[ context ])[ 2 ];  // order: {A, C, T, G}
+                ++(hTable[ context ])[ 2 ];  // order: {A, C, T, G}
 
 
 //                counters[ 2 ] += ALPHA_DENUMERATOR * table[ index ][ 2 ] + ALPHA_NUMERATOR;
@@ -94,7 +94,7 @@ std::unordered_map< std::string, std::array< int, 4> > Hash::hashTableBuild (std
 
             case 'G':
                 // incrementing number of 'G's
-                ++(hashTable[ context ])[ 3 ];  // order: {A, C, T, G}
+                ++(hTable[ context ])[ 3 ];  // order: {A, C, T, G}
 
 
 //                counters[ 3 ] += ALPHA_DENUMERATOR * table[ index ][ 3 ] + ALPHA_NUMERATOR;
@@ -118,24 +118,24 @@ std::unordered_map< std::string, std::array< int, 4> > Hash::hashTableBuild (std
         context = strDataset.substr(i - CONTEXT_DEPTH + 1, CONTEXT_DEPTH);
     }
     
-    return hashTable;
+    return hTable;
 }
 
 
 /***********************************************************
     print hash table
 ************************************************************/
-void Hash::hashTablePrint (mori hashTable)
+void Hash::hashTablePrint (hashTable_t hTable)
 {
     int ind = 1;  // for test
     std::cout << "\t\tA\tC\tT\tG\n"
               << "        --------------------------------------\n";
-    for (mori::iterator it = hashTable.begin(); it != hashTable.end(); ++it)
+    for (hashTable_t::iterator it = hTable.begin(); it != hTable.end(); ++it)
     {
         std::cout << ind << ":\t" << it->first << "\t";
         for (int i : it->second)    std::cout << i << "\t";
         std::cout << "\n";
         ++ind;
     }
-    std::cout << "\nbucket size = " << hashTable.bucket_count() << "\n\n";  // for test
+    std::cout << "\nbucket size = " << hTable.bucket_count() << "\n\n";  // for test
 }

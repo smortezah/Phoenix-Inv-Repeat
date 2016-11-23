@@ -15,12 +15,12 @@ Functions::Functions () {}
 
 
 /***********************************************************
-    command line parser
+    parse command line
 ************************************************************/
 int32_t Functions::commandLineParser (int argc, char **argv)
 {
     Messages messageObj;    // object for showing messages
-    Hash hashObj;           // object for hash table
+    Hash hashObj;           // object of hash table
     
     
     // using these flags, if both short and long arguments
@@ -38,6 +38,7 @@ int32_t Functions::commandLineParser (int argc, char **argv)
     static struct option long_options[] =
             {
                     {"help",            no_argument, &h_flag, (int) 'h'},   // help
+//                    {"version",         no_argument, 0, 'V'},   // version
                     {"version",         no_argument, &V_flag, (int) 'V'},   // version
                     {"verbose",         no_argument, &v_flag, (int) 'v'},   // verbose
                     {"inverted_repeat", no_argument, &i_flag, (int) 'i'},   // inverted_repeat
@@ -73,18 +74,22 @@ int32_t Functions::commandLineParser (int argc, char **argv)
 
             case 'h':   // shows usage guide
                 h_flag = 1;
+                messageObj.help();
                 break;
 
             case 'V':   // shows version number
                 V_flag = 1;
+                messageObj.version();
                 break;
 
             case 'v':   // verbose mode
                 v_flag = 1;
+                messageObj.verbose();
                 break;
     
             case 'i':   // inverted_repeat mode
                 i_flag = 1;
+                messageObj.inverted_repeat();
                 break;
 
             case 'n':   // needs an integer argument
@@ -110,16 +115,21 @@ int32_t Functions::commandLineParser (int argc, char **argv)
                 break;
     
             case 't':   // needs target file name
-                if (Functions::fileRead( (std::string) optarg) != "")
+                if (Functions::fileRead((std::string) optarg) != "")
                 {
-                    mori hashTableForPrint = hashObj.hashTableBuild( Functions::fileRead((std::string) optarg) );
-                    hashObj.hashTablePrint( hashTableForPrint );
+                    // build a hash table for the input file
+                    hashTable_t hTable = hashObj.hashTableBuild( Functions::fileRead((std::string) optarg) );
+                    hashObj.hashTablePrint( hTable );   // print the built hash table
                 }
                 break;
     
             case 'r':   // needs reference file name
-                if (Functions::fileRead( (std::string) optarg) != "")
-                    hashObj.hashTableBuild( Functions::fileRead( (std::string) optarg) );
+                if (Functions::fileRead((std::string) optarg) != "")
+                {
+                    // build a hash table for the input file
+                    hashTable_t hTable = hashObj.hashTableBuild( Functions::fileRead((std::string) optarg) );
+                    hashObj.hashTablePrint( hTable );   // print the built hash table
+                }
                 break;
                 
             case ':':   /* missing option argument */
@@ -132,11 +142,6 @@ int32_t Functions::commandLineParser (int argc, char **argv)
                 break;
         }
     }
-    
-    if (h_flag) messageObj.help();
-    if (V_flag) messageObj.version();
-    if (v_flag) messageObj.verbose();
-    if (i_flag) messageObj.inverted_repeat();
 
     /* Print any remaining command line arguments (not options). */
     if (optind < argc)
@@ -150,12 +155,11 @@ int32_t Functions::commandLineParser (int argc, char **argv)
 
 
 /***********************************************************
-    reads a file
+    read a file
 ************************************************************/
 std::string Functions::fileRead (std::string fileName)
 {
-    // open file
-    std::ifstream myFile(fileName, std::ios::in);
+    std::ifstream myFile(fileName, std::ios::in);   // open file
     
     if (!myFile)
     {
@@ -163,16 +167,14 @@ std::string Functions::fileRead (std::string fileName)
         return "";
     }
     
-    std::string strEachLine;
-    std::string strDataset;
+    std::string strEachLine;    // keep each line
+    std::string strDataset;     // keep the whole dataset
     
+    // read file line by line
     while (std::getline(myFile, strEachLine))
         strDataset += strEachLine;
     
-    myFile.close();     // close file
-    
-//    // show the dataset
-//    std::cout << "Dataset: " << strDataset << std::endl;
+    myFile.close(); // close file
     
     return strDataset;
 }
