@@ -2,8 +2,10 @@
 
 #include <iostream>
 #include <unordered_map>
+#include <algorithm>
 
 #include "def.h"
+#include "functions.h"
 
 
 
@@ -29,6 +31,7 @@ Hash::Hash () {}
 ************************************************************/
 hashTable_t Hash::hashTableBuild (std::string strDataset, bool isInvertedRepeat)
 {
+    Functions functionObj;
     hashTable_t hTable;
 
     // context, that slides in the dataset
@@ -57,7 +60,24 @@ hashTable_t Hash::hashTableBuild (std::string strDataset, bool isInvertedRepeat)
         
                 if (isInvertedRepeat)
                 {
-//                    std::cout << "invert";
+                    std::string invertedRepeat = context + "A";
+                    
+                    std::string::iterator invRepBegin = invertedRepeat.begin();
+                    std::string::iterator invRepEnd = invertedRepeat.end();
+    
+                    // ham bayad A,T jabeja beshe ham T,A
+                    std::replace(invRepBegin, invRepEnd, 'A', 'T'); // replace all 'A' to 'T'
+                    std::replace(invRepBegin, invRepEnd, 'C', 'G'); // replace all 'C' to 'G'
+                    std::reverse(invRepBegin, invRepEnd);
+    
+//                    switch (invRepContext.substr(0,invRepContext.size()))
+//                    {
+//                        case :
+//                    }
+    
+                    std::cout << context + "A" << "\n"
+                              << "invertedRepeat:" << invertedRepeat.substr(0, invertedRepeat.size()) << "\n";
+    
                 }
 
 //                counters[ 0 ] += ALPHA_DENUMERATOR * table[ index ][ 0 ] + ALPHA_NUMERATOR;

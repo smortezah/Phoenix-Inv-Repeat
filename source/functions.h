@@ -8,8 +8,8 @@
 class Functions
 {
 public:
-    Functions ();                               // constructor
-    int32_t commandLineParser (int, char**);    // parse command line
+    Functions ();                                   // constructor
+    int32_t commandLineParser (int, char**);        // parse command line
 
 private:
     std::string fileRead (std::string);         // read a file
