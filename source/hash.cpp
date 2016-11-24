@@ -31,19 +31,13 @@ Hash::Hash () {}
 ************************************************************/
 hashTable_t Hash::hashTableBuild (std::string strDataset, bool isInvertedRepeat)
 {
-    Functions functionObj;
     hashTable_t hTable;
-
+    
     // context, that slides in the dataset
     std::string context(CONTEXT_DEPTH, 'A');
 
     // add "AA..." (with the size of CONTEXT_DEPTH) to the beginning of the dataset
     strDataset = context + strDataset;
-    
-    
-    //////////////////////////////////////////////////////////////////////
-    std::cout << strDataset << "\n";
-    //////////////////////////////////////////////////////////////////////
     
 
 //    int counters[4];
@@ -63,6 +57,8 @@ hashTable_t Hash::hashTableBuild (std::string strDataset, bool isInvertedRepeat)
             case 'A':
                 ++(hTable[ context ])[ 0 ];  // increment number of 'A's. order: {A, C, T, G, N}
         
+                // if inverted repeat option is selected in command line,
+                // hash table considers inverted repeats for getting updated, too
                 if (isInvertedRepeat)
                 {
                     std::string invRepeat = context + "A";
@@ -101,7 +97,9 @@ hashTable_t Hash::hashTableBuild (std::string strDataset, bool isInvertedRepeat)
 
             case 'C':
                 ++(hTable[ context ])[ 1 ];  // increment number of 'C's. order: {A, C, T, G, N}
-        
+                
+                // if inverted repeat option is selected in command line,
+                // hash table considers inverted repeats for getting updated, too
                 if (isInvertedRepeat)
                 {
                     std::string invRepeat = context + "C";
@@ -140,7 +138,9 @@ hashTable_t Hash::hashTableBuild (std::string strDataset, bool isInvertedRepeat)
 
             case 'T':
                 ++(hTable[ context ])[ 2 ];  // increment number of 'T's. order: {A, C, T, G, N}
-        
+                
+                // if inverted repeat option is selected in command line,
+                // hash table considers inverted repeats for getting updated, too
                 if (isInvertedRepeat)
                 {
                     std::string invRepeat = context + "T";
@@ -180,6 +180,8 @@ hashTable_t Hash::hashTableBuild (std::string strDataset, bool isInvertedRepeat)
             case 'G':
                 ++(hTable[ context ])[ 3 ];  // increment number of 'G's. order: {A, C, T, G, N}
         
+                // if inverted repeat option is selected in command line,
+                // hash table considers inverted repeats for getting updated, too
                 if (isInvertedRepeat)
                 {
                     std::string invRepeat = context + "G";
@@ -219,6 +221,8 @@ hashTable_t Hash::hashTableBuild (std::string strDataset, bool isInvertedRepeat)
             case 'N':
                 ++(hTable[ context ])[ 4 ];  // increment number of 'N's. order: {A, C, T, G, N}
         
+                // if inverted repeat option is selected in command line,
+                // hash table considers inverted repeats for getting updated, too
                 if (isInvertedRepeat)
                 {
                     std::string invRepeat = context + "N";
@@ -285,20 +289,4 @@ void Hash::hashTablePrint (hashTable_t hTable)
         for (int i : it->second)    std::cout << i << "\t";
         std::cout << "\n";
     }
-    
-    
-    // for test
-    std::cout << "current max_load_factor: " << hTable.max_load_factor() << "\n";
-    std::cout << "current size: " << hTable.size() << "\n";
-    std::cout << "current bucket_count: " << hTable.bucket_count() << "\n";
-    std::cout << "current load_factor: " << hTable.load_factor() << "\n";
-    
-    float z = hTable.max_load_factor();
-    hTable.max_load_factor ( z / 2.0 );
-    std::cout << "[max_load_factor halved]" << "\n";
-    
-    std::cout << "new max_load_factor: " << hTable.max_load_factor() << "\n";
-    std::cout << "new size: " << hTable.size() << "\n";
-    std::cout << "new bucket_count: " << hTable.bucket_count() << "\n";
-    std::cout << "new load_factor: " << hTable.load_factor() << "\n";
 }
