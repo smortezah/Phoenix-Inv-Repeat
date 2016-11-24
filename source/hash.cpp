@@ -277,15 +277,29 @@ hashTable_t Hash::hashTableBuild (std::string strDataset, bool isInvertedRepeat)
 ************************************************************/
 void Hash::hashTablePrint (hashTable_t hTable)
 {
-    int ind = 1;  // for test
-    std::cout << "\t\tA\tC\tT\tG\tN\n"
-              << "\t-------------------------------------------\n";
+    std::cout << "\tA\tC\tT\tG\tN\n"
+              << "\t------------------------------------\n";
     for (hashTable_t::iterator it = hTable.begin(); it != hTable.end(); ++it)
     {
-        std::cout << ind << ":\t" << it->first << "\t";
+        std::cout << it->first << "\t";
         for (int i : it->second)    std::cout << i << "\t";
         std::cout << "\n";
-        ++ind;
     }
-    std::cout << "\nbucket size = " << hTable.bucket_count() << "\n\n";  // for test
+
+    
+    // for test
+    std::cout << "current max_load_factor: " << hTable.max_load_factor() << "\n";
+    std::cout << "current size: " << hTable.size() << "\n";
+    std::cout << "current bucket_count: " << hTable.bucket_count() << "\n";
+    std::cout << "current load_factor: " << hTable.load_factor() << "\n";
+    
+    float z = hTable.max_load_factor();
+    hTable.max_load_factor ( z / 2.0 );
+    std::cout << "[max_load_factor halved]" << "\n";
+    
+    std::cout << "new max_load_factor: " << hTable.max_load_factor() << "\n";
+    std::cout << "new size: " << hTable.size() << "\n";
+    std::cout << "new bucket_count: " << hTable.bucket_count() << "\n";
+    std::cout << "new load_factor: " << hTable.load_factor() << "\n";
+    
 }
