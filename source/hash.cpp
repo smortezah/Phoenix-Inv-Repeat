@@ -60,24 +60,31 @@ hashTable_t Hash::hashTableBuild (std::string strDataset, bool isInvertedRepeat)
         
                 if (isInvertedRepeat)
                 {
-                    std::string invertedRepeat = context + "A";
-                    
-                    std::string::iterator invRepBegin = invertedRepeat.begin();
-                    std::string::iterator invRepEnd = invertedRepeat.end();
+                    std::string invRepeat = context + "A";
     
-                    // ham bayad A,T jabeja beshe ham T,A
-                    std::replace(invRepBegin, invRepEnd, 'A', 'T'); // replace all 'A' to 'T'
-                    std::replace(invRepBegin, invRepEnd, 'C', 'G'); // replace all 'C' to 'G'
-                    std::reverse(invRepBegin, invRepEnd);
+                    // A <-> T  ,  C <-> G  ,  N <-> N (N unchanged)
+                    for (char& ch : invRepeat)
+                        ch = (ch == 'A') ? 'T' :
+                             (ch == 'C') ? 'G' :
+                             (ch == 'T') ? 'A' :
+                             (ch == 'G') ? 'C' :
+                             'N';
     
-//                    switch ( invertedRepeat.substr(0, invertedRepeat.size()-1) )
-//                    {
-//                        case :
-//                    }
+                    // invert the string
+                    std::reverse( invRepeat.begin(), invRepeat.end() );
     
-                    std::cout << context + "A" << "\n"
-                              << "invertedRepeat:" << invertedRepeat.substr(0, invertedRepeat.size()) << "\n";
+                    // inverted repeat context
+                    std::string invRepeatContext = invRepeat.substr(0, invRepeat.size() - 1);
     
+                    switch (invRepeat[ invRepeat.size() - 1 ])
+                    {
+                        case 'A':   ++(hTable[ invRepeatContext ])[ 0 ];    break;
+                        case 'C':   ++(hTable[ invRepeatContext ])[ 1 ];    break;
+                        case 'T':   ++(hTable[ invRepeatContext ])[ 2 ];    break;
+                        case 'G':   ++(hTable[ invRepeatContext ])[ 3 ];    break;
+                        case 'N':   ++(hTable[ invRepeatContext ])[ 4 ];    break;
+                        default:                                            break;
+                    }
                 }
 
 //                counters[ 0 ] += ALPHA_DENUMERATOR * table[ index ][ 0 ] + ALPHA_NUMERATOR;
@@ -89,7 +96,35 @@ hashTable_t Hash::hashTableBuild (std::string strDataset, bool isInvertedRepeat)
 
             case 'C':
                 ++(hTable[ context ])[ 1 ];  // increment number of 'C's. order: {A, C, T, G, N}
-
+        
+                if (isInvertedRepeat)
+                {
+                    std::string invRepeat = context + "A";
+            
+                    // A <-> T  ,  C <-> G  ,  N <-> N (N unchanged)
+                    for (char& ch : invRepeat)
+                        ch = (ch == 'A') ? 'T' :
+                             (ch == 'C') ? 'G' :
+                             (ch == 'T') ? 'A' :
+                             (ch == 'G') ? 'C' :
+                             'N';
+            
+                    // invert the string
+                    std::reverse( invRepeat.begin(), invRepeat.end() );
+            
+                    // inverted repeat context
+                    std::string invRepeatContext = invRepeat.substr(0, invRepeat.size() - 1);
+            
+                    switch (invRepeat[ invRepeat.size() - 1 ])
+                    {
+                        case 'A':   ++(hTable[ invRepeatContext ])[ 0 ];    break;
+                        case 'C':   ++(hTable[ invRepeatContext ])[ 1 ];    break;
+                        case 'T':   ++(hTable[ invRepeatContext ])[ 2 ];    break;
+                        case 'G':   ++(hTable[ invRepeatContext ])[ 3 ];    break;
+                        case 'N':   ++(hTable[ invRepeatContext ])[ 4 ];    break;
+                        default:                                            break;
+                    }
+                }
 
 //                counters[ 1 ] += ALPHA_DENUMERATOR * table[ index ][ 1 ] + ALPHA_NUMERATOR;
 //                totalCount = (ALPHA_DENUMERATOR * (table[ index ][ 0 ] + table[ index ][ 1 ] +
@@ -100,7 +135,35 @@ hashTable_t Hash::hashTableBuild (std::string strDataset, bool isInvertedRepeat)
 
             case 'T':
                 ++(hTable[ context ])[ 2 ];  // increment number of 'T's. order: {A, C, T, G, N}
-
+        
+                if (isInvertedRepeat)
+                {
+                    std::string invRepeat = context + "A";
+            
+                    // A <-> T  ,  C <-> G  ,  N <-> N (N unchanged)
+                    for (char& ch : invRepeat)
+                        ch = (ch == 'A') ? 'T' :
+                             (ch == 'C') ? 'G' :
+                             (ch == 'T') ? 'A' :
+                             (ch == 'G') ? 'C' :
+                             'N';
+            
+                    // invert the string
+                    std::reverse( invRepeat.begin(), invRepeat.end() );
+            
+                    // inverted repeat context
+                    std::string invRepeatContext = invRepeat.substr(0, invRepeat.size() - 1);
+            
+                    switch (invRepeat[ invRepeat.size() - 1 ])
+                    {
+                        case 'A':   ++(hTable[ invRepeatContext ])[ 0 ];    break;
+                        case 'C':   ++(hTable[ invRepeatContext ])[ 1 ];    break;
+                        case 'T':   ++(hTable[ invRepeatContext ])[ 2 ];    break;
+                        case 'G':   ++(hTable[ invRepeatContext ])[ 3 ];    break;
+                        case 'N':   ++(hTable[ invRepeatContext ])[ 4 ];    break;
+                        default:                                            break;
+                    }
+                }
 
 //                counters[ 2 ] += ALPHA_DENUMERATOR * table[ index ][ 2 ] + ALPHA_NUMERATOR;
 //                totalCount = (ALPHA_DENUMERATOR * (table[ index ][ 0 ] + table[ index ][ 1 ] +
@@ -111,7 +174,35 @@ hashTable_t Hash::hashTableBuild (std::string strDataset, bool isInvertedRepeat)
 
             case 'G':
                 ++(hTable[ context ])[ 3 ];  // increment number of 'G's. order: {A, C, T, G, N}
-
+        
+                if (isInvertedRepeat)
+                {
+                    std::string invRepeat = context + "A";
+            
+                    // A <-> T  ,  C <-> G  ,  N <-> N (N unchanged)
+                    for (char& ch : invRepeat)
+                        ch = (ch == 'A') ? 'T' :
+                             (ch == 'C') ? 'G' :
+                             (ch == 'T') ? 'A' :
+                             (ch == 'G') ? 'C' :
+                             'N';
+            
+                    // invert the string
+                    std::reverse( invRepeat.begin(), invRepeat.end() );
+            
+                    // inverted repeat context
+                    std::string invRepeatContext = invRepeat.substr(0, invRepeat.size() - 1);
+            
+                    switch (invRepeat[ invRepeat.size() - 1 ])
+                    {
+                        case 'A':   ++(hTable[ invRepeatContext ])[ 0 ];    break;
+                        case 'C':   ++(hTable[ invRepeatContext ])[ 1 ];    break;
+                        case 'T':   ++(hTable[ invRepeatContext ])[ 2 ];    break;
+                        case 'G':   ++(hTable[ invRepeatContext ])[ 3 ];    break;
+                        case 'N':   ++(hTable[ invRepeatContext ])[ 4 ];    break;
+                        default:                                            break;
+                    }
+                }
 
 //                counters[ 3 ] += ALPHA_DENUMERATOR * table[ index ][ 3 ] + ALPHA_NUMERATOR;
 //                totalCount = (ALPHA_DENUMERATOR * (table[ index ][ 0 ] + table[ index ][ 1 ] +
@@ -122,7 +213,35 @@ hashTable_t Hash::hashTableBuild (std::string strDataset, bool isInvertedRepeat)
     
             case 'N':
                 ++(hTable[ context ])[ 4 ];  // increment number of 'N's. order: {A, C, T, G, N}
-
+        
+                if (isInvertedRepeat)
+                {
+                    std::string invRepeat = context + "A";
+            
+                    // A <-> T  ,  C <-> G  ,  N <-> N (N unchanged)
+                    for (char& ch : invRepeat)
+                        ch = (ch == 'A') ? 'T' :
+                             (ch == 'C') ? 'G' :
+                             (ch == 'T') ? 'A' :
+                             (ch == 'G') ? 'C' :
+                             'N';
+            
+                    // invert the string
+                    std::reverse( invRepeat.begin(), invRepeat.end() );
+            
+                    // inverted repeat context
+                    std::string invRepeatContext = invRepeat.substr(0, invRepeat.size() - 1);
+            
+                    switch (invRepeat[ invRepeat.size() - 1 ])
+                    {
+                        case 'A':   ++(hTable[ invRepeatContext ])[ 0 ];    break;
+                        case 'C':   ++(hTable[ invRepeatContext ])[ 1 ];    break;
+                        case 'T':   ++(hTable[ invRepeatContext ])[ 2 ];    break;
+                        case 'G':   ++(hTable[ invRepeatContext ])[ 3 ];    break;
+                        case 'N':   ++(hTable[ invRepeatContext ])[ 4 ];    break;
+                        default:                                            break;
+                    }
+                }
 
 //                counters[ 3 ] += ALPHA_DENUMERATOR * table[ index ][ 3 ] + ALPHA_NUMERATOR;
 //                totalCount = (ALPHA_DENUMERATOR * (table[ index ][ 0 ] + table[ index ][ 1 ] +
