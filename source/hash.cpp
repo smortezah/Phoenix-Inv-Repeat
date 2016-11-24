@@ -285,7 +285,7 @@ void Hash::hashTablePrint (hashTable_t hTable)
         for (int i : it->second)    std::cout << i << "\t";
         std::cout << "\n";
     }
-
+    
     
     // for test
     std::cout << "current max_load_factor: " << hTable.max_load_factor() << "\n";
@@ -301,5 +301,4 @@ void Hash::hashTablePrint (hashTable_t hTable)
     std::cout << "new size: " << hTable.size() << "\n";
     std::cout << "new bucket_count: " << hTable.bucket_count() << "\n";
     std::cout << "new load_factor: " << hTable.load_factor() << "\n";
-    
 }
