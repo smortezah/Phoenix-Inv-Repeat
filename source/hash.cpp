@@ -112,7 +112,7 @@ hashTable_t Hash::hashTableBuild (std::string strDataset, bool isInvertedRepeat)
                              (ch == 'G') ? 'C' :
                              'N';
             
-                    // invert the string
+                    // reverse the string
                     std::reverse( invRepeat.begin(), invRepeat.end() );
             
                     // inverted repeat context
