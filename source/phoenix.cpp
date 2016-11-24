@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <cstring>
-#include <chrono>               // working with time
+#include <chrono>               // dealing with time
 #include <stdint.h>
 #define __STDC_FORMAT_MACROS
 #include <inttypes.h>
@@ -26,7 +26,7 @@ int32_t main (int argc, char *argv[])
 {
     // for calculating execution time
     typedef std::chrono::high_resolution_clock highResClock;
-
+    
     // Record start time
     highResClock::time_point exeStartTime = highResClock::now();
         
