@@ -39,7 +39,12 @@ hashTable_t Hash::hashTableBuild (std::string strDataset, bool isInvertedRepeat)
 
     // add "AA..." (with the size of CONTEXT_DEPTH) to the beginning of the dataset
     strDataset = context + strDataset;
-
+    
+    
+    //////////////////////////////////////////////////////////////////////
+    std::cout << strDataset << "\n";
+    //////////////////////////////////////////////////////////////////////
+    
 
 //    int counters[4];
 //    memset(counters, 0, sizeof(counters[ 0 ]) * 4);
@@ -99,7 +104,7 @@ hashTable_t Hash::hashTableBuild (std::string strDataset, bool isInvertedRepeat)
         
                 if (isInvertedRepeat)
                 {
-                    std::string invRepeat = context + "A";
+                    std::string invRepeat = context + "C";
             
                     // A <-> T  ,  C <-> G  ,  N <-> N (N unchanged)
                     for (char& ch : invRepeat)
@@ -138,7 +143,7 @@ hashTable_t Hash::hashTableBuild (std::string strDataset, bool isInvertedRepeat)
         
                 if (isInvertedRepeat)
                 {
-                    std::string invRepeat = context + "A";
+                    std::string invRepeat = context + "T";
             
                     // A <-> T  ,  C <-> G  ,  N <-> N (N unchanged)
                     for (char& ch : invRepeat)
@@ -177,7 +182,7 @@ hashTable_t Hash::hashTableBuild (std::string strDataset, bool isInvertedRepeat)
         
                 if (isInvertedRepeat)
                 {
-                    std::string invRepeat = context + "A";
+                    std::string invRepeat = context + "G";
             
                     // A <-> T  ,  C <-> G  ,  N <-> N (N unchanged)
                     for (char& ch : invRepeat)
@@ -216,7 +221,7 @@ hashTable_t Hash::hashTableBuild (std::string strDataset, bool isInvertedRepeat)
         
                 if (isInvertedRepeat)
                 {
-                    std::string invRepeat = context + "A";
+                    std::string invRepeat = context + "N";
             
                     // A <-> T  ,  C <-> G  ,  N <-> N (N unchanged)
                     for (char& ch : invRepeat)
