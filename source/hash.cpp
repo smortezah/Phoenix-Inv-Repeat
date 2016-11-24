@@ -20,6 +20,31 @@
 //#include "arith_aux.h"
 
 
+
+
+
+
+
+
+
+
+
+
+
+/***********************************************************
+    test
+************************************************************/
+#include <iomanip>      // std::setprecision
+
+
+
+
+
+
+
+
+
+
 /***********************************************************
     constructor
 ************************************************************/
@@ -281,12 +306,53 @@ hashTable_t Hash::hashTableBuild (std::string strDataset, bool isInvertedRepeat)
 ************************************************************/
 void Hash::hashTablePrint (hashTable_t hTable)
 {
-    std::cout << "\tA\tC\tT\tG\tN\n"
-              << "\t------------------------------------\n";
+
+    
+    
+/***********************************************************
+    test
+************************************************************/
+    std::cout << "\tA\tC\tT\tG\tN\tP_A\tP_C\tP_T\tP_G\tP_N\n"
+              << "\t------------------------------------------"
+              << "-----------------------------------\n";
+
+    int sum;
+    int alpha = 1;
+    
     for (hashTable_t::iterator it = hTable.begin(); it != hTable.end(); ++it)
     {
+        sum = 0;
         std::cout << it->first << "\t";
-        for (int i : it->second)    std::cout << i << "\t";
+        for (int i : it->second)
+        {
+            std::cout << i << "\t";
+            sum += i;
+        }
+        
+        for (int i = 0; i < 5; ++i)
+        {
+            std::cout << std::fixed << std::setprecision(1)
+                      << (float) (it->second[ i ] + alpha) /
+                         (sum + ALPHABET_SIZE * alpha) << "\t";
+        }
         std::cout << "\n";
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+//    std::cout << "\tA\tC\tT\tG\tN\n"
+//              << "\t------------------------------------\n";
+
+//    for (hashTable_t::iterator it = hTable.begin(); it != hTable.end(); ++it)
+//    {
+//        std::cout << it->first << "\t";
+//        for (int i : it->second)    std::cout << i << "\t";
+//        std::cout << "\n";
+//    }
 }
