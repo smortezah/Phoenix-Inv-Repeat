@@ -34,9 +34,11 @@ int32_t main (int argc, char *argv[])
     std::ifstream myFile("c.fa", std::ios::in);   // open file
 
     if (!myFile)
-    {
         std::cerr << "File could not be opened.\n";
-    }
+
+    if (myFile.peek() == std::ifstream::traits_type::eof())
+        std::cerr << "File is empty.\n";
+
 
     std::string strLine;    // keep each line
 
