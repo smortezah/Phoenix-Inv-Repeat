@@ -154,14 +154,26 @@ int32_t Functions::commandLineParser (int argc, char **argv)
         std::string context(CONTEXT_DEPTH, 'A');
 
         std::string strLine;    // keep each line
-
         std::getline(targetFile, strLine);
 
         strLine = context + strLine;
 
         hashTable_t hTable;
+        hTable.insert( {context, {0, 0, 0, 0, 0}} );   // initialize hash table with 0'z
 
-std::cout<<"hi";
+
+
+        hashTable_t hTableForPrint = hashObj.hashTableUpdate(hTable, context,
+                                                             strLine, (bool) i_flag);
+        hashObj.hashTablePrint(hTableForPrint);   // print hash table
+
+
+
+//        std::cout << strLine << "\n";
+
+
+
+
 
 //        while (!targetFile.eof())
 //        {
