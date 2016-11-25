@@ -158,27 +158,50 @@ int32_t Functions::commandLineParser (int argc, char **argv)
 
         strLine = context + strLine;
 
+        std::cout << "context: " << context << "\n";
+        std::cout << "strLine: " << strLine << "\n";
+
         hashTable_t hTable;
         hTable.insert( {context, {0, 0, 0, 0, 0}} );   // initialize hash table with 0'z
 
-
-
+        bool isFirstTime = true;
         hashTable_t hTableForPrint = hashObj.hashTableUpdate(hTable, context,
-                                                             strLine, (bool) i_flag);
+                                                             strLine, (bool) i_flag,
+                                                             isFirstTime);
 
-////        while (!targetFile.eof())
-////        {
-        context = strLine.substr(strLine.size() - CONTEXT_DEPTH, CONTEXT_DEPTH);
-        std::getline(targetFile, strLine);
-        hTableForPrint = hashObj.hashTableUpdate(hTableForPrint, context, strLine, (bool) i_flag);
-////        }
-////
         hashObj.hashTablePrint(hTableForPrint);   // print hash table
 
+        context = strLine.substr(strLine.size() - CONTEXT_DEPTH, CONTEXT_DEPTH);
+        std::getline(targetFile, strLine);
 
-        std::cout << "strLine: " << strLine;
-        std::cout << "\ncontext: " << context;
-//
+        std::cout << "context: " << context << "\n";
+        std::cout << "strLine: " << strLine << "\n";
+
+        isFirstTime = false;
+        hTableForPrint = hashObj.hashTableUpdate(hTable, context, strLine,
+                                                 (bool) i_flag, isFirstTime);
+
+//        hashObj.hashTablePrint(hTableForPrint);   // print hash table
+
+
+
+
+
+
+
+
+
+
+//////        while (!targetFile.eof())
+//////        {
+
+//        std::getline(targetFile, strLine);
+
+
+//        hTableForPrint = hashObj.hashTableUpdate(hTableForPrint, context, strLine, (bool) i_flag);
+//////        }
+//////
+//        hashObj.hashTablePrint(hTable);   // print hash table
 //
 //        targetFile.close(); // close file
 

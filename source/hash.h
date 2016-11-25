@@ -21,7 +21,7 @@ public:
 
 
 
-    hashTable_t hashTableUpdate (hashTable_t, std::string, std::string, bool);   // build hash table
+    hashTable_t hashTableUpdate (hashTable_t, std::string, std::string, bool, bool);   // build hash table
 
 };
 
