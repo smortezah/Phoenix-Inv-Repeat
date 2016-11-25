@@ -54,7 +54,7 @@ Hash::Hash () {}
 /***********************************************************
     build hash table
 ************************************************************/
-hashTable_t Hash::hashTableBuild (std::string strDataset, bool isInvertedRepeat)
+hashTable_t Hash::hashTableBuild (std::string& strDataset, bool isInvertedRepeat)
 {
     hashTable_t hTable;
     
@@ -308,7 +308,7 @@ void Hash::hashTablePrint (hashTable_t hTable)
 {
 
     
-    
+
 /***********************************************************
     test
 ************************************************************/
@@ -318,7 +318,7 @@ void Hash::hashTablePrint (hashTable_t hTable)
 
     int sum;
     int alpha = 1;
-    
+
     for (hashTable_t::iterator it = hTable.begin(); it != hTable.end(); ++it)
     {
         sum = 0;
@@ -328,7 +328,7 @@ void Hash::hashTablePrint (hashTable_t hTable)
             std::cout << i << "\t";
             sum += i;
         }
-        
+
         for (int i = 0; i < 5; ++i)
         {
             std::cout << std::fixed << std::setprecision(1)

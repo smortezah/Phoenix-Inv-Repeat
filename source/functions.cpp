@@ -175,7 +175,7 @@ int32_t Functions::commandLineParser (int argc, char **argv)
 /***********************************************************
     read a file
 ************************************************************/
-std::string Functions::fileRead (std::string fileName)
+std::string Functions::fileRead (const std::string& fileName)
 {
     std::ifstream myFile(fileName, std::ios::in);   // open file
     

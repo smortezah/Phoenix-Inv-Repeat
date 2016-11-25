@@ -12,7 +12,7 @@ public:
     int32_t commandLineParser (int, char**);        // parse command line
 
 private:
-    std::string fileRead (std::string);         // read a file
+    std::string fileRead (const std::string&);         // read a file
 };
 
 
