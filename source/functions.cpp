@@ -143,30 +143,38 @@ int32_t Functions::commandLineParser (int argc, char **argv)
     {
 
 
-
         std::ifstream targetFile(targetFileName, std::ios::in);   // open file
 
         if (!targetFile)
-            std::cerr << "File could not be opened.\n";
+            std::cerr << "File '" << targetFileName << "' could not be opened.\n";
+        else if (targetFile.peek() == std::ifstream::traits_type::eof())
+            std::cerr << "File '" << targetFileName << "' is empty.\n";
 
-        if (targetFile.peek() == std::ifstream::traits_type::eof())
-            std::cerr << "File is empty.\n";
-
+        // context, that slides in the dataset
+        std::string context(CONTEXT_DEPTH, 'A');
 
         std::string strLine;    // keep each line
 
-        while (!targetFile.eof())
-        {
-            std::getline(targetFile, strLine);
+        std::getline(targetFile, strLine);
 
-            std::cout << strLine << "\n";
-        }
+        strLine = context + strLine;
 
-        if(targetFile.eof())
-            std::cout << "end\n";
+        hashTable_t hTable;
 
+std::cout<<"hi";
 
-        targetFile.close(); // close file
+//        while (!targetFile.eof())
+//        {
+//            std::getline(targetFile, strLine);
+//
+//            std::cout << strLine << "\n";
+//        }
+//
+//        if(targetFile.eof())
+//            std::cout << "end\n";
+//
+//
+//        targetFile.close(); // close file
 
 
 
