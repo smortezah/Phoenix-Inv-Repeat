@@ -400,8 +400,11 @@ hashTable_t Hash::hashTableUpdate (hashTable_t hTable, std::string context,
 //
 //    hTable.insert( {context, {0, 0, 0, 0, 0}} );   // initialize hash table with 0'z
 //
+    std::string contextGhost(CONTEXT_DEPTH, 'A');
+    size_t datasetIter = (context==contextGhost) ? CONTEXT_DEPTH : 0;
+
     // fill hash table by number of occurrences of symbols A, C, T, G, N
-    for (size_t i = CONTEXT_DEPTH; i < strDataset.size(); ++i)
+    for (size_t i = datasetIter; i < strDataset.size(); ++i)
     {
         switch (strDataset[ i ])
         {

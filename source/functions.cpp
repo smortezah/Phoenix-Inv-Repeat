@@ -168,19 +168,18 @@ int32_t Functions::commandLineParser (int argc, char **argv)
         hashObj.hashTablePrint(hTableForPrint);   // print hash table
 
 
-
 //        std::cout << strLine << "\n";
 
 
 
-
-
-//        while (!targetFile.eof())
-//        {
-//            std::getline(targetFile, strLine);
-//
-//            std::cout << strLine << "\n";
-//        }
+        while (!targetFile.eof())
+        {
+            std::getline(targetFile, strLine);
+            context = strLine.substr(strLine.size() - CONTEXT_DEPTH + 1,
+                                     CONTEXT_DEPTH);
+            hTableForPrint = hashObj.hashTableUpdate(hTableForPrint, context,
+                                                     strLine, (bool) i_flag);
+        }
 //
 //        if(targetFile.eof())
 //            std::cout << "end\n";
