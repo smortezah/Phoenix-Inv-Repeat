@@ -179,7 +179,7 @@ void arithmetic_encode(freq_value low, freq_value high, freq_value total,
    *						* (see comments below) *
    */
 
-    code_value temp; 
+    code_value temp;
 
    {
     div_value out_r;			
