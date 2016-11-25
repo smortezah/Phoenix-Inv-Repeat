@@ -24,65 +24,27 @@
 
 int32_t main (int argc, char *argv[])
 {
+    // for calculating execution time
+    typedef std::chrono::high_resolution_clock highResClock;
 
-
-/***********************************************************
-    test
-************************************************************/
-//    std::ifstream myFile("a.fa", std::ios::in);   // open file
-//    std::ifstream myFile("b.fa", std::ios::in);   // open file
-    std::ifstream myFile("c.fa", std::ios::in);   // open file
-
-    if (!myFile)
-        std::cerr << "File could not be opened.\n";
-
-    if (myFile.peek() == std::ifstream::traits_type::eof())
-        std::cerr << "File is empty.\n";
-
-
-    std::string strLine;    // keep each line
-
-    while (!myFile.eof())
-    {
-        std::getline(myFile, strLine);
-
-        std::cout << strLine << "\n";
-    }
-
-    if(myFile.eof())
-        std::cout << "end\n";
-
-
-    myFile.close(); // close file
+    // Record start time
+    highResClock::time_point exeStartTime = highResClock::now();
 
 
 
 
+    Functions function; // for access to Functions (object 'function' on memory stack)
+    function.commandLineParser(argc, argv);
 
 
 
 
-//    // for calculating execution time
-//    typedef std::chrono::high_resolution_clock highResClock;
-//
-//    // Record start time
-//    highResClock::time_point exeStartTime = highResClock::now();
-//
-//
-//
-//
-//    Functions function; // for access to Functions (object 'function' on memory stack)
-//    function.commandLineParser(argc, argv);
-//
-//
-//
-//
-//    // Record end time
-//    highResClock::time_point exeFinishTime = highResClock::now();
-//
-//    // calculate and show duration in seconds
-//    std::chrono::duration< double > elapsed = exeFinishTime - exeStartTime;
-//    std::cout << "Elapsed time: " << elapsed.count() << " s\n";
+    // Record end time
+    highResClock::time_point exeFinishTime = highResClock::now();
+
+    // calculate and show duration in seconds
+    std::chrono::duration< double > elapsed = exeFinishTime - exeStartTime;
+    std::cout << "Elapsed time: " << elapsed.count() << " s\n";
     
     
     return 0;

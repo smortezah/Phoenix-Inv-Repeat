@@ -141,13 +141,51 @@ int32_t Functions::commandLineParser (int argc, char **argv)
     
     if (t_flag)
     {
-        std::string targetFile = Functions::fileRead(targetFileName);
-        if (targetFile != "")
+
+
+
+        std::ifstream targetFile(targetFileName, std::ios::in);   // open file
+
+        if (!targetFile)
+            std::cerr << "File could not be opened.\n";
+
+        if (targetFile.peek() == std::ifstream::traits_type::eof())
+            std::cerr << "File is empty.\n";
+
+
+        std::string strLine;    // keep each line
+
+        while (!targetFile.eof())
         {
-            // build a hash table for the input file, considering inverted repeat mode
-            hashTable_t hTable = hashObj.hashTableBuild(targetFile, (bool) i_flag);
-            hashObj.hashTablePrint(hTable);   // print hash table
+            std::getline(targetFile, strLine);
+
+            std::cout << strLine << "\n";
         }
+
+        if(targetFile.eof())
+            std::cout << "end\n";
+
+
+        targetFile.close(); // close file
+
+
+
+
+
+
+
+
+
+
+
+
+//        std::string targetFile = Functions::fileRead(targetFileName);
+//        if (targetFile != "")
+//        {
+//            // build a hash table for the input file, considering inverted repeat mode
+//            hashTable_t hTable = hashObj.hashTableBuild(targetFile, (bool) i_flag);
+//            hashObj.hashTablePrint(hTable);   // print hash table
+//        }
     }
     
     if (r_flag)
