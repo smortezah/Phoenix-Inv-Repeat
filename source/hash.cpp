@@ -304,9 +304,12 @@ void Hash::hashTablePrint (hashTable_t hTable)
 /***********************************************************
     test
 ************************************************************/
-    std::cout << "\tA\tC\tT\tG\tN\tP_A\tP_C\tP_T\tP_G\tP_N\n"
-              << "\t------------------------------------------"
-              << "-----------------------------------\n";
+    std::cout << "\tA\tC\tT\tG\tN"
+              //    << "\tP_A\tP_C\tP_T\tP_G\tP_N"
+              << "\n"
+              << "\t-----------------------------------"
+              //<< "------------------------------------------"
+              << "\n";
 
     int sum;
     int alpha = 1;
@@ -321,12 +324,12 @@ void Hash::hashTablePrint (hashTable_t hTable)
             sum += i;
         }
 
-        for (int i = 0; i < 5; ++i)
-        {
-            std::cout << std::fixed << std::setprecision(1)
-                      << (float) (it->second[ i ] + alpha) /
-                         (sum + ALPHABET_SIZE * alpha) << "\t";
-        }
+//        for (int i = 0; i < 5; ++i)
+//        {
+//            std::cout << std::fixed << std::setprecision(1)
+//                      << (float) (it->second[ i ] + alpha) /
+//                         (sum + ALPHABET_SIZE * alpha) << "\t";
+//        }
         std::cout << "\n";
     }
     

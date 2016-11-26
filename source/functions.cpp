@@ -171,15 +171,15 @@ int32_t Functions::commandLineParser (int argc, char **argv)
 
         hashObj.hashTablePrint(hTableForPrint);   // print hash table
 
-        context = strLine.substr(strLine.size() - CONTEXT_DEPTH, CONTEXT_DEPTH);
-        std::getline(targetFile, strLine);
-
-        std::cout << "context: " << context << "\n";
-        std::cout << "strLine: " << strLine << "\n";
-
-        isFirstTime = false;
-        hTableForPrint = hashObj.hashTableUpdate(hTable, context, strLine,
-                                                 (bool) i_flag, isFirstTime);
+//        context = strLine.substr(strLine.size() - CONTEXT_DEPTH, CONTEXT_DEPTH);
+//        std::getline(targetFile, strLine);
+//
+//        std::cout << "context: " << context << "\n";
+//        std::cout << "strLine: " << strLine << "\n";
+//
+//        isFirstTime = false;
+//        hTableForPrint = hashObj.hashTableUpdate(hTable, context, strLine,
+//                                                 (bool) i_flag, isFirstTime);
 
 //        hashObj.hashTablePrint(hTableForPrint);   // print hash table
 
@@ -227,13 +227,13 @@ int32_t Functions::commandLineParser (int argc, char **argv)
     
     if (r_flag)
     {
-        std::string referenceFile = Functions::fileRead(referenceFileName);
-        if (referenceFile != "")
-        {
-            // build a hash table for the input file, considering inverted repeat mode
-            hashTable_t hTable = hashObj.hashTableBuild(referenceFile, (bool) i_flag);
-            hashObj.hashTablePrint(hTable);   // print hash table
-        }
+//        std::string referenceFile = Functions::fileRead(referenceFileName);
+//        if (referenceFile != "")
+//        {
+//            // build a hash table for the input file, considering inverted repeat mode
+//            hashTable_t hTable = hashObj.hashTableBuild(referenceFile, (bool) i_flag);
+//            hashObj.hashTablePrint(hTable);   // print hash table
+//        }
     }
     
     /* Print any remaining command line arguments (not options). */
