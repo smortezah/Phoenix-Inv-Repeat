@@ -142,13 +142,14 @@ int32_t Functions::commandLineParser (int argc, char **argv)
     if (t_flag)
     {
 
-
+/* file open */
         std::ifstream targetFile(targetFileName, std::ios::in);   // open file
-
+    
         if (!targetFile)
             std::cerr << "File '" << targetFileName << "' could not be opened.\n";
         else if (targetFile.peek() == std::ifstream::traits_type::eof())
             std::cerr << "File '" << targetFileName << "' is empty.\n";
+/* file open */
 
         // context, that slides in the dataset
         std::string context(CONTEXT_DEPTH, 'A');
@@ -164,17 +165,17 @@ int32_t Functions::commandLineParser (int argc, char **argv)
         hTableForPrint
                 = hashObj.hashTableUpdate(hTable, context, strLine,
                                           (bool) i_flag, isFirstTime);
-        
+
         while (!targetFile.eof())
         {
             context = strLine.substr(strLine.size() - CONTEXT_DEPTH, CONTEXT_DEPTH);
             std::getline(targetFile, strLine);
-    
+
             isFirstTime = false;
             hTableForPrint = hashObj.hashTableUpdate(hTableForPrint, context, strLine,
                                                      (bool) i_flag, isFirstTime);
         }
-        
+
         hashObj.hashTablePrint(hTableForPrint);   // print hash table
 
         targetFile.close(); // close file
@@ -218,30 +219,4 @@ int32_t Functions::commandLineParser (int argc, char **argv)
             std::cerr << argv[ optind++ ] << " ";
         std::cerr << std::endl;
     }
-}
-
-
-/***********************************************************
-    read a file
-************************************************************/
-std::string Functions::fileRead (const std::string& fileName)
-{
-    std::ifstream myFile(fileName, std::ios::in);   // open file
-    
-    if (!myFile)
-    {
-        std::cerr << "File \"" << fileName << "\" could not be opened.\n";
-        return "";
-    }
-    
-    std::string strEachLine;    // keep each line
-    std::string strDataset;     // keep the whole dataset
-    
-    // read file line by line
-    while (std::getline(myFile, strEachLine))
-        strDataset += strEachLine;
-    
-    myFile.close(); // close file
-    
-    return strDataset;
 }

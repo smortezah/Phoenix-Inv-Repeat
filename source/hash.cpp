@@ -630,9 +630,6 @@ hashTable_t Hash::hashTableUpdate (hashTable_t hTable, std::string context,
         context = (CONTEXT_DEPTH == 1)
                   ? std::string("") + strDataset[ i ]
                   : context.substr(1, CONTEXT_DEPTH - 1) + strDataset[ i ];
-        
-//        std::cout << context << ' ';
-//        return hTable;
     }
 
     return hTable;
