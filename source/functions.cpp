@@ -165,10 +165,10 @@ int32_t Functions::commandLineParser (int argc, char **argv)
         hTable.insert( {context, {0, 0, 0, 0, 0}} );   // initialize hash table with 0'z
 
         bool isFirstTime = true;
-        hashTable_t hTableForPrint
-        ;
+        hashTable_t hTableForPrint;
+//        hTableForPrint
 //                = hashObj.hashTableUpdate(hTable, context, strLine,
-//                                        (bool) i_flag, isFirstTime);
+//                                          (bool) i_flag, isFirstTime);
 //
 //        hashObj.hashTablePrint(hTableForPrint);   // print hash table
 //
@@ -178,7 +178,7 @@ int32_t Functions::commandLineParser (int argc, char **argv)
 //        std::cout << "context: " << context << "\n";
 //        std::cout << "strLine: " << strLine << "\n";
 
-//        isFirstTime = false;
+        isFirstTime = false;
         hTableForPrint = hashObj.hashTableUpdate(hTable, context, strLine,
                                                  (bool) i_flag, isFirstTime);
 

@@ -407,6 +407,11 @@ hashTable_t Hash::hashTableUpdate (hashTable_t hTable, std::string context,
 
     size_t datasetIter = isFirstTime ? CONTEXT_DEPTH : 0;
 
+    
+//    std::cout << datasetIter;
+//    return hTable;
+    
+    
     // fill hash table by number of occurrences of symbols A, C, T, G, N
     for (size_t i = datasetIter; i < strDataset.size(); ++i)
     {
