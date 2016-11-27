@@ -33,10 +33,10 @@ int32_t main (int argc, char *argv[])
 
 
 
-    Functions function; // for access to Functions (object 'function' on memory stack)
-    function.commandLineParser(argc, argv);
-
-
+//    Functions function; // for access to Functions (object 'function' on memory stack)
+//    function.commandLineParser(argc, argv);
+std::string s="a"+"1";
+std::cout<<(s);
 
 
     // Record end time
