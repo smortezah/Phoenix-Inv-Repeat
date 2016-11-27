@@ -21,7 +21,7 @@
 ///////////////////////////////////////////////////////////
 /////////                 M A I N                 /////////
 ///////////////////////////////////////////////////////////
-
+#include <string>
 int32_t main (int argc, char *argv[])
 {
     // for calculating execution time
@@ -33,10 +33,14 @@ int32_t main (int argc, char *argv[])
 
 
 
-//    Functions function; // for access to Functions (object 'function' on memory stack)
-//    function.commandLineParser(argc, argv);
-std::string s="a"+"1";
-std::cout<<(s);
+    Functions function; // for access to Functions (object 'function' on memory stack)
+    function.commandLineParser(argc, argv);
+    
+    
+//    std::string s ="a";
+//    std::cout << ""+s;
+//    std::string secondlevel ("cplusplus");
+//    std::cout << "www." + secondlevel + '.' << '\n';
 
 
     // Record end time

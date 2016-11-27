@@ -170,7 +170,7 @@ int32_t Functions::commandLineParser (int argc, char **argv)
                 = hashObj.hashTableUpdate(hTable, context, strLine,
                                           (bool) i_flag, isFirstTime);
 
-        hashObj.hashTablePrint(hTableForPrint);   // print hash table
+//        hashObj.hashTablePrint(hTableForPrint);   // print hash table
 
 //        context = strLine.substr(strLine.size() - CONTEXT_DEPTH, CONTEXT_DEPTH);
 //        std::getline(targetFile, strLine);

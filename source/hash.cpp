@@ -637,21 +637,21 @@ hashTable_t Hash::hashTableUpdate (hashTable_t hTable, std::string context,
 //                :
 //                ;
         
-        context =
-                (CONTEXT_DEPTH==1)
-                ?
-////                "" +
-//                        strDataset[i]
-//                +
-                        "HI"
-                :
-                "BYE"
-//                context.substr(1,CONTEXT_DEPTH-1) + strDataset[i]
-                ;
+//        context =
+//                (CONTEXT_DEPTH==1)
+//                ?
+//////                "" +
+////                        strDataset[i]
+////                +
+//                        "HI"
+//                :
+//                "BYE"
+////                context.substr(1,CONTEXT_DEPTH-1) + strDataset[i]
+//                ;
     
     
         // baraye CONTEXT_DEPTH==1 ERROR dare
-            std::cout << context << "\n";
+            std::cout << i << "\t" << context << "\n";
     return hTable;
     }
 
