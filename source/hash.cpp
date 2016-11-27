@@ -419,7 +419,7 @@ hashTable_t Hash::hashTableUpdate (hashTable_t hTable, std::string context,
         {
             case 'A':
                 ++(hTable[ context ])[ 0 ];  // increment number of 'A's. order: {A, C, T, G, N}
-
+                
                 // if inverted repeat option is selected in command line,
                 // hash table considers inverted repeats for getting updated, too
                 if (isInvertedRepeat)
@@ -632,7 +632,21 @@ hashTable_t Hash::hashTableUpdate (hashTable_t hTable, std::string context,
 //        memset(counters, 0, sizeof(counters[ 0 ]) * 4);
 
         // slide in the dataset
-        context = strDataset.substr(i - CONTEXT_DEPTH + 1, CONTEXT_DEPTH);
+//        context = isFirstTime ?
+//                strDataset.substr(i - CONTEXT_DEPTH + 1, CONTEXT_DEPTH)
+//                :
+//                ;
+        context =
+                (CONTEXT_DEPTH==1)
+                ?
+                "" + strDataset[i]
+                :
+                context.substr(1,CONTEXT_DEPTH-1) + strDataset[i];
+    
+    
+        // baraye CONTEXT_DEPTH==1 ERROR dare
+            std::cout << context << "\n";
+//    return hTable;
     }
 
     return hTable;

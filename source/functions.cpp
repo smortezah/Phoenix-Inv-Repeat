@@ -166,20 +166,20 @@ int32_t Functions::commandLineParser (int argc, char **argv)
 
         bool isFirstTime = true;
         hashTable_t hTableForPrint;
-//        hTableForPrint
-//                = hashObj.hashTableUpdate(hTable, context, strLine,
-//                                          (bool) i_flag, isFirstTime);
-//
-//        hashObj.hashTablePrint(hTableForPrint);   // print hash table
-//
-//        context = strLine.substr(strLine.size() - CONTEXT_DEPTH, CONTEXT_DEPTH);
-//        std::getline(targetFile, strLine);
-//
-//        std::cout << "context: " << context << "\n";
-//        std::cout << "strLine: " << strLine << "\n";
+        hTableForPrint
+                = hashObj.hashTableUpdate(hTable, context, strLine,
+                                          (bool) i_flag, isFirstTime);
+
+        hashObj.hashTablePrint(hTableForPrint);   // print hash table
+
+        context = strLine.substr(strLine.size() - CONTEXT_DEPTH, CONTEXT_DEPTH);
+        std::getline(targetFile, strLine);
+
+        std::cout << "context: " << context << "\n";
+        std::cout << "strLine: " << strLine << "\n";
 
         isFirstTime = false;
-        hTableForPrint = hashObj.hashTableUpdate(hTable, context, strLine,
+        hTableForPrint = hashObj.hashTableUpdate(hTableForPrint, context, strLine,
                                                  (bool) i_flag, isFirstTime);
 
         hashObj.hashTablePrint(hTableForPrint);   // print hash table
