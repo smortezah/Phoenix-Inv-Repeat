@@ -152,14 +152,9 @@ int32_t Functions::commandLineParser (int argc, char **argv)
 
         // context, that slides in the dataset
         std::string context(CONTEXT_DEPTH, 'A');
-
         std::string strLine;    // keep each line
         std::getline(targetFile, strLine);
-
         strLine = context + strLine;
-
-        std::cout << "context: " << context << "\n";
-        std::cout << "strLine: " << strLine << "\n";
 
         hashTable_t hTable;
         hTable.insert( {context, {0, 0, 0, 0, 0}} );   // initialize hash table with 0'z
@@ -169,42 +164,20 @@ int32_t Functions::commandLineParser (int argc, char **argv)
         hTableForPrint
                 = hashObj.hashTableUpdate(hTable, context, strLine,
                                           (bool) i_flag, isFirstTime);
-
+        
+        while (!targetFile.eof())
+        {
+            context = strLine.substr(strLine.size() - CONTEXT_DEPTH, CONTEXT_DEPTH);
+            std::getline(targetFile, strLine);
+    
+            isFirstTime = false;
+            hTableForPrint = hashObj.hashTableUpdate(hTableForPrint, context, strLine,
+                                                     (bool) i_flag, isFirstTime);
+        }
+        
         hashObj.hashTablePrint(hTableForPrint);   // print hash table
 
-        context = strLine.substr(strLine.size() - CONTEXT_DEPTH, CONTEXT_DEPTH);
-        std::getline(targetFile, strLine);
-
-        std::cout << "context: " << context << "\n";
-        std::cout << "strLine: " << strLine << "\n";
-
-        isFirstTime = false;
-        hTableForPrint = hashObj.hashTableUpdate(hTableForPrint, context, strLine,
-                                                 (bool) i_flag, isFirstTime);
-
-        hashObj.hashTablePrint(hTableForPrint);   // print hash table
-
-
-
-
-
-
-
-
-
-
-//////        while (!targetFile.eof())
-//////        {
-
-//        std::getline(targetFile, strLine);
-
-
-//        hTableForPrint = hashObj.hashTableUpdate(hTableForPrint, context, strLine, (bool) i_flag);
-//////        }
-//////
-//        hashObj.hashTablePrint(hTable);   // print hash table
-//
-//        targetFile.close(); // close file
+        targetFile.close(); // close file
 
 
 

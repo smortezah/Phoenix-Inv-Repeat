@@ -37,11 +37,8 @@ int32_t main (int argc, char *argv[])
     function.commandLineParser(argc, argv);
     
     
-//    std::string s ="a";
-//    std::cout << ""+s;
-//    std::string secondlevel ("cplusplus");
-//    std::cout << "www." + secondlevel + '.' << '\n';
-
+    
+    
 
     // Record end time
     highResClock::time_point exeFinishTime = highResClock::now();
