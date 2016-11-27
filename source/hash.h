@@ -16,16 +16,12 @@ class Hash
 {
 public:
     Hash ();                                    // constructor
-//    hashTable_t hashTableBuild (std::ifstream, bool);   // build hash table
-    void hashTablePrint (hashTable_t);          // show hash table
 
-    
+
     hashTable_t hashTableUpdate (hashTable_t, std::string, std::string, bool, bool);   // build hash table
-    
-    
-    hashTable_t hashTableBuildUpdate (std::ifstream,
-                                      bool, bool);   // build hash table
 
+    
+    void hashTablePrint (hashTable_t);          // show hash table
 };
 
 
