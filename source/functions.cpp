@@ -142,7 +142,7 @@ int32_t Functions::commandLineParser (int argc, char **argv)
     if (t_flag)
     {
 
-/* file open */
+/* tabe' fileOpen neveshte shavad. baraye khandan(in) o neveshtan(out) o both */
         std::ifstream targetFile(targetFileName, std::ios::in);   // open file
     
         if (!targetFile)
