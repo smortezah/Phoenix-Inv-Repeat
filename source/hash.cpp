@@ -404,14 +404,9 @@ hashTable_t Hash::hashTableUpdate (hashTable_t hTable, std::string context,
 //
 //    hTable.insert( {context, {0, 0, 0, 0, 0}} );   // initialize hash table with 0'z
 //
-
+    
     size_t datasetIter = isFirstTime ? CONTEXT_DEPTH : 0;
-
-    
-//    std::cout << datasetIter;
-//    return hTable;
-    
-    
+        
     // fill hash table by number of occurrences of symbols A, C, T, G, N
     for (size_t i = datasetIter; i < strDataset.size(); ++i)
     {
@@ -630,29 +625,14 @@ hashTable_t Hash::hashTableUpdate (hashTable_t hTable, std::string context,
 //                     (4 * ALPHA_NUMERATOR);
 //
 //        memset(counters, 0, sizeof(counters[ 0 ]) * 4);
-
-        // slide in the dataset
-//        context = isFirstTime ?
-//                strDataset.substr(i - CONTEXT_DEPTH + 1, CONTEXT_DEPTH)
-//                :
-//                ;
         
-//        context =
-//                (CONTEXT_DEPTH==1)
-//                ?
-//////                "" +
-////                        strDataset[i]
-////                +
-//                        "HI"
-//                :
-//                "BYE"
-////                context.substr(1,CONTEXT_DEPTH-1) + strDataset[i]
-//                ;
     
-    
-        // baraye CONTEXT_DEPTH==1 ERROR dare
-            std::cout << i << "\t" << context << "\n";
-    return hTable;
+        context = (CONTEXT_DEPTH == 1)
+                  ? std::string("") + strDataset[ i ]
+                  : context.substr(1, CONTEXT_DEPTH - 1) + strDataset[ i ];
+        
+//        std::cout << context << ' ';
+//        return hTable;
     }
 
     return hTable;
