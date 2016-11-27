@@ -16,6 +16,9 @@ class Hash
 {
 public:
     Hash ();                                    // constructor
+    
+    hashTable_t hashTableBuild(std::ifstream);
+    
 
 
     hashTable_t hashTableUpdate (hashTable_t, std::string, std::string, bool, bool);   // build hash table

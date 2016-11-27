@@ -36,12 +36,104 @@
 
 
 
-
-
 /***********************************************************
     constructor
 ************************************************************/
 Hash::Hash () {}
+
+
+
+/***********************************************************
+    update hash table
+************************************************************/
+hashTable_t Hash::hashTableBuild (std::ifstream targetFile)
+{
+    // context, that slides in the dataset
+    std::string context(CONTEXT_DEPTH, 'A');
+    
+    hashTable_t hTable;
+    hTable.insert( {context, {0, 0, 0, 0, 0}} );   // initialize hash table with 0'z
+    
+    std::string datasetLine;    // keep each line
+    std::getline(targetFile, datasetLine);
+    datasetLine = context + datasetLine;
+    
+    bool isFirstLine = true;
+//    size_t datasetIter = isFirstLine ? CONTEXT_DEPTH : 0;
+    
+    size_t lineIter = CONTEXT_DEPTH;
+    
+    do
+    {
+        switch (datasetLine[ lineIter ])
+        {
+            case 'A':
+                ++(hTable[ context ])[ 0 ];  // increment number of 'A's. order: {A, C, T, G, N}
+                break;
+            
+            default: break;
+        }
+        
+        
+        context = (CONTEXT_DEPTH == 1)
+                  ? std::string("") + datasetLine[ lineIter ]
+                  : context.substr(1, CONTEXT_DEPTH - 1) + datasetLine[ lineIter ];
+        
+        isFirstLine = false;
+        ++lineIter;
+    } while (!isFirstLine && (lineIter < datasetLine.size()));
+    
+    
+//    // fill hash table by number of occurrences of symbols A, C, T, G, N
+//    for (size_t i = datasetIter; i < datasetLine.size(); ++i)
+//    {
+//        switch (datasetLine[ i ])
+//        {
+//            case 'A':
+//                ++(hTable[ context ])[ 0 ];  // increment number of 'A's. order: {A, C, T, G, N}
+//
+////                // if inverted repeat option is selected in command line,
+////                // hash table considers inverted repeats for getting updated, too
+////                if (isInvertedRepeat)
+////                {
+////                    std::string invRepeat = context + "A";
+////
+////                    // A <-> T  ,  C <-> G  ,  N <-> N (N unchanged)
+////                    for (char& ch : invRepeat)
+////                        ch = (ch == 'A') ? 'T' :
+////                             (ch == 'C') ? 'G' :
+////                             (ch == 'T') ? 'A' :
+////                             (ch == 'G') ? 'C' :
+////                             'N';
+////
+////                    // invert the string
+////                    std::reverse( invRepeat.begin(), invRepeat.end() );
+////
+////                    // inverted repeat context
+////                    std::string invRepeatContext = invRepeat.substr(0, invRepeat.size() - 1);
+////
+////                    switch (invRepeat[ invRepeat.size() - 1 ])
+////                    {
+////                        case 'A':   ++(hTable[ invRepeatContext ])[ 0 ];    break;
+////                        case 'C':   ++(hTable[ invRepeatContext ])[ 1 ];    break;
+////                        case 'T':   ++(hTable[ invRepeatContext ])[ 2 ];    break;
+////                        case 'G':   ++(hTable[ invRepeatContext ])[ 3 ];    break;
+////                        case 'N':   ++(hTable[ invRepeatContext ])[ 4 ];    break;
+////                        default:                                            break;
+////                    }
+////                }
+//                break;
+//
+//            default: break;
+//        }
+//
+//        context = (CONTEXT_DEPTH == 1)
+//                  ? std::string("") + datasetLine[ i ]
+//                  : context.substr(1, CONTEXT_DEPTH - 1) + datasetLine[ i ];
+//    }
+    
+    return hTable;
+}
 
 
 /***********************************************************

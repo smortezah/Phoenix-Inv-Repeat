@@ -138,69 +138,43 @@ int32_t Functions::commandLineParser (int argc, char **argv)
         }
     }
     
-     
+    
     if (t_flag)
     {
-
-/* tabe' fileOpen neveshte shavad. baraye khandan(in) o neveshtan(out) o both */
-        std::ifstream targetFile(targetFileName, std::ios::in);   // open file
-    
-        if (!targetFile)
-            std::cerr << "File '" << targetFileName << "' could not be opened.\n";
-        else if (targetFile.peek() == std::ifstream::traits_type::eof())
-            std::cerr << "File '" << targetFileName << "' is empty.\n";
-/* file open */
-
-
-        // context, that slides in the dataset
-        std::string context(CONTEXT_DEPTH, 'A');
-
-        hashTable_t hTable;
-        hTable.insert( {context, {0, 0, 0, 0, 0}} );   // initialize hash table with 0'z
-
-        bool isFirstLine = true;
-    
-        std::string strLine;    // keep each line
-        std::getline(targetFile, strLine);
-        strLine = context + strLine;
-        
-        hashTable_t hTableForPrint;
-        hTableForPrint
-                = hashObj.hashTableUpdate(hTable, context, strLine,
-                                          (bool) i_flag, isFirstLine);
-
-        while (!targetFile.eof())
-        {
-            context = strLine.substr(strLine.size() - CONTEXT_DEPTH, CONTEXT_DEPTH);
-            std::getline(targetFile, strLine);
-
-            isFirstLine = false;
-            hTableForPrint = hashObj.hashTableUpdate(hTableForPrint, context, strLine,
-                                                     (bool) i_flag, isFirstLine);
-        }
-
+        hashTable_t hTableForPrint = hashObj.hashTableBuild( fileOpen(targetFileName) );
         hashObj.hashTablePrint(hTableForPrint);   // print hash table
 
-        targetFile.close(); // close file
 
-
-
-
-
-
-
-
-
-
-
-
-//        std::string targetFile = Functions::fileRead(targetFileName);
-//        if (targetFile != "")
+//        // context, that slides in the dataset
+//        std::string context(CONTEXT_DEPTH, 'A');
+//
+//        hashTable_t hTable;
+//        hTable.insert( {context, {0, 0, 0, 0, 0}} );   // initialize hash table with 0'z
+//
+//        bool isFirstLine = true;
+//
+//        std::string strLine;    // keep each line
+//        std::getline(targetFile, strLine);
+//        strLine = context + strLine;
+//
+//        hashTable_t hTableForPrint;
+//        hTableForPrint
+//                = hashObj.hashTableUpdate(hTable, context, strLine,
+//                                          (bool) i_flag, isFirstLine);
+//
+//        while (!targetFile.eof())
 //        {
-//            // build a hash table for the input file, considering inverted repeat mode
-//            hashTable_t hTable = hashObj.hashTableBuild(targetFile, (bool) i_flag);
-//            hashObj.hashTablePrint(hTable);   // print hash table
+//            context = strLine.substr(strLine.size() - CONTEXT_DEPTH, CONTEXT_DEPTH);
+//            std::getline(targetFile, strLine);
+//
+//            isFirstLine = false;
+//            hTableForPrint = hashObj.hashTableUpdate(hTableForPrint, context, strLine,
+//                                                     (bool) i_flag, isFirstLine);
 //        }
+//
+//        hashObj.hashTablePrint(hTableForPrint);   // print hash table
+//
+//        targetFile.close(); // close file
     }
     
     if (r_flag)
@@ -222,4 +196,20 @@ int32_t Functions::commandLineParser (int argc, char **argv)
             std::cerr << argv[ optind++ ] << " ";
         std::cerr << std::endl;
     }
+}
+
+
+/***********************************************************
+    open file
+************************************************************/
+std::ifstream Functions::fileOpen (std::string targetFileName)
+{
+    std::ifstream targetFile(targetFileName, std::ios::in);
+    
+    if (!targetFile)
+        std::cerr << "File '" << targetFileName << "' could not be opened.\n";
+    else if (targetFile.peek() == std::ifstream::traits_type::eof())
+        std::cerr << "File '" << targetFileName << "' is empty.\n";
+    
+    return targetFile;
 }

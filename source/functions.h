@@ -10,6 +10,9 @@ class Functions
 public:
     Functions ();                                   // constructor
     int32_t commandLineParser (int, char**);        // parse command line
+
+private:
+    std::ifstream fileOpen(std::string);    // open file
 };
 
 
