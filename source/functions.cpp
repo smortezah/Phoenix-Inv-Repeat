@@ -138,7 +138,7 @@ int32_t Functions::commandLineParser (int argc, char **argv)
         }
     }
     
-    
+     
     if (t_flag)
     {
 
@@ -150,23 +150,23 @@ int32_t Functions::commandLineParser (int argc, char **argv)
         else if (targetFile.peek() == std::ifstream::traits_type::eof())
             std::cerr << "File '" << targetFileName << "' is empty.\n";
 /* file open */
-//
+
 //
 //        // context, that slides in the dataset
 //        std::string context(CONTEXT_DEPTH, 'A');
-        std::string strLine;    // keep each line
-        std::getline(targetFile, strLine);
+//        std::string strLine;    // keep each line
+//        std::getline(targetFile, strLine);
 //        strLine = context + strLine;
 //
 //        hashTable_t hTable;
 //        hTable.insert( {context, {0, 0, 0, 0, 0}} );   // initialize hash table with 0'z
-                
-//        bool isFirstTime = true;
-//        hashTable_t hTableForPrint;
-//        hTableForPrint
-//                = hashObj.hashTableUpdate(hTable, context, strLine,
-//                                          (bool) i_flag, isFirstTime);
-//
+
+        bool isFirstTime = true;
+        hashTable_t hTableForPrint;
+        hTableForPrint
+                = hashObj.hashTableBuildUpdate(targetFile,
+                                          (bool) i_flag, isFirstTime);
+
 //        while (!targetFile.eof())
 //        {
 //            context = strLine.substr(strLine.size() - CONTEXT_DEPTH, CONTEXT_DEPTH);
@@ -177,7 +177,7 @@ int32_t Functions::commandLineParser (int argc, char **argv)
 //                                                     (bool) i_flag, isFirstTime);
 //        }
 
-//        hashObj.hashTablePrint(hTableForPrint);   // print hash table
+        hashObj.hashTablePrint(hTableForPrint);   // print hash table
 
         targetFile.close(); // close file
 
