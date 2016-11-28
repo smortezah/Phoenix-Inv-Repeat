@@ -54,16 +54,17 @@ hashTable_t Hash::hashTableBuild (const std::string& fileName, const bool isInve
     
     if (isFileOk)   // file opened correctly
     {
-        std::string context(CONTEXT_DEPTH, 'A');    // context, that slides in the dataset
+        // context, that slides in the dataset
+        std::string context(CONTEXT_DEPTH, 'A');
         
         hashTable_t hTable;                         // create hash table
         hTable.insert({context, {0, 0, 0, 0, 0}});  // initialize hash table with 0'z
 
-        std::string datasetLine;    // keep each line
-        std::getline(fileIn, datasetLine);
-        datasetLine = context + datasetLine;
+        std::string datasetLine;                // to keep each line of file
+        std::getline(fileIn, datasetLine);      // read each line of file
+        datasetLine = context + datasetLine;    // add "AA..." to beginning of first line of file
 
-        size_t lineIter = CONTEXT_DEPTH;
+        size_t lineIter = CONTEXT_DEPTH;    //
         do
         {
             // fill hash table by number of occurrences of symbols A, C, T, G, N
