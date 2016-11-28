@@ -141,8 +141,9 @@ int32_t Functions::commandLineParser (int argc, char **argv)
     
     if (t_flag)
     {
+        // build hash table, considering inverted repeats
         hashTable_t hTableForPrint = hashObj.hashTableBuild(targetFileName, (bool) i_flag);
-        hashObj.hashTablePrint(hTableForPrint);   // print hash table
+        hashObj.hashTablePrint(hTableForPrint); // print hash table
     }
     
     if (r_flag)
@@ -162,12 +163,11 @@ int32_t Functions::commandLineParser (int argc, char **argv)
 
 
 /***********************************************************
-    handle errors in opening a file
+    handle errors while opening file
 ************************************************************/
-bool Functions::fileOpenErrorHandle (std::string fileName)
+bool Functions::fileOpenErrorHandle (const std::string& fileName)
 {
-    // open file
-    std::ifstream fileIn(fileName, std::ios::in);
+    std::ifstream fileIn(fileName, std::ios::in);   // open file
     
     // check if file doesn't exist
     if (!fileIn)

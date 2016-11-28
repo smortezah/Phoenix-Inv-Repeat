@@ -8,9 +8,9 @@
 class Functions
 {
 public:
-    Functions ();                               // constructor
-    int32_t commandLineParser (int, char**);    // parse command line
-    bool fileOpenErrorHandle(std::string);      // handle errors in opening a file
+    Functions ();                                   // constructor
+    int32_t commandLineParser (int, char**);        // parse command line
+    bool fileOpenErrorHandle(const std::string&);   // handle errors while opening file
 };
 
 

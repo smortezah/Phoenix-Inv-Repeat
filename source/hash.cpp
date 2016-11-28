@@ -45,7 +45,7 @@ Hash::Hash () {}
 /***********************************************************
     build hash table
 ************************************************************/
-hashTable_t Hash::hashTableBuild (std::string targetFileName, bool isInvertedRepeat)
+hashTable_t Hash::hashTableBuild (const std::string& targetFileName, const bool isInvertedRepeat)
 {
     Functions funcObj;  // object of class Functions
     
