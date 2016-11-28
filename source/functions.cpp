@@ -18,7 +18,7 @@ Functions::Functions () {}
 /***********************************************************
     parse command line
 ************************************************************/
-int32_t Functions::commandLineParser (int argc, char **argv)
+int8_t Functions::commandLineParser (int argc, char **argv)
 {
     Messages messageObj;    // object for showing messages
     Hash hashObj;           // object of class hash table
