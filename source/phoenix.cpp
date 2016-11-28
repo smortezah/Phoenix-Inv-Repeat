@@ -30,12 +30,12 @@ int32_t main (int argc, char *argv[])
     // Record start time
     highResClock::time_point exeStartTime = highResClock::now();
 
-    
 
 
 
-    Functions function; // for access to Functions (object 'function' on memory stack)
-    function.commandLineParser(argc, argv);
+    // for access to Functions (object 'function' on memory stack)
+    Functions function;
+    function.commandLineParser(argc, argv); // parse the command line
     
     
     

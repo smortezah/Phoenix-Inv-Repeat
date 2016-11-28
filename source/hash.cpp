@@ -54,17 +54,18 @@ hashTable_t Hash::hashTableBuild (const std::string& fileName, const bool isInve
     
     if (isFileOk)   // file opened correctly
     {
-        // context, that slides in the dataset
-        std::string context(CONTEXT_DEPTH, 'A');
+        std::string context(CONTEXT_DEPTH, 'A');    // context, that slides in the dataset
         
         hashTable_t hTable;                         // create hash table
         hTable.insert({context, {0, 0, 0, 0, 0}});  // initialize hash table with 0'z
+        
+        std::string datasetLine;                    // to keep each line of file
+        std::getline(fileIn, datasetLine);          // read first line of file
+        datasetLine = context + datasetLine;        // add "AA..." to beginning of first line of file
 
-        std::string datasetLine;                // to keep each line of file
-        std::getline(fileIn, datasetLine);      // read each line of file
-        datasetLine = context + datasetLine;    // add "AA..." to beginning of first line of file
-
-        size_t lineIter = CONTEXT_DEPTH;    //
+        // iterator for each line of file.
+        // at first line, it starts from index CONTEXT_DEPTH. at other lines, it starts from index 0
+        size_t lineIter = CONTEXT_DEPTH;
         do
         {
             // fill hash table by number of occurrences of symbols A, C, T, G, N
@@ -73,10 +74,10 @@ hashTable_t Hash::hashTableBuild (const std::string& fileName, const bool isInve
                 switch (datasetLine[ i ])
                 {
                     case 'A':
-                        ++(hTable[ context ])[ 0 ];  // increment number of 'A's. order: {A, C, T, G, N}
+                        // increment number of 'A's. order: {A, C, T, G, N}
+                        ++(hTable[ context ])[ 0 ];
                 
-                        // if inverted repeat option is selected in command line,
-                        // hash table considers inverted repeats for getting updated, too
+                        // considering inverted repeats to update hash table
                         if (isInvertedRepeat)
                         {
                             std::string invRepeat = context + "A";
@@ -95,6 +96,7 @@ hashTable_t Hash::hashTableBuild (const std::string& fileName, const bool isInve
                             // inverted repeat context
                             std::string invRepeatContext = invRepeat.substr(0, invRepeat.size() - 1);
                     
+                            // update hash table for inverted repeats
                             switch (invRepeat[ invRepeat.size() - 1 ])
                             {
                                 case 'A':   ++(hTable[ invRepeatContext ])[ 0 ];    break;
@@ -105,19 +107,19 @@ hashTable_t Hash::hashTableBuild (const std::string& fileName, const bool isInve
                                 default:                                            break;
                             }
                         }
-
-//                counters[ 0 ] += ALPHA_DENUMERATOR * table[ index ][ 0 ] + ALPHA_NUMERATOR;
-//                totalCount = (ALPHA_DENUMERATOR * (table[ index ][ 0 ] + table[ index ][ 1 ] +
-//                                                   table[ index ][ 2 ] + table[ index ][ 3 ])) +
-//                             (4 * ALPHA_NUMERATOR);
-////                AESym(3, counters, totalCount, writer);
+        
+//                        counters[ 0 ] += ALPHA_DENUMERATOR * table[ index ][ 0 ] + ALPHA_NUMERATOR;
+//                        totalCount = (ALPHA_DENUMERATOR * (table[ index ][ 0 ] + table[ index ][ 1 ] +
+//                                                           table[ index ][ 2 ] + table[ index ][ 3 ])) +
+//                                     (4 * ALPHA_NUMERATOR);
+////                        AESym(3, counters, totalCount, writer);
                         break;
             
                     case 'C':
-                        ++(hTable[ context ])[ 1 ];  // increment number of 'C's. order: {A, C, T, G, N}
-                
-                        // if inverted repeat option is selected in command line,
-                        // hash table considers inverted repeats for getting updated, too
+                        // increment number of 'C's. order: {A, C, T, G, N}
+                        ++(hTable[ context ])[ 1 ];
+        
+                        // considering inverted repeats to update hash table
                         if (isInvertedRepeat)
                         {
                             std::string invRepeat = context + "C";
@@ -135,7 +137,8 @@ hashTable_t Hash::hashTableBuild (const std::string& fileName, const bool isInve
                     
                             // inverted repeat context
                             std::string invRepeatContext = invRepeat.substr(0, invRepeat.size() - 1);
-                    
+    
+                            // update hash table for inverted repeats
                             switch (invRepeat[ invRepeat.size() - 1 ])
                             {
                                 case 'A':   ++(hTable[ invRepeatContext ])[ 0 ];    break;
@@ -146,19 +149,19 @@ hashTable_t Hash::hashTableBuild (const std::string& fileName, const bool isInve
                                 default:                                            break;
                             }
                         }
-
-//                counters[ 1 ] += ALPHA_DENUMERATOR * table[ index ][ 1 ] + ALPHA_NUMERATOR;
-//                totalCount = (ALPHA_DENUMERATOR * (table[ index ][ 0 ] + table[ index ][ 1 ] +
-//                                                   table[ index ][ 2 ] + table[ index ][ 3 ])) +
-//                             (4 * ALPHA_NUMERATOR);
-////                AESym(3, counters, totalCount, writer);
+        
+//                        counters[ 1 ] += ALPHA_DENUMERATOR * table[ index ][ 1 ] + ALPHA_NUMERATOR;
+//                        totalCount = (ALPHA_DENUMERATOR * (table[ index ][ 0 ] + table[ index ][ 1 ] +
+//                                                           table[ index ][ 2 ] + table[ index ][ 3 ])) +
+//                                     (4 * ALPHA_NUMERATOR);
+////                        AESym(3, counters, totalCount, writer);
                         break;
             
                     case 'T':
-                        ++(hTable[ context ])[ 2 ];  // increment number of 'T's. order: {A, C, T, G, N}
-                
-                        // if inverted repeat option is selected in command line,
-                        // hash table considers inverted repeats for getting updated, too
+                        // increment number of 'T's. order: {A, C, T, G, N}
+                        ++(hTable[ context ])[ 2 ];
+        
+                        // considering inverted repeats to update hash table
                         if (isInvertedRepeat)
                         {
                             std::string invRepeat = context + "T";
@@ -176,7 +179,8 @@ hashTable_t Hash::hashTableBuild (const std::string& fileName, const bool isInve
                     
                             // inverted repeat context
                             std::string invRepeatContext = invRepeat.substr(0, invRepeat.size() - 1);
-                    
+    
+                            // update hash table for inverted repeats
                             switch (invRepeat[ invRepeat.size() - 1 ])
                             {
                                 case 'A':   ++(hTable[ invRepeatContext ])[ 0 ];    break;
@@ -187,19 +191,19 @@ hashTable_t Hash::hashTableBuild (const std::string& fileName, const bool isInve
                                 default:                                            break;
                             }
                         }
-
-//                counters[ 2 ] += ALPHA_DENUMERATOR * table[ index ][ 2 ] + ALPHA_NUMERATOR;
-//                totalCount = (ALPHA_DENUMERATOR * (table[ index ][ 0 ] + table[ index ][ 1 ] +
-//                                                   table[ index ][ 2 ] + table[ index ][ 3 ])) +
-//                             (4 * ALPHA_NUMERATOR);
-////                AESym(3, counters, totalCount, writer);
+        
+//                        counters[ 2 ] += ALPHA_DENUMERATOR * table[ index ][ 2 ] + ALPHA_NUMERATOR;
+//                        totalCount = (ALPHA_DENUMERATOR * (table[ index ][ 0 ] + table[ index ][ 1 ] +
+//                                                           table[ index ][ 2 ] + table[ index ][ 3 ])) +
+//                                     (4 * ALPHA_NUMERATOR);
+////                        AESym(3, counters, totalCount, writer);
                         break;
             
                     case 'G':
-                        ++(hTable[ context ])[ 3 ];  // increment number of 'G's. order: {A, C, T, G, N}
-                
-                        // if inverted repeat option is selected in command line,
-                        // hash table considers inverted repeats for getting updated, too
+                        // increment number of 'G's. order: {A, C, T, G, N}
+                        ++(hTable[ context ])[ 3 ];
+        
+                        // considering inverted repeats to update hash table
                         if (isInvertedRepeat)
                         {
                             std::string invRepeat = context + "G";
@@ -217,7 +221,8 @@ hashTable_t Hash::hashTableBuild (const std::string& fileName, const bool isInve
                     
                             // inverted repeat context
                             std::string invRepeatContext = invRepeat.substr(0, invRepeat.size() - 1);
-                    
+    
+                            // update hash table for inverted repeats
                             switch (invRepeat[ invRepeat.size() - 1 ])
                             {
                                 case 'A':   ++(hTable[ invRepeatContext ])[ 0 ];    break;
@@ -228,19 +233,19 @@ hashTable_t Hash::hashTableBuild (const std::string& fileName, const bool isInve
                                 default:                                            break;
                             }
                         }
-
-//                counters[ 3 ] += ALPHA_DENUMERATOR * table[ index ][ 3 ] + ALPHA_NUMERATOR;
-//                totalCount = (ALPHA_DENUMERATOR * (table[ index ][ 0 ] + table[ index ][ 1 ] +
-//                                                   table[ index ][ 2 ] + table[ index ][ 3 ])) +
-//                             (4 * ALPHA_NUMERATOR);
-////                AESym(3, counters, totalCount, writer);
+//
+//                        counters[ 3 ] += ALPHA_DENUMERATOR * table[ index ][ 3 ] + ALPHA_NUMERATOR;
+//                        totalCount = (ALPHA_DENUMERATOR * (table[ index ][ 0 ] + table[ index ][ 1 ] +
+//                                                           table[ index ][ 2 ] + table[ index ][ 3 ])) +
+//                                     (4 * ALPHA_NUMERATOR);
+////                        AESym(3, counters, totalCount, writer);
                         break;
             
                     case 'N':
-                        ++(hTable[ context ])[ 4 ];  // increment number of 'N's. order: {A, C, T, G, N}
-                
-                        // if inverted repeat option is selected in command line,
-                        // hash table considers inverted repeats for getting updated, too
+                        // increment number of 'N's. order: {A, C, T, G, N}
+                        ++(hTable[ context ])[ 4 ];
+        
+                        // considering inverted repeats to update hash table
                         if (isInvertedRepeat)
                         {
                             std::string invRepeat = context + "N";
@@ -258,7 +263,8 @@ hashTable_t Hash::hashTableBuild (const std::string& fileName, const bool isInve
                     
                             // inverted repeat context
                             std::string invRepeatContext = invRepeat.substr(0, invRepeat.size() - 1);
-                    
+    
+                            // update hash table for inverted repeats
                             switch (invRepeat[ invRepeat.size() - 1 ])
                             {
                                 case 'A':   ++(hTable[ invRepeatContext ])[ 0 ];    break;
@@ -269,12 +275,12 @@ hashTable_t Hash::hashTableBuild (const std::string& fileName, const bool isInve
                                 default:                                            break;
                             }
                         }
-
-//                counters[ 3 ] += ALPHA_DENUMERATOR * table[ index ][ 3 ] + ALPHA_NUMERATOR;
-//                totalCount = (ALPHA_DENUMERATOR * (table[ index ][ 0 ] + table[ index ][ 1 ] +
-//                                                   table[ index ][ 2 ] + table[ index ][ 3 ])) +
-//                             (4 * ALPHA_NUMERATOR);
-////                AESym(3, counters, totalCount, writer);
+        
+//                        counters[ 3 ] += ALPHA_DENUMERATOR * table[ index ][ 3 ] + ALPHA_NUMERATOR;
+//                        totalCount = (ALPHA_DENUMERATOR * (table[ index ][ 0 ] + table[ index ][ 1 ] +
+//                                                           table[ index ][ 2 ] + table[ index ][ 3 ])) +
+//                                     (4 * ALPHA_NUMERATOR);
+////                        AESym(3, counters, totalCount, writer);
                         break;
             
                     default: break;
@@ -285,18 +291,19 @@ hashTable_t Hash::hashTableBuild (const std::string& fileName, const bool isInve
 //                             (4 * ALPHA_NUMERATOR);
 //
 //                memset(counters, 0, sizeof(counters[ 0 ]) * 4);
-                
+    
+                // update context
                 context = (CONTEXT_DEPTH == 1)
-                          ? std::string("") + datasetLine[ lineIter ]
+                          ? std::string("") + datasetLine[ i ]
                           : context.substr(1, CONTEXT_DEPTH - 1) + datasetLine[ i ];
             }
-    
-            lineIter = 0;
-        } while (std::getline(fileIn, datasetLine));
+            
+            lineIter = 0;   // iterator for non-first lines of file becomes 0
+        } while ( std::getline(fileIn, datasetLine) );
 
-        fileIn.close(); // close file
+        fileIn.close();     // close file
     
-        return hTable;
+        return hTable;      // return the made hash table
     }
 }
 
