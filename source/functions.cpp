@@ -144,7 +144,7 @@ int32_t Functions::commandLineParser (int argc, char **argv)
             hashTable_t hTableForPrint =
 //                hashObj.hashTableUpdate ( hTable, context, datasetLine, false, true);
                     hashObj.hashTableBuild(targetFileName);
-//        hashObj.hashTablePrint(hTableForPrint);   // print hash table
+        hashObj.hashTablePrint(hTableForPrint);   // print hash table
 
 
 //        // context, that slides in the dataset
@@ -206,7 +206,7 @@ int32_t Functions::commandLineParser (int argc, char **argv)
 bool Functions::fileOpenErrorHandle (std::string fileName)
 {
     std::ifstream fileIn(fileName, std::ios::in);
-    
+
     if (!fileIn)
     {
         std::cerr << "File '" << fileName << "' could not be opened.\n";

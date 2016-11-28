@@ -56,27 +56,19 @@ hashTable_t Hash::hashTableBuild (std::string targetFileName)
     {
         // context, that slides in the dataset
         std::string context(CONTEXT_DEPTH, 'A');
-        
+
         hashTable_t hTable;
         hTable.insert({context, {0, 0, 0, 0, 0}});   // initialize hash table with 0'z
-        
+
         std::string datasetLine;    // keep each line
         std::getline(fileIn, datasetLine);
         datasetLine = context + datasetLine;
 
-//    std::cout<<datasetLine<<"\n";
-
-//    bool isFirstLine = true;
-//    size_t datasetIter = isFirstLine ? CONTEXT_DEPTH : 0;
-        
         size_t lineIter = CONTEXT_DEPTH;
-        
-        int mori = 1;
-        
         do
         {
-            std::cout << "datasetLine: " << datasetLine << "\n" << "context:" << context << "\n";
-            
+//            std::cout << "datasetLine: " << datasetLine << "\n" << "context:" << context << "\n";
+
             for (size_t i = lineIter; i < datasetLine.size(); ++i)
             {
                 switch (datasetLine[ i ])
@@ -93,26 +85,27 @@ hashTable_t Hash::hashTableBuild (std::string targetFileName)
                     case 'G':
                         ++(hTable[ context ])[ 3 ];  // increment number of 'A's. order: {A, C, T, G, N}
                         break;
-                    
+
                     default:
                         break;
                 }
-                
+
                 context = (CONTEXT_DEPTH == 1)
                           ? std::string("") + datasetLine[ lineIter ]
-                          : context.substr(1, CONTEXT_DEPTH - 1) + datasetLine[ lineIter ];
+                          : context.substr(1, CONTEXT_DEPTH - 1) + datasetLine[ i ];
             }
-            
+
             lineIter = 0;
-            
-            ++mori;
         }
-//    while (!fileIn.eof())
-//    while (std::getline(fileIn, datasetLine))
-        while (mori <= 2 && std::getline(fileIn, datasetLine));
-        
+        while (
+//                mori <= 3
+//                &&
+                std::getline(fileIn, datasetLine)
+                )
+            ;
+
         fileIn.close(); // close file
-        
+    
         return hTable;
     }
 }
