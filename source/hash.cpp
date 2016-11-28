@@ -42,71 +42,79 @@
 Hash::Hash () {}
 
 
-
 /***********************************************************
-    update hash table
+    build hash table
 ************************************************************/
-hashTable_t Hash::hashTableBuild (std::ifstream targetFile)
+hashTable_t Hash::hashTableBuild (std::string targetFileName)
 {
-    // context, that slides in the dataset
-    std::string context(CONTEXT_DEPTH, 'A');
+    Functions funcObj;           // object of class Functions
     
-    hashTable_t hTable;
-    hTable.insert( {context, {0, 0, 0, 0, 0}} );   // initialize hash table with 0'z
+    std::ifstream fileIn(targetFileName, std::ios::in);
+    bool isFileOk = funcObj.fileOpenErrorHandle(targetFileName);
     
-    std::string datasetLine;    // keep each line
-    std::getline(targetFile, datasetLine);
-    datasetLine = context + datasetLine;
-    
+    if (isFileOk)
+    {
+        // context, that slides in the dataset
+        std::string context(CONTEXT_DEPTH, 'A');
+        
+        hashTable_t hTable;
+        hTable.insert({context, {0, 0, 0, 0, 0}});   // initialize hash table with 0'z
+        
+        std::string datasetLine;    // keep each line
+        std::getline(fileIn, datasetLine);
+        datasetLine = context + datasetLine;
+
 //    std::cout<<datasetLine<<"\n";
-    
+
 //    bool isFirstLine = true;
 //    size_t datasetIter = isFirstLine ? CONTEXT_DEPTH : 0;
-    
-    size_t lineIter = CONTEXT_DEPTH;
-    
-    int mori=1;
-    
-    do
-    {
-        std::cout<<"datasetLine: "<<datasetLine<<"\n"<<"context:"<<context<<"\n";
-    
-        for (size_t i = lineIter; i < datasetLine.size(); ++i)
+        
+        size_t lineIter = CONTEXT_DEPTH;
+        
+        int mori = 1;
+        
+        do
         {
-            switch (datasetLine[ i ])
+            std::cout << "datasetLine: " << datasetLine << "\n" << "context:" << context << "\n";
+            
+            for (size_t i = lineIter; i < datasetLine.size(); ++i)
             {
-                case 'A':
-                    ++(hTable[ context ])[ 0 ];  // increment number of 'A's. order: {A, C, T, G, N}
-                    break;
-                case 'C':
-                    ++(hTable[ context ])[ 1 ];  // increment number of 'A's. order: {A, C, T, G, N}
-                    break;
-                case 'T':
-                    ++(hTable[ context ])[ 2 ];  // increment number of 'A's. order: {A, C, T, G, N}
-                    break;
-                case 'G':
-                    ++(hTable[ context ])[ 3 ];  // increment number of 'A's. order: {A, C, T, G, N}
-                    break;
-    
-                default:
-                    break;
+                switch (datasetLine[ i ])
+                {
+                    case 'A':
+                        ++(hTable[ context ])[ 0 ];  // increment number of 'A's. order: {A, C, T, G, N}
+                        break;
+                    case 'C':
+                        ++(hTable[ context ])[ 1 ];  // increment number of 'A's. order: {A, C, T, G, N}
+                        break;
+                    case 'T':
+                        ++(hTable[ context ])[ 2 ];  // increment number of 'A's. order: {A, C, T, G, N}
+                        break;
+                    case 'G':
+                        ++(hTable[ context ])[ 3 ];  // increment number of 'A's. order: {A, C, T, G, N}
+                        break;
+                    
+                    default:
+                        break;
+                }
+                
+                context = (CONTEXT_DEPTH == 1)
+                          ? std::string("") + datasetLine[ lineIter ]
+                          : context.substr(1, CONTEXT_DEPTH - 1) + datasetLine[ lineIter ];
             }
             
-            context = (CONTEXT_DEPTH == 1)
-                      ? std::string("") + datasetLine[ lineIter ]
-                      : context.substr(1, CONTEXT_DEPTH - 1) + datasetLine[ lineIter ];
+            lineIter = 0;
+            
+            ++mori;
         }
+//    while (!fileIn.eof())
+//    while (std::getline(fileIn, datasetLine))
+        while (mori <= 2 && std::getline(fileIn, datasetLine));
         
-        lineIter = 0;
-    
-    ++mori;
+        fileIn.close(); // close file
+        
+        return hTable;
     }
-//    while (!targetFile.eof())
-//    while (std::getline(targetFile, datasetLine))
-    while (mori<=2 && std::getline(targetFile, datasetLine))
-            ;
-    
-    return hTable;
 }
 
 
@@ -374,11 +382,10 @@ hashTable_t Hash::hashTableUpdate (hashTable_t hTable,
 ************************************************************/
 void Hash::hashTablePrint (hashTable_t hTable)
 {
-
-
-/***********************************************************
-    test
-************************************************************/
+    
+    /***********************************************************
+        test
+    ************************************************************/
     std::cout << "\tA\tC\tT\tG\tN"
               //    << "\tP_A\tP_C\tP_T\tP_G\tP_N"
               << "\n"

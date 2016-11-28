@@ -21,7 +21,7 @@ Functions::Functions () {}
 int32_t Functions::commandLineParser (int argc, char **argv)
 {
     Messages messageObj;    // object for showing messages
-    Hash hashObj;           // object of hash table
+    Hash hashObj;           // object of class hash table
     
     // using these flags, if both short and long arguments
     // are entered, just one of them is considered
@@ -141,18 +141,9 @@ int32_t Functions::commandLineParser (int argc, char **argv)
     
     if (t_flag)
     {
-        std::ifstream targetFile(targetFileName, std::ios::in);
-        
-        if (!targetFile)
-        {
-            std::cerr << "File '" << targetFileName << "' could not be opened.\n";
-        }
-        else if (targetFile.peek() == std::ifstream::traits_type::eof())
-            std::cerr << "File '" << targetFileName << "' is empty.\n";
-        
-        hashTable_t hTableForPrint =
+            hashTable_t hTableForPrint =
 //                hashObj.hashTableUpdate ( hTable, context, datasetLine, false, true);
-                hashObj.hashTableBuild(  targetFile );
+                    hashObj.hashTableBuild(targetFileName);
 //        hashObj.hashTablePrint(hTableForPrint);   // print hash table
 
 
@@ -185,7 +176,6 @@ int32_t Functions::commandLineParser (int argc, char **argv)
 //
 //        hashObj.hashTablePrint(hTableForPrint);   // print hash table
 //
-        targetFile.close(); // close file
     }
     
     if (r_flag)
@@ -207,4 +197,30 @@ int32_t Functions::commandLineParser (int argc, char **argv)
             std::cerr << argv[ optind++ ] << " ";
         std::cerr << std::endl;
     }
+}
+
+
+/***********************************************************
+    handle errors in opening file
+************************************************************/
+bool Functions::fileOpenErrorHandle (std::string fileName)
+{
+    std::ifstream fileIn(fileName, std::ios::in);
+    
+    if (!fileIn)
+    {
+        std::cerr << "File '" << fileName << "' could not be opened.\n";
+        fileIn.close();
+        return false;
+    }
+    else if (fileIn.peek() == std::ifstream::traits_type::eof())
+    {
+        std::cerr << "File '" << fileName << "' is empty.\n";
+        fileIn.close();
+        return false;
+    }
+    
+    fileIn.close();
+    
+    return true;
 }
