@@ -141,8 +141,19 @@ int32_t Functions::commandLineParser (int argc, char **argv)
     
     if (t_flag)
     {
-        hashTable_t hTableForPrint = hashObj.hashTableBuild( fileOpen(targetFileName) );
-        hashObj.hashTablePrint(hTableForPrint);   // print hash table
+        std::ifstream targetFile(targetFileName, std::ios::in);
+        
+        if (!targetFile)
+        {
+            std::cerr << "File '" << targetFileName << "' could not be opened.\n";
+        }
+        else if (targetFile.peek() == std::ifstream::traits_type::eof())
+            std::cerr << "File '" << targetFileName << "' is empty.\n";
+        
+        hashTable_t hTableForPrint =
+//                hashObj.hashTableUpdate ( hTable, context, datasetLine, false, true);
+                hashObj.hashTableBuild(  targetFile );
+//        hashObj.hashTablePrint(hTableForPrint);   // print hash table
 
 
 //        // context, that slides in the dataset
@@ -174,7 +185,7 @@ int32_t Functions::commandLineParser (int argc, char **argv)
 //
 //        hashObj.hashTablePrint(hTableForPrint);   // print hash table
 //
-//        targetFile.close(); // close file
+        targetFile.close(); // close file
     }
     
     if (r_flag)
@@ -196,20 +207,4 @@ int32_t Functions::commandLineParser (int argc, char **argv)
             std::cerr << argv[ optind++ ] << " ";
         std::cerr << std::endl;
     }
-}
-
-
-/***********************************************************
-    open file
-************************************************************/
-std::ifstream Functions::fileOpen (std::string targetFileName)
-{
-    std::ifstream targetFile(targetFileName, std::ios::in);
-    
-    if (!targetFile)
-        std::cerr << "File '" << targetFileName << "' could not be opened.\n";
-    else if (targetFile.peek() == std::ifstream::traits_type::eof())
-        std::cerr << "File '" << targetFileName << "' is empty.\n";
-    
-    return targetFile;
 }

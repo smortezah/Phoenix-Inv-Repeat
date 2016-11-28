@@ -58,89 +58,53 @@ hashTable_t Hash::hashTableBuild (std::ifstream targetFile)
     std::getline(targetFile, datasetLine);
     datasetLine = context + datasetLine;
     
+//    std::cout<<datasetLine<<"\n";
+    
 //    bool isFirstLine = true;
 //    size_t datasetIter = isFirstLine ? CONTEXT_DEPTH : 0;
     
     size_t lineIter = CONTEXT_DEPTH;
     
+    int mori=1;
+    
     do
     {
-//        lineIter = isFirstLine ? CONTEXT_DEPTH : 0;
+        std::cout<<"datasetLine: "<<datasetLine<<"\n"<<"context:"<<context<<"\n";
     
         for (size_t i = lineIter; i < datasetLine.size(); ++i)
         {
-            switch (datasetLine[ lineIter ])
+            switch (datasetLine[ i ])
             {
                 case 'A':
                     ++(hTable[ context ])[ 0 ];  // increment number of 'A's. order: {A, C, T, G, N}
                     break;
-            
+                case 'C':
+                    ++(hTable[ context ])[ 1 ];  // increment number of 'A's. order: {A, C, T, G, N}
+                    break;
+                case 'T':
+                    ++(hTable[ context ])[ 2 ];  // increment number of 'A's. order: {A, C, T, G, N}
+                    break;
+                case 'G':
+                    ++(hTable[ context ])[ 3 ];  // increment number of 'A's. order: {A, C, T, G, N}
+                    break;
+    
                 default:
                     break;
             }
+            
+            context = (CONTEXT_DEPTH == 1)
+                      ? std::string("") + datasetLine[ lineIter ]
+                      : context.substr(1, CONTEXT_DEPTH - 1) + datasetLine[ lineIter ];
         }
         
-        context = (CONTEXT_DEPTH == 1)
-                  ? std::string("") + datasetLine[ lineIter ]
-                  : context.substr(1, CONTEXT_DEPTH - 1) + datasetLine[ lineIter ];
-    
         lineIter = 0;
-        
-//        isFirstLine = false;
-//        ++lineIter;
+    
+    ++mori;
     }
 //    while (!targetFile.eof())
-    while (lineIter == 0)
+//    while (std::getline(targetFile, datasetLine))
+    while (mori<=2 && std::getline(targetFile, datasetLine))
             ;
-    
-    
-//    // fill hash table by number of occurrences of symbols A, C, T, G, N
-//    for (size_t i = datasetIter; i < datasetLine.size(); ++i)
-//    {
-//        switch (datasetLine[ i ])
-//        {
-//            case 'A':
-//                ++(hTable[ context ])[ 0 ];  // increment number of 'A's. order: {A, C, T, G, N}
-//
-////                // if inverted repeat option is selected in command line,
-////                // hash table considers inverted repeats for getting updated, too
-////                if (isInvertedRepeat)
-////                {
-////                    std::string invRepeat = context + "A";
-////
-////                    // A <-> T  ,  C <-> G  ,  N <-> N (N unchanged)
-////                    for (char& ch : invRepeat)
-////                        ch = (ch == 'A') ? 'T' :
-////                             (ch == 'C') ? 'G' :
-////                             (ch == 'T') ? 'A' :
-////                             (ch == 'G') ? 'C' :
-////                             'N';
-////
-////                    // invert the string
-////                    std::reverse( invRepeat.begin(), invRepeat.end() );
-////
-////                    // inverted repeat context
-////                    std::string invRepeatContext = invRepeat.substr(0, invRepeat.size() - 1);
-////
-////                    switch (invRepeat[ invRepeat.size() - 1 ])
-////                    {
-////                        case 'A':   ++(hTable[ invRepeatContext ])[ 0 ];    break;
-////                        case 'C':   ++(hTable[ invRepeatContext ])[ 1 ];    break;
-////                        case 'T':   ++(hTable[ invRepeatContext ])[ 2 ];    break;
-////                        case 'G':   ++(hTable[ invRepeatContext ])[ 3 ];    break;
-////                        case 'N':   ++(hTable[ invRepeatContext ])[ 4 ];    break;
-////                        default:                                            break;
-////                    }
-////                }
-//                break;
-//
-//            default: break;
-//        }
-//
-//        context = (CONTEXT_DEPTH == 1)
-//                  ? std::string("") + datasetLine[ i ]
-//                  : context.substr(1, CONTEXT_DEPTH - 1) + datasetLine[ i ];
-//    }
     
     return hTable;
 }
