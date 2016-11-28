@@ -45,20 +45,19 @@ Hash::Hash () {}
 /***********************************************************
     build hash table
 ************************************************************/
-hashTable_t Hash::hashTableBuild (const std::string& targetFileName, const bool isInvertedRepeat)
+hashTable_t Hash::hashTableBuild (const std::string& fileName, const bool isInvertedRepeat)
 {
     Functions funcObj;  // object of class Functions
     
-    std::ifstream fileIn(targetFileName, std::ios::in);
-    bool isFileOk = funcObj.fileOpenErrorHandle(targetFileName);
+    std::ifstream fileIn(fileName, std::ios::in);           // open file located in fileName
+    bool isFileOk = funcObj.fileOpenErrorHandle(fileName);  // check if file is opened correctly
     
-    if (isFileOk)
+    if (isFileOk)   // file opened correctly
     {
-        // context, that slides in the dataset
-        std::string context(CONTEXT_DEPTH, 'A');
-
-        hashTable_t hTable;
-        hTable.insert({context, {0, 0, 0, 0, 0}});   // initialize hash table with 0'z
+        std::string context(CONTEXT_DEPTH, 'A');    // context, that slides in the dataset
+        
+        hashTable_t hTable;                         // create hash table
+        hTable.insert({context, {0, 0, 0, 0, 0}});  // initialize hash table with 0'z
 
         std::string datasetLine;    // keep each line
         std::getline(fileIn, datasetLine);
