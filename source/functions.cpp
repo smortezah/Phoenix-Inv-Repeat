@@ -141,52 +141,13 @@ int32_t Functions::commandLineParser (int argc, char **argv)
     
     if (t_flag)
     {
-            hashTable_t hTableForPrint =
-//                hashObj.hashTableUpdate ( hTable, context, datasetLine, false, true);
-                    hashObj.hashTableBuild(targetFileName);
+        hashTable_t hTableForPrint = hashObj.hashTableBuild(targetFileName, (bool) i_flag);
         hashObj.hashTablePrint(hTableForPrint);   // print hash table
-
-
-//        // context, that slides in the dataset
-//        std::string context(CONTEXT_DEPTH, 'A');
-//
-//        hashTable_t hTable;
-//        hTable.insert( {context, {0, 0, 0, 0, 0}} );   // initialize hash table with 0'z
-//
-//        bool isFirstLine = true;
-//
-//        std::string strLine;    // keep each line
-//        std::getline(targetFile, strLine);
-//        strLine = context + strLine;
-//
-//        hashTable_t hTableForPrint;
-//        hTableForPrint
-//                = hashObj.hashTableUpdate(hTable, context, strLine,
-//                                          (bool) i_flag, isFirstLine);
-//
-//        while (!targetFile.eof())
-//        {
-//            context = strLine.substr(strLine.size() - CONTEXT_DEPTH, CONTEXT_DEPTH);
-//            std::getline(targetFile, strLine);
-//
-//            isFirstLine = false;
-//            hTableForPrint = hashObj.hashTableUpdate(hTableForPrint, context, strLine,
-//                                                     (bool) i_flag, isFirstLine);
-//        }
-//
-//        hashObj.hashTablePrint(hTableForPrint);   // print hash table
-//
     }
     
     if (r_flag)
     {
-//        std::string referenceFile = Functions::fileRead(referenceFileName);
-//        if (referenceFile != "")
-//        {
-//            // build a hash table for the input file, considering inverted repeat mode
-//            hashTable_t hTable = hashObj.hashTableBuild(referenceFile, (bool) i_flag);
-//            hashObj.hashTablePrint(hTable);   // print hash table
-//        }
+        // TODO
     }
     
     /* Print any remaining command line arguments (not options). */
