@@ -47,7 +47,7 @@ Hash::Hash () {}
 ************************************************************/
 hashTable_t Hash::hashTableBuild (std::string targetFileName, bool isInvertedRepeat)
 {
-    Functions funcObj;           // object of class Functions
+    Functions funcObj;  // object of class Functions
     
     std::ifstream fileIn(targetFileName, std::ios::in);
     bool isFileOk = funcObj.fileOpenErrorHandle(targetFileName);

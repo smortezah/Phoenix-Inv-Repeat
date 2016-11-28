@@ -162,26 +162,29 @@ int32_t Functions::commandLineParser (int argc, char **argv)
 
 
 /***********************************************************
-    handle errors in opening file
+    handle errors in opening a file
 ************************************************************/
 bool Functions::fileOpenErrorHandle (std::string fileName)
 {
+    // open file
     std::ifstream fileIn(fileName, std::ios::in);
-
+    
+    // check if file doesn't exist
     if (!fileIn)
     {
         std::cerr << "File '" << fileName << "' could not be opened.\n";
-        fileIn.close();
-        return false;
+        fileIn.close(); // close file
+        return false;   // error occurred while opening file
     }
+    // check if file is empty
     else if (fileIn.peek() == std::ifstream::traits_type::eof())
     {
         std::cerr << "File '" << fileName << "' is empty.\n";
-        fileIn.close();
-        return false;
+        fileIn.close(); // close file
+        return false;   // error occurred while opening file
     }
     
-    fileIn.close();
+    fileIn.close(); // close file
     
-    return true;
+    return true;    // file opened correctly
 }
