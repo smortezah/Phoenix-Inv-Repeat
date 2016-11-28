@@ -58,30 +58,40 @@ hashTable_t Hash::hashTableBuild (std::ifstream targetFile)
     std::getline(targetFile, datasetLine);
     datasetLine = context + datasetLine;
     
-    bool isFirstLine = true;
+//    bool isFirstLine = true;
 //    size_t datasetIter = isFirstLine ? CONTEXT_DEPTH : 0;
     
     size_t lineIter = CONTEXT_DEPTH;
     
     do
     {
-        switch (datasetLine[ lineIter ])
+//        lineIter = isFirstLine ? CONTEXT_DEPTH : 0;
+    
+        for (size_t i = lineIter; i < datasetLine.size(); ++i)
         {
-            case 'A':
-                ++(hTable[ context ])[ 0 ];  // increment number of 'A's. order: {A, C, T, G, N}
-                break;
+            switch (datasetLine[ lineIter ])
+            {
+                case 'A':
+                    ++(hTable[ context ])[ 0 ];  // increment number of 'A's. order: {A, C, T, G, N}
+                    break;
             
-            default: break;
+                default:
+                    break;
+            }
         }
-        
         
         context = (CONTEXT_DEPTH == 1)
                   ? std::string("") + datasetLine[ lineIter ]
                   : context.substr(1, CONTEXT_DEPTH - 1) + datasetLine[ lineIter ];
+    
+        lineIter = 0;
         
-        isFirstLine = false;
-        ++lineIter;
-    } while (!isFirstLine && (lineIter < datasetLine.size()));
+//        isFirstLine = false;
+//        ++lineIter;
+    }
+//    while (!targetFile.eof())
+    while (lineIter == 0)
+            ;
     
     
 //    // fill hash table by number of occurrences of symbols A, C, T, G, N
