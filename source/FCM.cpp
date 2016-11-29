@@ -19,6 +19,6 @@ uint32_t FCM::getAlphaDenom () const { return alphaDenom; }
 // setter of alpha denominator
 void FCM::setAlphaDenom (uint32_t alphaDenom) { FCM::alphaDenom = alphaDenom; }
 // getter of hash table
-const hashTable_t& FCM::getHTable () const { return hTable; }
+const hashTable_t& FCM::getHashTable () const { return hashTable; }
 // setter of hash table
-void FCM::setHTable (const hashTable_t& hTable) { FCM::hTable = hTable; }
+void FCM::setHashTable (const hashTable_t& hTable) { FCM::hashTable = hashTable; }
