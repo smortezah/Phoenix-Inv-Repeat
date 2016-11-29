@@ -21,4 +21,4 @@ void FCM::setAlphaDenom (uint32_t alphaDenom) { FCM::alphaDenom = alphaDenom; }
 // getter of hash table
 const hashTable_t& FCM::getHashTable () const { return hashTable; }
 // setter of hash table
-void FCM::setHashTable (const hashTable_t& hTable) { FCM::hashTable = hashTable; }
+void FCM::setHashTable (const hashTable_t& hashTable) { FCM::hashTable = hashTable; }

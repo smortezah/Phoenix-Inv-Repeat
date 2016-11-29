@@ -145,35 +145,6 @@ int8_t Functions::commandLineParser (int argc, char **argv)
         // build hash table, considering inverted repeats
         hashTable_t hTableForPrint = hashObj.hashTableBuild(targetFileName, (bool) i_flag);
         hashObj.hashTablePrint(hTableForPrint); // print hash table
-    
-    
-        FCM f;
-        f.setHashTable(hashObj.hashTableBuild(targetFileName, (bool) i_flag));
-//        hashObj.hashTablePrint(f.getHashTable());
-        
-        hashTable_t hTable = f.getHashTable();
-    
-        std::cout << "\tA\tC\tT\tG\tN"
-                  //              << "\tP_A\tP_C\tP_T\tP_G\tP_N"
-                  << "\n"
-                  << "\t-----------------------------------"
-                  //              << "------------------------------------------"
-                  << "\n";
-    
-        int sum;
-        int alpha = 1;
-    
-        for (hashTable_t::iterator it = hTable.begin(); it != hTable.end(); ++it)
-        {
-            sum = 0;
-            std::cout << it->first << "\t";
-            for (int i : it->second)
-            {
-                std::cout << i << "\t";
-                sum += i;
-            }
-            std::cout << "\n";
-        }
     }
     
     if (r_flag)
