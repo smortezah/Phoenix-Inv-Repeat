@@ -19,7 +19,7 @@ public:
     const hashTable_t &getHashTable () const;   // getter of hash table
     void setHashTable (const hashTable_t&);     // setter of hash table
     const std::string &getFileAddress () const; // getter of file address
-    void setFileAddress (const std::string &fileAddress);// setter of file address
+    void setFileAddress (const std::string&);   // setter of file address
 
 private:
     uint8_t contextDepth;                       // context depth
