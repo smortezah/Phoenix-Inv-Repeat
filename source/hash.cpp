@@ -345,6 +345,6 @@ void Hash::hashTablePrint (hashTable_t hTable)
 //                      << (float) (it->second[ i ] + alpha) /
 //                         (sum + ALPHABET_SIZE * alpha) << "\t";
 //        }
-        std::cout << "\n";
+//        std::cout << "\n";
     }
 }
