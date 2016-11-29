@@ -30,10 +30,20 @@ int32_t main (int argc, char *argv[])
     
     
     
-    // for access to Functions (object 'function' on memory stack)
-    Functions function;
-    function.commandLineParser(argc, argv); // parse the command line
+//    // for access to Functions (object 'function' on memory stack)
+//    Functions function;
+//    function.commandLineParser(argc, argv); // parse the command line
     
+    
+    uint8_t contextDepth=2;                       // context depth
+    uint32_t alphaDenom=1;                        // alpha denominator
+    Hash h;
+    std::string a ("c.fa");
+    hashTable_t hashTable = h.hashTableBuild(a, false);
+    std::string fileAddress=a;                    // file address
+    
+    FCM f (contextDepth, alphaDenom, hashTable, fileAddress);
+    std::cout<< f.getContextDepth();
     
     
     

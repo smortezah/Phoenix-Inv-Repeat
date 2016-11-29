@@ -11,6 +11,7 @@ class FCM
 {
 public:
     FCM ();                                     // constructor
+    FCM (uint8_t, uint32_t, const hashTable_t&, const std::string&);
     
     uint8_t getContextDepth () const;           // getter of context depth
     void setContextDepth (uint8_t);             // setter of context depth

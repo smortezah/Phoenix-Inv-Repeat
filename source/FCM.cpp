@@ -2,9 +2,21 @@
 
 
 /***********************************************************
-    constructor
+    constructors
 ************************************************************/
 FCM::FCM () {}
+
+// another constructor
+FCM::FCM (uint8_t contextDepth, uint32_t alphaDenom,
+          const hashTable_t &hashTable, const std::string &fileAddress)
+        : contextDepth(contextDepth), alphaDenom(alphaDenom),
+          hashTable(hashTable), fileAddress(fileAddress)
+{
+//    setContextDepth(contextDepth);
+//    setAlphaDenom(alphaDenom);
+//    setHashTable(hashTable);
+//    setFileAddress(fileAddress);
+}
 
 
 /***********************************************************
@@ -24,5 +36,5 @@ const hashTable_t &FCM::getHashTable () const { return hashTable; }
 void FCM::setHashTable (const hashTable_t &hashTable) { FCM::hashTable = hashTable; }
 // getter of file address
 const std::string &FCM::getFileAddress () const { return fileAddress; }
-// FCM of file address
+// setter of file address
 void FCM::setFileAddress (const std::string &fileAddress) { FCM::fileAddress = fileAddress; }
