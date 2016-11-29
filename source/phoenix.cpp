@@ -27,25 +27,17 @@ int32_t main (int argc, char *argv[])
     // Record start time
     highResClock::time_point exeStartTime = highResClock::now();
     
-
-    
-    
-    
-//    FCM model;
-//    model.contextDepth = 255;
-//    std::cout << (int) model.contextDepth;
-
-    
     
     
     
     // for access to Functions (object 'function' on memory stack)
     Functions function;
     function.commandLineParser(argc, argv); // parse the command line
-
-
-
-
+    
+    
+    
+    
+    
     // Record end time
     highResClock::time_point exeFinishTime = highResClock::now();
 

@@ -47,7 +47,7 @@ Hash::Hash () {}
 /***********************************************************
     build hash table
 ************************************************************/
-hashTable_t Hash::hashTableBuild (const std::string& fileName, const bool isInvertedRepeat)
+hashTable_t Hash::hashTableBuild (const std::string &fileName, const bool isInvertedRepeat)
 {
     Functions funcObj;  // object of class Functions
     
@@ -85,14 +85,14 @@ hashTable_t Hash::hashTableBuild (const std::string& fileName, const bool isInve
                             std::string invRepeat = context + "A";
                     
                             // A <-> T  ,  C <-> G  ,  N <-> N (N unchanged)
-                            for (char& ch : invRepeat)
+                            for (char &ch : invRepeat)
                                 ch = (ch == 'A') ? 'T' :
                                      (ch == 'C') ? 'G' :
                                      (ch == 'T') ? 'A' :
                                      (ch == 'G') ? 'C' :
                                      'N';
                     
-                            // invert the string
+                            // reverse the string
                             std::reverse( invRepeat.begin(), invRepeat.end() );
                     
                             // inverted repeat context
@@ -127,7 +127,7 @@ hashTable_t Hash::hashTableBuild (const std::string& fileName, const bool isInve
                             std::string invRepeat = context + "C";
                     
                             // A <-> T  ,  C <-> G  ,  N <-> N (N unchanged)
-                            for (char& ch : invRepeat)
+                            for (char &ch : invRepeat)
                                 ch = (ch == 'A') ? 'T' :
                                      (ch == 'C') ? 'G' :
                                      (ch == 'T') ? 'A' :
@@ -169,14 +169,14 @@ hashTable_t Hash::hashTableBuild (const std::string& fileName, const bool isInve
                             std::string invRepeat = context + "T";
                     
                             // A <-> T  ,  C <-> G  ,  N <-> N (N unchanged)
-                            for (char& ch : invRepeat)
+                            for (char &ch : invRepeat)
                                 ch = (ch == 'A') ? 'T' :
                                      (ch == 'C') ? 'G' :
                                      (ch == 'T') ? 'A' :
                                      (ch == 'G') ? 'C' :
                                      'N';
                     
-                            // invert the string
+                            // reverse the string
                             std::reverse( invRepeat.begin(), invRepeat.end() );
                     
                             // inverted repeat context
@@ -211,14 +211,14 @@ hashTable_t Hash::hashTableBuild (const std::string& fileName, const bool isInve
                             std::string invRepeat = context + "G";
                     
                             // A <-> T  ,  C <-> G  ,  N <-> N (N unchanged)
-                            for (char& ch : invRepeat)
+                            for (char &ch : invRepeat)
                                 ch = (ch == 'A') ? 'T' :
                                      (ch == 'C') ? 'G' :
                                      (ch == 'T') ? 'A' :
                                      (ch == 'G') ? 'C' :
                                      'N';
                     
-                            // invert the string
+                            // reverse the string
                             std::reverse( invRepeat.begin(), invRepeat.end() );
                     
                             // inverted repeat context
@@ -253,14 +253,14 @@ hashTable_t Hash::hashTableBuild (const std::string& fileName, const bool isInve
                             std::string invRepeat = context + "N";
                     
                             // A <-> T  ,  C <-> G  ,  N <-> N (N unchanged)
-                            for (char& ch : invRepeat)
+                            for (char &ch : invRepeat)
                                 ch = (ch == 'A') ? 'T' :
                                      (ch == 'C') ? 'G' :
                                      (ch == 'T') ? 'A' :
                                      (ch == 'G') ? 'C' :
                                      'N';
                     
-                            // invert the string
+                            // reverse the string
                             std::reverse( invRepeat.begin(), invRepeat.end() );
                     
                             // inverted repeat context

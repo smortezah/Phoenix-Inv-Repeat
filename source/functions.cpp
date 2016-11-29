@@ -101,7 +101,7 @@ int8_t Functions::commandLineParser (int argc, char **argv)
                 {
                     messageObj.number(std::stoi((std::string) optarg));    //for test
                 }
-                catch (const std::invalid_argument& ia)
+                catch (const std::invalid_argument &ia)
                 {
                     std::cerr << "Option 'n' ('number') has an invalid argument.\n";
                 }
@@ -112,7 +112,7 @@ int8_t Functions::commandLineParser (int argc, char **argv)
                 {
                     messageObj.fnumber( std::stof((std::string) optarg) );   //for test
                 }
-                catch (const std::invalid_argument& ia)
+                catch (const std::invalid_argument &ia)
                 {
                     std::cerr << "Option 'd' ('fnumber') has an invalid argument.\n";
                 }
@@ -166,7 +166,7 @@ int8_t Functions::commandLineParser (int argc, char **argv)
 /***********************************************************
     handle errors while opening file
 ************************************************************/
-bool Functions::fileOpenErrorHandle (const std::string& fileName)
+bool Functions::fileOpenErrorHandle (const std::string &fileName)
 {
     std::ifstream fileIn(fileName, std::ios::in);   // open file
     
