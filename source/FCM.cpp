@@ -10,13 +10,7 @@ FCM::FCM () {}
 FCM::FCM (uint8_t contextDepth, uint32_t alphaDenom,
           const hashTable_t &hashTable, const std::string &fileAddress)
         : contextDepth(contextDepth), alphaDenom(alphaDenom),
-          hashTable(hashTable), fileAddress(fileAddress)
-{
-//    setContextDepth(contextDepth);
-//    setAlphaDenom(alphaDenom);
-//    setHashTable(hashTable);
-//    setFileAddress(fileAddress);
-}
+          hashTable(hashTable), fileAddress(fileAddress) {}
 
 
 /***********************************************************
