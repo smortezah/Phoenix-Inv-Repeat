@@ -29,6 +29,8 @@
 ************************************************************/
 #include <iomanip>      // std::setprecision
 
+#include <omp.h>
+
 
 
 
@@ -69,7 +71,7 @@ hashTable_t Hash::hashTableBuild (const std::string& fileName, const bool isInve
         do
         {
             // fill hash table by number of occurrences of symbols A, C, T, G, N
-            for (size_t i = lineIter; i < datasetLine.size(); ++i)
+            for (size_t i = lineIter; i != datasetLine.size(); ++i)
             {
                 switch (datasetLine[ i ])
                 {

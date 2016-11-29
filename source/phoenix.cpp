@@ -1,7 +1,6 @@
 #include <iostream>
 #include <fstream>
 #include <cstring>
-#include <chrono>               // dealing with time
 #include <stdint.h>
 #define __STDC_FORMAT_MACROS
 #include <inttypes.h>
@@ -15,6 +14,7 @@
 #include "messages.h"
 #include "functions.h"
 #include "hash.h"
+#include "FCM.h"
 
 
 
@@ -24,21 +24,27 @@
 
 int32_t main (int argc, char *argv[])
 {
-    // for calculating execution time
-    typedef std::chrono::high_resolution_clock highResClock;
-
     // Record start time
     highResClock::time_point exeStartTime = highResClock::now();
+    
 
+    
+    
+    
+//    FCM model;
+//    model.contextDepth = 255;
+//    std::cout << (int) model.contextDepth;
 
-
-
+    
+    
+    
+    
     // for access to Functions (object 'function' on memory stack)
     Functions function;
     function.commandLineParser(argc, argv); // parse the command line
-    
-    
-    
+
+
+
 
     // Record end time
     highResClock::time_point exeFinishTime = highResClock::now();
@@ -46,7 +52,7 @@ int32_t main (int argc, char *argv[])
     // calculate and show duration in seconds
     std::chrono::duration< double > elapsed = exeFinishTime - exeStartTime;
     std::cout << "\nElapsed time: " << elapsed.count() << " s\n";
-    
+
     
     return 0;
 }
