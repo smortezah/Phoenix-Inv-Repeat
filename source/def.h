@@ -31,5 +31,4 @@ typedef std::chrono::high_resolution_clock highResClock;
 typedef std::unordered_map< std::string, std::array<uint16_t, ALPHABET_SIZE> > hashTable_t;
 
 
-
 #endif //PHOENIX_DEF_H

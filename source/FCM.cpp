@@ -25,11 +25,10 @@ void FCM::buildHashTable ()
     Functions funcObj;  // object of class Functions
     
     std::ifstream fileIn(fileName, std::ios::in);           // open file located in fileName
-    bool isFileOk = funcObj.fileOpenErrorHandle(fileName);  // check if file is opened correctly
     
-    if (isFileOk)   // file opened correctly
+    if (funcObj.isfileCorrect(fileName) )    // file opened correctly
     {
-        std::string context(contextDepth, 'A');    // context, that slides in the dataset
+        std::string context(contextDepth, 'A');     // context, that slides in the dataset
         
         hashTable_t hTable;                         // create hash table
         hTable.insert({context, {0, 0, 0, 0, 0}});  // initialize hash table with 0'z

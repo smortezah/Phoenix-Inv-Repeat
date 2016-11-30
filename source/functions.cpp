@@ -165,9 +165,9 @@ int8_t Functions::commandLineParser (int argc, char **argv)
 
 
 /***********************************************************
-    handle errors while opening file
+    check if file opened correctly
 ************************************************************/
-bool Functions::fileOpenErrorHandle (const std::string &fileName)
+bool Functions::isfileCorrect (const std::string &fileName)
 {
     std::ifstream fileIn(fileName, std::ios::in);   // open file
     
