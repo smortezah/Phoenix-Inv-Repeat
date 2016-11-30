@@ -22,11 +22,9 @@ void FCM::buildHashTable ()
     bool isInvertedRepeat = getInvertedRepeat();    // get inverted repeat
     std::string fileName = getFileAddress();        // get file address
     
-    Functions funcObj;  // object of class Functions
+    std::ifstream fileIn(fileName, std::ios::in);   // open file located in fileName
     
-    std::ifstream fileIn(fileName, std::ios::in);           // open file located in fileName
-    
-    if (funcObj.isfileCorrect(fileName) )    // file opened correctly
+    if (Functions::isfileCorrect(fileName))         // file opened correctly
     {
         std::string context(contextDepth, 'A');     // context, that slides in the dataset
         
@@ -43,12 +41,12 @@ void FCM::buildHashTable ()
         do
         {
             // fill hash table by number of occurrences of symbols A, C, T, G, N
-            for (size_t i = lineIter; i != datasetLine.size(); ++i)
+            for (; lineIter != datasetLine.size(); ++lineIter)
             {
                 // considering inverted repeats to update hash table
                 if (isInvertedRepeat)
                 {
-                    std::string invRepeat = context + datasetLine[ i ];
+                    std::string invRepeat = context + datasetLine[ lineIter ];
         
                     // A <-> T  ,  C <-> G  ,  N <-> N (N unchanged)
                     for (char &ch : invRepeat)
@@ -76,7 +74,7 @@ void FCM::buildHashTable ()
                     }
                 }
                 
-                switch (datasetLine[ i ])
+                switch (datasetLine[ lineIter ])
                 {
                     case 'A':   ++(hTable[ context ])[ 0 ]; break;
                     case 'C':   ++(hTable[ context ])[ 1 ]; break;
@@ -88,17 +86,16 @@ void FCM::buildHashTable ()
                 
                 // update context
                 context = (contextDepth == 1)
-                          ? std::string("") + datasetLine[ i ]
-                          : context.substr(1, contextDepth - 1) + datasetLine[ i ];
+                          ? std::string("") + datasetLine[ lineIter ]
+                          : context.substr(1, contextDepth - 1) + datasetLine[ lineIter ];
             }
             
-            lineIter = 0;   // iterator for non-first lines of file becomes 0
+            lineIter = 0;           // iterator for non-first lines of file becomes 0
         } while ( std::getline(fileIn, datasetLine) );
         
-        fileIn.close();     // close file
+        fileIn.close();             // close file
         
-//        return hTable;      // return the made hash table
-        FCM::hashTable = hTable;    // save the built hash table
+        FCM::setHashTable(hTable);  // save the built hash table
     }
 }
 

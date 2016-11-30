@@ -61,7 +61,7 @@ void Messages::about ()
             << "A compression-based method"                                 << "\n"
                                                                             << "\n"
             << "Morteza Hosseini, Diogo Pratas"                             << "\n"
-            << "Copyright (C) 2016 University of Aveiro"                    << "\n"
+            << "Copyright (C) 2016-2017 University of Aveiro"               << "\n"
                                                                             << "\n"
             << "This is a Free software, under GPLv3. You may redistribute" << "\n"
             << "copies of it under the terms of the GNU - General Public"   << "\n"

@@ -9,6 +9,7 @@ class Messages
 {
 public:
     Messages ();            // constructor
+    
     void help ();           // show usage guide
     void about ();          // show About Phoenix
     void verbose ();        // show verbose mode
