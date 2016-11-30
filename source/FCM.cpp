@@ -15,7 +15,7 @@ FCM::FCM () {}
 /***********************************************************
     build hash table
 ************************************************************/
-hashTable_t FCM::buildHashTable ()
+void FCM::buildHashTable ()
 {
     std::string fileName = getFileAddress();        // get file address
     bool isInvertedRepeat = getInvertedRepeat();    // get inverted repeat
@@ -276,7 +276,8 @@ hashTable_t FCM::buildHashTable ()
         
         fileIn.close();     // close file
         
-        return hTable;      // return the made hash table
+//        return hTable;      // return the made hash table
+        FCM::hashTable = hTable;
     }
 }
 
