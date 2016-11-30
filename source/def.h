@@ -17,11 +17,6 @@
     constants
 ************************************************************/
 #define ALPHABET_SIZE   5     // alphabet {A, C, T, G, N}
-#define CONTEXT_DEPTH   2
-
-
-//#define ALPHA_NUMERATOR     1
-//#define ALPHA_DENOMINATOR   1
 
 
 /***********************************************************
