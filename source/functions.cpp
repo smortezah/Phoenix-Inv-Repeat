@@ -141,11 +141,14 @@ int8_t Functions::commandLineParser (int argc, char **argv)
     
     if (t_flag)
     {
-        // build hash table, considering inverted repeats
-        hashTable_t hTableForPrint = hashObj.hashTableBuild(targetFileName, (bool) i_flag);
-        hashObj.hashTablePrint(hTableForPrint); // print hash table
+//        // build hash table, considering inverted repeats
+//        hashTable_t hTableForPrint = hashObj.hashTableBuild(targetFileName, (bool) i_flag);
+//        hashObj.hashTablePrint(hTableForPrint); // print hash table
         
-        
+        FCM f;
+        f.setFileAddress(targetFileName);
+        f.setInvertedRepeat((bool) i_flag);
+        f.buildHashTable();
     }
     
     if (r_flag)

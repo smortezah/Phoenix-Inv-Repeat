@@ -1,3 +1,7 @@
+#include <iostream>
+#include <fstream>
+#include <algorithm>
+
 #include "FCM.h"
 #include "functions.h"
 
@@ -12,7 +16,11 @@ FCM::FCM () {}
     build hash table
 ************************************************************/
 hashTable_t FCM::buildHashTable ()
-{    const std::string &fileName, const bool isInvertedRepeat
+{
+    const
+    std::string &fileName = getFileAddress();
+    const
+    bool isInvertedRepeat = getInvertedRepeat();
     
     Functions funcObj;  // object of class Functions
     
