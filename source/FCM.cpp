@@ -17,10 +17,8 @@ FCM::FCM () {}
 ************************************************************/
 hashTable_t FCM::buildHashTable ()
 {
-    const
-    std::string &fileName = getFileAddress();
-    const
-    bool isInvertedRepeat = getInvertedRepeat();
+    std::string fileName = getFileAddress();        // get file address
+    bool isInvertedRepeat = getInvertedRepeat();    // get inverted repeat
     
     Functions funcObj;  // object of class Functions
     
@@ -280,10 +278,46 @@ hashTable_t FCM::buildHashTable ()
         
         return hTable;      // return the made hash table
     }
+}
+
+
+/***********************************************************
+    print hash table
+************************************************************/
+void FCM::printHashTable (hashTable_t hTable)
+{
     
+    /***********************************************************
+        test
+    ************************************************************/
+    std::cout << "\tA\tC\tT\tG\tN"
+              //              << "\tP_A\tP_C\tP_T\tP_G\tP_N"
+              << "\n"
+              << "\t-----------------------------------"
+              //              << "------------------------------------------"
+              << "\n";
     
+    int sum;
+    int alpha = 1;
     
-    
+    for (hashTable_t::iterator it = hTable.begin(); it != hTable.end(); ++it)
+    {
+        sum = 0;
+        std::cout << it->first << "\t";
+        for (int i : it->second)
+        {
+            std::cout << i << "\t";
+            sum += i;
+        }
+
+//        for (int i = 0; i < 5; ++i)
+//        {
+//            std::cout << std::fixed << std::setprecision(1)
+//                      << (float) (it->second[ i ] + alpha) /
+//                         (sum + ALPHABET_SIZE * alpha) << "\t";
+//        }
+        std::cout << "\n";
+    }
 }
 
 

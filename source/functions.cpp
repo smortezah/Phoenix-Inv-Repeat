@@ -5,7 +5,6 @@
 
 #include "functions.h"
 #include "messages.h"
-#include "hash.h"
 #include "FCM.h"
 
 
@@ -21,7 +20,6 @@ Functions::Functions () {}
 int8_t Functions::commandLineParser (int argc, char **argv)
 {
     Messages messageObj;    // object for showing messages
-    Hash hashObj;           // object of class hash table
     
     // using these flags, if both short and long arguments
     // are entered, just one of them is considered
@@ -141,14 +139,10 @@ int8_t Functions::commandLineParser (int argc, char **argv)
     
     if (t_flag)
     {
-//        // build hash table, considering inverted repeats
-//        hashTable_t hTableForPrint = hashObj.hashTableBuild(targetFileName, (bool) i_flag);
-//        hashObj.hashTablePrint(hTableForPrint); // print hash table
-        
         FCM f;
         f.setFileAddress(targetFileName);
         f.setInvertedRepeat((bool) i_flag);
-        f.buildHashTable();
+        f.printHashTable(f.buildHashTable());
     }
     
     if (r_flag)

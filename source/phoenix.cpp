@@ -13,7 +13,6 @@
 #include "def.h"
 #include "messages.h"
 #include "functions.h"
-#include "hash.h"
 #include "FCM.h"
 
 
