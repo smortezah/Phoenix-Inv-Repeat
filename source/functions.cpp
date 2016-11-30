@@ -140,8 +140,10 @@ int8_t Functions::commandLineParser (int argc, char **argv)
     if (t_flag)
     {
         FCM f;
-        f.setFileAddress(targetFileName);
+        f.setContextDepth(2);
+        f.setAlphaDenom(1);
         f.setInvertedRepeat((bool) i_flag);
+        f.setFileAddress(targetFileName);
         f.buildHashTable();
         f.printHashTable(f.getHashTable());
     }

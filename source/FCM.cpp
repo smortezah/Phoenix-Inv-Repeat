@@ -17,8 +17,10 @@ FCM::FCM () {}
 ************************************************************/
 void FCM::buildHashTable ()
 {
-    std::string fileName = getFileAddress();        // get file address
+    uint8_t contextDepth = getContextDepth();       // get context depth
+    uint32_t alphaDen = getAlphaDenom();            // get alpha denominator
     bool isInvertedRepeat = getInvertedRepeat();    // get inverted repeat
+    std::string fileName = getFileAddress();        // get file address
     
     Functions funcObj;  // object of class Functions
     
@@ -27,7 +29,7 @@ void FCM::buildHashTable ()
     
     if (isFileOk)   // file opened correctly
     {
-        std::string context(CONTEXT_DEPTH, 'A');    // context, that slides in the dataset
+        std::string context(contextDepth, 'A');    // context, that slides in the dataset
         
         hashTable_t hTable;                         // create hash table
         hTable.insert({context, {0, 0, 0, 0, 0}});  // initialize hash table with 0'z
@@ -37,8 +39,8 @@ void FCM::buildHashTable ()
         datasetLine = context + datasetLine;        // add "AA..." to beginning of first line of file
         
         // iterator for each line of file.
-        // at first line, it starts from index CONTEXT_DEPTH. at other lines, it starts from index 0
-        size_t lineIter = CONTEXT_DEPTH;
+        // at first line, it starts from index "contextDepth". at other lines, it starts from index 0
+        size_t lineIter = contextDepth;
         do
         {
             // fill hash table by number of occurrences of symbols A, C, T, G, N
@@ -86,9 +88,9 @@ void FCM::buildHashTable ()
                 }
                 
                 // update context
-                context = (CONTEXT_DEPTH == 1)
+                context = (contextDepth == 1)
                           ? std::string("") + datasetLine[ i ]
-                          : context.substr(1, CONTEXT_DEPTH - 1) + datasetLine[ i ];
+                          : context.substr(1, contextDepth - 1) + datasetLine[ i ];
             }
             
             lineIter = 0;   // iterator for non-first lines of file becomes 0

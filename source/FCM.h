@@ -12,7 +12,7 @@ class FCM
 public:
     FCM ();                                     // constructor
     
-    void buildHashTable ();              // build hash table
+    void buildHashTable ();                     // build hash table
     void printHashTable (hashTable_t);          // print hash table
     
     uint8_t getContextDepth () const;           // getter of context depth
