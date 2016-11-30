@@ -11,13 +11,13 @@ class FCM
 {
 public:
     FCM ();                                     // constructor
-    // constructor
-    FCM (uint8_t, uint32_t, const hashTable_t&, const std::string&);
     
     uint8_t getContextDepth () const;           // getter of context depth
     void setContextDepth (uint8_t);             // setter of context depth
     uint32_t getAlphaDenom () const;            // getter of alpha denominator
     void setAlphaDenom (uint32_t);              // setter of alpha denominator
+    bool getInvertedRepeat () const;            // getter of inverted repeat
+    void setInvertedRepeat (bool);              // setter of inverted repeat
     const hashTable_t &getHashTable () const;   // getter of hash table
     void setHashTable (const hashTable_t&);     // setter of hash table
     const std::string &getFileAddress () const; // getter of file address
@@ -26,6 +26,7 @@ public:
 private:
     uint8_t contextDepth;                       // context depth
     uint32_t alphaDenom;                        // alpha denominator
+    bool invertedRepeat;                        // inverted repeat
     hashTable_t hashTable;                      // hash table
     std::string fileAddress;                    // file address
 };
