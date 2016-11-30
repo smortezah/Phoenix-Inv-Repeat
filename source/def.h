@@ -21,8 +21,7 @@
 
 
 //#define ALPHA_NUMERATOR     1
-//#define ALPHA_DENUMERATOR   1
-//#define COL                 4   // number of columns of the table
+//#define ALPHA_DENOMINATOR   1
 
 
 /***********************************************************

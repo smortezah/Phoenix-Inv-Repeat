@@ -12,6 +12,8 @@ class FCM
 public:
     FCM ();                                     // constructor
     
+    hashTable_t buildHashTable ();              // build hash table
+    
     uint8_t getContextDepth () const;           // getter of context depth
     void setContextDepth (uint8_t);             // setter of context depth
     uint32_t getAlphaDenom () const;            // getter of alpha denominator
