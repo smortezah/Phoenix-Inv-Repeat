@@ -37,7 +37,6 @@ int32_t main (int argc, char *argv[])
     
     
     
-    
     // Record end time
     highResClock::time_point exeFinishTime = highResClock::now();
 

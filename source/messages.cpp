@@ -14,7 +14,7 @@ Messages::Messages () {}
 /***********************************************************
     show usage guide
 ************************************************************/
-void Messages::help (void)
+void Messages::help ()
 {
     std::cout                                                       << "\n"
             << "Synopsis:"                                          << "\n"
@@ -53,7 +53,7 @@ void Messages::help (void)
 /***********************************************************
     show About Phoenix
 ************************************************************/
-void Messages::about (void)
+void Messages::about ()
 {
     std::cout                                                               << "\n"
             << "PHOENIX v" << VERSION_PHOENIX << "." << RELEASE_PHOENIX     << "\n"
@@ -74,7 +74,7 @@ void Messages::about (void)
 /***********************************************************
     show verbose mode
 ************************************************************/
-void Messages::verbose (void)
+void Messages::verbose ()
 {
     std::cout << "verbose mode.\n"; // for test
 }

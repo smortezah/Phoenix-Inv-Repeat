@@ -44,226 +44,46 @@ void FCM::buildHashTable ()
             // fill hash table by number of occurrences of symbols A, C, T, G, N
             for (size_t i = lineIter; i != datasetLine.size(); ++i)
             {
+                // considering inverted repeats to update hash table
+                if (isInvertedRepeat)
+                {
+                    std::string invRepeat = context + datasetLine[ i ];
+        
+                    // A <-> T  ,  C <-> G  ,  N <-> N (N unchanged)
+                    for (char &ch : invRepeat)
+                        ch = (ch == 'A') ? 'T' :
+                             (ch == 'C') ? 'G' :
+                             (ch == 'T') ? 'A' :
+                             (ch == 'G') ? 'C' :
+                             'N';
+        
+                    // reverse the string
+                    std::reverse( invRepeat.begin(), invRepeat.end() );
+        
+                    // inverted repeat context
+                    std::string invRepeatContext = invRepeat.substr(0, invRepeat.size() - 1);
+        
+                    // update hash table for inverted repeats
+                    switch (invRepeat[ invRepeat.size() - 1 ])
+                    {
+                        case 'A':   ++(hTable[ invRepeatContext ])[ 0 ];    break;
+                        case 'C':   ++(hTable[ invRepeatContext ])[ 1 ];    break;
+                        case 'T':   ++(hTable[ invRepeatContext ])[ 2 ];    break;
+                        case 'G':   ++(hTable[ invRepeatContext ])[ 3 ];    break;
+                        case 'N':   ++(hTable[ invRepeatContext ])[ 4 ];    break;
+                        default:                                            break;
+                    }
+                }
+                
                 switch (datasetLine[ i ])
                 {
-                    case 'A':
-                        // increment number of 'A's. order: {A, C, T, G, N}
-                        ++(hTable[ context ])[ 0 ];
-                        
-                        // considering inverted repeats to update hash table
-                        if (isInvertedRepeat)
-                        {
-                            std::string invRepeat = context + "A";
-                            
-                            // A <-> T  ,  C <-> G  ,  N <-> N (N unchanged)
-                            for (char &ch : invRepeat)
-                                ch = (ch == 'A') ? 'T' :
-                                     (ch == 'C') ? 'G' :
-                                     (ch == 'T') ? 'A' :
-                                     (ch == 'G') ? 'C' :
-                                     'N';
-                            
-                            // reverse the string
-                            std::reverse( invRepeat.begin(), invRepeat.end() );
-                            
-                            // inverted repeat context
-                            std::string invRepeatContext = invRepeat.substr(0, invRepeat.size() - 1);
-                            
-                            // update hash table for inverted repeats
-                            switch (invRepeat[ invRepeat.size() - 1 ])
-                            {
-                                case 'A':   ++(hTable[ invRepeatContext ])[ 0 ];    break;
-                                case 'C':   ++(hTable[ invRepeatContext ])[ 1 ];    break;
-                                case 'T':   ++(hTable[ invRepeatContext ])[ 2 ];    break;
-                                case 'G':   ++(hTable[ invRepeatContext ])[ 3 ];    break;
-                                case 'N':   ++(hTable[ invRepeatContext ])[ 4 ];    break;
-                                default:                                            break;
-                            }
-                        }
-
-//                        counters[ 0 ] += ALPHA_DENUMERATOR * table[ index ][ 0 ] + ALPHA_NUMERATOR;
-//                        totalCount = (ALPHA_DENUMERATOR * (table[ index ][ 0 ] + table[ index ][ 1 ] +
-//                                                           table[ index ][ 2 ] + table[ index ][ 3 ])) +
-//                                     (4 * ALPHA_NUMERATOR);
-////                        AESym(3, counters, totalCount, writer);
-                        break;
-                    
-                    case 'C':
-                        // increment number of 'C's. order: {A, C, T, G, N}
-                        ++(hTable[ context ])[ 1 ];
-                        
-                        // considering inverted repeats to update hash table
-                        if (isInvertedRepeat)
-                        {
-                            std::string invRepeat = context + "C";
-                            
-                            // A <-> T  ,  C <-> G  ,  N <-> N (N unchanged)
-                            for (char &ch : invRepeat)
-                                ch = (ch == 'A') ? 'T' :
-                                     (ch == 'C') ? 'G' :
-                                     (ch == 'T') ? 'A' :
-                                     (ch == 'G') ? 'C' :
-                                     'N';
-                            
-                            // reverse the string
-                            std::reverse( invRepeat.begin(), invRepeat.end() );
-                            
-                            // inverted repeat context
-                            std::string invRepeatContext = invRepeat.substr(0, invRepeat.size() - 1);
-                            
-                            // update hash table for inverted repeats
-                            switch (invRepeat[ invRepeat.size() - 1 ])
-                            {
-                                case 'A':   ++(hTable[ invRepeatContext ])[ 0 ];    break;
-                                case 'C':   ++(hTable[ invRepeatContext ])[ 1 ];    break;
-                                case 'T':   ++(hTable[ invRepeatContext ])[ 2 ];    break;
-                                case 'G':   ++(hTable[ invRepeatContext ])[ 3 ];    break;
-                                case 'N':   ++(hTable[ invRepeatContext ])[ 4 ];    break;
-                                default:                                            break;
-                            }
-                        }
-
-//                        counters[ 1 ] += ALPHA_DENUMERATOR * table[ index ][ 1 ] + ALPHA_NUMERATOR;
-//                        totalCount = (ALPHA_DENUMERATOR * (table[ index ][ 0 ] + table[ index ][ 1 ] +
-//                                                           table[ index ][ 2 ] + table[ index ][ 3 ])) +
-//                                     (4 * ALPHA_NUMERATOR);
-////                        AESym(3, counters, totalCount, writer);
-                        break;
-                    
-                    case 'T':
-                        // increment number of 'T's. order: {A, C, T, G, N}
-                        ++(hTable[ context ])[ 2 ];
-                        
-                        // considering inverted repeats to update hash table
-                        if (isInvertedRepeat)
-                        {
-                            std::string invRepeat = context + "T";
-                            
-                            // A <-> T  ,  C <-> G  ,  N <-> N (N unchanged)
-                            for (char &ch : invRepeat)
-                                ch = (ch == 'A') ? 'T' :
-                                     (ch == 'C') ? 'G' :
-                                     (ch == 'T') ? 'A' :
-                                     (ch == 'G') ? 'C' :
-                                     'N';
-                            
-                            // reverse the string
-                            std::reverse( invRepeat.begin(), invRepeat.end() );
-                            
-                            // inverted repeat context
-                            std::string invRepeatContext = invRepeat.substr(0, invRepeat.size() - 1);
-                            
-                            // update hash table for inverted repeats
-                            switch (invRepeat[ invRepeat.size() - 1 ])
-                            {
-                                case 'A':   ++(hTable[ invRepeatContext ])[ 0 ];    break;
-                                case 'C':   ++(hTable[ invRepeatContext ])[ 1 ];    break;
-                                case 'T':   ++(hTable[ invRepeatContext ])[ 2 ];    break;
-                                case 'G':   ++(hTable[ invRepeatContext ])[ 3 ];    break;
-                                case 'N':   ++(hTable[ invRepeatContext ])[ 4 ];    break;
-                                default:                                            break;
-                            }
-                        }
-
-//                        counters[ 2 ] += ALPHA_DENUMERATOR * table[ index ][ 2 ] + ALPHA_NUMERATOR;
-//                        totalCount = (ALPHA_DENUMERATOR * (table[ index ][ 0 ] + table[ index ][ 1 ] +
-//                                                           table[ index ][ 2 ] + table[ index ][ 3 ])) +
-//                                     (4 * ALPHA_NUMERATOR);
-////                        AESym(3, counters, totalCount, writer);
-                        break;
-                    
-                    case 'G':
-                        // increment number of 'G's. order: {A, C, T, G, N}
-                        ++(hTable[ context ])[ 3 ];
-                        
-                        // considering inverted repeats to update hash table
-                        if (isInvertedRepeat)
-                        {
-                            std::string invRepeat = context + "G";
-                            
-                            // A <-> T  ,  C <-> G  ,  N <-> N (N unchanged)
-                            for (char &ch : invRepeat)
-                                ch = (ch == 'A') ? 'T' :
-                                     (ch == 'C') ? 'G' :
-                                     (ch == 'T') ? 'A' :
-                                     (ch == 'G') ? 'C' :
-                                     'N';
-                            
-                            // reverse the string
-                            std::reverse( invRepeat.begin(), invRepeat.end() );
-                            
-                            // inverted repeat context
-                            std::string invRepeatContext = invRepeat.substr(0, invRepeat.size() - 1);
-                            
-                            // update hash table for inverted repeats
-                            switch (invRepeat[ invRepeat.size() - 1 ])
-                            {
-                                case 'A':   ++(hTable[ invRepeatContext ])[ 0 ];    break;
-                                case 'C':   ++(hTable[ invRepeatContext ])[ 1 ];    break;
-                                case 'T':   ++(hTable[ invRepeatContext ])[ 2 ];    break;
-                                case 'G':   ++(hTable[ invRepeatContext ])[ 3 ];    break;
-                                case 'N':   ++(hTable[ invRepeatContext ])[ 4 ];    break;
-                                default:                                            break;
-                            }
-                        }
-//
-//                        counters[ 3 ] += ALPHA_DENUMERATOR * table[ index ][ 3 ] + ALPHA_NUMERATOR;
-//                        totalCount = (ALPHA_DENUMERATOR * (table[ index ][ 0 ] + table[ index ][ 1 ] +
-//                                                           table[ index ][ 2 ] + table[ index ][ 3 ])) +
-//                                     (4 * ALPHA_NUMERATOR);
-////                        AESym(3, counters, totalCount, writer);
-                        break;
-                    
-                    case 'N':
-                        // increment number of 'N's. order: {A, C, T, G, N}
-                        ++(hTable[ context ])[ 4 ];
-                        
-                        // considering inverted repeats to update hash table
-                        if (isInvertedRepeat)
-                        {
-                            std::string invRepeat = context + "N";
-                            
-                            // A <-> T  ,  C <-> G  ,  N <-> N (N unchanged)
-                            for (char &ch : invRepeat)
-                                ch = (ch == 'A') ? 'T' :
-                                     (ch == 'C') ? 'G' :
-                                     (ch == 'T') ? 'A' :
-                                     (ch == 'G') ? 'C' :
-                                     'N';
-                            
-                            // reverse the string
-                            std::reverse( invRepeat.begin(), invRepeat.end() );
-                            
-                            // inverted repeat context
-                            std::string invRepeatContext = invRepeat.substr(0, invRepeat.size() - 1);
-                            
-                            // update hash table for inverted repeats
-                            switch (invRepeat[ invRepeat.size() - 1 ])
-                            {
-                                case 'A':   ++(hTable[ invRepeatContext ])[ 0 ];    break;
-                                case 'C':   ++(hTable[ invRepeatContext ])[ 1 ];    break;
-                                case 'T':   ++(hTable[ invRepeatContext ])[ 2 ];    break;
-                                case 'G':   ++(hTable[ invRepeatContext ])[ 3 ];    break;
-                                case 'N':   ++(hTable[ invRepeatContext ])[ 4 ];    break;
-                                default:                                            break;
-                            }
-                        }
-
-//                        counters[ 3 ] += ALPHA_DENUMERATOR * table[ index ][ 3 ] + ALPHA_NUMERATOR;
-//                        totalCount = (ALPHA_DENUMERATOR * (table[ index ][ 0 ] + table[ index ][ 1 ] +
-//                                                           table[ index ][ 2 ] + table[ index ][ 3 ])) +
-//                                     (4 * ALPHA_NUMERATOR);
-////                        AESym(3, counters, totalCount, writer);
-                        break;
-                    
-                    default: break;
+                    case 'A':   ++(hTable[ context ])[ 0 ]; break;
+                    case 'C':   ++(hTable[ context ])[ 1 ]; break;
+                    case 'T':   ++(hTable[ context ])[ 2 ]; break;
+                    case 'G':   ++(hTable[ context ])[ 3 ]; break;
+                    case 'N':   ++(hTable[ context ])[ 4 ]; break;
+                    default:                                break;
                 }
-
-//                totalCount = (ALPHA_DENUMERATOR * (table[ index ][ 0 ] + table[ index ][ 1 ] +
-//                                                   table[ index ][ 2 ] + table[ index ][ 3 ])) +
-//                             (4 * ALPHA_NUMERATOR);
-//
-//                memset(counters, 0, sizeof(counters[ 0 ]) * 4);
                 
                 // update context
                 context = (CONTEXT_DEPTH == 1)
@@ -277,7 +97,7 @@ void FCM::buildHashTable ()
         fileIn.close();     // close file
         
 //        return hTable;      // return the made hash table
-        FCM::hashTable = hTable;
+        FCM::hashTable = hTable;    // save the built hash table
     }
 }
 
