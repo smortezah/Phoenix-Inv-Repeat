@@ -11,7 +11,7 @@ FCM::FCM () {}
 /***********************************************************
     build hash table
 ************************************************************/
-hashTable_t buildHashTable ()
+hashTable_t FCM::buildHashTable ()
 {    const std::string &fileName, const bool isInvertedRepeat
     
     Functions funcObj;  // object of class Functions
