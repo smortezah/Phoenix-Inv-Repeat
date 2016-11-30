@@ -1,8 +1,7 @@
-#include "messages.h"
-
 #include <iostream>
 #include <fstream>
 
+#include "messages.h"
 #include "def.h"
 
 

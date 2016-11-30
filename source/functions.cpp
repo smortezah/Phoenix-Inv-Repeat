@@ -1,10 +1,9 @@
-#include "functions.h"
-
 #include <iostream>
 #include <getopt.h>     // for command line parsing
 #include <string>
 #include <fstream>
 
+#include "functions.h"
 #include "messages.h"
 #include "hash.h"
 #include "FCM.h"
@@ -145,6 +144,8 @@ int8_t Functions::commandLineParser (int argc, char **argv)
         // build hash table, considering inverted repeats
         hashTable_t hTableForPrint = hashObj.hashTableBuild(targetFileName, (bool) i_flag);
         hashObj.hashTablePrint(hTableForPrint); // print hash table
+        
+        
     }
     
     if (r_flag)
