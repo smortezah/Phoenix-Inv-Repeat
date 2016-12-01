@@ -103,7 +103,7 @@ void FCM::buildHashTable ()
 /***********************************************************
     print hash table
 ************************************************************/
-void FCM::printHashTable (hashTable_t hTable)
+void FCM::printHashTable (hashTable_t hTable) const
 {
     
     /***********************************************************

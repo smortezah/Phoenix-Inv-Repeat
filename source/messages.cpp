@@ -14,7 +14,7 @@ Messages::Messages () {}
 /***********************************************************
     show usage guide
 ************************************************************/
-void Messages::help ()
+void Messages::help () const
 {
     std::cout                                                       << "\n"
             << "Synopsis:"                                          << "\n"
@@ -53,7 +53,7 @@ void Messages::help ()
 /***********************************************************
     show About Phoenix
 ************************************************************/
-void Messages::about ()
+void Messages::about () const
 {
     std::cout                                                               << "\n"
             << "PHOENIX v" << VERSION_PHOENIX << "." << RELEASE_PHOENIX     << "\n"
@@ -74,7 +74,7 @@ void Messages::about ()
 /***********************************************************
     show verbose mode
 ************************************************************/
-void Messages::verbose ()
+void Messages::verbose () const
 {
     std::cout << "verbose mode.\n"; // for test
 }
@@ -83,7 +83,7 @@ void Messages::verbose ()
 /***********************************************************
     show integer number mode
 ************************************************************/
-void Messages::number (int num)
+void Messages::number (int num) const
 {
     std::cout << "integer number mode (n=" << num << ")\n"; // for test
 }
@@ -92,7 +92,7 @@ void Messages::number (int num)
 /***********************************************************
     show float number mode
 ************************************************************/
-void Messages::fnumber (float num)
+void Messages::fnumber (float num) const
 {
     std::cout << "float number mode (d=" << num << ")\n"; // for test
 }

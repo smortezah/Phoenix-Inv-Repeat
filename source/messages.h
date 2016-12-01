@@ -8,13 +8,13 @@
 class Messages
 {
 public:
-    Messages ();            // constructor
+    Messages ();                // constructor
     
-    void help ();           // show usage guide
-    void about ();          // show About Phoenix
-    void verbose ();        // show verbose mode
-    void number (int);      // show integer number mode
-    void fnumber (float);   // show float number mode
+    void help () const;         // show usage guide
+    void about () const;        // show About Phoenix
+    void verbose () const;      // show verbose mode
+    void number (int) const;    // show integer number mode
+    void fnumber (float) const; // show float number mode
 };
 
 

@@ -13,7 +13,7 @@ public:
     FCM ();                                     // constructor
     
     void buildHashTable ();                     // build hash table
-    void printHashTable (hashTable_t);          // print hash table
+    void printHashTable (hashTable_t) const;    // print hash table
     
     uint8_t getContextDepth () const;           // getter of context depth
     void setContextDepth (uint8_t);             // setter of context depth

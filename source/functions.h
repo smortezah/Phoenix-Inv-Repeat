@@ -8,10 +8,10 @@
 class Functions
 {
 public:
-    Functions ();                               // constructor
+    Functions ();                                       // constructor
     
-    int8_t commandLineParser (int, char**);     // parse command line
-    static bool isfileCorrect (const std::string &);   // check if file opened correctly
+    int8_t commandLineParser (int, char**);             // parse command line
+    static bool isfileCorrect (const std::string &);    // check if file opened correctly
 };
 
 
