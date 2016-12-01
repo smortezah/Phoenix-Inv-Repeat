@@ -50,7 +50,7 @@ void FCM::buildHashTable ()
                             (c == 'C') ? (uint8_t) 1 :
                             (c == 'G') ? (uint8_t) 2 :
                             (c == 'T') ? (uint8_t) 3 : (uint8_t) 4;
-//
+
                 ++(hTable[ context ])[ i ];
 //
 //                (c == 'A') ? ++(hTable[ context ])[ 0 ] :
@@ -112,7 +112,7 @@ void FCM::buildHashTable ()
                 // update context
                 context = (contextDepth == 1)
                           ? std::string("") + datasetLine[ lineIter ]
-                          : context.substr(1, contextDepth - 1) + datasetLine[ lineIter ];
+                          : context.substr(1, (unsigned) contextDepth - 1) + datasetLine[ lineIter ];
             }
             
             lineIter = 0;           // iterator for non-first lines of file becomes 0
