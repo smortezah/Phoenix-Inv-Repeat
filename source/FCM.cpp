@@ -43,13 +43,23 @@ void FCM::buildHashTable ()
             // fill hash table by number of occurrences of symbols A, C, G, T, N
             for (; lineIter != datasetLine.size(); ++lineIter)
             {
+                // TODO
+                // tu DEFINE tarif kon
                 char c = datasetLine[ lineIter ];
                 uint8_t i = (c == 'A') ? (uint8_t) 0 :
                             (c == 'C') ? (uint8_t) 1 :
                             (c == 'G') ? (uint8_t) 2 :
                             (c == 'T') ? (uint8_t) 3 : (uint8_t) 4;
-
+//
                 ++(hTable[ context ])[ i ];
+//
+//                (c == 'A') ? ++(hTable[ context ])[ 0 ] :
+//                (c == 'C') ? ++(hTable[ context ])[ 1 ] :
+//                (c == 'G') ? ++(hTable[ context ])[ 2 ] :
+//                (c == 'T') ? ++(hTable[ context ])[ 3 ] :
+//                ++(hTable[ context ])[ 4 ];
+
+                
 //                switch (datasetLine[ lineIter ])
 //                {
 //                    case 'A':   ++(hTable[ context ])[ 0 ]; break;
@@ -79,16 +89,24 @@ void FCM::buildHashTable ()
                     // inverted repeat context
                     std::string invRepeatContext = invRepeat.substr(0, invRepeat.size() - 1);
         
-                    // update hash table for inverted repeats
-                    switch (invRepeat[ invRepeat.size() - 1 ])
-                    {
-                        case 'A':   ++(hTable[ invRepeatContext ])[ 0 ];    break;
-                        case 'C':   ++(hTable[ invRepeatContext ])[ 1 ];    break;
-                        case 'G':   ++(hTable[ invRepeatContext ])[ 2 ];    break;
-                        case 'T':   ++(hTable[ invRepeatContext ])[ 3 ];    break;
-                        case 'N':   ++(hTable[ invRepeatContext ])[ 4 ];    break;
-                        default:                                            break;
-                    }
+//                    // update hash table for inverted repeats
+//                    switch (invRepeat[ invRepeat.size() - 1 ])
+//                    {
+//                        case 'A':   ++(hTable[ invRepeatContext ])[ 0 ];    break;
+//                        case 'C':   ++(hTable[ invRepeatContext ])[ 1 ];    break;
+//                        case 'G':   ++(hTable[ invRepeatContext ])[ 2 ];    break;
+//                        case 'T':   ++(hTable[ invRepeatContext ])[ 3 ];    break;
+//                        case 'N':   ++(hTable[ invRepeatContext ])[ 4 ];    break;
+//                        default:                                            break;
+//                    }
+    
+                    char c2 = invRepeat[ invRepeat.size() - 1 ];
+                    uint8_t r = (c2 == 'A') ? (uint8_t) 0 :
+                                (c2 == 'C') ? (uint8_t) 1 :
+                                (c2 == 'G') ? (uint8_t) 2 :
+                                (c2 == 'T') ? (uint8_t) 3 : (uint8_t) 4;
+                    
+                    ++(hTable[ invRepeatContext ])[ r ];
                 }
                 
                 // update context
