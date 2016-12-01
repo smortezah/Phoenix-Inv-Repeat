@@ -51,7 +51,9 @@ void FCM::buildHashTable ()
                             (c == 'G') ? (uint8_t) 2 :
                             (c == 'T') ? (uint8_t) 3 : (uint8_t) 4;
 
-                ++(hTable[ context ])[ i ];
+//                ++(hTable[ context ])[ i ];
+                ++(hTable[ context ])[ c ];
+
 //
 //                (c == 'A') ? ++(hTable[ context ])[ 0 ] :
 //                (c == 'C') ? ++(hTable[ context ])[ 1 ] :
@@ -74,7 +76,7 @@ void FCM::buildHashTable ()
                 if (isInvertedRepeat)
                 {
                     std::string invRepeat = context + datasetLine[ lineIter ];
-        
+
                     // A <-> T  ,  C <-> G  ,  N <-> N (N unchanged)
                     for (char &ch : invRepeat)
                         ch = (ch == 'A') ? 'T' :
@@ -82,13 +84,13 @@ void FCM::buildHashTable ()
                              (ch == 'G') ? 'C' :
                              (ch == 'T') ? 'A' :
                              'N';
-        
+
                     // reverse the string
                     std::reverse( invRepeat.begin(), invRepeat.end() );
-        
+
                     // inverted repeat context
                     std::string invRepeatContext = invRepeat.substr(0, invRepeat.size() - 1);
-        
+
 //                    // update hash table for inverted repeats
 //                    switch (invRepeat[ invRepeat.size() - 1 ])
 //                    {
@@ -99,13 +101,13 @@ void FCM::buildHashTable ()
 //                        case 'N':   ++(hTable[ invRepeatContext ])[ 4 ];    break;
 //                        default:                                            break;
 //                    }
-    
+
                     char c2 = invRepeat[ invRepeat.size() - 1 ];
                     uint8_t r = (c2 == 'A') ? (uint8_t) 0 :
                                 (c2 == 'C') ? (uint8_t) 1 :
                                 (c2 == 'G') ? (uint8_t) 2 :
                                 (c2 == 'T') ? (uint8_t) 3 : (uint8_t) 4;
-                    
+
                     ++(hTable[ invRepeatContext ])[ r ];
                 }
                 
