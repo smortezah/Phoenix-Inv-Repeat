@@ -73,16 +73,25 @@ void FCM::buildHashTable ()
                         default:                                            break;
                     }
                 }
-                
-                switch (datasetLine[ lineIter ])
-                {
-                    case 'A':   ++(hTable[ context ])[ 0 ]; break;
-                    case 'C':   ++(hTable[ context ])[ 1 ]; break;
-                    case 'T':   ++(hTable[ context ])[ 2 ]; break;
-                    case 'G':   ++(hTable[ context ])[ 3 ]; break;
-                    case 'N':   ++(hTable[ context ])[ 4 ]; break;
-                    default:                                break;
-                }
+    
+    
+                char c = datasetLine[ lineIter ];
+                uint8_t i = (c == 'A') ? (uint8_t) 0 :
+                            (c == 'C') ? (uint8_t) 1 :
+                            (c == 'G') ? (uint8_t) 2 :
+                            (c == 'T') ? (uint8_t) 3 : (uint8_t) 4;
+
+
+                ++(hTable[ context ])[ i ];
+//                switch (datasetLine[ lineIter ])
+//                {
+//                    case 'A':   ++(hTable[ context ])[ 0 ]; break;
+//                    case 'C':   ++(hTable[ context ])[ 1 ]; break;
+//                    case 'T':   ++(hTable[ context ])[ 2 ]; break;
+//                    case 'G':   ++(hTable[ context ])[ 3 ]; break;
+//                    case 'N':   ++(hTable[ context ])[ 4 ]; break;
+//                    default:                                break;
+//                }
                 
                 // update context
                 context = (contextDepth == 1)

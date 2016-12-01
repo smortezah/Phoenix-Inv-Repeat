@@ -38,7 +38,7 @@ int32_t main (int argc, char *argv[])
     
     // Record end time
     highResClock::time_point exeFinishTime = highResClock::now();
-
+    
     // calculate and show duration in seconds
     std::chrono::duration< double > elapsed = exeFinishTime - exeStartTime;
     std::cout << "\nElapsed time: " << elapsed.count() << " s\n";
