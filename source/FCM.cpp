@@ -6,6 +6,12 @@
 #include "functions.h"
 
 
+
+
+
+
+#include <bitset>
+
 /***********************************************************
     constructor
 ************************************************************/
@@ -46,13 +52,25 @@ void FCM::buildHashTable ()
                 // TODO
                 // tu DEFINE tarif kon
                 char c = datasetLine[ lineIter ];
-                uint8_t i = (c == 'A') ? (uint8_t) 0 :
-                            (c == 'C') ? (uint8_t) 1 :
-                            (c == 'G') ? (uint8_t) 2 :
-                            (c == 'T') ? (uint8_t) 3 : (uint8_t) 4;
-
+//                uint8_t i = (c == 'A') ? (uint8_t) 0 :
+//                            (c == 'C') ? (uint8_t) 1 :
+//                            (c == 'G') ? (uint8_t) 2 :
+//                            (c == 'T') ? (uint8_t) 3 : (uint8_t) 4;
+    
+                std::bitset< 2 > A(0b00);
+                std::bitset< 2 > C(0b01);
+                std::bitset< 2 > G(0b10);
+                std::bitset< 2 > T(0b11);
+                std::bitset< 2 > i(
+                        (c == 'A') ? (0b00) :
+                        (c == 'C') ? (0b01) :
+                        (c == 'G') ? (0b10) : (0b11)
+                );
+                
+                
 //                ++(hTable[ context ])[ i ];
-                ++(hTable[ context ])[ c ];
+                ++(hTable[ context ])[ i ];
+
 
 //
 //                (c == 'A') ? ++(hTable[ context ])[ 0 ] :

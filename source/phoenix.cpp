@@ -26,13 +26,16 @@ int32_t main (int argc, char *argv[])
     highResClock::time_point exeStartTime = highResClock::now();
     
 
-//    // for access to Functions (object 'function' on memory stack)
-//    Functions function;
-//    function.commandLineParser(argc, argv); // parse the command line
+    // for access to Functions (object 'function' on memory stack)
+    Functions function;
+    function.commandLineParser(argc, argv); // parse the command line
 
     
-    std::bitset<2> x (0b01);
-    std::cout<<~x;
+//    std::bitset<2> x (0b01);
+////    std::cout<<~x;
+//    std::array< std::bitset< 2 >, 2 > arr = {0b01, 0b11};
+//    std::cout<<arr[0b11];
+    
 //    std::cout<<(int) 'A'<<' '<<(int) 'C'<<' '<<(int) 'G'<<' '<<(int) 'T'<<' '<<(int) 'N';
     
     
