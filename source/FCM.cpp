@@ -17,10 +17,10 @@ FCM::FCM () {}
 ************************************************************/
 void FCM::buildHashTable ()
 {
-    uint8_t contextDepth = getContextDepth();       // get context depth
-    uint32_t alphaDen = getAlphaDenom();            // get alpha denominator
-    bool isInvertedRepeat = getInvertedRepeat();    // get inverted repeat
-    std::string fileName = getFileAddress();        // get file address
+    uint8_t contextDepth    = getContextDepth();    // get context depth
+    uint32_t alphaDen       = getAlphaDenom();      // get alpha denominator
+    bool isInvertedRepeat   = getInvertedRepeat();  // get inverted repeat
+    std::string fileName    = getFileAddress();     // get file address
     
     std::ifstream fileIn(fileName, std::ios::in);   // open file located in fileName
     
@@ -40,9 +40,26 @@ void FCM::buildHashTable ()
         size_t lineIter = contextDepth;
         do
         {
-            // fill hash table by number of occurrences of symbols A, C, T, G, N
+            // fill hash table by number of occurrences of symbols A, C, G, T, N
             for (; lineIter != datasetLine.size(); ++lineIter)
             {
+                char c = datasetLine[ lineIter ];
+                uint8_t i = (c == 'A') ? (uint8_t) 0 :
+                            (c == 'C') ? (uint8_t) 1 :
+                            (c == 'G') ? (uint8_t) 2 :
+                            (c == 'T') ? (uint8_t) 3 : (uint8_t) 4;
+
+                ++(hTable[ context ])[ i ];
+//                switch (datasetLine[ lineIter ])
+//                {
+//                    case 'A':   ++(hTable[ context ])[ 0 ]; break;
+//                    case 'C':   ++(hTable[ context ])[ 1 ]; break;
+//                    case 'T':   ++(hTable[ context ])[ 2 ]; break;
+//                    case 'G':   ++(hTable[ context ])[ 3 ]; break;
+//                    case 'N':   ++(hTable[ context ])[ 4 ]; break;
+//                    default:                                break;
+//                }
+    
                 // considering inverted repeats to update hash table
                 if (isInvertedRepeat)
                 {
@@ -52,8 +69,8 @@ void FCM::buildHashTable ()
                     for (char &ch : invRepeat)
                         ch = (ch == 'A') ? 'T' :
                              (ch == 'C') ? 'G' :
-                             (ch == 'T') ? 'A' :
                              (ch == 'G') ? 'C' :
+                             (ch == 'T') ? 'A' :
                              'N';
         
                     // reverse the string
@@ -67,31 +84,12 @@ void FCM::buildHashTable ()
                     {
                         case 'A':   ++(hTable[ invRepeatContext ])[ 0 ];    break;
                         case 'C':   ++(hTable[ invRepeatContext ])[ 1 ];    break;
-                        case 'T':   ++(hTable[ invRepeatContext ])[ 2 ];    break;
-                        case 'G':   ++(hTable[ invRepeatContext ])[ 3 ];    break;
+                        case 'G':   ++(hTable[ invRepeatContext ])[ 2 ];    break;
+                        case 'T':   ++(hTable[ invRepeatContext ])[ 3 ];    break;
                         case 'N':   ++(hTable[ invRepeatContext ])[ 4 ];    break;
                         default:                                            break;
                     }
                 }
-    
-    
-                char c = datasetLine[ lineIter ];
-                uint8_t i = (c == 'A') ? (uint8_t) 0 :
-                            (c == 'C') ? (uint8_t) 1 :
-                            (c == 'G') ? (uint8_t) 2 :
-                            (c == 'T') ? (uint8_t) 3 : (uint8_t) 4;
-
-
-                ++(hTable[ context ])[ i ];
-//                switch (datasetLine[ lineIter ])
-//                {
-//                    case 'A':   ++(hTable[ context ])[ 0 ]; break;
-//                    case 'C':   ++(hTable[ context ])[ 1 ]; break;
-//                    case 'T':   ++(hTable[ context ])[ 2 ]; break;
-//                    case 'G':   ++(hTable[ context ])[ 3 ]; break;
-//                    case 'N':   ++(hTable[ context ])[ 4 ]; break;
-//                    default:                                break;
-//                }
                 
                 // update context
                 context = (contextDepth == 1)
@@ -118,8 +116,8 @@ void FCM::printHashTable (hashTable_t hTable) const
     /***********************************************************
         test
     ************************************************************/
-    std::cout << "\tA\tC\tT\tG\tN"
-              //              << "\tP_A\tP_C\tP_T\tP_G\tP_N"
+    std::cout << "\tA\tC\tG\tT\tN"
+              //              << "\tP_A\tP_C\tP_G\tP_T\tP_N"
               << "\n"
               << "\t-----------------------------------"
               //              << "------------------------------------------"

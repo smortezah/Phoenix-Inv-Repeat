@@ -5,16 +5,15 @@
 #define __STDC_FORMAT_MACROS
 #include <inttypes.h>
 #if defined(_MSC_VER)
-#include <io.h>
+    #include <io.h>
 #else
-#include <unistd.h>
+    #include <unistd.h>
 #endif
 
 #include "def.h"
-#include "messages.h"
 #include "functions.h"
 #include "FCM.h"
-
+#include "messages.h"
 
 
 ///////////////////////////////////////////////////////////

@@ -145,7 +145,7 @@ int8_t Functions::commandLineParser (int argc, char **argv)
         f.setInvertedRepeat((bool) i_flag);
         f.setFileAddress(targetFileName);
         f.buildHashTable();
-        f.printHashTable(f.getHashTable());
+//        f.printHashTable(f.getHashTable());
     }
     
     if (r_flag)
