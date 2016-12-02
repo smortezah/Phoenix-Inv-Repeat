@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <algorithm>
-#include <cstring>
+//#include <cstring>
 
 #include "FCM.h"
 #include "functions.h"
@@ -40,7 +40,6 @@ void FCM::buildHashTable ()
         // iterator for each line of file.
         // at first line, it starts from index "contextDepth". at other lines, it starts from index 0
         size_t lineIter = contextDepth;
-        uint8_t cellForUpdate = 0;
 
         do
         {
