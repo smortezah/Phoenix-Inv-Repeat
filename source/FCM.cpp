@@ -36,10 +36,14 @@ void FCM::buildHashTable ()
     
         htable_t hTable;                            // create hash table
         hTable.insert({context, {0, 0, 0, 0, 0}});  // initialize hash table with 0'z
-        
+
         std::string datasetLine;                    // to keep each line of file
-        std::getline(fileIn, datasetLine);          // read first line of file
-        
+//        std::getline(fileIn, datasetLine);          // read first line of file
+    
+        std::string fileLine;                    // to keep each line of file
+        std::getline(fileIn, fileLine);          // read first line of file
+//        for(char c: fileLine)
+//            datasetLine
 //        std::cout<<std::stoi(datasetLine);
         
         
@@ -170,7 +174,7 @@ void FCM::buildHashTable ()
 //        fileIn.close();             // close file
 //
 //        FCM::setHashTable(hTable);  // save the built hash table
-    }   // end of file opened correctly
+    }   // end - file opened correctly
 }
 
 
