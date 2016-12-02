@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <algorithm>
+#include <cstring>
 
 #include "FCM.h"
 #include "functions.h"
@@ -44,60 +45,66 @@ void FCM::buildHashTable ()
         std::vector<uint16_t > v;
 //        const uint8_t i = datasetLine.size();
 //        std::array<uint8_t ,i> a;
-//        for (char c:datasetLine)
-//            v.push_back(symCharToInt(c));
 //
 //        for (int i = 0; i != v.size(); ++i)
 //            std::cout << v[ i ];
+    
+//        for (size_t i = 0; i != datasetLine.size(); ++i)
+//        {
+//            v.push_back(symCharToInt(datasetLine[ i ]));
+//
+//                std::cout << "datasetLine[] " << datasetLine[i] << "\n";
+//                std::cout << "symCharToInt(datasetLine) " << symCharToInt(datasetLine[i]) << "\n";
+//                std::cout << "v[ symCharToInt(datasetLine) ] " << v[ i ] << "\n";
+//        }
         
         
         do
         {
             // TODO
             // char haye voroodi o int kon
-            for (char c:datasetLine)
-//            {
-                v.push_back(symCharToInt(c));
-//                std::cout << c << ' ';
+            
+//            v.resize(datasetLine.size());
+
+
+
+//            for (size_t i = 0; i != datasetLine.size(); ++i)
+//                v.push_back(symCharToInt(datasetLine[ i ]));
+//            std::cout << c << ' ';
 //            std::cout << symCharToInt(c) << ' ';
-//            }
 //            std::cout << "\n";
-//            for (uint16_t u:v)
-//                std::cout << u;
-//            std::cout << "\n";
+
+//            for (int i = 0; i != v.size(); ++i)
+//                std::cout << v[ i ];
+            
+    
+            for (size_t i = 0; i != datasetLine.size(); ++i)
+            {
+                v.push_back(symCharToInt(datasetLine[ i ]));
+
+//                std::cout << "i " << i << "\n";
+//                std::cout << "datasetLine[] " << datasetLine[i] << "\n";
+//                std::cout << "symCharToInt(datasetLine) " << symCharToInt(datasetLine[i]) << "\n";
+////                std::cout << "v[ symCharToInt(datasetLine) ] " << v[ i ] << "\n";
+            }
 
             for (int i = 0; i != v.size(); ++i)
                 std::cout << v[ i ];
-
-            
-            
+            std::cout << "\n";
             
             // fill hash table by number of occurrences of symbols A, C, N, G, T
             for (; lineIter != datasetLine.size(); ++lineIter)
             {
-//                char c = datasetLine[ lineIter ];
-//                uint8_t i = (c == 'A') ? (uint8_t) 0 :
-//                            (c == 'C') ? (uint8_t) 1 :
-//                            (c == 'G') ? (uint8_t) 2 :
-//                            (c == 'T') ? (uint8_t) 3 : (uint8_t) 4;
-
 //                ++(hTable[ context ])[ i ];
 //                cellForUpdate = symCharToInt(datasetLine[ lineIter ]);
 //                ++(hTable[ context ])[ cellForUpdate ];
 
 //                ++(hTable[ context ])[ v[lineIter] ];
-//                std::cout << v[ lineIter ] << "\n";
-
-
-//                switch (datasetLine[ lineIter ])
-//                {
-//                    case 'A':   ++(hTable[ context ])[ 0 ]; break;
-//                    case 'C':   ++(hTable[ context ])[ 1 ]; break;
-//                    case 'T':   ++(hTable[ context ])[ 2 ]; break;
-//                    case 'G':   ++(hTable[ context ])[ 3 ]; break;
-//                    case 'N':   ++(hTable[ context ])[ 4 ]; break;
-//                    default:                                break;
-//                }
+                std::cout << "context " << context << "\n";
+                std::cout << "lineIter " << lineIter << "\n";
+                std::cout << "datasetLine[lineIter] " << datasetLine[lineIter] << "\n";
+                std::cout << "symCharToInt(lineIter) " << symCharToInt(datasetLine[lineIter]) << "\n";
+                std::cout << "v[ lineIter ] " << v[ lineIter ] << "\n";
 
                 // considering inverted repeats to update hash table
                 if (isInvertedRepeat)
@@ -168,7 +175,9 @@ void FCM::buildHashTable ()
                           ? std::string("") + datasetLine[ lineIter ]
                           : context.substr(1, (unsigned) contextDepth - 1) + datasetLine[ lineIter ];
             }
-
+    
+//            std::memset(&v[0], 0, v.size() * sizeof v[0]);
+    
             lineIter = 0;           // iterator for non-first lines of file becomes 0
         } while ( std::getline(fileIn, datasetLine) );
 
@@ -188,8 +197,8 @@ void FCM::printHashTable (htable_t hTable) const
     /***********************************************************
         test
     ************************************************************/
-    std::cout << "\tA\tC\tG\tT\tN"
-              //              << "\tP_A\tP_C\tP_G\tP_T\tP_N"
+    std::cout << "\tA\tC\tN\tG\tT"
+              //              << "\tP_A\tP_C\tP_N\tP_G\tP_T"
               << "\n"
               << "\t-----------------------------------"
               //              << "------------------------------------------"
@@ -224,10 +233,15 @@ void FCM::printHashTable (htable_t hTable) const
 ************************************************************/
 uint16_t FCM::symCharToInt (char c)
 {
-    return (c == 'A') ? (uint8_t) 0 :
-           (c == 'C') ? (uint8_t) 1 :
-           (c == 'G') ? (uint8_t) 3 :
-           (c == 'T') ? (uint8_t) 4 : (uint8_t) 2;
+//    return (c == 'A') ? (uint8_t) 0 :
+//           (c == 'C') ? (uint8_t) 1 :
+//           (c == 'G') ? (uint8_t) 3 :
+//           (c == 'T') ? (uint8_t) 4 : (uint8_t) 2;
+    return (c == 'A') ? (uint16_t) 0 :
+           (c == 'C') ? (uint16_t) 1 :
+           (c == 'G') ? (uint16_t) 3 :
+           (c == 'T') ? (uint16_t) 4 : (uint16_t) 2;
+    
 }
         
         
