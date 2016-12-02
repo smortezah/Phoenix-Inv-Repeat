@@ -14,7 +14,7 @@ public:
     
     
     
-    uint8_t symCharToInt (char);
+    uint16_t symCharToInt (char);
     
     
     

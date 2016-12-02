@@ -33,20 +33,46 @@ void FCM::buildHashTable ()
         hTable.insert({context, {0, 0, 0, 0, 0}});  // initialize hash table with 0'z
 
         std::string datasetLine;                    // to keep each line of file
-//        std::getline(fileIn, datasetLine);          // read first line of file
+        std::getline(fileIn, datasetLine);          // read first line of file
         datasetLine = context + datasetLine;        // add "AA..." to beginning of first line of file
 
         // iterator for each line of file.
         // at first line, it starts from index "contextDepth". at other lines, it starts from index 0
         size_t lineIter = contextDepth;
         uint8_t cellForUpdate = 0;
+        
+        std::vector<uint16_t > v;
+//        const uint8_t i = datasetLine.size();
+//        std::array<uint8_t ,i> a;
+//        for (char c:datasetLine)
+//            v.push_back(symCharToInt(c));
+//
+//        for (int i = 0; i != v.size(); ++i)
+//            std::cout << v[ i ];
+        
+        
         do
         {
             // TODO
             // char haye voroodi o int kon
+            for (char c:datasetLine)
+//            {
+                v.push_back(symCharToInt(c));
+//                std::cout << c << ' ';
+//            std::cout << symCharToInt(c) << ' ';
+//            }
+//            std::cout << "\n";
+//            for (uint16_t u:v)
+//                std::cout << u;
+//            std::cout << "\n";
 
+            for (int i = 0; i != v.size(); ++i)
+                std::cout << v[ i ];
 
-            // fill hash table by number of occurrences of symbols A, C, G, T, N
+            
+            
+            
+            // fill hash table by number of occurrences of symbols A, C, N, G, T
             for (; lineIter != datasetLine.size(); ++lineIter)
             {
 //                char c = datasetLine[ lineIter ];
@@ -56,8 +82,11 @@ void FCM::buildHashTable ()
 //                            (c == 'T') ? (uint8_t) 3 : (uint8_t) 4;
 
 //                ++(hTable[ context ])[ i ];
-                cellForUpdate = symCharToInt(datasetLine[ lineIter ]);
-                ++(hTable[ context ])[ cellForUpdate ];
+//                cellForUpdate = symCharToInt(datasetLine[ lineIter ]);
+//                ++(hTable[ context ])[ cellForUpdate ];
+
+//                ++(hTable[ context ])[ v[lineIter] ];
+//                std::cout << v[ lineIter ] << "\n";
 
 
 //                switch (datasetLine[ lineIter ])
@@ -191,14 +220,14 @@ void FCM::printHashTable (htable_t hTable) const
 
 
 /***********************************************************
-    transform char symbols into int (ACGTN->01234)
+    transform char symbols into int (ACNGT->01234)
 ************************************************************/
-uint8_t FCM::symCharToInt (char c)
+uint16_t FCM::symCharToInt (char c)
 {
     return (c == 'A') ? (uint8_t) 0 :
            (c == 'C') ? (uint8_t) 1 :
-           (c == 'G') ? (uint8_t) 2 :
-           (c == 'T') ? (uint8_t) 3 : (uint8_t) 4;
+           (c == 'G') ? (uint8_t) 3 :
+           (c == 'T') ? (uint8_t) 4 : (uint8_t) 2;
 }
         
         

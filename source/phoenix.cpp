@@ -29,11 +29,13 @@ int32_t main (int argc, char *argv[])
     
     // for access to Functions (object 'function' on memory stack)
     Functions function;
-//    function.commandLineParser(argc, argv); // parse the command line
+    function.commandLineParser(argc, argv); // parse the command line
     
-    std::string s="012";
-    int i=std::stoi(s);
-    std::cout<<i;
+    
+//    std::string s="012";
+//    int i=std::stoi(s);
+//    std::cout<<i;
+    
     
     
     
@@ -51,16 +53,8 @@ int32_t main (int argc, char *argv[])
 ////    std::array<int, 1> a3={2};
 //
 //    v.insert(v.end(), a2.begin(), a2.end());
-//
-//
-//
-//    for(int i:v)
-//        std::cout
-////                <<i<<' '
-//                 << sizeof(v) <<' '
-////                 << sizeof(a)<<' '
-//                ;
-//
+    
+    
     
     
     // Record end time
