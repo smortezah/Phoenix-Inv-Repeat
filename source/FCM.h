@@ -13,8 +13,8 @@ public:
     FCM ();                                     // constructor
     
     
-    
-    uint16_t symCharToInt (char);
+    uint8_t symCharToInt (char);
+//    uint16_t symCharToInt (char);
     
     
     

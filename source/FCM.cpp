@@ -41,71 +41,19 @@ void FCM::buildHashTable ()
         // at first line, it starts from index "contextDepth". at other lines, it starts from index 0
         size_t lineIter = contextDepth;
         uint8_t cellForUpdate = 0;
-        
-        std::vector<uint16_t > v;
-//        const uint8_t i = datasetLine.size();
-//        std::array<uint8_t ,i> a;
-//
-//        for (int i = 0; i != v.size(); ++i)
-//            std::cout << v[ i ];
-    
-//        for (size_t i = 0; i != datasetLine.size(); ++i)
-//        {
-//            v.push_back(symCharToInt(datasetLine[ i ]));
-//
-//                std::cout << "datasetLine[] " << datasetLine[i] << "\n";
-//                std::cout << "symCharToInt(datasetLine) " << symCharToInt(datasetLine[i]) << "\n";
-//                std::cout << "v[ symCharToInt(datasetLine) ] " << v[ i ] << "\n";
-//        }
-        
-        
+
         do
         {
             // TODO
             // char haye voroodi o int kon
-            
-//            v.resize(datasetLine.size());
-
-
-
-//            for (size_t i = 0; i != datasetLine.size(); ++i)
-//                v.push_back(symCharToInt(datasetLine[ i ]));
-//            std::cout << c << ' ';
-//            std::cout << symCharToInt(c) << ' ';
-//            std::cout << "\n";
-
-//            for (int i = 0; i != v.size(); ++i)
-//                std::cout << v[ i ];
-            
-    
-            for (size_t i = 0; i != datasetLine.size(); ++i)
-            {
-                v.push_back(symCharToInt(datasetLine[ i ]));
-
-//                std::cout << "i " << i << "\n";
-//                std::cout << "datasetLine[] " << datasetLine[i] << "\n";
-//                std::cout << "symCharToInt(datasetLine) " << symCharToInt(datasetLine[i]) << "\n";
-////                std::cout << "v[ symCharToInt(datasetLine) ] " << v[ i ] << "\n";
-            }
-
-            for (int i = 0; i != v.size(); ++i)
-                std::cout << v[ i ];
-            std::cout << "\n";
+            std::vector< uint8_t > vecDatasetLineInt;
+            for (char c : datasetLine)  vecDatasetLineInt.push_back(symCharToInt(c));
             
             // fill hash table by number of occurrences of symbols A, C, N, G, T
             for (; lineIter != datasetLine.size(); ++lineIter)
             {
-//                ++(hTable[ context ])[ i ];
-//                cellForUpdate = symCharToInt(datasetLine[ lineIter ]);
-//                ++(hTable[ context ])[ cellForUpdate ];
-
-//                ++(hTable[ context ])[ v[lineIter] ];
-                std::cout << "context " << context << "\n";
-                std::cout << "lineIter " << lineIter << "\n";
-                std::cout << "datasetLine[lineIter] " << datasetLine[lineIter] << "\n";
-                std::cout << "symCharToInt(lineIter) " << symCharToInt(datasetLine[lineIter]) << "\n";
-                std::cout << "v[ lineIter ] " << v[ lineIter ] << "\n";
-
+                ++(hTable[ context ])[ vecDatasetLineInt[lineIter] ];
+                
                 // considering inverted repeats to update hash table
                 if (isInvertedRepeat)
                 {
@@ -231,16 +179,17 @@ void FCM::printHashTable (htable_t hTable) const
 /***********************************************************
     transform char symbols into int (ACNGT->01234)
 ************************************************************/
-uint16_t FCM::symCharToInt (char c)
+uint8_t FCM::symCharToInt (char c)
+//uint16_t FCM::symCharToInt (char c)
 {
-//    return (c == 'A') ? (uint8_t) 0 :
-//           (c == 'C') ? (uint8_t) 1 :
-//           (c == 'G') ? (uint8_t) 3 :
-//           (c == 'T') ? (uint8_t) 4 : (uint8_t) 2;
-    return (c == 'A') ? (uint16_t) 0 :
-           (c == 'C') ? (uint16_t) 1 :
-           (c == 'G') ? (uint16_t) 3 :
-           (c == 'T') ? (uint16_t) 4 : (uint16_t) 2;
+    return (c == 'A') ? (uint8_t) 0 :
+           (c == 'C') ? (uint8_t) 1 :
+           (c == 'G') ? (uint8_t) 3 :
+           (c == 'T') ? (uint8_t) 4 : (uint8_t) 2;
+//    return (c == 'A') ? (uint16_t) 0 :
+//           (c == 'C') ? (uint16_t) 1 :
+//           (c == 'G') ? (uint16_t) 3 :
+//           (c == 'T') ? (uint16_t) 4 : (uint16_t) 2;
     
 }
         
