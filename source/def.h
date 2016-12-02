@@ -14,11 +14,9 @@
 
 
 /***********************************************************
-    constants
+    constant
 ************************************************************/
 #define ALPHABET_SIZE   5     // alphabet {A, C, G, T, N}
-
-//enum {A, C, G, T, N};
 
 
 /***********************************************************
@@ -31,6 +29,7 @@ typedef std::chrono::high_resolution_clock highResClock;
 // vaghti bishtar az 65,535 (uint16_t max) shod, hameye adad ha nesf mishan.
 // ye variable ro ham tanzim kon ke maloom she chand bar nesf kardim
 typedef std::unordered_map< std::string, std::array<uint16_t, ALPHABET_SIZE> > htable_t;
+//typedef std::unordered_map< int*, std::array< uint16_t, ALPHABET_SIZE > > htable_t;
 
 
 #endif //PHOENIX_DEF_H

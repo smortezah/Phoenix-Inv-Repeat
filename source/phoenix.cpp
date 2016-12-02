@@ -19,8 +19,6 @@
 ///////////////////////////////////////////////////////////
 /////////                 M A I N                 /////////
 ///////////////////////////////////////////////////////////
-#include <bitset>
-#include <vector>
 
 int32_t main (int argc, char *argv[])
 {
@@ -28,39 +26,41 @@ int32_t main (int argc, char *argv[])
     highResClock::time_point exeStartTime = highResClock::now();
     
 
-//    // for access to Functions (object 'function' on memory stack)
-//    Functions function;
+    
+    // for access to Functions (object 'function' on memory stack)
+    Functions function;
 //    function.commandLineParser(argc, argv); // parse the command line
     
+    std::string s="012";
+    int i=std::stoi(s);
+    std::cout<<i;
     
     
     
-    
-    
-    
-    std::vector< int > v(4, 0);
-//    std::vector< int > v2;
-//    v2.reserve(1);
-//    v2.push_back(1);
-//    v.insert(v.end(), v2.begin(), v2.end());
-//    std::array<int,1> a;
+//    std::vector< int > v(4, 0);
+////    std::vector< int > v2;
+////    v2.reserve(1);
+////    v2.push_back(1);
+////    v.insert(v.end(), v2.begin(), v2.end());
+////    std::array<int,1> a;
+////
+////    std::string s="ACT";
+////    std::cout<<"\n"<<s.size();
+////
+//    std::array<int, 1> a2 ={1};
+////    std::array<int, 1> a3={2};
 //
-//    std::string s="ACT";
-//    std::cout<<"\n"<<s.size();
+//    v.insert(v.end(), a2.begin(), a2.end());
 //
-    std::array<int, 2> a2 ={1,2};
-//    std::array<int, 1> a3={2};
-    
-    v.insert(v.end(), a2.begin(), a2.end());
-    
-    
-    
-    for(int i:v)
-        std::cout<<i<<' '
-//                 << sizeof(v2) <<' '
-//                 << sizeof(a)<<' '
-                ;
-    
+//
+//
+//    for(int i:v)
+//        std::cout
+////                <<i<<' '
+//                 << sizeof(v) <<' '
+////                 << sizeof(a)<<' '
+//                ;
+//
     
     
     // Record end time
