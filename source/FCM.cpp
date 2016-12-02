@@ -69,39 +69,60 @@ void FCM::buildHashTable ()
 //
 //                    // inverted repeat context
 //                    std::string invRepeatContext = invRepeat.substr(0, invRepeat.size() - 1);
-
-                    std::string invRepeatContext;
+    
+                    std::string invRepeatContextInt;
                     uint8_t invHTableCol = 0;
-                    for (size_t invIt = lineIter; invIt != lineIter - contextDepth + 1; --invIt)
-                    {
-                        switch (datasetLine[ invIt ])
-                        {
-                            case 'A':
-                                invHTableCol = 0;
-                                invRepeatContext[ lineIter - invIt ] = 'T';
-                                break;
-                            case 'C':
-                                invHTableCol = 1;
-                                invRepeatContext[ lineIter - invIt ] = 'G';
-                                break;
-                            case 'G':
-                                invHTableCol = 2;
-                                invRepeatContext[ lineIter - invIt ] = 'C';
-                                break;
-                            case 'T':
-                                invHTableCol = 3;
-                                invRepeatContext[ lineIter - invIt ] = 'A';
-                                break;
-                            case 'N':
-                                invHTableCol = 4;
-                                invRepeatContext[ lineIter - invIt ] = 'N';
-                                break;
-                            default:
-                                break;
-                        }
-                    }
+                    for (size_t invIt = lineIter; invIt != lineIter - contextDepth; --invIt)
+                        invRepeatContextInt[ lineIter - invIt ] = (char) (4 - vecDatasetLineInt[ invIt ]);
+    
+    
+                    std::string invRepeatContext = "";
+                    for (int i = 0; i != invRepeatContextInt.size(); ++i)
+                        invRepeatContext += symIntToChar((uint8_t) invRepeatContextInt[ i ]);
+    
+                    ++(hTable[ invRepeatContext ])[ 4 - vecDatasetLineInt[ 0 ]];
 
-                    ++(hTable[ invRepeatContext ])[ invHTableCol ];
+                        
+                        
+//                    for (size_t invIt = lineIter; invIt != lineIter - contextDepth + 1; --invIt)
+                    for (size_t invIt = lineIter; invIt != lineIter - contextDepth; --invIt)
+                    {
+    
+//                        invRepeatContext[lineIter-invIt] = 4-vecDatasetLineInt[invIt];
+//                        ++(hTable[ invRepeatContext ])[ 4-vecDatasetLineInt[0] ];
+
+
+
+
+//                        switch (datasetLine[ invIt ])
+//                        {
+//                            case 'A':
+//                                invHTableCol = 0;
+//                                invRepeatContext[ lineIter - invIt ] = 'T';
+//                                break;
+//                            case 'C':
+//                                invHTableCol = 1;
+//                                invRepeatContext[ lineIter - invIt ] = 'G';
+//                                break;
+//                            case 'G':
+//                                invHTableCol = 2;
+//                                invRepeatContext[ lineIter - invIt ] = 'C';
+//                                break;
+//                            case 'T':
+//                                invHTableCol = 3;
+//                                invRepeatContext[ lineIter - invIt ] = 'A';
+//                                break;
+//                            case 'N':
+//                                invHTableCol = 4;
+//                                invRepeatContext[ lineIter - invIt ] = 'N';
+//                                break;
+//                            default:
+//                                break;
+//                        }
+                    }
+                    
+
+//                    ++(hTable[ invRepeatContext ])[ invHTableCol ];
 
 //                    // update hash table for inverted repeats
 //                    switch (invRepeat[ invRepeat.size() - 1 ])
@@ -177,20 +198,26 @@ void FCM::printHashTable (htable_t hTable) const
     transform char symbols into int (ACNGT->01234)
 ************************************************************/
 uint8_t FCM::symCharToInt (char c)
-//uint16_t FCM::symCharToInt (char c)
 {
     return (c == 'A') ? (uint8_t) 0 :
            (c == 'C') ? (uint8_t) 1 :
            (c == 'G') ? (uint8_t) 3 :
            (c == 'T') ? (uint8_t) 4 : (uint8_t) 2;
-//    return (c == 'A') ? (uint16_t) 0 :
-//           (c == 'C') ? (uint16_t) 1 :
-//           (c == 'G') ? (uint16_t) 3 :
-//           (c == 'T') ? (uint16_t) 4 : (uint16_t) 2;
-    
 }
-        
-        
+
+
+/***********************************************************
+    transform int symbols into char (01234->ACNGT)
+************************************************************/
+char FCM::symIntToChar (uint8_t i)
+{
+    return (i == 0) ? 'A' :
+           (i == 1) ? 'C' :
+           (i == 3) ? 'G' :
+           (i == 4) ? 'T' : 'N';
+}
+
+
 /***********************************************************
     getters and setters
 ************************************************************/
