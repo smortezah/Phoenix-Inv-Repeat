@@ -11,7 +11,7 @@
 
 
 #include <bitset>
-
+#define x (c == 'A') ? (0b00) :(c == 'C') ? (0b01) :(c == 'G') ? (0b10) : (0b11)
 /***********************************************************
     constructor
 ************************************************************/
@@ -33,8 +33,8 @@ void FCM::buildHashTable ()
     if (Functions::isfileCorrect(fileName))         // file opened correctly
     {
         std::string context(contextDepth, 'A');     // context, that slides in the dataset
-        
-        hashTable_t hTable;                         // create hash table
+    
+        htable_t hTable;                            // create hash table
         hTable.insert({context, {0, 0, 0, 0, 0}});  // initialize hash table with 0'z
         
         std::string datasetLine;                    // to keep each line of file
@@ -57,15 +57,11 @@ void FCM::buildHashTable ()
 //                            (c == 'G') ? (uint8_t) 2 :
 //                            (c == 'T') ? (uint8_t) 3 : (uint8_t) 4;
     
-                std::bitset< 2 > A(0b00);
-                std::bitset< 2 > C(0b01);
-                std::bitset< 2 > G(0b10);
-                std::bitset< 2 > T(0b11);
-                std::bitset< 2 > i(
-                        (c == 'A') ? (0b00) :
-                        (c == 'C') ? (0b01) :
-                        (c == 'G') ? (0b10) : (0b11)
-                );
+                
+//                unsigned int x = (c == 'A') ? (0b00) :
+//                                 (c == 'C') ? (0b01) :
+//                                 (c == 'G') ? (0b10) : (0b11);
+                std::bitset< 2 > i(x);
                 
                 
 //                ++(hTable[ context ])[ i ];
@@ -148,7 +144,7 @@ void FCM::buildHashTable ()
 /***********************************************************
     print hash table
 ************************************************************/
-void FCM::printHashTable (hashTable_t hTable) const
+void FCM::printHashTable (htable_t hTable) const
 {
     
     /***********************************************************
@@ -164,7 +160,7 @@ void FCM::printHashTable (hashTable_t hTable) const
     int sum;
     int alpha = 1;
     
-    for (hashTable_t::iterator it = hTable.begin(); it != hTable.end(); ++it)
+    for (htable_t::iterator it = hTable.begin(); it != hTable.end(); ++it)
     {
         sum = 0;
         std::cout << it->first << "\t";
@@ -194,7 +190,7 @@ uint32_t FCM::getAlphaDenom () const { return alphaDenom; }
 void FCM::setAlphaDenom (uint32_t alphaDen) { FCM::alphaDenom = alphaDen; }
 bool FCM::getInvertedRepeat () const { return invertedRepeat; }
 void FCM::setInvertedRepeat (bool invRep) { FCM::invertedRepeat = invRep; }
-const hashTable_t &FCM::getHashTable () const { return hashTable; }
-void FCM::setHashTable (const hashTable_t &hT) { FCM::hashTable = hT; }
+const htable_t &FCM::getHashTable () const { return hashTable; }
+void FCM::setHashTable (const htable_t &hT) { FCM::hashTable = hT; }
 const std::string &FCM::getFileAddress () const { return fileAddress; }
 void FCM::setFileAddress (const std::string &fA) { FCM::fileAddress = fA; }

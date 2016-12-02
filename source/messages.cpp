@@ -60,7 +60,7 @@ void Messages::about () const
             << "================"                                           << "\n"
             << "A compression-based method"                                 << "\n"
                                                                             << "\n"
-            << "Morteza Hosseini, Diogo Pratas"                             << "\n"
+            << "Morteza Hosseini, Diogo Pratas, Armando J. Pinho"           << "\n"
             << "Copyright (C) 2016-2017 University of Aveiro"               << "\n"
                                                                             << "\n"
             << "This is a Free software, under GPLv3. You may redistribute" << "\n"
