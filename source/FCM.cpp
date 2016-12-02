@@ -50,18 +50,18 @@ void FCM::buildHashTable ()
             for (; lineIter != datasetLine.size(); ++lineIter)
             {
                 // TODO
-                // tu DEFINE tarif kon
+                // tu DEFINE tarif kon. c=curSym
                 char c = datasetLine[ lineIter ];
-//                uint8_t i = (c == 'A') ? (uint8_t) 0 :
-//                            (c == 'C') ? (uint8_t) 1 :
-//                            (c == 'G') ? (uint8_t) 2 :
-//                            (c == 'T') ? (uint8_t) 3 : (uint8_t) 4;
+                uint8_t i = (c == 'A') ? (uint8_t) 0 :
+                            (c == 'C') ? (uint8_t) 1 :
+                            (c == 'G') ? (uint8_t) 2 :
+                            (c == 'T') ? (uint8_t) 3 : (uint8_t) 4;
     
                 
-//                unsigned int x = (c == 'A') ? (0b00) :
-//                                 (c == 'C') ? (0b01) :
-//                                 (c == 'G') ? (0b10) : (0b11);
-                std::bitset< 2 > i(x);
+////                unsigned int x = (c == 'A') ? (0b00) :
+////                                 (c == 'C') ? (0b01) :
+////                                 (c == 'G') ? (0b10) : (0b11);
+//                std::bitset< 2 > i(x);
                 
                 
 //                ++(hTable[ context ])[ i ];
@@ -89,22 +89,57 @@ void FCM::buildHashTable ()
                 // considering inverted repeats to update hash table
                 if (isInvertedRepeat)
                 {
-                    std::string invRepeat = context + datasetLine[ lineIter ];
+//                    std::string invRepeat = context + datasetLine[ lineIter ];
 
-                    // A <-> T  ,  C <-> G  ,  N <-> N (N unchanged)
-                    for (char &ch : invRepeat)
-                        ch = (ch == 'A') ? 'T' :
-                             (ch == 'C') ? 'G' :
-                             (ch == 'G') ? 'C' :
-                             (ch == 'T') ? 'A' :
-                             'N';
+//                    // A <-> T  ,  C <-> G  ,  N <-> N (N unchanged)
+//                    for (char &ch : invRepeat)
+//                        ch = (ch == 'A') ? 'T' :
+//                             (ch == 'C') ? 'G' :
+//                             (ch == 'G') ? 'C' :
+//                             (ch == 'T') ? 'A' :
+//                             'N';
 
-                    // reverse the string
-                    std::reverse( invRepeat.begin(), invRepeat.end() );
-
-                    // inverted repeat context
-                    std::string invRepeatContext = invRepeat.substr(0, invRepeat.size() - 1);
-
+//                    // reverse the string
+//                    std::reverse( invRepeat.begin(), invRepeat.end() );
+//
+//                    // inverted repeat context
+//                    std::string invRepeatContext = invRepeat.substr(0, invRepeat.size() - 1);
+    
+                    std::string invRepeatContext;
+                    uint8_t invHTableCol = 0;
+                    for (size_t invIt = lineIter; invIt != lineIter - contextDepth + 1; --invIt)
+                    {
+                        
+                        
+                        switch (datasetLine[ invIt ])
+                        {
+                            case 'A':
+                                invHTableCol = 0;
+                                invRepeatContext[ lineIter - invIt ] = 'T';
+                                break;
+                            case 'C':
+                                invHTableCol = 1;
+                                invRepeatContext[ lineIter - invIt ] = 'G';
+                                break;
+                            case 'G':
+                                invHTableCol = 2;
+                                invRepeatContext[ lineIter - invIt ] = 'C';
+                                break;
+                            case 'T':
+                                invHTableCol = 3;
+                                invRepeatContext[ lineIter - invIt ] = 'A';
+                                break;
+                            case 'N':
+                                invHTableCol = 4;
+                                invRepeatContext[ lineIter - invIt ] = 'N';
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+    
+                    ++(hTable[ invRepeatContext ])[ invHTableCol ];
+                    
 //                    // update hash table for inverted repeats
 //                    switch (invRepeat[ invRepeat.size() - 1 ])
 //                    {
@@ -115,14 +150,6 @@ void FCM::buildHashTable ()
 //                        case 'N':   ++(hTable[ invRepeatContext ])[ 4 ];    break;
 //                        default:                                            break;
 //                    }
-
-                    char c2 = invRepeat[ invRepeat.size() - 1 ];
-                    uint8_t r = (c2 == 'A') ? (uint8_t) 0 :
-                                (c2 == 'C') ? (uint8_t) 1 :
-                                (c2 == 'G') ? (uint8_t) 2 :
-                                (c2 == 'T') ? (uint8_t) 3 : (uint8_t) 4;
-
-                    ++(hTable[ invRepeatContext ])[ r ];
                 }
                 
                 // update context
