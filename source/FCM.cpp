@@ -46,6 +46,10 @@ void FCM::buildHashTable ()
         size_t lineIter = contextDepth;
         do
         {
+            // TODO
+            // char haye voroodi o int kon
+            
+            
             // fill hash table by number of occurrences of symbols A, C, G, T, N
             for (; lineIter != datasetLine.size(); ++lineIter)
             {
@@ -109,8 +113,6 @@ void FCM::buildHashTable ()
                     uint8_t invHTableCol = 0;
                     for (size_t invIt = lineIter; invIt != lineIter - contextDepth + 1; --invIt)
                     {
-                        
-                        
                         switch (datasetLine[ invIt ])
                         {
                             case 'A':
