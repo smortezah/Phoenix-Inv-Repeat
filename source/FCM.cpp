@@ -1,7 +1,6 @@
 #include <iostream>
 #include <fstream>
 #include <algorithm>
-//#include <cstring>
 
 #include "FCM.h"
 #include "functions.h"
@@ -28,7 +27,6 @@ void FCM::buildHashTable ()
     if (Functions::isfileCorrect(fileName))         // file opened correctly
     {
         std::string context(contextDepth, 'A');     // context, that slides in the dataset
-//        std::vector< uint8_t > context(contextDepth, 0);    // context, that slides in the dataset
     
         htable_t hTable;                            // create hash table
         hTable.insert({context, {0, 0, 0, 0, 0}});  // initialize hash table with 0'z

@@ -19,7 +19,6 @@
 ///////////////////////////////////////////////////////////
 /////////                 M A I N                 /////////
 ///////////////////////////////////////////////////////////
-#include <map>
 
 int32_t main (int argc, char *argv[])
 {
@@ -30,20 +29,7 @@ int32_t main (int argc, char *argv[])
     
     // for access to Functions (object 'function' on memory stack)
     Functions function;
-//    function.commandLineParser(argc, argv); // parse the command line
-    
-    
-    
-    
-    typedef std::array<unsigned int, 2> alphabet;
-    
-    std::map<alphabet, std::string> dictionary;
-    
-    dictionary[{{1, 8}}] = "hello";
-    
-    
-    
-    
+    function.commandLineParser(argc, argv); // parse the command line
     
     
     

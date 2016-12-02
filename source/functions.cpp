@@ -1,6 +1,5 @@
 #include <iostream>
 #include <getopt.h>     // for command line parsing
-#include <string>
 #include <fstream>
 
 #include "functions.h"
