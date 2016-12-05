@@ -26,14 +26,15 @@ void FCM::buildHashTable ()
 
     if (Functions::isfileCorrect(fileName))         // file opened correctly
     {
-        std::string context(contextDepth, 'A');     // context, that slides in the dataset
+//        std::string context(contextDepth, 'A');     // context, that slides in the dataset
+        std::string context(contextDepth, '0');     // context, that slides in the dataset
     
         htable_t hTable;                            // create hash table
         hTable.insert({context, {0, 0, 0, 0, 0}});  // initialize hash table with 0'z
 
         std::string datasetLine;                    // to keep each line of file
         std::getline(fileIn, datasetLine);          // read first line of file
-        datasetLine = context + datasetLine;        // add "AA..." to beginning of first line of file
+//        datasetLine = context + datasetLine;        // add "AA..." to beginning of first line of file
 
         // iterator for each line of file.
         // at first line, it starts from index "contextDepth". at other lines, it starts from index 0
@@ -44,9 +45,19 @@ void FCM::buildHashTable ()
             // TODO
             // char haye voroodi o int kon
             std::vector< uint8_t > vecDatasetLineInt;
-            for (char ch : datasetLine)  vecDatasetLineInt.push_back(symCharToInt(ch));
-            
-//            for(uint8_t u:vecDatasetLineInt)    std::cout<<(int)u <<' ';
+////            vecDatasetLineInt.push_back(context);
+//            for (char ch : datasetLine)  vecDatasetLineInt.push_back(symCharToInt(ch));
+////            for (size_t i = contextDepth; i != datasetLine.size(); ++i)
+////                vecDatasetLineInt.push_back(symCharToInt(datasetLine[ i ]));
+    
+            for (size_t i = 0; i != contextDepth ; ++i)
+            {
+                vecDatasetLineInt.push_back((uint8_t) context[i]);
+            }
+//            for (char c : context)  vecDatasetLineInt.push_back((uint8_t) c);
+//            std::cout << std::stoi(context);
+            for(uint8_t u:vecDatasetLineInt)    std::cout<<(int)u <<' ';
+////            std::cout << datasetLine <<' ';
             
             
             // fill hash table by number of occurrences of symbols A, C, N, G, T
@@ -58,13 +69,8 @@ void FCM::buildHashTable ()
                 if (isInvertedRepeat)
                 {
                     std::string invRepeatContext = "";
-//                    invRepeatContext += (uint8_t) 4 - vecDatasetLineInt[ lineIter ];
+                    invRepeatContext += std::to_string(4 - vecDatasetLineInt[ lineIter ]);
                     
-                    
-//                    for (size_t invIt = lineIter; invIt != lineIter - contextDepth; --invIt)
-//                        invRepeatContext += symIntToChar((uint8_t) 4 - vecDatasetLineInt[ invIt ]);
-//
-////                    ++hTable[ invRepeatContext ][ 4 - vecDatasetLineInt[ lineIter - contextDepth ]];
                     
                     
 //                    std::string s = context + datasetLine[ lineIter ];
@@ -78,19 +84,25 @@ void FCM::buildHashTable ()
 ////                    ++hTable[ invRepeatContext ][ 4 - symCharToInt(symComplementChar(s[ 0 ])) ];
     
     
-                    std::cout
-//                            << "\n" << (int)symCharToInt(symComplementChar(s[ 0 ]))
-//                            << "\n" <<  symIntToChar((uint8_t) 4 - vecDatasetLineInt[ lineIter - contextDepth ])
-//                            << "\n" << symIntToChar((uint8_t) 4 - vecDatasetLineInt[ lineIter ])
-//                            << "\n" << invRepeatContext << ' '
-                            << "\n" << vecDatasetLineInt[ 0 ] << ' '
-                            ;
+//                    std::cout
+////                            << "\n" << (int)symCharToInt(symComplementChar(s[ 0 ]))
+////                            << "\n" <<  symIntToChar((uint8_t) 4 - vecDatasetLineInt[ lineIter - contextDepth ])
+////                            << "\n" << symIntToChar((uint8_t) 4 - vecDatasetLineInt[ lineIter ])
+////                            << "\n"
+//                            << invRepeatContext << ' '
+////                            << "\n" << (int)4 -vecDatasetLineInt[ lineIter ] << ' '
+//                            ;
                 }
                 
                 // update context
+//                context = (contextDepth == 1)
+//                          ? std::string("") + datasetLine[ lineIter ]
+//                          : context.substr(1, (unsigned) contextDepth - 1) + datasetLine[ lineIter ];
+    
                 context = (contextDepth == 1)
                           ? std::string("") + datasetLine[ lineIter ]
-                          : context.substr(1, (unsigned) contextDepth - 1) + datasetLine[ lineIter ];
+                          : context.substr(1, (unsigned) contextDepth - 1) + std::to_string(vecDatasetLineInt[ lineIter ]);
+//                std::cout<< context;
             }
     
             lineIter = 0;           // iterator for non-first lines of file becomes 0
