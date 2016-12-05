@@ -46,110 +46,55 @@ void FCM::buildHashTable ()
             std::vector< uint8_t > vecDatasetLineInt;
             for (char ch : datasetLine)  vecDatasetLineInt.push_back(symCharToInt(ch));
             
+//            for(uint8_t u:vecDatasetLineInt)    std::cout<<(int)u <<' ';
+            
+            
             // fill hash table by number of occurrences of symbols A, C, N, G, T
             for (; lineIter != datasetLine.size(); ++lineIter)
             {
-                ++hTable[ context ][ vecDatasetLineInt[ lineIter ]];
-                
+//                ++hTable[ context ][ vecDatasetLineInt[ lineIter ]];
+    
                 // considering inverted repeats to update hash table
                 if (isInvertedRepeat)
                 {
-//                    std::string invRepeat = context + datasetLine[ lineIter ];
-
-//                    // A <-> T  ,  C <-> G  ,  N <-> N (N unchanged)
-//                    for (char &ch : invRepeat)
-//                        ch = (ch == 'A') ? 'T' :
-//                             (ch == 'C') ? 'G' :
-//                             (ch == 'G') ? 'C' :
-//                             (ch == 'T') ? 'A' :
-//                             'N';
-
-//                    // reverse the string
-//                    std::reverse( invRepeat.begin(), invRepeat.end() );
-//
-//                    // inverted repeat context
-//                    std::string invRepeatContext = invRepeat.substr(0, invRepeat.size() - 1);
-    
-                    std::string invRepeatContextInt;
-//                    uint8_t invHTableCol = 0;
-                    for (size_t invIt = lineIter; invIt != lineIter - contextDepth; --invIt)
-                        invRepeatContextInt[ lineIter - invIt ] = (char) (4 - vecDatasetLineInt[ invIt ]);
-                    
                     std::string invRepeatContext = "";
-                    for (uint8_t i : invRepeatContextInt)
-                        invRepeatContext += symIntToChar(i);
+//                    invRepeatContext += (uint8_t) 4 - vecDatasetLineInt[ lineIter ];
                     
                     
-                    std::cout<<datasetLine;
-                    
-                    
-                    
-    
-                    ++hTable[ invRepeatContext ][ 4 - vecDatasetLineInt[ 0 ]];
-
-                    
-////                    for (size_t invIt = lineIter; invIt != lineIter - contextDepth + 1; --invIt)
 //                    for (size_t invIt = lineIter; invIt != lineIter - contextDepth; --invIt)
-//                    {
+//                        invRepeatContext += symIntToChar((uint8_t) 4 - vecDatasetLineInt[ invIt ]);
 //
-////                        invRepeatContext[lineIter-invIt] = 4-vecDatasetLineInt[invIt];
-////                        ++(hTable[ invRepeatContext ])[ 4-vecDatasetLineInt[0] ];
-//
-//
-//
-//
-////                        switch (datasetLine[ invIt ])
-////                        {
-////                            case 'A':
-////                                invHTableCol = 0;
-////                                invRepeatContext[ lineIter - invIt ] = 'T';
-////                                break;
-////                            case 'C':
-////                                invHTableCol = 1;
-////                                invRepeatContext[ lineIter - invIt ] = 'G';
-////                                break;
-////                            case 'G':
-////                                invHTableCol = 2;
-////                                invRepeatContext[ lineIter - invIt ] = 'C';
-////                                break;
-////                            case 'T':
-////                                invHTableCol = 3;
-////                                invRepeatContext[ lineIter - invIt ] = 'A';
-////                                break;
-////                            case 'N':
-////                                invHTableCol = 4;
-////                                invRepeatContext[ lineIter - invIt ] = 'N';
-////                                break;
-////                            default:
-////                                break;
-////                        }
-//                    }
+////                    ++hTable[ invRepeatContext ][ 4 - vecDatasetLineInt[ lineIter - contextDepth ]];
                     
-
-//                    ++(hTable[ invRepeatContext ])[ invHTableCol ];
-
-//                    // update hash table for inverted repeats
-//                    switch (invRepeat[ invRepeat.size() - 1 ])
+                    
+//                    std::string s = context + datasetLine[ lineIter ];
+//                    for (size_t invIt = s.size()-1; invIt != -1; --invIt)
 //                    {
-//                        case 'A':   ++(hTable[ invRepeatContext ])[ 0 ];    break;
-//                        case 'C':   ++(hTable[ invRepeatContext ])[ 1 ];    break;
-//                        case 'G':   ++(hTable[ invRepeatContext ])[ 2 ];    break;
-//                        case 'T':   ++(hTable[ invRepeatContext ])[ 3 ];    break;
-//                        case 'N':   ++(hTable[ invRepeatContext ])[ 4 ];    break;
-//                        default:                                            break;
+//                        invRepeatContext += symComplementChar(s[ invIt ]);
+////                        std::cout
+////                                << "\n" << symComplementChar(s[ invIt ]);
 //                    }
+//
+////                    ++hTable[ invRepeatContext ][ 4 - symCharToInt(symComplementChar(s[ 0 ])) ];
+    
+    
+                    std::cout
+//                            << "\n" << (int)symCharToInt(symComplementChar(s[ 0 ]))
+//                            << "\n" <<  symIntToChar((uint8_t) 4 - vecDatasetLineInt[ lineIter - contextDepth ])
+//                            << "\n" << symIntToChar((uint8_t) 4 - vecDatasetLineInt[ lineIter ])
+//                            << "\n" << invRepeatContext << ' '
+                            << "\n" << vecDatasetLineInt[ 0 ] << ' '
+                            ;
                 }
-
+                
                 // update context
                 context = (contextDepth == 1)
                           ? std::string("") + datasetLine[ lineIter ]
                           : context.substr(1, (unsigned) contextDepth - 1) + datasetLine[ lineIter ];
             }
     
-//            std::memset(&v[0], 0, v.size() * sizeof v[0]);
-    
             lineIter = 0;           // iterator for non-first lines of file becomes 0
-        } while ( std::getline(fileIn, datasetLine) );
+        } while (std::getline(fileIn, datasetLine));
 
         fileIn.close();             // close file
 
@@ -219,6 +164,18 @@ char FCM::symIntToChar (uint8_t i)
            (i == 1) ? 'C' :
            (i == 3) ? 'G' :
            (i == 4) ? 'T' : 'N';
+}
+
+
+/***********************************************************
+    transform symbols into their complements (A<>T, N<>N, C<>G)
+************************************************************/
+char FCM::symComplementChar (char c)
+{
+    return (c == 'A') ? 'T' :
+           (c == 'C') ? 'G' :
+           (c == 'G') ? 'C' :
+           (c == 'T') ? 'A' : 'N';
 }
 
 

@@ -14,7 +14,8 @@ public:
     
     
     uint8_t symCharToInt (char);
-    char symIntToChar (uint8_t);
+    char symIntToChar (uint8_t);;
+    char symComplementChar (char);
     
     
     
