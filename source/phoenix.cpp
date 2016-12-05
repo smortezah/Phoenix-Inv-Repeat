@@ -31,6 +31,7 @@ int32_t main (int argc, char *argv[])
     Functions function;
     function.commandLineParser(argc, argv); // parse the command line
     
+//    std::cout<<'12'+1;
     
     
     
