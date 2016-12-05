@@ -45,13 +45,6 @@ void FCM::buildHashTable ()
             // char haye voroodi o int kon
             std::vector< uint8_t > vecDatasetLineInt;
             for (char ch : datasetLine)  vecDatasetLineInt.push_back(symCharToInt(ch));
-    
-//            for (size_t i = 0; i != contextDepth ; ++i)
-//            {
-//                vecDatasetLineInt.push_back((uint8_t) context[i]);
-//            }
-//            for (char c : context)  vecDatasetLineInt.push_back((uint8_t) c);
-//            std::cout << std::stoi(context);
             
             
 //            for(uint8_t u:vecDatasetLineInt)    std::cout<<(int)u <<' ';
