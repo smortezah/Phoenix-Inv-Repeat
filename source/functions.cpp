@@ -154,24 +154,80 @@ int8_t Functions::commandLineParser (int argc, char **argv)
     
         std::vector< FCM > models;
         std::vector< std::string > strModels;
-
-
-
-////        std::string s("r,4,1000,1");
-        std::string seperator(":");
-        std::size_t found = modelParameters.find(seperator);
     
-        int mPos = 0;
-        if (found == std::string::npos)
-            strModels.push_back(modelParameters);
-        else
-        {
-            strModels.push_back( modelParameters.substr(mPos, found - mPos) );
-//            std::cout << found;
-        }
-    
-        for (std::string s:strModels)
-            std::cout << s;
+        const char seperator = ':';
+        size_t sepIndex = modelParameters.find(seperator, 0);
+        std::size_t mStartIndex = 0;
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+//        if(sepIndex == std::string::npos)
+//        {
+//            strModels.push_back(modelParameters);
+//        }
+//        else
+//        {
+//            strModels.push_back(modelParameters.substr(mStartIndex, sepIndex - mStartIndex));
+//            mStartIndex = sepIndex + 1;
+//
+//            while (sepIndex != std::string::npos)
+//            {
+//                std::cout << "'" << seperator << "' found";
+//                std::cout << " at position: " << sepIndex << std::endl;
+//                strModels.push_back(modelParameters.substr(mStartIndex, sepIndex - mStartIndex));
+//
+//                // Make the 'find' function search forward from the next character onwards
+//                mStartIndex = sepIndex + 1;
+//
+//                sepIndex = modelParameters.find(seperator, mStartIndex);
+//            }
+//
+//        }
+////        strModels.push_back(modelParameters.substr(mStartIndex, sepIndex - mStartIndex));
+//
+////////        std::string s("r,4,1000,1");
+////        std::string seperator(":");
+////        std::size_t sepIndex = modelParameters.find(seperator);
+////        std::size_t mStartIndex = 0;
+//////        while (sepIndex != std::string::npos)
+//////        {
+////            strModels.push_back( modelParameters.substr(mStartIndex, sepIndex - mStartIndex) );
+//////
+////////            cout << "'" << chCharToSearch << "' found";
+////////            cout << " at position: " << nCharacterOffset << endl;
+////////
+////////            // Make the 'find' function search forward from the next character onwards
+////////            size_t nCharSearchOffset = nCharacterOffset + 1;
+////////
+////////            nCharacterOffset = strSample.find(chCharToSearch,nCharSearchOffset);
+//////        }
+////
+//        for (std::string s : strModels)
+//            std::cout << s << "\n"
+////                      << sepIndex << "\n"
+//                    ;
+
+
+        
+        
+//        int mPos = 0;
+//        if (found == std::string::npos)
+//            strModels.push_back(modelParameters);
+//        else
+//        {
+//            strModels.push_back( modelParameters.substr(mPos, found - mPos) );
+////            std::cout << found;
+//        }
+//
+        
+        
         
 //            if (found != std::string::npos)
 //            std::cout << "position " << found << '\n';
