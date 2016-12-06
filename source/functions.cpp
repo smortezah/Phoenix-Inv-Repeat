@@ -154,8 +154,15 @@ int8_t Functions::commandLineParser (int argc, char **argv)
     
     if (m_flag)
     {
-        std::cout<<modelParameters;
-    
+        int pos = 0;
+        for (int i = 0; i != modelParameters.size(); ++i)
+        {
+            if (modelParameters[ i ] == ',')
+            {
+                std::cout << modelParameters.substr(pos, i - pos) << "\n";
+                pos = i + 1;
+            }
+        }
     
         if (t_flag)
         {
