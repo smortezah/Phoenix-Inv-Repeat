@@ -189,6 +189,9 @@ int8_t Functions::commandLineParser (int argc, char **argv)
             models[ n ].setAlphaDenom( std::stoi(vecParameters[ vecParamIndex++ ]) );
 //            models[ n ].set( std::stoi(vecParameters[ vecParamIndex++ ]) ); //<i>
 
+            
+            
+            
 ////            models[ n ].setContextDepth(std::stoi(modelsParameters));
 ////            models[ n ].setAlphaDenom(1);
 //////            models[ n ].setInvertedRepeat((bool) i_flag);
@@ -197,7 +200,7 @@ int8_t Functions::commandLineParser (int argc, char **argv)
 ////            models[ n ].printHashTable(models[ n ].getHashTable());
         }
         
-        std::cout << models[0].getAlphaDenom();
+        std::cout << models[0].getAlphaDenom(); //TODO for test
     }
     else
     {
