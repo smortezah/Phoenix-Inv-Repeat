@@ -31,10 +31,6 @@ int32_t main (int argc, char *argv[])
     Functions function;
     function.commandLineParser(argc, argv); // parse the command line
     
-//    std::string s="";
-//    int i=1;
-//    s+=i;
-//    std::cout<<s;
     
     
     

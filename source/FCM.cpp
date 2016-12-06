@@ -26,85 +26,73 @@ void FCM::buildHashTable ()
 
     if (Functions::isfileCorrect(fileName))         // file opened correctly
     {
-        std::string context(contextDepth, 'A');     // context, that slides in the dataset
+        std::string initContext(contextDepth, 'A'); // initial context = "AA..."
+        std::string context(contextDepth, '0');     // context, that slides in the dataset
     
         htable_t hTable;                            // create hash table
         hTable.insert({context, {0, 0, 0, 0, 0}});  // initialize hash table with 0'z
 
         std::string datasetLine;                    // to keep each line of file
         std::getline(fileIn, datasetLine);          // read first line of file
-        datasetLine = context + datasetLine;        // add "AA..." to beginning of first line of file
+        datasetLine = initContext + datasetLine;    // add "AA..." at beginning of first line
 
         // iterator for each line of file.
-        // at first line, it starts from index "contextDepth". at other lines, it starts from index 0
+        // starts from index "contextDepth" at first line, and index 0 at other lines
         size_t lineIter = contextDepth;
-
+        
         do
         {
-            // TODO
-            // char haye voroodi o int kon
+            // save integer version of each line in a vector
             std::vector< uint8_t > vecDatasetLineInt;
-            for (char ch : datasetLine)  vecDatasetLineInt.push_back(symCharToInt(ch));
-            
-            
-//            for(uint8_t u:vecDatasetLineInt)    std::cout<<(int)u <<' ';
-////            std::cout << datasetLine <<' ';
-            
+            for (char ch : datasetLine)  vecDatasetLineInt.push_back( symCharToInt(ch) );
             
             // fill hash table by number of occurrences of symbols A, C, N, G, T
             for (; lineIter != datasetLine.size(); ++lineIter)
             {
-//                ++hTable[ context ][ vecDatasetLineInt[ lineIter ]];
+                // update hash table
+                ++hTable[ context ][ vecDatasetLineInt[ lineIter ]];
     
                 // considering inverted repeats to update hash table
                 if (isInvertedRepeat)
                 {
+                    // save inverted repeat context
                     std::string invRepeatContext = "";
                     invRepeatContext += std::to_string(4 - vecDatasetLineInt[ lineIter ]);
-                    
-                    
-                    
-//                    std::string s = context + datasetLine[ lineIter ];
-//                    for (size_t invIt = s.size()-1; invIt != -1; --invIt)
-//                    {
-//                        invRepeatContext += symComplementChar(s[ invIt ]);
-////                        std::cout
-////                                << "\n" << symComplementChar(s[ invIt ]);
-//                    }
-//
-////                    ++hTable[ invRepeatContext ][ 4 - symCharToInt(symComplementChar(s[ 0 ])) ];
+                    // convert a number from char into integer format. '0'->0. '4'->4
+                    // 52 - context[ i ] = 4 - (context[ i ] - 48). 48 is ASCII code of '0'
+                    for (int i = contextDepth - 1; i != 0; --i)
+                        invRepeatContext += std::to_string( 52 - context[ i ] );
     
-    
-//                    std::cout
-////                            << "\n" << (int)symCharToInt(symComplementChar(s[ 0 ]))
-////                            << "\n" <<  symIntToChar((uint8_t) 4 - vecDatasetLineInt[ lineIter - contextDepth ])
-////                            << "\n" << symIntToChar((uint8_t) 4 - vecDatasetLineInt[ lineIter ])
-////                            << "\n"
-//                            << invRepeatContext << ' '
-////                            << "\n" << (int)4 -vecDatasetLineInt[ lineIter ] << ' '
-//                            ;
+                    // update hash table considering inverted repeats
+                    ++hTable[ invRepeatContext ][ 52 - context[0] ];
                 }
-                
+    
                 // update context
                 context = (contextDepth == 1)
-                          ? std::string("") + datasetLine[ lineIter ]
-                          : context.substr(1, (unsigned) contextDepth - 1) + datasetLine[ lineIter ];
-    
-//                context = (contextDepth == 1)
-//                          ? std::string("") + datasetLine[ lineIter ]
-//                          : context.substr(1, (unsigned) contextDepth - 1)
-//                            + std::to_string(vecDatasetLineInt[ lineIter ]);
-//                std::cout<< context;
-    
+                          ? std::to_string(vecDatasetLineInt[ lineIter ])
+                          : context.substr(1, (unsigned) contextDepth - 1)
+                            + std::to_string(vecDatasetLineInt[ lineIter ]);
             }
     
             lineIter = 0;           // iterator for non-first lines of file becomes 0
-        } while (std::getline(fileIn, datasetLine));
+        } while ( std::getline(fileIn, datasetLine) ); // read file line by line
 
         fileIn.close();             // close file
 
         FCM::setHashTable(hTable);  // save the built hash table
     }   // end - file opened correctly
+}
+
+
+/***********************************************************
+    transform char symbols into int (ACNGT -> 01234)
+************************************************************/
+uint8_t FCM::symCharToInt (char c) const
+{
+    return (c == 'A') ? (uint8_t) 0 :
+           (c == 'C') ? (uint8_t) 1 :
+           (c == 'G') ? (uint8_t) 3 :
+           (c == 'T') ? (uint8_t) 4 : (uint8_t) 2;
 }
 
 
@@ -145,42 +133,6 @@ void FCM::printHashTable (htable_t hTable) const
 //        }
         std::cout << "\n";
     }
-}
-
-
-/***********************************************************
-    transform char symbols into int (ACNGT->01234)
-************************************************************/
-uint8_t FCM::symCharToInt (char c)
-{
-    return (c == 'A') ? (uint8_t) 0 :
-           (c == 'C') ? (uint8_t) 1 :
-           (c == 'G') ? (uint8_t) 3 :
-           (c == 'T') ? (uint8_t) 4 : (uint8_t) 2;
-}
-
-
-/***********************************************************
-    transform int symbols into char (01234->ACNGT)
-************************************************************/
-char FCM::symIntToChar (uint8_t i)
-{
-    return (i == 0) ? 'A' :
-           (i == 1) ? 'C' :
-           (i == 3) ? 'G' :
-           (i == 4) ? 'T' : 'N';
-}
-
-
-/***********************************************************
-    transform symbols into their complements (A<>T, N<>N, C<>G)
-************************************************************/
-char FCM::symComplementChar (char c)
-{
-    return (c == 'A') ? 'T' :
-           (c == 'C') ? 'G' :
-           (c == 'G') ? 'C' :
-           (c == 'T') ? 'A' : 'N';
 }
 
 
