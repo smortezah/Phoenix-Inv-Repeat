@@ -28,7 +28,7 @@ int8_t Functions::commandLineParser (int argc, char **argv)
     static int v_flag;  // option 'v' (verbose)
     
     bool m_flag = false;                // model parameters entered
-    std::string modelParameters = "";   // argument of option 'm'
+    std::string modelsParameters = "";   // argument of option 'm'
     
     bool t_flag = false;                // target file name entered
     bool r_flag = false;                // reference file name entered
@@ -95,7 +95,7 @@ int8_t Functions::commandLineParser (int argc, char **argv)
                 try
                 {
                     m_flag = true;
-                    modelParameters = (std::string) optarg; // keep argument = target file name
+                    modelsParameters = (std::string) optarg; // keep argument = target file name
                 }
                 catch (const std::invalid_argument &ia)
                 {
@@ -151,108 +151,53 @@ int8_t Functions::commandLineParser (int argc, char **argv)
     {
 //        if (!t_flag)    std::cerr << "target file address is needed.";
     
-    
-        std::vector< FCM > models;
+//        std::vector< FCM > models;
         std::vector< std::string > strModels;
     
-        const char seperator = ':';
-        size_t sepIndex = modelParameters.find(seperator, 0);
         std::size_t mStartIndex = 0;
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-//        if(sepIndex == std::string::npos)
-//        {
-//            strModels.push_back(modelParameters);
-//        }
-//        else
-//        {
-//            strModels.push_back(modelParameters.substr(mStartIndex, sepIndex - mStartIndex));
-//            mStartIndex = sepIndex + 1;
-//
-//            while (sepIndex != std::string::npos)
-//            {
-//                std::cout << "'" << seperator << "' found";
-//                std::cout << " at position: " << sepIndex << std::endl;
-//                strModels.push_back(modelParameters.substr(mStartIndex, sepIndex - mStartIndex));
-//
-//                // Make the 'find' function search forward from the next character onwards
-//                mStartIndex = sepIndex + 1;
-//
-//                sepIndex = modelParameters.find(seperator, mStartIndex);
-//            }
-//
-//        }
-////        strModels.push_back(modelParameters.substr(mStartIndex, sepIndex - mStartIndex));
-//
-////////        std::string s("r,4,1000,1");
-////        std::string seperator(":");
-////        std::size_t sepIndex = modelParameters.find(seperator);
-////        std::size_t mStartIndex = 0;
-//////        while (sepIndex != std::string::npos)
-//////        {
-////            strModels.push_back( modelParameters.substr(mStartIndex, sepIndex - mStartIndex) );
-//////
-////////            cout << "'" << chCharToSearch << "' found";
-////////            cout << " at position: " << nCharacterOffset << endl;
-////////
-////////            // Make the 'find' function search forward from the next character onwards
-////////            size_t nCharSearchOffset = nCharacterOffset + 1;
-////////
-////////            nCharacterOffset = strSample.find(chCharToSearch,nCharSearchOffset);
-//////        }
-////
+        for (size_t i = 0; i != modelsParameters.size(); ++i)
+            if (modelsParameters[ i ] == ':')
+            {
+                strModels.push_back( modelsParameters.substr(mStartIndex, i - mStartIndex) );
+                mStartIndex = i + 1;
+            }
+        strModels.push_back( modelsParameters.substr(mStartIndex, modelsParameters.size() - mStartIndex) );
+    
+    
 //        for (std::string s : strModels)
 //            std::cout << s << "\n"
-////                      << sepIndex << "\n"
 //                    ;
-
-
-        
-        
-//        int mPos = 0;
-//        if (found == std::string::npos)
-//            strModels.push_back(modelParameters);
-//        else
-//        {
-//            strModels.push_back( modelParameters.substr(mPos, found - mPos) );
-////            std::cout << found;
-//        }
-//
-        
-        
-        
-//            if (found != std::string::npos)
-//            std::cout << "position " << found << '\n';
-//        else
-//            std::cout << "not found" << '\n';
-
-
-//        int modelPos = 0;
-//        for (int i = 0; i != modelParameters.size(); ++i)
-//        {
-//            if (modelParameters[ i ] == ':')
-//            {
-//                strModels.push_back( modelParameters.substr(modelPos, i - modelPos) );
-//                modelPos = i + 1;
-//            }
-//        }
     
+        size_t n_models = strModels.size();
+        FCM *models = new FCM[n_models];
+        std::vector< std::string > vecParameters;
+    
+        for (int n = 0; n != n_models; ++n)
+        {
+            std::size_t index = 0;
+            for (size_t i = 0; i != strModels[ n ].size(); ++i)
+                if (strModels[ n ][ i ] == ',')
+                {
+                    vecParameters.push_back( strModels[ n ].substr(index, i - index) );
+                    index = i + 1;
+                }
+            vecParameters.push_back( strModels[ n ].substr(index, strModels[ n ].size() - index) );
 
-//            FCM f;
-//            f.setContextDepth(2);
-//            f.setAlphaDenom(1);
-////            f.setInvertedRepeat((bool) i_flag);
-//            f.setFileAddress(targetFileName);
-//            f.buildHashTable();
-//            f.printHashTable(f.getHashTable());
+
+////            models[ n ].setContextDepth(std::stoi(modelsParameters));
+////            models[ n ].setAlphaDenom(1);
+//////            models[ n ].setInvertedRepeat((bool) i_flag);
+////            models[ n ].setFileAddress(targetFileName);
+////            models[ n ].buildHashTable();
+////            models[ n ].printHashTable(models[ n ].getHashTable());
+        }
+    
+        for (int i = 0; i < vecParameters.size(); i += 2)
+            std::cout << vecParameters[ i ] << ' ';
+        
+        
+        
+        
     }
     else
     {
