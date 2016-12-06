@@ -153,28 +153,41 @@ int8_t Functions::commandLineParser (int argc, char **argv)
     
     
         std::vector< FCM > models;
-        
-        
+        std::vector< std::string > strModels;
+
+
+
 ////        std::string s("r,4,1000,1");
-//        std::string s("t,18,1,0:r,13,100,0");
-//        std::string sf(":");
-//
-//        std::size_t found = s.find(sf);
-//        if (found != std::string::npos)
+        std::string seperator(":");
+        std::size_t found = modelParameters.find(seperator);
+    
+        int mPos = 0;
+        if (found == std::string::npos)
+            strModels.push_back(modelParameters);
+        else
+        {
+            strModels.push_back( modelParameters.substr(mPos, found - mPos) );
+//            std::cout << found;
+        }
+    
+        for (std::string s:strModels)
+            std::cout << s;
+        
+//            if (found != std::string::npos)
 //            std::cout << "position " << found << '\n';
 //        else
 //            std::cout << "not found" << '\n';
 
 
-        int pos = 0;
-        for (int i = 0; i != modelParameters.size(); ++i)
-        {
-            if (modelParameters[ i ] == ',')
-            {
-                std::cout << modelParameters.substr(pos, i - pos) << "\n";
-                pos = i + 1;
-            }
-        }
+//        int modelPos = 0;
+//        for (int i = 0; i != modelParameters.size(); ++i)
+//        {
+//            if (modelParameters[ i ] == ':')
+//            {
+//                strModels.push_back( modelParameters.substr(modelPos, i - modelPos) );
+//                modelPos = i + 1;
+//            }
+//        }
     
 
 //            FCM f;
