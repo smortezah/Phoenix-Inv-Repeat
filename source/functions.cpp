@@ -27,6 +27,9 @@ int8_t Functions::commandLineParser (int argc, char **argv)
     static int v_flag;  // option 'v' (verbose)
     static int i_flag;  // option 'i' (inverted_repeat)
     
+    bool m_flag = false;                // model parameters entered
+    std::string modelParameters = "";   // argument of option 'm'
+    
     bool t_flag = false;                // target file name entered
     bool r_flag = false;                // reference file name entered
     std::string targetFileName = "";    // argument of option 't'
@@ -43,6 +46,7 @@ int8_t Functions::commandLineParser (int argc, char **argv)
                     {"about",           no_argument, &A_flag, (int) 'A'},   // About
                     {"verbose",         no_argument, &v_flag, (int) 'v'},   // verbose
                     {"inverted_repeat", no_argument, &i_flag, (int) 'i'},   // inverted_repeat
+                    {"model",     required_argument,       0,       'm'},   // model
                     {"number",    required_argument,       0,       'n'},   // number (integer)
                     {"fnumber",   required_argument,       0,       'd'},   // number (float)
                     {"target",    required_argument,       0,       't'},   // target file
@@ -55,7 +59,7 @@ int8_t Functions::commandLineParser (int argc, char **argv)
         /* getopt_long() stores the option index here. */
         option_index = 0;
 
-        c = getopt_long(argc, argv, ":hAvin:d:t:r:", long_options, &option_index);
+        c = getopt_long(argc, argv, ":hAvim:n:d:t:r:", long_options, &option_index);
 
         /* Detect the end of the options. */
         if (c == -1)
@@ -91,6 +95,18 @@ int8_t Functions::commandLineParser (int argc, char **argv)
             case 'i':   // inverted_repeat mode
                 i_flag = 1;
                 break;
+    
+            case 'm':   // needs model parameters
+                try
+                {
+                    m_flag = true;
+                    modelParameters = (std::string) optarg; // keep argument = target file name
+                }
+                catch (const std::invalid_argument &ia)
+                {
+                    std::cerr << "Option 'm' ('model') has an invalid argument.\n";
+                }
+                break;
 
             case 'n':   // needs an integer argument
                 try
@@ -116,12 +132,12 @@ int8_t Functions::commandLineParser (int argc, char **argv)
     
             case 't':   // needs target file name
                 t_flag = true;
-                targetFileName = (std::string) optarg; // keep argument = target file name
+                targetFileName = (std::string) optarg;      // keep argument = target file name
                 break;
     
             case 'r':   // needs reference file name
                 r_flag = true;
-                referenceFileName = (std::string) optarg; // keep argument = reference file name
+                referenceFileName = (std::string) optarg;   // keep argument = reference file name
                 break;
                 
             case ':':   /* missing option argument */
@@ -136,15 +152,26 @@ int8_t Functions::commandLineParser (int argc, char **argv)
     }
     
     
+    if (m_flag)
+    {
+        std::cout<<modelParameters;
+    
+    
+        if (t_flag)
+        {
+            FCM f;
+            f.setContextDepth(2);
+            f.setAlphaDenom(1);
+            f.setInvertedRepeat((bool) i_flag);
+            f.setFileAddress(targetFileName);
+            f.buildHashTable();
+            f.printHashTable(f.getHashTable());
+        }
+    }
+    
     if (t_flag)
     {
-        FCM f;
-        f.setContextDepth(2);
-        f.setAlphaDenom(1);
-        f.setInvertedRepeat((bool) i_flag);
-        f.setFileAddress(targetFileName);
-        f.buildHashTable();
-        f.printHashTable(f.getHashTable());
+        // TODO
     }
     
     if (r_flag)

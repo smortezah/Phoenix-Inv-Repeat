@@ -58,7 +58,7 @@ void FCM::buildHashTable ()
                     // save inverted repeat context
                     std::string invRepeatContext = "";
                     invRepeatContext += std::to_string(4 - vecDatasetLineInt[ lineIter ]);
-                    // convert a number from char into integer format. '0'->0. '4'->4
+                    // convert a number from char into integer format. '0'->0. '4'->4 by
                     // 52 - context[ i ] = 4 - (context[ i ] - 48). 48 is ASCII code of '0'
                     for (int i = contextDepth - 1; i != 0; --i)
                         invRepeatContext += std::to_string( 52 - context[ i ] );
