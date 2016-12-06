@@ -171,6 +171,7 @@ int8_t Functions::commandLineParser (int argc, char **argv)
         size_t n_models = strModels.size();
         FCM *models = new FCM[n_models];
         std::vector< std::string > vecParameters;
+        size_t vecParamIndex = 0;
     
         for (int n = 0; n != n_models; ++n)
         {
@@ -182,7 +183,11 @@ int8_t Functions::commandLineParser (int argc, char **argv)
                     index = i + 1;
                 }
             vecParameters.push_back( strModels[ n ].substr(index, strModels[ n ].size() - index) );
-
+            
+//            models[ n ].set( std::stoi(vecParameters[ vecParamIndex++ ]) ); //<rt>
+            models[ n ].setContextDepth( std::stoi(vecParameters[ vecParamIndex++ ]) );
+            models[ n ].setAlphaDenom( std::stoi(vecParameters[ vecParamIndex++ ]) );
+//            models[ n ].set( std::stoi(vecParameters[ vecParamIndex++ ]) ); //<i>
 
 ////            models[ n ].setContextDepth(std::stoi(modelsParameters));
 ////            models[ n ].setAlphaDenom(1);
@@ -191,13 +196,8 @@ int8_t Functions::commandLineParser (int argc, char **argv)
 ////            models[ n ].buildHashTable();
 ////            models[ n ].printHashTable(models[ n ].getHashTable());
         }
-    
-        for (int i = 0; i < vecParameters.size(); i += 2)
-            std::cout << vecParameters[ i ] << ' ';
         
-        
-        
-        
+        std::cout << models[0].getAlphaDenom();
     }
     else
     {
