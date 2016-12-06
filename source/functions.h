@@ -11,7 +11,7 @@ public:
     Functions ();                                       // constructor
     
     int8_t commandLineParser (int, char**);             // parse command line
-    static bool isfileCorrect (const std::string &);    // check if file opened correctly
+    static bool isFileCorrect (const std::string &);    // check if file opened correctly
 };
 
 

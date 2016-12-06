@@ -24,7 +24,7 @@ void FCM::buildHashTable ()
 
     std::ifstream fileIn(fileName, std::ios::in);   // open file located in fileName
 
-    if (Functions::isfileCorrect(fileName))         // file opened correctly
+    if (Functions::isFileCorrect(fileName))         // file opened correctly
     {
         std::string initContext(contextDepth, 'A'); // initial context = "AA..."
         std::string context(contextDepth, '0');     // context, that slides in the dataset

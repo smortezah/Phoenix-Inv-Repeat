@@ -1,6 +1,7 @@
 #include <iostream>
 #include <getopt.h>     // for command line parsing
 #include <fstream>
+#include <vector>
 
 #include "functions.h"
 #include "messages.h"
@@ -25,7 +26,6 @@ int8_t Functions::commandLineParser (int argc, char **argv)
     static int h_flag;  // option 'h' (help)
     static int A_flag;  // option 'A' (about)
     static int v_flag;  // option 'v' (verbose)
-    static int i_flag;  // option 'i' (inverted_repeat)
     
     bool m_flag = false;                // model parameters entered
     std::string modelParameters = "";   // argument of option 'm'
@@ -45,7 +45,6 @@ int8_t Functions::commandLineParser (int argc, char **argv)
                     {"help",            no_argument, &h_flag, (int) 'h'},   // help
                     {"about",           no_argument, &A_flag, (int) 'A'},   // About
                     {"verbose",         no_argument, &v_flag, (int) 'v'},   // verbose
-                    {"inverted_repeat", no_argument, &i_flag, (int) 'i'},   // inverted_repeat
                     {"model",     required_argument,       0,       'm'},   // model
                     {"number",    required_argument,       0,       'n'},   // number (integer)
                     {"fnumber",   required_argument,       0,       'd'},   // number (float)
@@ -59,7 +58,7 @@ int8_t Functions::commandLineParser (int argc, char **argv)
         /* getopt_long() stores the option index here. */
         option_index = 0;
 
-        c = getopt_long(argc, argv, ":hAvim:n:d:t:r:", long_options, &option_index);
+        c = getopt_long(argc, argv, ":hAvm:n:d:t:r:", long_options, &option_index);
 
         /* Detect the end of the options. */
         if (c == -1)
@@ -90,10 +89,6 @@ int8_t Functions::commandLineParser (int argc, char **argv)
             case 'v':   // verbose mode
                 v_flag = 1;
                 messageObj.verbose();
-                break;
-    
-            case 'i':   // inverted_repeat mode
-                i_flag = 1;
                 break;
     
             case 'm':   // needs model parameters
@@ -154,6 +149,23 @@ int8_t Functions::commandLineParser (int argc, char **argv)
     
     if (m_flag)
     {
+//        if (!t_flag)    std::cerr << "target file address is needed.";
+    
+    
+        std::vector< FCM > models;
+        
+        
+////        std::string s("r,4,1000,1");
+//        std::string s("t,18,1,0:r,13,100,0");
+//        std::string sf(":");
+//
+//        std::size_t found = s.find(sf);
+//        if (found != std::string::npos)
+//            std::cout << "position " << found << '\n';
+//        else
+//            std::cout << "not found" << '\n';
+
+
         int pos = 0;
         for (int i = 0; i != modelParameters.size(); ++i)
         {
@@ -164,26 +176,19 @@ int8_t Functions::commandLineParser (int argc, char **argv)
             }
         }
     
-        if (t_flag)
-        {
-            FCM f;
-            f.setContextDepth(2);
-            f.setAlphaDenom(1);
-            f.setInvertedRepeat((bool) i_flag);
-            f.setFileAddress(targetFileName);
-            f.buildHashTable();
-            f.printHashTable(f.getHashTable());
-        }
+
+//            FCM f;
+//            f.setContextDepth(2);
+//            f.setAlphaDenom(1);
+////            f.setInvertedRepeat((bool) i_flag);
+//            f.setFileAddress(targetFileName);
+//            f.buildHashTable();
+//            f.printHashTable(f.getHashTable());
     }
-    
-    if (t_flag)
+    else
     {
-        // TODO
-    }
-    
-    if (r_flag)
-    {
-        // TODO
+        if(t_flag)      std::cerr << "Please enter the model parameters";
+        else if(r_flag) std::cerr << "Please enter the model parameters";
     }
     
     /* Print any remaining command line arguments (not options). */
@@ -200,7 +205,7 @@ int8_t Functions::commandLineParser (int argc, char **argv)
 /***********************************************************
     check if file opened correctly
 ************************************************************/
-bool Functions::isfileCorrect (const std::string &fileName)
+bool Functions::isFileCorrect (const std::string &fileName)
 {
     std::ifstream fileIn(fileName, std::ios::in);   // open file
     
