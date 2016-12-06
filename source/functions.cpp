@@ -86,7 +86,7 @@ int8_t Functions::commandLineParser (int argc, char **argv)
                 A_flag = 1;
                 messageObj.about();
                 break;
-
+                
             case 'v':   // verbose mode
                 v_flag = 1;
                 messageObj.verbose();
