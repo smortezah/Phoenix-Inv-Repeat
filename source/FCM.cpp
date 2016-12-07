@@ -6,6 +6,8 @@
 #include "FCM.h"
 #include "functions.h"
 
+using std::cout;
+
 
 /***********************************************************
     constructor
@@ -108,24 +110,24 @@ void FCM::printHashTable () const
     std::string tar_or_ref = (this->getTargetOrReference() == 't' ? "target" : "reference");
     std::string Tar_or_Ref = (this->getTargetOrReference() == 't' ? "Target" : "Reference");
     
-    std::cout << " >>> Context model:\t\tBuilt from "  << tar_or_ref << "\n"
-              << " >>> Context order size:\t" << (uint16_t) this->getContextDepth() << "\n"
-              << " >>> Alpha denominator:\t\t" << this->getAlphaDenom() << "\n"
-              << " >>> Inverted repeat:\t\t" << (this->getInvertedRepeat() ? "Considered"
-                                                                           : "Not considered")
-              << "\n"
-              << " >>> " << Tar_or_Ref << " file address:\t"
-              // TODO: this line must be changed to
-              // << ( tar_or_ref == "target" ? this->getTarFileAddress() : this->getRefFileAddress() )
-              << ( tar_or_ref == "target" ? this->getTarFileAddress() : this->getTarFileAddress() )
-              << "\n\n";
+    cout << " >>> Context model:\t\tBuilt from "  << tar_or_ref << "\n"
+         << " >>> Context order size:\t" << (uint16_t) this->getContextDepth() << "\n"
+         << " >>> Alpha denominator:\t\t" << this->getAlphaDenom() << "\n"
+         << " >>> Inverted repeat:\t\t" << (this->getInvertedRepeat() ? "Considered"
+                                                                      : "Not considered")
+         << "\n"
+         << " >>> " << Tar_or_Ref << " file address:\t"
+         // TODO: this line must be changed to
+         // << ( tar_or_ref == "target" ? this->getTarFileAddress() : this->getRefFileAddress() )
+         << ( tar_or_ref == "target" ? this->getTarFileAddress() : this->getTarFileAddress() )
+         << "\n\n";
     
-    std::cout << "\tA\tC\tN\tG\tT"
-              //              << "\tP_A\tP_C\tP_N\tP_G\tP_T"
-              << "\n"
-              << "\t-----------------------------------"
-              //              << "------------------------------------------"
-              << "\n";
+    cout << "\tA\tC\tN\tG\tT"
+         //              << "\tP_A\tP_C\tP_N\tP_G\tP_T"
+         << "\n"
+         << "\t-----------------------------------"
+         //              << "------------------------------------------"
+         << "\n";
     
 //    int sum;
 //    int alpha = 1;
@@ -133,23 +135,23 @@ void FCM::printHashTable () const
     for (htable_t::iterator it = hTable.begin(); it != hTable.end(); ++it)
     {
 //        sum = 0;
-        std::cout << it->first << "\t";
+        cout << it->first << "\t";
         for (int i : it->second)
         {
-            std::cout << i << "\t";
+            cout << i << "\t";
 //            sum += i;
         }
 
 //        for (int i = 0; i < 5; ++i)
 //        {
-//            std::cout << std::fixed << std::setprecision(1)
-//                      << (float) (it->second[ i ] + alpha) /
+//            cout << std::fixed << std::setprecision(1)
+//                 << (float) (it->second[ i ] + alpha) /
 //                         (sum + ALPHABET_SIZE * alpha) << "\t";
 //        }
-        std::cout << "\n";
+        cout << "\n";
     }
     
-    std::cout << "\n";
+    cout << "\n";
 }
 
 

@@ -15,6 +15,9 @@
 #include "FCM.h"
 #include "messages.h"
 
+using std::cout;
+using std::cerr;
+
 
 ///////////////////////////////////////////////////////////
 /////////                 M A I N                 /////////
@@ -39,7 +42,7 @@ int32_t main (int argc, char *argv[])
 
     // calculate and show duration in seconds
     std::chrono::duration< double > elapsed = exeFinishTime - exeStartTime;
-    std::cout
+    cout
 //            << "\n"
             << "Elapsed time: " << elapsed.count() << " s\n";
 

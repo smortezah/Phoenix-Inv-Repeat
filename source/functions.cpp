@@ -7,6 +7,9 @@
 #include "messages.h"
 #include "FCM.h"
 
+using std::cout;
+using std::cerr;
+
 
 /***********************************************************
     constructor
@@ -61,19 +64,16 @@ void Functions::commandLineParser (int argc, char **argv)
         c = getopt_long(argc, argv, ":hAvm:n:d:t:r:", long_options, &option_index);
         
         /* Detect the end of the options. */
-        if (c == -1)
-            break;
+        if (c == -1)    break;
         
         switch (c)
         {
             case 0:
                 /* If this option set a flag, do nothing else now. */
-                if (long_options[ option_index ].flag != 0)
-                    break;
+                if (long_options[ option_index ].flag != 0) break;
                 
-                std::cout << "option '" << long_options[ option_index ].name << "'\n";
-                if (optarg)
-                    std::cout << " with arg " << optarg << "\n";
+                cout << "option '" << long_options[ option_index ].name << "'\n";
+                if (optarg)     cout << " with arg " << optarg << "\n";
                 break;
             
             case 'h':   // show usage guide
@@ -99,7 +99,7 @@ void Functions::commandLineParser (int argc, char **argv)
                 }
                 catch (const std::invalid_argument &ia)
                 {
-                    std::cerr << "Option 'm' ('model') has an invalid argument.\n";
+                    cerr << "Option 'm' ('model') has an invalid argument.\n";
                 }
                 break;
             
@@ -110,7 +110,7 @@ void Functions::commandLineParser (int argc, char **argv)
                 }
                 catch (const std::invalid_argument &ia)
                 {
-                    std::cerr << "Option 'n' ('number') has an invalid argument.\n";
+                    cerr << "Option 'n' ('number') has an invalid argument.\n";
                 }
                 break;
             
@@ -121,7 +121,7 @@ void Functions::commandLineParser (int argc, char **argv)
                 }
                 catch (const std::invalid_argument &ia)
                 {
-                    std::cerr << "Option 'd' ('fnumber') has an invalid argument.\n";
+                    cerr << "Option 'd' ('fnumber') has an invalid argument.\n";
                 }
                 break;
             
@@ -136,12 +136,12 @@ void Functions::commandLineParser (int argc, char **argv)
                 break;
             
             case ':':   /* missing option argument */
-                std::cerr << "Option '" << (char) optopt << "' requires an argument.\n";
+                cerr << "Option '" << (char) optopt << "' requires an argument.\n";
                 break;
             
             case '?':   /* invalid option */
             default:
-                std::cerr << "Option '" << (char) optopt << "' is invalid.\n";
+                cerr << "Option '" << (char) optopt << "' is invalid.\n";
                 break;
         }
     }
@@ -150,8 +150,7 @@ void Functions::commandLineParser (int argc, char **argv)
     if (m_flag)
     {
         // check if target or reference file addresses are entered
-        if (!t_flag && !r_flag)
-            std::cerr << "Input file address is needed.";
+        if (!t_flag && !r_flag)     cerr << "Input file address is needed.";
         else
         {
             // seperate and save the models in a vector of strings. each model in a string
@@ -209,7 +208,7 @@ void Functions::commandLineParser (int argc, char **argv)
                 models[ n ].buildHashTable();   // build hash table for the model
                 
                 // print the built hash table
-                std::cout << "Model " << n + 1 << " parameters:\n";
+                cout << "Model " << n + 1 << " parameters:\n";
                 models[ n ].printHashTable();
             }
             
@@ -218,19 +217,16 @@ void Functions::commandLineParser (int argc, char **argv)
     }       //  end - if '-m' (model) is entered
     else    // if '-m' (model) is entered but '-t' or '-r' (file addresses) are not entered
     {
-        if (t_flag)
-            std::cerr << "Model(s) parameters are missing.";
-        else if (r_flag)
-            std::cerr << "Model(s) parameters are missing.";
+        if (t_flag)         cerr << "Model(s) parameters are missing.";
+        else if (r_flag)    cerr << "Model(s) parameters are missing.";
     }
     
     /* Print any remaining command line arguments (not options). */
     if (optind < argc)
     {
-        std::cerr << "non-option ARGV-element(s): ";
-        while (optind < argc)
-            std::cerr << argv[ optind++ ] << " ";
-        std::cerr << std::endl;
+        cerr << "non-option ARGV-element(s): ";
+        while (optind < argc)   cerr << argv[ optind++ ] << " ";
+        cerr << std::endl;
     }
 }
 
@@ -245,14 +241,14 @@ bool Functions::isFileCorrect (const std::string &fileName)
     // check if file doesn't exist
     if (!fileIn)
     {
-        std::cerr << "File '" << fileName << "' could not be opened.\n";
+        cerr << "File '" << fileName << "' could not be opened.\n";
         fileIn.close(); // close file
         return false;   // error occurred while opening file
     }
     // check if file is empty
     else if (fileIn.peek() == std::ifstream::traits_type::eof())
     {
-        std::cerr << "File '" << fileName << "' is empty.\n";
+        cerr << "File '" << fileName << "' is empty.\n";
         fileIn.close(); // close file
         return false;   // error occurred while opening file
     }
