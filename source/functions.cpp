@@ -95,7 +95,7 @@ int8_t Functions::commandLineParser (int argc, char **argv)
                 try
                 {
                     m_flag = true;
-                    modelsParameters = (std::string) optarg; // keep argument = target file name
+                    modelsParameters = (std::string) optarg; // keep argument = model parameters
                 }
                 catch (const std::invalid_argument &ia)
                 {
@@ -106,7 +106,7 @@ int8_t Functions::commandLineParser (int argc, char **argv)
             case 'n':   // needs an integer argument
                 try
                 {
-                    messageObj.number(std::stoi((std::string) optarg));    //for test
+                    messageObj.number(std::stoi((std::string) optarg));    // TODO for test
                 }
                 catch (const std::invalid_argument &ia)
                 {
@@ -117,7 +117,7 @@ int8_t Functions::commandLineParser (int argc, char **argv)
             case 'd':   // needs a float argument
                 try
                 {
-                    messageObj.fnumber( std::stof((std::string) optarg) );   //for test
+                    messageObj.fnumber( std::stof((std::string) optarg) );   // TODO for test
                 }
                 catch (const std::invalid_argument &ia)
                 {
@@ -154,14 +154,14 @@ int8_t Functions::commandLineParser (int argc, char **argv)
 //        std::vector< FCM > models;
         std::vector< std::string > strModels;
     
-        std::size_t mStartIndex = 0;
+        std::size_t mIndex = 0;
         for (size_t i = 0; i != modelsParameters.size(); ++i)
             if (modelsParameters[ i ] == ':')
             {
-                strModels.push_back( modelsParameters.substr(mStartIndex, i - mStartIndex) );
-                mStartIndex = i + 1;
+                strModels.push_back( modelsParameters.substr(mIndex, i - mIndex) );
+                mIndex = i + 1;
             }
-        strModels.push_back( modelsParameters.substr(mStartIndex, modelsParameters.size() - mStartIndex) );
+        strModels.push_back( modelsParameters.substr(mIndex, modelsParameters.size() - mIndex) );
     
     
 //        for (std::string s : strModels)
@@ -169,11 +169,11 @@ int8_t Functions::commandLineParser (int argc, char **argv)
 //                    ;
     
         size_t n_models = strModels.size();
-        FCM *models = new FCM[n_models];
+        FCM *models = new FCM[ n_models ];
         std::vector< std::string > vecParameters;
         size_t vecParamIndex = 0;
     
-        for (int n = 0; n != n_models; ++n)
+        for (size_t n = 0; n != n_models; ++n)
         {
             std::size_t index = 0;
             for (size_t i = 0; i != strModels[ n ].size(); ++i)
@@ -184,12 +184,13 @@ int8_t Functions::commandLineParser (int argc, char **argv)
                 }
             vecParameters.push_back( strModels[ n ].substr(index, strModels[ n ].size() - index) );
             
-//            models[ n ].set( std::stoi(vecParameters[ vecParamIndex++ ]) ); //<rt>
-            models[ n ].setContextDepth( std::stoi(vecParameters[ vecParamIndex++ ]) );
-            models[ n ].setAlphaDenom( std::stoi(vecParameters[ vecParamIndex++ ]) );
-//            models[ n ].set( std::stoi(vecParameters[ vecParamIndex++ ]) ); //<i>
-
-            
+            //
+            (vecParameters[ vecParamIndex++ ][ 0 ] == 't') ? models[ n ].setTargetOrReference('t')
+                                                           : models[ n ].setTargetOrReference('r');
+            models[ n ].setContextDepth( (uint8_t) std::stoi(vecParameters[ vecParamIndex++ ]) );
+            models[ n ].setAlphaDenom( (uint8_t) std::stoi(vecParameters[ vecParamIndex++ ]) );
+            !std::stoi(vecParameters[ vecParamIndex++ ]) ? models[ n ].setInvertedRepeat(false)
+                                                         : models[ n ].setInvertedRepeat(true);
             
             
 ////            models[ n ].setContextDepth(std::stoi(modelsParameters));
@@ -200,7 +201,24 @@ int8_t Functions::commandLineParser (int argc, char **argv)
 ////            models[ n ].printHashTable(models[ n ].getHashTable());
         }
         
-        std::cout << models[0].getAlphaDenom(); //TODO for test
+        std::cout
+                  << models[0].getTargetOrReference()
+                  << "\n"
+                  << (int) models[0].getContextDepth()
+                  << "\n"
+                  << (int) models[0].getAlphaDenom()
+                  << "\n"
+                  << (int) models[0].getInvertedRepeat()
+                  << "\n"
+                  << models[1].getTargetOrReference()
+                  << "\n"
+                  << (int) models[1].getContextDepth()
+                  << "\n"
+                  << (int) models[1].getAlphaDenom()
+                  << "\n"
+                  << (int) models[1].getInvertedRepeat()
+                ; // TODO for test
+    
     }
     else
     {

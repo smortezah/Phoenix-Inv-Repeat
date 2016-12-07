@@ -82,7 +82,7 @@ void Messages::about () const
 ************************************************************/
 void Messages::verbose () const
 {
-    std::cout << "verbose mode.\n"; // for test
+    std::cout << "verbose mode.\n"; // TODO for test
 }
 
 
@@ -91,7 +91,7 @@ void Messages::verbose () const
 ************************************************************/
 void Messages::number (int num) const
 {
-    std::cout << "integer number mode (n=" << num << ")\n"; // for test
+    std::cout << "integer number mode (n=" << num << ")\n"; // TODO for test
 }
 
 
@@ -100,5 +100,5 @@ void Messages::number (int num) const
 ************************************************************/
 void Messages::fnumber (float num) const
 {
-    std::cout << "float number mode (d=" << num << ")\n"; // for test
+    std::cout << "float number mode (d=" << num << ")\n"; // TODO for test
 }

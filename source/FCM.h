@@ -16,6 +16,8 @@ public:
     uint8_t symCharToInt (char) const;          // ACNGT -> 01234
     void printHashTable (htable_t) const;       // print hash table
     
+    char getTargetOrReference () const;         // getter of target or reference
+    void setTargetOrReference (char);           // setter of target or reference
     uint8_t getContextDepth () const;           // getter of context depth
     void setContextDepth (uint8_t);             // setter of context depth
     uint32_t getAlphaDenom () const;            // getter of alpha denominator
@@ -28,6 +30,7 @@ public:
     void setFileAddress (const std::string&);   // setter of file address
 
 private:
+    char targetOrReference;                     // target or reference
     uint8_t contextDepth;                       // context depth
     uint32_t alphaDenom;                        // alpha denominator
     bool invertedRepeat;                        // inverted repeat

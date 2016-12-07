@@ -139,6 +139,8 @@ void FCM::printHashTable (htable_t hTable) const
 /***********************************************************
     getters and setters
 ************************************************************/
+char FCM::getTargetOrReference () const         { return targetOrReference; }
+void FCM::setTargetOrReference (char tOrR)      { FCM::targetOrReference = tOrR; }
 uint8_t FCM::getContextDepth () const           { return contextDepth; }
 void FCM::setContextDepth (uint8_t ctxDp)       { FCM::contextDepth = ctxDp; }
 uint32_t FCM::getAlphaDenom () const            { return alphaDenom; }
