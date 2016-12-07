@@ -20,7 +20,8 @@ void FCM::buildHashTable ()
     uint8_t contextDepth    = getContextDepth();    // get context depth
     uint32_t alphaDen       = getAlphaDenom();      // get alpha denominator
     bool isInvertedRepeat   = getInvertedRepeat();  // get inverted repeat
-    std::string fileName    = getFileAddress();     // get file address
+    // TODO. get target file address. next step: supprt for both target and reference file addresses
+    std::string fileName    = getTarFileAddress();
 
     std::ifstream fileIn(fileName, std::ios::in);   // open file located in fileName
 

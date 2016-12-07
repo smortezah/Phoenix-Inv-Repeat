@@ -183,6 +183,15 @@ int8_t Functions::commandLineParser (int argc, char **argv)
                 //
                 (vecParameters[ vecParamIndex++ ][ 0 ] == 't') ? models[ n ].setTargetOrReference('t')
                                                                : models[ n ].setTargetOrReference('r');
+                if(vecParameters[ vecParamIndex++ ][ 0 ] == 't')
+                {
+                    models[ n ].setTargetOrReference('t');
+                    std::cout<<"tar";
+                }
+                else
+                {
+                    models[ n ].setTargetOrReference('r');
+                }
                 models[ n ].setContextDepth((uint8_t) std::stoi(vecParameters[ vecParamIndex++ ]));
                 models[ n ].setAlphaDenom((uint8_t) std::stoi(vecParameters[ vecParamIndex++ ]));
                 !std::stoi(vecParameters[ vecParamIndex++ ]) ? models[ n ].setInvertedRepeat(false)
