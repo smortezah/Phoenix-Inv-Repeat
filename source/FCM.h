@@ -31,7 +31,7 @@ public:
 
 private:
     char targetOrReference;                     // target or reference
-    uint8_t contextDepth;                       // context depth
+    uint8_t contextDepth;                       // context depth (SIZE <= 255)
     uint32_t alphaDenom;                        // alpha denominator
     bool invertedRepeat;                        // inverted repeat
     htable_t hashTable;                         // hash table

@@ -162,12 +162,8 @@ int8_t Functions::commandLineParser (int argc, char **argv)
                 mIndex = i + 1;
             }
         strModels.push_back( modelsParameters.substr(mIndex, modelsParameters.size() - mIndex) );
-    
-    
-//        for (std::string s : strModels)
-//            std::cout << s << "\n"
-//                    ;
-    
+        
+        
         size_t n_models = strModels.size();
         FCM *models = new FCM[ n_models ];
         std::vector< std::string > vecParameters;
@@ -193,12 +189,9 @@ int8_t Functions::commandLineParser (int argc, char **argv)
                                                          : models[ n ].setInvertedRepeat(true);
             
             
-////            models[ n ].setContextDepth(std::stoi(modelsParameters));
-////            models[ n ].setAlphaDenom(1);
-//////            models[ n ].setInvertedRepeat((bool) i_flag);
 ////            models[ n ].setFileAddress(targetFileName);
-////            models[ n ].buildHashTable();
-////            models[ n ].printHashTable(models[ n ].getHashTable());
+            models[ n ].buildHashTable();
+            models[ n ].printHashTable(models[ n ].getHashTable());
         }
         
         std::cout
@@ -222,8 +215,8 @@ int8_t Functions::commandLineParser (int argc, char **argv)
     }
     else
     {
-        if(t_flag)      std::cerr << "Please enter the model parameters";
-        else if(r_flag) std::cerr << "Please enter the model parameters";
+        if(t_flag)      std::cerr << "Model(s) parameters are missing.";
+        else if(r_flag) std::cerr << "Model(s) parameters are missing.";
     }
     
     /* Print any remaining command line arguments (not options). */
