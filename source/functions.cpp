@@ -9,6 +9,7 @@
 
 using std::cout;
 using std::cerr;
+using std::string;
 
 
 /***********************************************************
@@ -30,13 +31,13 @@ void Functions::commandLineParser (int argc, char **argv)
     static int A_flag;  // option 'A' (about)
     static int v_flag;  // option 'v' (verbose)
     
-    bool m_flag = false;                // model parameters entered
-    std::string modelsParameters = "";  // argument of option 'm'
+    bool m_flag = false;            // model parameters entered
+    string modelsParameters = "";   // argument of option 'm'
     
-    bool t_flag = false;                // target file name entered
-    bool r_flag = false;                // reference file name entered
-    std::string targetFileName = "";    // argument of option 't'
-    std::string referenceFileName = ""; // argument of option 'r'
+    bool t_flag = false;            // target file name entered
+    bool r_flag = false;            // reference file name entered
+    string targetFileName = "";     // argument of option 't'
+    string referenceFileName = "";  // argument of option 'r'
     
     int c;              // deal with getopt_long()
     int option_index;   // option index stored by getopt_long()
@@ -95,7 +96,7 @@ void Functions::commandLineParser (int argc, char **argv)
                 try
                 {
                     m_flag = true;
-                    modelsParameters = (std::string) optarg; // keep argument = model parameters
+                    modelsParameters = (string) optarg; // keep argument = model parameters
                 }
                 catch (const std::invalid_argument &ia)
                 {
@@ -106,7 +107,7 @@ void Functions::commandLineParser (int argc, char **argv)
             case 'n':   // needs an integer argument
                 try
                 {
-                    messageObj.number(std::stoi((std::string) optarg));    // TODO for test
+                    messageObj.number(std::stoi((string) optarg));    // TODO for test
                 }
                 catch (const std::invalid_argument &ia)
                 {
@@ -117,7 +118,7 @@ void Functions::commandLineParser (int argc, char **argv)
             case 'd':   // needs a float argument
                 try
                 {
-                    messageObj.fnumber(std::stof((std::string) optarg));   // TODO for test
+                    messageObj.fnumber(std::stof((string) optarg));   // TODO for test
                 }
                 catch (const std::invalid_argument &ia)
                 {
@@ -127,12 +128,12 @@ void Functions::commandLineParser (int argc, char **argv)
             
             case 't':   // needs target file name
                 t_flag = true;
-                targetFileName = (std::string) optarg;      // keep argument = target file name
+                targetFileName = (string) optarg;      // keep argument = target file name
                 break;
             
             case 'r':   // needs reference file name
                 r_flag = true;
-                referenceFileName = (std::string) optarg;   // keep argument = reference file name
+                referenceFileName = (string) optarg;   // keep argument = reference file name
                 break;
             
             case ':':   /* missing option argument */
@@ -154,7 +155,7 @@ void Functions::commandLineParser (int argc, char **argv)
         else
         {
             // seperate and save the models in a vector of strings. each model in a string
-            std::vector< std::string > strModels;
+            std::vector< string > strModels;
             std::size_t mIndex = 0; // index for the first character of models string
             // save all models except the last model
             for (size_t i = 0; i != modelsParameters.size(); ++i)
@@ -169,7 +170,7 @@ void Functions::commandLineParser (int argc, char **argv)
             // create an array of models and set their parameters
             size_t n_models = strModels.size();         // number of models
             FCM *models = new FCM[n_models];          // array of models
-            std::vector< std::string > vecParameters;   // to save models parameters
+            std::vector< string > vecParameters;   // to save models parameters
             size_t vecParamIndex = 0;
             
             // save models parameters and process the models
@@ -234,7 +235,7 @@ void Functions::commandLineParser (int argc, char **argv)
 /***********************************************************
     check if file opened correctly
 ************************************************************/
-bool Functions::isFileCorrect (const std::string &fileName)
+bool Functions::isFileCorrect (const string &fileName)
 {
     std::ifstream fileIn(fileName, std::ios::in);   // open file
     

@@ -4,14 +4,16 @@
 
 #include <iostream>
 
+using std::string;
+
 
 class Functions
 {
 public:
-    Functions ();                                       // constructor
+    Functions ();                               // constructor
     
-    void commandLineParser (int, char**);             // parse command line
-    static bool isFileCorrect (const std::string &);    // check if file opened correctly
+    void commandLineParser (int, char**);       // parse command line
+    static bool isFileCorrect (const string &); // check if file opened correctly
 };
 
 

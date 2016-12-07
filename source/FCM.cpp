@@ -7,6 +7,7 @@
 #include "functions.h"
 
 using std::cout;
+using std::string;
 
 
 /***********************************************************
@@ -24,19 +25,19 @@ void FCM::buildHashTable ()
     uint32_t alphaDen       = getAlphaDenom();      // get alpha denominator
     bool isInvertedRepeat   = getInvertedRepeat();  // get inverted repeat
     // TODO: supprt for both target and reference file addresses
-    std::string fileName    = getTarFileAddress();
+    string fileName         = getTarFileAddress();
 
     std::ifstream fileIn(fileName, std::ios::in);   // open file located in fileName
 
     if (Functions::isFileCorrect(fileName))         // file opened correctly
     {
-        std::string initContext(contextDepth, 'A'); // initial context = "AA..."
-        std::string context(contextDepth, '0');     // context, that slides in the dataset
+        string initContext(contextDepth, 'A');      // initial context = "AA..."
+        string context(contextDepth, '0');          // context, that slides in the dataset
     
         htable_t hTable;                            // create hash table
         hTable.insert({context, {0, 0, 0, 0, 0}});  // initialize hash table with 0'z
 
-        std::string datasetLine;                    // to keep each line of file
+        string datasetLine;                         // to keep each line of file
         std::getline(fileIn, datasetLine);          // read first line of file
         datasetLine = initContext + datasetLine;    // add "AA..." at beginning of first line
 
@@ -60,7 +61,7 @@ void FCM::buildHashTable ()
                 if (isInvertedRepeat)
                 {
                     // save inverted repeat context
-                    std::string invRepeatContext = "";
+                    string invRepeatContext = "";
                     invRepeatContext += std::to_string(4 - vecDatasetLineInt[ lineIter ]);
                     // convert a number from char into integer format. '0'->0. '4'->4 by
                     // 52 - context[ i ] = 4 - (context[ i ] - 48). 48 is ASCII code of '0'
@@ -107,8 +108,8 @@ void FCM::printHashTable () const
 {
     htable_t hTable = this->getHashTable();
     
-    std::string tar_or_ref = (this->getTargetOrReference() == 't' ? "target" : "reference");
-    std::string Tar_or_Ref = (this->getTargetOrReference() == 't' ? "Target" : "Reference");
+    string tar_or_ref = (this->getTargetOrReference() == 't' ? "target" : "reference");
+    string Tar_or_Ref = (this->getTargetOrReference() == 't' ? "Target" : "Reference");
     
     cout << " >>> Context model:\t\tBuilt from "  << tar_or_ref << "\n"
          << " >>> Context order size:\t" << (uint16_t) this->getContextDepth() << "\n"
@@ -158,17 +159,17 @@ void FCM::printHashTable () const
 /***********************************************************
     getters and setters
 ************************************************************/
-char FCM::getTargetOrReference () const              { return targetOrReference; }
-void FCM::setTargetOrReference (char tOrR)           { FCM::targetOrReference = tOrR; }
-uint8_t FCM::getContextDepth () const                { return contextDepth; }
-void FCM::setContextDepth (uint8_t ctxDp)            { FCM::contextDepth = ctxDp; }
-uint32_t FCM::getAlphaDenom () const                 { return alphaDenom; }
-void FCM::setAlphaDenom (uint32_t alphaDen)          { FCM::alphaDenom = alphaDen; }
-bool FCM::getInvertedRepeat () const                 { return invertedRepeat; }
-void FCM::setInvertedRepeat (bool invRep)            { FCM::invertedRepeat = invRep; }
-const htable_t &FCM::getHashTable () const           { return hashTable; }
-void FCM::setHashTable (const htable_t &hT)          { FCM::hashTable = hT; }
-const std::string &FCM::getTarFileAddress () const   { return tarFileAddress; }
-void FCM::setTarFileAddress (const std::string &tFA) { FCM::tarFileAddress = tFA; }
-const std::string &FCM::getRefFileAddress () const   { return refFileAddress; }
-void FCM::setRefFileAddress (const std::string &rFA) { FCM::refFileAddress = rFA; }
+char FCM::getTargetOrReference () const         { return targetOrReference; }
+void FCM::setTargetOrReference (char tOrR)      { FCM::targetOrReference = tOrR; }
+uint8_t FCM::getContextDepth () const           { return contextDepth; }
+void FCM::setContextDepth (uint8_t ctxDp)       { FCM::contextDepth = ctxDp; }
+uint32_t FCM::getAlphaDenom () const            { return alphaDenom; }
+void FCM::setAlphaDenom (uint32_t alphaDen)     { FCM::alphaDenom = alphaDen; }
+bool FCM::getInvertedRepeat () const            { return invertedRepeat; }
+void FCM::setInvertedRepeat (bool invRep)       { FCM::invertedRepeat = invRep; }
+const htable_t &FCM::getHashTable () const      { return hashTable; }
+void FCM::setHashTable (const htable_t &hT)     { FCM::hashTable = hT; }
+const string &FCM::getTarFileAddress () const   { return tarFileAddress; }
+void FCM::setTarFileAddress (const string &tFA) { FCM::tarFileAddress = tFA; }
+const string &FCM::getRefFileAddress () const   { return refFileAddress; }
+void FCM::setRefFileAddress (const string &rFA) { FCM::refFileAddress = rFA; }
