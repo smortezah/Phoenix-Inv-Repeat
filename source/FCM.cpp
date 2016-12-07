@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <algorithm>
+#include <iomanip>      // setw
 
 #include "FCM.h"
 #include "functions.h"
@@ -107,15 +108,15 @@ void FCM::printHashTable () const
     std::string tar_or_ref = (this->getTargetOrReference() == 't' ? "target" : "reference");
     std::string Tar_or_Ref = (this->getTargetOrReference() == 't' ? "Target" : "Reference");
     
-    std::cout << " >>> Context model:\t\tBuilt from " << tar_or_ref << "\n"
+    std::cout << " >>> Context model:\t\tBuilt from "  << tar_or_ref << "\n"
               << " >>> Context order size:\t" << (uint16_t) this->getContextDepth() << "\n"
               << " >>> Alpha denominator:\t\t" << this->getAlphaDenom() << "\n"
               << " >>> Inverted repeat:\t\t" << (this->getInvertedRepeat() ? "Considered"
                                                                            : "Not considered")
               << "\n"
               << " >>> " << Tar_or_Ref << " file address:\t"
-            // TODO: this line must be changed to
-            // << ( tar_or_ref == "target" ? this->getTarFileAddress() : this->getRefFileAddress() )
+//              TODO: this line must be changed to
+//              << ( tar_or_ref == "target" ? this->getTarFileAddress() : this->getRefFileAddress() )
               << ( tar_or_ref == "target" ? this->getTarFileAddress() : this->getTarFileAddress() )
               << "\n\n";
     
