@@ -200,12 +200,12 @@ int8_t Functions::commandLineParser (int argc, char **argv)
                 models[ n ].buildHashTable();
     
                 std::cout << "Model " << n + 1 << ":\n";
-                models[ n ].printHashTable(models[ n ].getHashTable());
+                models[ n ].printHashTable();
                 std::cout << "\n";
             }
-        }
+        }   // end - else
     }
-    else
+    else    // if '-m' (model) is entered but '-t' or '-r' (file addresses) are not entered
     {
         if(t_flag)      std::cerr << "Model(s) parameters are missing.";
         else if(r_flag) std::cerr << "Model(s) parameters are missing.";

@@ -14,7 +14,7 @@ public:
                                                     
     void buildHashTable ();                         // build hash table
     uint8_t symCharToInt (char) const;              // ACNGT -> 01234
-    void printHashTable (htable_t) const;           // print hash table
+    void printHashTable () const;                   // print hash table
                                                     
     char getTargetOrReference () const;             // getter of target or reference
     void setTargetOrReference (char);               // setter of target or reference

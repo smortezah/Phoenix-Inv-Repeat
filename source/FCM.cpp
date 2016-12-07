@@ -100,30 +100,28 @@ uint8_t FCM::symCharToInt (char c) const
 /***********************************************************
     print hash table
 ************************************************************/
-void FCM::printHashTable (htable_t hTable) const
+void FCM::printHashTable () const
 {
-
-    /***********************************************************
-        test
-    ************************************************************/
+    htable_t hTable = this -> getHashTable();
+    
     std::cout << "\tA\tC\tN\tG\tT"
               //              << "\tP_A\tP_C\tP_N\tP_G\tP_T"
               << "\n"
               << "\t-----------------------------------"
               //              << "------------------------------------------"
               << "\n";
-
-    int sum;
-    int alpha = 1;
-
+    
+//    int sum;
+//    int alpha = 1;
+    
     for (htable_t::iterator it = hTable.begin(); it != hTable.end(); ++it)
     {
-        sum = 0;
+//        sum = 0;
         std::cout << it->first << "\t";
         for (int i : it->second)
         {
             std::cout << i << "\t";
-            sum += i;
+//            sum += i;
         }
 
 //        for (int i = 0; i < 5; ++i)
