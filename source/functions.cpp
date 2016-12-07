@@ -17,7 +17,7 @@ Functions::Functions () {}
 /***********************************************************
     parse command line
 ************************************************************/
-int8_t Functions::commandLineParser (int argc, char **argv)
+void Functions::commandLineParser (int argc, char **argv)
 {
     Messages messageObj;    // object for showing messages
     
@@ -37,60 +37,60 @@ int8_t Functions::commandLineParser (int argc, char **argv)
     
     int c;              // deal with getopt_long()
     int option_index;   // option index stored by getopt_long()
-
+    
     opterr = 0;         // force getopt_long() to remain silent when it finds a problem
-
+    
     static struct option long_options[] =
             {
-                    {"help",            no_argument, &h_flag, (int) 'h'},   // help
-                    {"about",           no_argument, &A_flag, (int) 'A'},   // About
-                    {"verbose",         no_argument, &v_flag, (int) 'v'},   // verbose
-                    {"model",     required_argument,       0,       'm'},   // model
-                    {"number",    required_argument,       0,       'n'},   // number (integer)
-                    {"fnumber",   required_argument,       0,       'd'},   // number (float)
-                    {"target",    required_argument,       0,       't'},   // target file
-                    {"reference", required_argument,       0,       'r'},   // reference file
-                    {0, 0, 0, 0}
+                    {"help",      no_argument,       &h_flag, (int) 'h'},   // help
+                    {"about",     no_argument,       &A_flag, (int) 'A'},   // About
+                    {"verbose",   no_argument,       &v_flag, (int) 'v'},   // verbose
+                    {"model",     required_argument, 0,       'm'},   // model
+                    {"number",    required_argument, 0,       'n'},   // number (integer)
+                    {"fnumber",   required_argument, 0,       'd'},   // number (float)
+                    {"target",    required_argument, 0,       't'},   // target file
+                    {"reference", required_argument, 0,       'r'},   // reference file
+                    {0, 0,                           0,       0}
             };
     
     while (1)
     {
         /* getopt_long() stores the option index here. */
         option_index = 0;
-
+        
         c = getopt_long(argc, argv, ":hAvm:n:d:t:r:", long_options, &option_index);
-
+        
         /* Detect the end of the options. */
         if (c == -1)
             break;
-
+        
         switch (c)
         {
             case 0:
                 /* If this option set a flag, do nothing else now. */
                 if (long_options[ option_index ].flag != 0)
                     break;
-
+                
                 std::cout << "option '" << long_options[ option_index ].name << "'\n";
                 if (optarg)
                     std::cout << " with arg " << optarg << "\n";
                 break;
-
+            
             case 'h':   // show usage guide
                 h_flag = 1;
                 messageObj.help();
                 break;
-    
+            
             case 'A':   // show About Phoenix
                 A_flag = 1;
                 messageObj.about();
                 break;
-                
+            
             case 'v':   // verbose mode
                 v_flag = 1;
                 messageObj.verbose();
                 break;
-    
+            
             case 'm':   // needs model parameters
                 try
                 {
@@ -102,7 +102,7 @@ int8_t Functions::commandLineParser (int argc, char **argv)
                     std::cerr << "Option 'm' ('model') has an invalid argument.\n";
                 }
                 break;
-
+            
             case 'n':   // needs an integer argument
                 try
                 {
@@ -113,32 +113,32 @@ int8_t Functions::commandLineParser (int argc, char **argv)
                     std::cerr << "Option 'n' ('number') has an invalid argument.\n";
                 }
                 break;
-    
+            
             case 'd':   // needs a float argument
                 try
                 {
-                    messageObj.fnumber( std::stof((std::string) optarg) );   // TODO for test
+                    messageObj.fnumber(std::stof((std::string) optarg));   // TODO for test
                 }
                 catch (const std::invalid_argument &ia)
                 {
                     std::cerr << "Option 'd' ('fnumber') has an invalid argument.\n";
                 }
                 break;
-    
+            
             case 't':   // needs target file name
                 t_flag = true;
                 targetFileName = (std::string) optarg;      // keep argument = target file name
                 break;
-    
+            
             case 'r':   // needs reference file name
                 r_flag = true;
                 referenceFileName = (std::string) optarg;   // keep argument = reference file name
                 break;
-                
+            
             case ':':   /* missing option argument */
                 std::cerr << "Option '" << (char) optopt << "' requires an argument.\n";
                 break;
-
+            
             case '?':   /* invalid option */
             default:
                 std::cerr << "Option '" << (char) optopt << "' is invalid.\n";
@@ -150,7 +150,8 @@ int8_t Functions::commandLineParser (int argc, char **argv)
     if (m_flag)
     {
         // check if target or reference file addresses are entered
-        if (!t_flag && !r_flag)    std::cerr << "Input file address is needed.";
+        if (!t_flag && !r_flag)
+            std::cerr << "Input file address is needed.";
         else
         {
             // seperate and save the models in a vector of strings. each model in a string
@@ -164,11 +165,11 @@ int8_t Functions::commandLineParser (int argc, char **argv)
                     mIndex = i + 1;
                 }
             // save last model in multi-model input, and the only model in single model input
-            strModels.push_back( modelsParameters.substr(mIndex, modelsParameters.size() - mIndex) );
+            strModels.push_back(modelsParameters.substr(mIndex, modelsParameters.size() - mIndex));
             
             // create an array of models and set their parameters
             size_t n_models = strModels.size();         // number of models
-            FCM *models = new FCM[ n_models ];          // array of models
+            FCM *models = new FCM[n_models];          // array of models
             std::vector< std::string > vecParameters;   // to save models parameters
             size_t vecParamIndex = 0;
             
@@ -198,9 +199,9 @@ int8_t Functions::commandLineParser (int argc, char **argv)
                     models[ n ].setTarFileAddress(targetFileName);
                 
                 // set the context depth of the model
-                models[ n ].setContextDepth( (uint8_t) std::stoi(vecParameters[ vecParamIndex++ ]) );
+                models[ n ].setContextDepth((uint8_t) std::stoi(vecParameters[ vecParamIndex++ ]));
                 // set the alpha denominator of the model
-                models[ n ].setAlphaDenom( (uint8_t) std::stoi(vecParameters[ vecParamIndex++ ]) );
+                models[ n ].setAlphaDenom((uint8_t) std::stoi(vecParameters[ vecParamIndex++ ]));
                 // set the inverted repeat condition of the model
                 !std::stoi(vecParameters[ vecParamIndex++ ]) ? models[ n ].setInvertedRepeat(false)
                                                              : models[ n ].setInvertedRepeat(true);
@@ -212,14 +213,15 @@ int8_t Functions::commandLineParser (int argc, char **argv)
                 models[ n ].printHashTable();
             }
             
-            delete [] models;   // delete all models created
-            
+            delete[] models;   // delete all models created
         }   // end - else: if target or reference file addresses are entered
     }       //  end - if '-m' (model) is entered
     else    // if '-m' (model) is entered but '-t' or '-r' (file addresses) are not entered
     {
-        if(t_flag)      std::cerr << "Model(s) parameters are missing.";
-        else if(r_flag) std::cerr << "Model(s) parameters are missing.";
+        if (t_flag)
+            std::cerr << "Model(s) parameters are missing.";
+        else if (r_flag)
+            std::cerr << "Model(s) parameters are missing.";
     }
     
     /* Print any remaining command line arguments (not options). */
