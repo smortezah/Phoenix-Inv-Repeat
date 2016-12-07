@@ -28,7 +28,7 @@ int8_t Functions::commandLineParser (int argc, char **argv)
     static int v_flag;  // option 'v' (verbose)
     
     bool m_flag = false;                // model parameters entered
-    std::string modelsParameters = "";   // argument of option 'm'
+    std::string modelsParameters = "";  // argument of option 'm'
     
     bool t_flag = false;                // target file name entered
     bool r_flag = false;                // reference file name entered
@@ -149,69 +149,68 @@ int8_t Functions::commandLineParser (int argc, char **argv)
     
     if (m_flag)
     {
-//        if (!t_flag)    std::cerr << "target file address is needed.";
-    
-//        std::vector< FCM > models;
-        std::vector< std::string > strModels;
-    
-        std::size_t mIndex = 0;
-        for (size_t i = 0; i != modelsParameters.size(); ++i)
-            if (modelsParameters[ i ] == ':')
-            {
-                strModels.push_back( modelsParameters.substr(mIndex, i - mIndex) );
-                mIndex = i + 1;
-            }
-        strModels.push_back( modelsParameters.substr(mIndex, modelsParameters.size() - mIndex) );
-        
-        
-        size_t n_models = strModels.size();
-        FCM *models = new FCM[ n_models ];
-        std::vector< std::string > vecParameters;
-        size_t vecParamIndex = 0;
-    
-        for (size_t n = 0; n != n_models; ++n)
+        if (!t_flag && !r_flag)    std::cerr << "Input file address is needed.";
+        else
         {
-            std::size_t index = 0;
-            for (size_t i = 0; i != strModels[ n ].size(); ++i)
-                if (strModels[ n ][ i ] == ',')
-                {
-                    vecParameters.push_back( strModels[ n ].substr(index, i - index) );
-                    index = i + 1;
-                }
-            vecParameters.push_back( strModels[ n ].substr(index, strModels[ n ].size() - index) );
-            
-            //
-            (vecParameters[ vecParamIndex++ ][ 0 ] == 't') ? models[ n ].setTargetOrReference('t')
-                                                           : models[ n ].setTargetOrReference('r');
-            models[ n ].setContextDepth( (uint8_t) std::stoi(vecParameters[ vecParamIndex++ ]) );
-            models[ n ].setAlphaDenom( (uint8_t) std::stoi(vecParameters[ vecParamIndex++ ]) );
-            !std::stoi(vecParameters[ vecParamIndex++ ]) ? models[ n ].setInvertedRepeat(false)
-                                                         : models[ n ].setInvertedRepeat(true);
-            
-            
-////            models[ n ].setFileAddress(targetFileName);
-            models[ n ].buildHashTable();
-            models[ n ].printHashTable(models[ n ].getHashTable());
-        }
-        
-        std::cout
-                  << models[0].getTargetOrReference()
-                  << "\n"
-                  << (int) models[0].getContextDepth()
-                  << "\n"
-                  << (int) models[0].getAlphaDenom()
-                  << "\n"
-                  << (int) models[0].getInvertedRepeat()
-                  << "\n"
-                  << models[1].getTargetOrReference()
-                  << "\n"
-                  << (int) models[1].getContextDepth()
-                  << "\n"
-                  << (int) models[1].getAlphaDenom()
-                  << "\n"
-                  << (int) models[1].getInvertedRepeat()
-                ; // TODO for test
+            std::vector< std::string > strModels;
     
+            std::size_t mIndex = 0;
+            for (size_t i = 0; i != modelsParameters.size(); ++i)
+                if (modelsParameters[ i ] == ':')
+                {
+                    strModels.push_back(modelsParameters.substr(mIndex, i - mIndex));
+                    mIndex = i + 1;
+                }
+            strModels.push_back(modelsParameters.substr(mIndex, modelsParameters.size() - mIndex));
+    
+    
+            size_t n_models = strModels.size();
+            FCM *models = new FCM[n_models];
+            std::vector< std::string > vecParameters;
+            size_t vecParamIndex = 0;
+    
+            for (size_t n = 0; n != n_models; ++n)
+            {
+                std::size_t index = 0;
+                for (size_t i = 0; i != strModels[ n ].size(); ++i)
+                    if (strModels[ n ][ i ] == ',')
+                    {
+                        vecParameters.push_back(strModels[ n ].substr(index, i - index));
+                        index = i + 1;
+                    }
+                vecParameters.push_back(strModels[ n ].substr(index, strModels[ n ].size() - index));
+        
+                //
+                (vecParameters[ vecParamIndex++ ][ 0 ] == 't') ? models[ n ].setTargetOrReference('t')
+                                                               : models[ n ].setTargetOrReference('r');
+                models[ n ].setContextDepth((uint8_t) std::stoi(vecParameters[ vecParamIndex++ ]));
+                models[ n ].setAlphaDenom((uint8_t) std::stoi(vecParameters[ vecParamIndex++ ]));
+                !std::stoi(vecParameters[ vecParamIndex++ ]) ? models[ n ].setInvertedRepeat(false)
+                                                             : models[ n ].setInvertedRepeat(true);
+
+
+////            models[ n ].setFileAddress(targetFileName);
+                models[ n ].buildHashTable();
+                models[ n ].printHashTable(models[ n ].getHashTable());
+            }
+    
+            std::cout
+                    << models[ 0 ].getTargetOrReference()
+                    << "\n"
+                    << (int) models[ 0 ].getContextDepth()
+                    << "\n"
+                    << (int) models[ 0 ].getAlphaDenom()
+                    << "\n"
+                    << (int) models[ 0 ].getInvertedRepeat()
+                    << "\n"
+                    << models[ 1 ].getTargetOrReference()
+                    << "\n"
+                    << (int) models[ 1 ].getContextDepth()
+                    << "\n"
+                    << (int) models[ 1 ].getAlphaDenom()
+                    << "\n"
+                    << (int) models[ 1 ].getInvertedRepeat(); // TODO for test
+        }
     }
     else
     {

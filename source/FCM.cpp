@@ -139,15 +139,17 @@ void FCM::printHashTable (htable_t hTable) const
 /***********************************************************
     getters and setters
 ************************************************************/
-char FCM::getTargetOrReference () const         { return targetOrReference; }
-void FCM::setTargetOrReference (char tOrR)      { FCM::targetOrReference = tOrR; }
-uint8_t FCM::getContextDepth () const           { return contextDepth; }
-void FCM::setContextDepth (uint8_t ctxDp)       { FCM::contextDepth = ctxDp; }
-uint32_t FCM::getAlphaDenom () const            { return alphaDenom; }
-void FCM::setAlphaDenom (uint32_t alphaDen)     { FCM::alphaDenom = alphaDen; }
-bool FCM::getInvertedRepeat () const            { return invertedRepeat; }
-void FCM::setInvertedRepeat (bool invRep)       { FCM::invertedRepeat = invRep; }
-const htable_t &FCM::getHashTable () const      { return hashTable; }
-void FCM::setHashTable (const htable_t &hT)     { FCM::hashTable = hT; }
-const std::string &FCM::getFileAddress () const { return fileAddress; }
-void FCM::setFileAddress (const std::string &fA){ FCM::fileAddress = fA; }
+char FCM::getTargetOrReference () const              { return targetOrReference; }
+void FCM::setTargetOrReference (char tOrR)           { FCM::targetOrReference = tOrR; }
+uint8_t FCM::getContextDepth () const                { return contextDepth; }
+void FCM::setContextDepth (uint8_t ctxDp)            { FCM::contextDepth = ctxDp; }
+uint32_t FCM::getAlphaDenom () const                 { return alphaDenom; }
+void FCM::setAlphaDenom (uint32_t alphaDen)          { FCM::alphaDenom = alphaDen; }
+bool FCM::getInvertedRepeat () const                 { return invertedRepeat; }
+void FCM::setInvertedRepeat (bool invRep)            { FCM::invertedRepeat = invRep; }
+const htable_t &FCM::getHashTable () const           { return hashTable; }
+void FCM::setHashTable (const htable_t &hT)          { FCM::hashTable = hT; }
+const std::string &FCM::getTarFileAddress () const   { return tarFileAddress; }
+void FCM::setTarFileAddress (const std::string &tFA) { FCM::tarFileAddress = tFA; }
+const std::string &FCM::getRefFileAddress () const   { return refFileAddress; }
+void FCM::setRefFileAddress (const std::string &rFA) { FCM::refFileAddress = rFA; }
