@@ -21,7 +21,7 @@ void FCM::buildHashTable ()
     uint8_t contextDepth    = getContextDepth();    // get context depth
     uint32_t alphaDen       = getAlphaDenom();      // get alpha denominator
     bool isInvertedRepeat   = getInvertedRepeat();  // get inverted repeat
-    // TODO: get target file address. next step: supprt for both target and reference file addresses
+    // TODO: supprt for both target and reference file addresses
     std::string fileName    = getTarFileAddress();
 
     std::ifstream fileIn(fileName, std::ios::in);   // open file located in fileName
@@ -77,7 +77,7 @@ void FCM::buildHashTable ()
             }
     
             lineIter = 0;           // iterator for non-first lines of file becomes 0
-        } while ( std::getline(fileIn, datasetLine) ); // read file line by line
+        } while ( std::getline(fileIn, datasetLine) );  // read file line by line
 
         fileIn.close();             // close file
 
@@ -115,8 +115,8 @@ void FCM::printHashTable () const
                                                                            : "Not considered")
               << "\n"
               << " >>> " << Tar_or_Ref << " file address:\t"
-//              TODO: this line must be changed to
-//              << ( tar_or_ref == "target" ? this->getTarFileAddress() : this->getRefFileAddress() )
+              // TODO: this line must be changed to
+              // << ( tar_or_ref == "target" ? this->getTarFileAddress() : this->getRefFileAddress() )
               << ( tar_or_ref == "target" ? this->getTarFileAddress() : this->getTarFileAddress() )
               << "\n\n";
     
@@ -148,6 +148,8 @@ void FCM::printHashTable () const
 //        }
         std::cout << "\n";
     }
+    
+    std::cout << "\n";
 }
 
 

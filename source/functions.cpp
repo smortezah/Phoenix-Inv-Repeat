@@ -149,64 +149,73 @@ int8_t Functions::commandLineParser (int argc, char **argv)
     
     if (m_flag)
     {
+        // check if target or reference file addresses are entered
         if (!t_flag && !r_flag)    std::cerr << "Input file address is needed.";
         else
         {
+            // seperate and save the models in a vector of strings. each model in a string
             std::vector< std::string > strModels;
-    
-            std::size_t mIndex = 0;
+            std::size_t mIndex = 0; // index for the first character of models string
+            // save all models except the last model
             for (size_t i = 0; i != modelsParameters.size(); ++i)
                 if (modelsParameters[ i ] == ':')
                 {
                     strModels.push_back(modelsParameters.substr(mIndex, i - mIndex));
                     mIndex = i + 1;
                 }
+            // save last model in multi-model input, and the only model in single model input
             strModels.push_back( modelsParameters.substr(mIndex, modelsParameters.size() - mIndex) );
-    
-    
-            size_t n_models = strModels.size();
-            FCM *models = new FCM[n_models];
-            std::vector< std::string > vecParameters;
+            
+            // create an array of models and set their parameters
+            size_t n_models = strModels.size();         // number of models
+            FCM *models = new FCM[ n_models ];          // array of models
+            std::vector< std::string > vecParameters;   // to save models parameters
             size_t vecParamIndex = 0;
-    
+            
+            // save models parameters and process the models
             for (size_t n = 0; n != n_models; ++n)
             {
                 std::size_t index = 0;
+                // save all models except the last model
                 for (size_t i = 0; i != strModels[ n ].size(); ++i)
                     if (strModels[ n ][ i ] == ',')
                     {
                         vecParameters.push_back(strModels[ n ].substr(index, i - index));
                         index = i + 1;
                     }
+                // save last model in multi-model input, and the only model in single model input
                 vecParameters.push_back(strModels[ n ].substr(index, strModels[ n ].size() - index));
-        
-                //
-                if(vecParameters[ vecParamIndex++ ][ 0 ] == 't')
-                {
-                    models[ n ].setTargetOrReference('t');
+                
+                // chack if the model is built from target or reference
+                char tarOrRefChar = vecParameters[ vecParamIndex++ ][ 0 ];
+                models[ n ].setTargetOrReference(tarOrRefChar);
+                
+                if (tarOrRefChar == 't')    // set target file address
                     models[ n ].setTarFileAddress(targetFileName);
-                }
-                else
-                {
-                    models[ n ].setTargetOrReference('r');
-                    
-                    // TODO: this line must be changed to models[ n ].setRefFileAddress(referenceFileName)
+                else                        // set reference file address
+                    // TODO: this line must be changed to
+                    // models[ n ].setRefFileAddress(referenceFileName)
                     models[ n ].setTarFileAddress(targetFileName);
-                }
-                models[ n ].setContextDepth((uint8_t) std::stoi(vecParameters[ vecParamIndex++ ]));
-                models[ n ].setAlphaDenom((uint8_t) std::stoi(vecParameters[ vecParamIndex++ ]));
+                
+                // set the context depth of the model
+                models[ n ].setContextDepth( (uint8_t) std::stoi(vecParameters[ vecParamIndex++ ]) );
+                // set the alpha denominator of the model
+                models[ n ].setAlphaDenom( (uint8_t) std::stoi(vecParameters[ vecParamIndex++ ]) );
+                // set the inverted repeat condition of the model
                 !std::stoi(vecParameters[ vecParamIndex++ ]) ? models[ n ].setInvertedRepeat(false)
                                                              : models[ n ].setInvertedRepeat(true);
                 
+                models[ n ].buildHashTable();   // build hash table for the model
                 
-                models[ n ].buildHashTable();
-    
+                // print the built hash table
                 std::cout << "Model " << n + 1 << " parameters:\n";
                 models[ n ].printHashTable();
-                std::cout << "\n";
             }
-        }   // end - else
-    }
+            
+            delete [] models;   // delete all models created
+            
+        }   // end - else: if target or reference file addresses are entered
+    }       //  end - if '-m' (model) is entered
     else    // if '-m' (model) is entered but '-t' or '-r' (file addresses) are not entered
     {
         if(t_flag)      std::cerr << "Model(s) parameters are missing.";
