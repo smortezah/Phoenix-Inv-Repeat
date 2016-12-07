@@ -10,6 +10,13 @@
 using std::cout;
 using std::cerr;
 using std::string;
+using std::stoi;
+using std::stof;
+using std::vector;
+using std::size_t;
+using std::ifstream;
+using std::ios;
+using std::invalid_argument;
 
 
 /***********************************************************
@@ -74,7 +81,7 @@ void Functions::commandLineParser (int argc, char **argv)
                 if (long_options[ option_index ].flag != 0) break;
                 
                 cout << "option '" << long_options[ option_index ].name << "'\n";
-                if (optarg)     cout << " with arg " << optarg << "\n";
+                if (optarg)     cout << " with arg " << optarg << '\n';
                 break;
             
             case 'h':   // show usage guide
@@ -98,7 +105,7 @@ void Functions::commandLineParser (int argc, char **argv)
                     m_flag = true;
                     modelsParameters = (string) optarg; // keep argument = model parameters
                 }
-                catch (const std::invalid_argument &ia)
+                catch (const invalid_argument &ia)
                 {
                     cerr << "Option 'm' ('model') has an invalid argument.\n";
                 }
@@ -107,9 +114,9 @@ void Functions::commandLineParser (int argc, char **argv)
             case 'n':   // needs an integer argument
                 try
                 {
-                    messageObj.number(std::stoi((string) optarg));    // TODO for test
+                    messageObj.number(stoi((string) optarg));    // TODO for test
                 }
-                catch (const std::invalid_argument &ia)
+                catch (const invalid_argument &ia)
                 {
                     cerr << "Option 'n' ('number') has an invalid argument.\n";
                 }
@@ -118,9 +125,9 @@ void Functions::commandLineParser (int argc, char **argv)
             case 'd':   // needs a float argument
                 try
                 {
-                    messageObj.fnumber(std::stof((string) optarg));   // TODO for test
+                    messageObj.fnumber(stof((string) optarg));   // TODO for test
                 }
-                catch (const std::invalid_argument &ia)
+                catch (const invalid_argument &ia)
                 {
                     cerr << "Option 'd' ('fnumber') has an invalid argument.\n";
                 }
@@ -155,8 +162,8 @@ void Functions::commandLineParser (int argc, char **argv)
         else
         {
             // seperate and save the models in a vector of strings. each model in a string
-            std::vector< string > strModels;
-            std::size_t mIndex = 0; // index for the first character of models string
+            vector< string > strModels;
+            size_t mIndex = 0;  // index for the first character of models string
             // save all models except the last model
             for (size_t i = 0; i != modelsParameters.size(); ++i)
                 if (modelsParameters[ i ] == ':')
@@ -168,15 +175,15 @@ void Functions::commandLineParser (int argc, char **argv)
             strModels.push_back(modelsParameters.substr(mIndex, modelsParameters.size() - mIndex));
             
             // create an array of models and set their parameters
-            size_t n_models = strModels.size();         // number of models
-            FCM *models = new FCM[n_models];          // array of models
-            std::vector< string > vecParameters;   // to save models parameters
+            size_t n_models = strModels.size(); // number of models
+            FCM *models = new FCM[n_models];    // array of models
+            vector< string > vecParameters;     // to save models parameters
             size_t vecParamIndex = 0;
             
             // save models parameters and process the models
             for (size_t n = 0; n != n_models; ++n)
             {
-                std::size_t index = 0;
+                size_t index = 0;
                 // save all models except the last model
                 for (size_t i = 0; i != strModels[ n ].size(); ++i)
                     if (strModels[ n ][ i ] == ',')
@@ -199,12 +206,12 @@ void Functions::commandLineParser (int argc, char **argv)
                     models[ n ].setTarFileAddress(targetFileName);
                 
                 // set the context depth of the model
-                models[ n ].setContextDepth((uint8_t) std::stoi(vecParameters[ vecParamIndex++ ]));
+                models[ n ].setContextDepth((uint8_t) stoi(vecParameters[ vecParamIndex++ ]));
                 // set the alpha denominator of the model
-                models[ n ].setAlphaDenom((uint8_t) std::stoi(vecParameters[ vecParamIndex++ ]));
+                models[ n ].setAlphaDenom((uint8_t) stoi(vecParameters[ vecParamIndex++ ]));
                 // set the inverted repeat condition of the model
-                !std::stoi(vecParameters[ vecParamIndex++ ]) ? models[ n ].setInvertedRepeat(false)
-                                                             : models[ n ].setInvertedRepeat(true);
+                !stoi(vecParameters[ vecParamIndex++ ]) ? models[ n ].setInvertedRepeat(false)
+                                                        : models[ n ].setInvertedRepeat(true);
                 
                 models[ n ].buildHashTable();   // build hash table for the model
                 
@@ -227,7 +234,7 @@ void Functions::commandLineParser (int argc, char **argv)
     {
         cerr << "non-option ARGV-element(s): ";
         while (optind < argc)   cerr << argv[ optind++ ] << " ";
-        cerr << std::endl;
+        cerr << '\n';
     }
 }
 
@@ -237,7 +244,7 @@ void Functions::commandLineParser (int argc, char **argv)
 ************************************************************/
 bool Functions::isFileCorrect (const string &fileName)
 {
-    std::ifstream fileIn(fileName, std::ios::in);   // open file
+    ifstream fileIn(fileName, ios::in);   // open file
     
     // check if file doesn't exist
     if (!fileIn)
@@ -247,7 +254,7 @@ bool Functions::isFileCorrect (const string &fileName)
         return false;   // error occurred while opening file
     }
     // check if file is empty
-    else if (fileIn.peek() == std::ifstream::traits_type::eof())
+    else if (fileIn.peek() == ifstream::traits_type::eof())
     {
         cerr << "File '" << fileName << "' is empty.\n";
         fileIn.close(); // close file

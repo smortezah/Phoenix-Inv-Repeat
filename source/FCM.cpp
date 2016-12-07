@@ -8,6 +8,13 @@
 
 using std::cout;
 using std::string;
+using std::vector;
+using std::ifstream;
+using std::getline;
+using std::to_string;
+using std::ios;
+using std::fixed;
+using std::setprecision;
 
 
 /***********************************************************
@@ -27,7 +34,7 @@ void FCM::buildHashTable ()
     // TODO: supprt for both target and reference file addresses
     string fileName         = getTarFileAddress();
 
-    std::ifstream fileIn(fileName, std::ios::in);   // open file located in fileName
+    ifstream fileIn(fileName, ios::in);             // open file located in fileName
 
     if (Functions::isFileCorrect(fileName))         // file opened correctly
     {
@@ -38,7 +45,7 @@ void FCM::buildHashTable ()
         hTable.insert({context, {0, 0, 0, 0, 0}});  // initialize hash table with 0'z
 
         string datasetLine;                         // to keep each line of file
-        std::getline(fileIn, datasetLine);          // read first line of file
+        getline(fileIn, datasetLine);               // read first line of file
         datasetLine = initContext + datasetLine;    // add "AA..." at beginning of first line
 
         // iterator for each line of file.
@@ -48,7 +55,7 @@ void FCM::buildHashTable ()
         do
         {
             // save integer version of each line in a vector
-            std::vector< uint8_t > vecDatasetLineInt;
+            vector< uint8_t > vecDatasetLineInt;
             for (char ch : datasetLine)  vecDatasetLineInt.push_back( symCharToInt(ch) );
             
             // fill hash table by number of occurrences of symbols A, C, N, G, T
@@ -62,11 +69,11 @@ void FCM::buildHashTable ()
                 {
                     // save inverted repeat context
                     string invRepeatContext = "";
-                    invRepeatContext += std::to_string(4 - vecDatasetLineInt[ lineIter ]);
+                    invRepeatContext += to_string(4 - vecDatasetLineInt[ lineIter ]);
                     // convert a number from char into integer format. '0'->0. '4'->4 by
                     // 52 - context[ i ] = 4 - (context[ i ] - 48). 48 is ASCII code of '0'
                     for (int i = contextDepth - 1; i != 0; --i)
-                        invRepeatContext += std::to_string( 52 - context[ i ] );
+                        invRepeatContext += to_string( 52 - context[ i ] );
     
                     // update hash table considering inverted repeats
                     ++hTable[ invRepeatContext ][ 52 - context[0] ];
@@ -74,13 +81,13 @@ void FCM::buildHashTable ()
     
                 // update context
                 context = (contextDepth == 1)
-                          ? std::to_string(vecDatasetLineInt[ lineIter ])
+                          ? to_string(vecDatasetLineInt[ lineIter ])
                           : context.substr(1, (unsigned) contextDepth - 1)
-                            + std::to_string(vecDatasetLineInt[ lineIter ]);
+                            + to_string(vecDatasetLineInt[ lineIter ]);
             }
     
             lineIter = 0;           // iterator for non-first lines of file becomes 0
-        } while ( std::getline(fileIn, datasetLine) );  // read file line by line
+        } while ( getline(fileIn, datasetLine) );   // read file line by line
 
         fileIn.close();             // close file
 
@@ -111,12 +118,12 @@ void FCM::printHashTable () const
     string tar_or_ref = (this->getTargetOrReference() == 't' ? "target" : "reference");
     string Tar_or_Ref = (this->getTargetOrReference() == 't' ? "Target" : "Reference");
     
-    cout << " >>> Context model:\t\tBuilt from "  << tar_or_ref << "\n"
-         << " >>> Context order size:\t" << (uint16_t) this->getContextDepth() << "\n"
-         << " >>> Alpha denominator:\t\t" << this->getAlphaDenom() << "\n"
+    cout << " >>> Context model:\t\tBuilt from "  << tar_or_ref << '\n'
+         << " >>> Context order size:\t" << (uint16_t) this->getContextDepth() << '\n'
+         << " >>> Alpha denominator:\t\t" << this->getAlphaDenom() << '\n'
          << " >>> Inverted repeat:\t\t" << (this->getInvertedRepeat() ? "Considered"
                                                                       : "Not considered")
-         << "\n"
+         << '\n'
          << " >>> " << Tar_or_Ref << " file address:\t"
          // TODO: this line must be changed to
          // << ( tar_or_ref == "target" ? this->getTarFileAddress() : this->getRefFileAddress() )
@@ -125,10 +132,10 @@ void FCM::printHashTable () const
     
     cout << "\tA\tC\tN\tG\tT"
          //              << "\tP_A\tP_C\tP_N\tP_G\tP_T"
-         << "\n"
+         << '\n'
          << "\t-----------------------------------"
          //              << "------------------------------------------"
-         << "\n";
+         << '\n';
     
 //    int sum;
 //    int alpha = 1;
@@ -145,14 +152,14 @@ void FCM::printHashTable () const
 
 //        for (int i = 0; i < 5; ++i)
 //        {
-//            cout << std::fixed << std::setprecision(1)
+//            cout << fixed << setprecision(1)
 //                 << (float) (it->second[ i ] + alpha) /
 //                         (sum + ALPHABET_SIZE * alpha) << "\t";
 //        }
-        cout << "\n";
+        cout << '\n';
     }
     
-    cout << "\n";
+    cout << '\n';
 }
 
 

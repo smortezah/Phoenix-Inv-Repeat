@@ -12,12 +12,9 @@
 
 #include "def.h"
 #include "functions.h"
-#include "FCM.h"
-#include "messages.h"
 
 using std::cout;
-using std::cerr;
-using std::string;
+using std::chrono::high_resolution_clock;
 
 
 ///////////////////////////////////////////////////////////
@@ -27,24 +24,25 @@ using std::string;
 int32_t main (int argc, char *argv[])
 {
     // Record start time
-    highResClock::time_point exeStartTime = highResClock::now();
+    high_resolution_clock::time_point exeStartTime = high_resolution_clock::now();
     
-
+    
+    
     
     // for access to Functions (object 'function' on memory stack)
     Functions function;
     function.commandLineParser(argc, argv); // parse the command line
     
-    
+
     
     
     // Record end time
-    highResClock::time_point exeFinishTime = highResClock::now();
+    high_resolution_clock::time_point exeFinishTime = high_resolution_clock::now();
 
     // calculate and show duration in seconds
     std::chrono::duration< double > elapsed = exeFinishTime - exeStartTime;
     cout
-//            << "\n"
+//            << '\n'
             << "Elapsed time: " << elapsed.count() << " s\n";
 
     
