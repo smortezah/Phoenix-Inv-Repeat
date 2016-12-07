@@ -102,7 +102,14 @@ uint8_t FCM::symCharToInt (char c) const
 ************************************************************/
 void FCM::printHashTable () const
 {
-    htable_t hTable = this -> getHashTable();
+    htable_t hTable = this->getHashTable();
+    std::cout << "\tContext model:      Built from " << ((this->getTargetOrReference() == 't') ? "target"
+                                                                                          : "reference") << "\n"
+              << "\tContext order size: " << (int) this->getContextDepth() << "\n"
+              << "\tAlpha denominator:  " << this->getAlphaDenom() << "\n"
+              << "\tInverted repeat:    " << (this->getInvertedRepeat() ? "Considered"
+                                                                     : "Not considered")
+              << "\n\n";
     
     std::cout << "\tA\tC\tN\tG\tT"
               //              << "\tP_A\tP_C\tP_N\tP_G\tP_T"

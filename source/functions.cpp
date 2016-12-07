@@ -199,7 +199,7 @@ int8_t Functions::commandLineParser (int argc, char **argv)
                 
                 models[ n ].buildHashTable();
     
-                std::cout << "Model " << n + 1 << ":\n";
+                std::cout << "Model " << n + 1 << " parameters:\n";
                 models[ n ].printHashTable();
                 std::cout << "\n";
             }
