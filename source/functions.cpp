@@ -181,44 +181,28 @@ int8_t Functions::commandLineParser (int argc, char **argv)
                 vecParameters.push_back(strModels[ n ].substr(index, strModels[ n ].size() - index));
         
                 //
-                (vecParameters[ vecParamIndex++ ][ 0 ] == 't') ? models[ n ].setTargetOrReference('t')
-                                                               : models[ n ].setTargetOrReference('r');
                 if(vecParameters[ vecParamIndex++ ][ 0 ] == 't')
                 {
                     models[ n ].setTargetOrReference('t');
-                    std::cout<<"tar";
+                    models[ n ].setTarFileAddress(targetFileName);
                 }
                 else
                 {
                     models[ n ].setTargetOrReference('r');
+                    models[ n ].setTarFileAddress(referenceFileName);
                 }
                 models[ n ].setContextDepth((uint8_t) std::stoi(vecParameters[ vecParamIndex++ ]));
                 models[ n ].setAlphaDenom((uint8_t) std::stoi(vecParameters[ vecParamIndex++ ]));
                 !std::stoi(vecParameters[ vecParamIndex++ ]) ? models[ n ].setInvertedRepeat(false)
                                                              : models[ n ].setInvertedRepeat(true);
-
-
-////            models[ n ].setFileAddress(targetFileName);
+                
+                
                 models[ n ].buildHashTable();
-                models[ n ].printHashTable(models[ n ].getHashTable());
-            }
     
-            std::cout
-                    << models[ 0 ].getTargetOrReference()
-                    << "\n"
-                    << (int) models[ 0 ].getContextDepth()
-                    << "\n"
-                    << (int) models[ 0 ].getAlphaDenom()
-                    << "\n"
-                    << (int) models[ 0 ].getInvertedRepeat()
-                    << "\n"
-                    << models[ 1 ].getTargetOrReference()
-                    << "\n"
-                    << (int) models[ 1 ].getContextDepth()
-                    << "\n"
-                    << (int) models[ 1 ].getAlphaDenom()
-                    << "\n"
-                    << (int) models[ 1 ].getInvertedRepeat(); // TODO for test
+                std::cout << "Model " << n + 1 << ":\n";
+                models[ n ].printHashTable(models[ n ].getHashTable());
+                std::cout << "\n";
+            }
         }
     }
     else
