@@ -103,13 +103,20 @@ uint8_t FCM::symCharToInt (char c) const
 void FCM::printHashTable () const
 {
     htable_t hTable = this->getHashTable();
-    std::cout << " >>> Context model:      Built from "
-              << ( (this->getTargetOrReference() == 't') ? "target"
-                                                         : "reference" ) << "\n"
-              << " >>> Context order size: " << (int) this->getContextDepth() << "\n"
-              << " >>> Alpha denominator:  " << this->getAlphaDenom() << "\n"
-              << " >>> Inverted repeat:    " << (this->getInvertedRepeat() ? "Considered"
-                                                                        : "Not considered")
+    
+    std::string tar_or_ref = (this->getTargetOrReference() == 't' ? "target" : "reference");
+    std::string Tar_or_Ref = (this->getTargetOrReference() == 't' ? "Target" : "Reference");
+    
+    std::cout << " >>> Context model:\t\tBuilt from " << tar_or_ref << "\n"
+              << " >>> Context order size:\t" << (uint16_t) this->getContextDepth() << "\n"
+              << " >>> Alpha denominator:\t\t" << this->getAlphaDenom() << "\n"
+              << " >>> Inverted repeat:\t\t" << (this->getInvertedRepeat() ? "Considered"
+                                                                           : "Not considered")
+              << "\n"
+              << " >>> " << Tar_or_Ref << " file address:\t"
+            // TODO: this line must be changed to
+            // << ( tar_or_ref == "target" ? this->getTarFileAddress() : this->getRefFileAddress() )
+              << ( tar_or_ref == "target" ? this->getTarFileAddress() : this->getTarFileAddress() )
               << "\n\n";
     
     std::cout << "\tA\tC\tN\tG\tT"

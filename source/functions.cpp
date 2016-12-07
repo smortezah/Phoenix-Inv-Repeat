@@ -161,7 +161,7 @@ int8_t Functions::commandLineParser (int argc, char **argv)
                     strModels.push_back(modelsParameters.substr(mIndex, i - mIndex));
                     mIndex = i + 1;
                 }
-            strModels.push_back(modelsParameters.substr(mIndex, modelsParameters.size() - mIndex));
+            strModels.push_back( modelsParameters.substr(mIndex, modelsParameters.size() - mIndex) );
     
     
             size_t n_models = strModels.size();
@@ -189,7 +189,9 @@ int8_t Functions::commandLineParser (int argc, char **argv)
                 else
                 {
                     models[ n ].setTargetOrReference('r');
-                    models[ n ].setTarFileAddress(referenceFileName);
+                    
+                    // TODO: this line must be changed to models[ n ].setRefFileAddress(referenceFileName)
+                    models[ n ].setTarFileAddress(targetFileName);
                 }
                 models[ n ].setContextDepth((uint8_t) std::stoi(vecParameters[ vecParamIndex++ ]));
                 models[ n ].setAlphaDenom((uint8_t) std::stoi(vecParameters[ vecParamIndex++ ]));
