@@ -161,7 +161,7 @@ void Functions::commandLineParser (int argc, char **argv)
         if (!t_flag && !r_flag)     cerr << "Input file address is needed.";
         else
         {
-            // seperate and save the models in a vector of strings. each model in a string
+            // seperate and save the models in a vector of strings. each model in one string
             vector< string > strModels;
             size_t mIndex = 0;  // index for the first character of models string
             // save all models except the last model
