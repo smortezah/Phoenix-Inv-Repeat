@@ -51,6 +51,16 @@ void FCM::buildHashTable ()
         // iterator for each line of file.
         // starts from index "contextDepth" at first line, and index 0 at other lines
         size_t lineIter = contextDepth;
+    
+        //////////////////////////////////
+        uint64_t totalNumberOfSymbols = 0;   // number of all symbols in the sequence
+        uint8_t dataSetLineSize;
+        uint16_t nSym;  // number of symbols. To calculate probability
+        uint32_t sumNSyms;  // sum of number of symbols. To calculate probability
+        double probability = 0;
+        double entropy = 0;
+        double averageEntropy = 0;
+        //////////////////////////////////
         
         do
         {
@@ -58,12 +68,31 @@ void FCM::buildHashTable ()
             vector< uint8_t > vecDatasetLineInt;
             for (char ch : datasetLine)  vecDatasetLineInt.push_back( symCharToInt(ch) );
             
+            //////////////////////////////////
+            dataSetLineSize = (uint8_t) datasetLine.size();   // number of all symbols in the sequence
+            //////////////////////////////////
+    
             // fill hash table by number of occurrences of symbols A, C, N, G, T
-            for (; lineIter != datasetLine.size(); ++lineIter)
+            for (; lineIter != dataSetLineSize; ++lineIter)
             {
+                
+                //////////////////////////////////
+                totalNumberOfSymbols += dataSetLineSize;
+    
+                // htable includes an array of uint16_t numbers
+                nSym = hTable[ context ][ vecDatasetLineInt[ lineIter ]];
+                
+                sumNSyms = 0;
+                for (uint8_t i = 0; i < ALPHABET_SIZE; ++i)     sumNSyms += hTable[ context ][ i ];
+    
+                probability = (nSym + 1/alphaDen) / (sumNSyms + ALPHABET_SIZE/alphaDen);
+                
+                entropy += log2(probability);
+                //////////////////////////////////
+                
                 // update hash table
                 ++hTable[ context ][ vecDatasetLineInt[ lineIter ]];
-    
+                
                 // considering inverted repeats to update hash table
                 if (isInvertedRepeat)
                 {
@@ -88,7 +117,12 @@ void FCM::buildHashTable ()
     
             lineIter = 0;           // iterator for non-first lines of file becomes 0
         } while ( getline(fileIn, datasetLine) );   // read file line by line
-
+    
+        //////////////////////////////////
+        averageEntropy =(-1) * entropy / sumNSyms;
+        cout << averageEntropy;
+        //////////////////////////////////
+        
         fileIn.close();             // close file
 
         FCM::setHashTable(hTable);  // save the built hash table
