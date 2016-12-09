@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <algorithm>
-#include <iomanip>      // setw
+#include <iomanip>      // setw, setprecision
 
 #include "FCM.h"
 #include "functions.h"
