@@ -53,13 +53,13 @@ void FCM::buildHashTable ()
         size_t lineIter = contextDepth;
     
         //////////////////////////////////
-        uint64_t totalNumberOfSymbols = 0;   // number of all symbols in the sequence
-        uint8_t dataSetLineSize;
-        uint16_t nSym;  // number of symbols. To calculate probability
-        uint32_t sumNSyms;  // sum of number of symbols. To calculate probability
-        double probability = 0;
-        double entropy = 0;
-        double averageEntropy = 0;
+        uint16_t nSym;                      // number of symbols (n_s). To calculate probability
+        uint32_t sumNSyms;                  // sum of number of symbols (sum n_a). To calculate probability
+        double   probability = 0;           // probability of a symbol, based on an identified context
+        double   sumOfEntropies = 0;        // sum of entropies for different symbols
+        uint8_t  dataSetLineSize;           // size of each line of dataset
+        uint64_t totalNumberOfSymbols = 0;  // number of all symbols in the sequence
+        double   averageEntropy = 0;        // average entropy (H)
         //////////////////////////////////
         
         do
@@ -69,7 +69,9 @@ void FCM::buildHashTable ()
             for (char ch : datasetLine)  vecDatasetLineInt.push_back( symCharToInt(ch) );
             
             //////////////////////////////////
-            dataSetLineSize = (uint8_t) datasetLine.size();   // number of all symbols in the sequence
+            dataSetLineSize = (uint8_t) datasetLine.size();
+            
+            totalNumberOfSymbols += dataSetLineSize;    // number of symbols in each line of dataset
             //////////////////////////////////
     
             // fill hash table by number of occurrences of symbols A, C, N, G, T
@@ -77,17 +79,18 @@ void FCM::buildHashTable ()
             {
                 
                 //////////////////////////////////
-                totalNumberOfSymbols += dataSetLineSize;
-    
                 // htable includes an array of uint16_t numbers
                 nSym = hTable[ context ][ vecDatasetLineInt[ lineIter ]];
                 
+                // sum(n_a)
                 sumNSyms = 0;
                 for (uint8_t i = 0; i < ALPHABET_SIZE; ++i)     sumNSyms += hTable[ context ][ i ];
-    
-                probability = (nSym + 1/alphaDen) / (sumNSyms + ALPHABET_SIZE/alphaDen);
                 
-                entropy += log2(probability);
+                // P(s|c^t)
+                probability = (double) (nSym + 1/alphaDen) / (sumNSyms + ALPHABET_SIZE/alphaDen);
+                
+                // sum( log_2 P(s|c^t) )
+                sumOfEntropies += log2(probability);
                 //////////////////////////////////
                 
                 // update hash table
@@ -119,8 +122,19 @@ void FCM::buildHashTable ()
         } while ( getline(fileIn, datasetLine) );   // read file line by line
     
         //////////////////////////////////
-        averageEntropy =(-1) * entropy / sumNSyms;
-        cout << averageEntropy;
+        totalNumberOfSymbols -= contextDepth;   // first line includes contextDepth of "AA..."
+        
+        // H_N = -1/N sum( log_2 P(s|c^t) )
+        averageEntropy = (-1) * sumOfEntropies / totalNumberOfSymbols;
+    
+        cout
+//                << nSym << '\n'
+//                << sumNSyms << '\n'
+//                << probability << '\n'
+//                << sumOfEntropies << '\n'
+//                << totalNumberOfSymbols << '\n'
+                << averageEntropy << '\n'
+                ;
         //////////////////////////////////
         
         fileIn.close();             // close file
@@ -152,7 +166,8 @@ void FCM::printHashTable () const
     string tar_or_ref = (this->getTargetOrReference() == 't' ? "target" : "reference");
     string Tar_or_Ref = (this->getTargetOrReference() == 't' ? "Target" : "Reference");
     
-    cout << " >>> Context model:\t\tBuilt from "  << tar_or_ref << '\n'
+    cout
+         << " >>> Context model:\t\tBuilt from "  << tar_or_ref << '\n'
          << " >>> Context order size:\t" << (uint16_t) this->getContextDepth() << '\n'
          << " >>> Alpha denominator:\t\t" << this->getAlphaDenom() << '\n'
          << " >>> Inverted repeat:\t\t" << (this->getInvertedRepeat() ? "Considered"
