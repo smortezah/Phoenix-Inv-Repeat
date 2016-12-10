@@ -133,6 +133,9 @@ void FCM::buildHashTable ()
 //                << probability << '\n'
 //                << sumOfEntropies << '\n'
 //                << totalNumberOfSymbols << '\n'
+                << (int) contextDepth << '\t'
+                << (float) 1/alphaDen << '\t'
+                << getInvertedRepeat() << '\t'
                 << averageEntropy << '\n'
                 ;
         //////////////////////////////////
