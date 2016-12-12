@@ -26,12 +26,10 @@ done
 for FILE in ir$ir.dat
 do
 gnuplot <<- EOF
-    set xlabel "context"
-    set ylabel "bpb"
-    set style func linespoints
-#    show style line
-    set term $PIXFORMAT
-    set output "${FILE}.$PIXFORMAT"
-    plot "${FILE}" using 3:4
+set xlabel "context"
+set ylabel "bpb"
+set term $PIXFORMAT
+set output "${FILE}.$PIXFORMAT"
+plot "${FILE}" using 3:4 with linespoints ls 7
 EOF
 done
