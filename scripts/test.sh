@@ -7,23 +7,25 @@ make
 PIXFORMAT=png
 #PIXFORMAT=svg
 
-# ir = 0
-ir=0
-alphaDen=10
-rm -f ir$ir.dat
-touch ir$ir.dat
+irName=ir
+aName=ad    # alpha name
+maxCtx=21   # real: -=1
 
-for file in ir$ir
+for ir in 0 #1
 do
-echo -e "# ir\talpha\tctx\tbpb" >> $file.dat
+    for alphaDen in 1 #10 100
+    do
+    rm -f $irName$ir$aName$alphaDen.dat
+    touch $irName$ir$aName$alphaDen.dat
+    echo -e "# ir\talpha\tctx\tbpb" >> $irName$ir$aName$alphaDen.dat
+        for((ctx=2;ctx<$maxCtx;++ctx))
+        do
+        ./phoenix -m t,$ctx,$alphaDen,$ir -t b.fa >> $irName$ir$aName$alphaDen.dat
+        done
+    done
 done
 
-for((ctx=2;ctx<21;++ctx))
-do
-./phoenix -m t,$ctx,$alphaDen,$ir -t b.fa >> ir$ir.dat
-done
-
-for FILE in ir$ir.dat
+for FILE in $irName*.dat
 do
 gnuplot <<- EOF
 set xlabel "context"
