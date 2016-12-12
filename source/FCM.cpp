@@ -134,9 +134,9 @@ void FCM::buildHashTable ()
 //                << sumOfEntropies << '\n'
 //                << totalNumberOfSymbols << '\n'
                 << "  "
-                << (int) contextDepth << '\t'
-                << (float) 1/alphaDen << '\t'
                 << getInvertedRepeat() << '\t'
+                << (float) 1/alphaDen << '\t'
+                << (int) contextDepth << '\t'
                 << averageEntropy << '\n'
                 ;
         //////////////////////////////////
