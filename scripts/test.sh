@@ -9,7 +9,7 @@ PIXFORMAT=png
 
 # ir = 0
 ir=0
-alphaDen=1
+alphaDen=10
 rm -f ir$ir.dat
 touch ir$ir.dat
 
