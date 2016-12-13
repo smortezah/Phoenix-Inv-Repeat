@@ -5,6 +5,9 @@ cd ..
 cmake ./source
 make
 
+# get XS code from Github
+GET_XS=1
+
 # list of datasets
 #datasets="c"
 datasets="b"
@@ -12,15 +15,14 @@ datasets="b"
 #datasets="c b"
 #datasets="c b a"
 
-invRepeats="0 1"        # list of inverted repeats
-alphaDens="1 10 100"    # list of alpha denominators
+invRepeats="0 1"            # list of inverted repeats
+alphaDens="1 10 100"        # list of alpha denominators
 
 # set output format
 PIXFORMAT=png
 #PIXFORMAT=svg
 
-# remove FORMAT pictures, if they exist
-rm -f $irName*.$PIXFORMAT
+rm -f $irName*.$PIXFORMAT   # remove FORMAT pictures, if they exist
 
 # set names for inverted repeat, alpha denominator, max context size
 irName=ir
