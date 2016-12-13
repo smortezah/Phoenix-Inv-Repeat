@@ -8,7 +8,7 @@ PIXFORMAT=png
 #PIXFORMAT=svg
 
 irName=ir
-aName=ad    # alpha name
+aName=ad    # alpha denominator name
 maxCtx=21   # real: -=1
 
 for dataset in b #c b a
@@ -25,23 +25,21 @@ do
             ./phoenix -m t,$ctx,$alphaDen,$ir -t $dataset.fa >> $irName$ir$aName$alphaDen$dataset.dat
             done
         done
-    done
-done
 
-for dataset in b #c b a
-do
 gnuplot <<- EOF
 set xlabel "context"
 set ylabel "bpb"
 set key right bottom
 set term $PIXFORMAT
-set output "ir0$dataset.$PIXFORMAT"
-plot "ir0ad1$dataset.dat" using 3:4  with linespoints ls 6 title "ir=0, alpha=1/1,     $dataset", \
-     "ir0ad10$dataset.dat" using 3:4 with linespoints ls 7 title "ir=0, alpha=1/10,   $dataset", \
-     "ir0ad100$dataset.dat" using 3:4 with linespoints ls 8 title "ir=0, alpha=1/100, $dataset"
-set output "ir1$dataset.$PIXFORMAT"
-plot "ir1ad1$dataset.dat" using 3:4  with linespoints ls 6 title "ir=1, alpha=1/1,     $dataset", \
-     "ir1ad10$dataset.dat" using 3:4 with linespoints ls 7 title "ir=1, alpha=1/10,   $dataset", \
-     "ir1ad100$dataset.dat" using 3:4 with linespoints ls 8 title "ir=1, alpha=1/100, $dataset"
+set output "ir$ir$dataset.$PIXFORMAT"
+plot "$irName$ir${aName}1${dataset}.dat" using 3:4  with linespoints ls 6 title "ir=$ir, alpha=1/1,     $dataset", \
+     "$irName$ir${aName}10${dataset}.dat" using 3:4 with linespoints ls 7 title "ir=$ir, alpha=1/10,   $dataset", \
+     "$irName$ir${aName}100${dataset}.dat" using 3:4 with linespoints ls 8 title "ir=$ir, alpha=1/100, $dataset"
 EOF
+
+    done
 done
+
+rm -r dat
+mkdir -p dat
+mv $irName*.dat dat

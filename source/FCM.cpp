@@ -120,7 +120,7 @@ void FCM::buildHashTable ()
     
             lineIter = 0;           // iterator for non-first lines of file becomes 0
         } while ( getline(fileIn, datasetLine) );   // read file line by line
-    
+        
         //////////////////////////////////
         totalNumberOfSymbols -= contextDepth;   // first line includes contextDepth of "AA..."
         
