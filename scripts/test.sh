@@ -12,6 +12,12 @@ datasets="b"
 #datasets="c b"
 #datasets="c b a"
 
+# list of inverted repeats
+invRepeats="0 1"
+
+# list of inverted repeats
+alphaDens="1 10 100"
+
 # set output format
 PIXFORMAT=png
 #PIXFORMAT=svg
@@ -26,9 +32,9 @@ maxCtx=21   # real: -=1
 
 for dataset in $datasets
 do
-    for ir in 0 1
+    for ir in $invRepeats
     do
-        for alphaDen in 1 10 100
+        for alphaDen in $alphaDens
         do
 #        rm -f $irName$ir$aName$alphaDen$dataset.dat
         touch $irName$ir-$aName$alphaDen-$dataset.dat
