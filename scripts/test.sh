@@ -24,7 +24,7 @@ fi
 # generate dataset using XS
 if [[ $GEN_DATASET == 1 ]]; then
 cd ./XS
-./XS -v -t 1 -i n=MySeq -ls 70 -n 10 -qt=1 -eh -eo -es -qc 33,36,39:43 DATASET
+./XS -v -t 1 -i n=MySeq -ls 70 -n 10 -f 0.24,0.21,0.21,0.24,0.08 -eh -eo -es DATASET
 mv DATASET ..
 cd ..
 fi
