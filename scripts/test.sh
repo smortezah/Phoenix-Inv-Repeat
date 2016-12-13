@@ -12,11 +12,8 @@ datasets="b"
 #datasets="c b"
 #datasets="c b a"
 
-# list of inverted repeats
-invRepeats="0 1"
-
-# list of inverted repeats
-alphaDens="1 10 100"
+invRepeats="0 1"        # list of inverted repeats
+alphaDens="1 10 100"    # list of alpha denominators
 
 # set output format
 PIXFORMAT=png
