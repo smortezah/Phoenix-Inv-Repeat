@@ -7,7 +7,7 @@ make
 
 GET_XS=0        # to get XS code from Github
 INSTALL_XS=0    # to install XS code from Github
-GEN_DATASET=1   # generate dataset
+GEN_DATASET=0   # generate dataset
 
 # get XS code from Github
 if [[ $GET_XS == 1 ]]; then
