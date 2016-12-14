@@ -123,11 +123,8 @@ set term $PIXFORMAT                 # set terminal for output picture format
 set output "$irName$ir.$PIXFORMAT"  # set output name
 
 #plot for [i=5:13] 'immigration.dat' using 1:(column(i)/Sum[i]) title columnhea
-plot for [i=0:1] using i:minBpbArr[i] title columnhea
-
-## find min bpb for each dataset
-#stats "$irName$ir-$aName$alphaDens-$dataset.dat" using 4 name "bpb" nooutput
-#plot $mut $bpb_min
+#plot for [i=0:1] '-' using i:minBpbArr[i] title columnhea
+plot for [i=0:1] '-' using i:i
 
 ## plot 3 figures at once, for constant "ir", but different "alpha"s and "context"s
 #plot "$irName$ir-${aName}1-$dataset.dat" using 3:4  with linespoints ls 6 title "ir=$ir, alpha=1/1,     $dataset", \
