@@ -9,6 +9,8 @@ GET_XS=0        # to get XS code from Github
 INSTALL_XS=0    # to install XS code from Github
 GEN_DATASET=0   # generate dataset
 
+numDataset=1    # number of generated datasets
+
 # get XS code from Github
 if [[ $GET_XS == 1 ]]; then
 git clone https://github.com/pratas/XS.git
@@ -34,7 +36,7 @@ cd ./XS
 #cd ..
 
 # dataset names: tooRep=too repetitve,  midRep=mid repetitve,   nonRep=non repetitve
-for((i=0; i!=2; ++i))
+for((i=0; i!=$numDataset; ++i))
 do
 ./XS -t 1 -i n=MySeq -ls 100 -n 100 -rn 50 -rr -rm 0.0$i -eh -eo -es tooRep$i.fa       # the most repetitive
 done
@@ -64,9 +66,9 @@ irName=ir
 aName=ad
 maxCtx=21   # real: -=1
 
-for datasetNum in {0..1}
+for mut in {0..0}
 do
-    for dataset in "tooRep${datasetNum}"
+    for dataset in "tooRep${mut}"
     do
         for ir in $invRepeats
         do
@@ -74,7 +76,7 @@ do
             do
     #        rm -f $irName$ir$aName$alphaDen$dataset.dat
             touch $irName$ir-$aName$alphaDen-$dataset.dat
-            echo -e "# mut\tir\talpha\tctx\tbpb" >> $irName$ir-$aName$alphaDen-$dataset.dat
+            echo -e "# ir\talpha\tctx\tbpb" >> $irName$ir-$aName$alphaDen-$dataset.dat
 
                 # execute the code with different parameters
                 for((ctx=2; ctx<$maxCtx; ++ctx))
@@ -89,7 +91,7 @@ do
 #set ylabel "bpb"
 #set key right top       # legend position
 #set term $PIXFORMAT     # set terminal for output picture format
-#set output "$irName$ir$dataset.$PIXFORMAT"       # set output name
+#set output "$irName$ir-$dataset.$PIXFORMAT"       # set output name
 #
 ## plot 3 figures at once, for constant "ir", but different "alpha"s and "context"s
 #plot "$irName$ir-${aName}1-$dataset.dat" using 3:4  with linespoints ls 6 title "ir=$ir, alpha=1/1,     $dataset", \

@@ -36,10 +36,6 @@ void FCM::buildHashTable ()
 
     ifstream fileIn(fileName, ios::in);             // open file located in fileName
     
-    //////////////////////////////////
-    uint8_t mutationIndex = 0;    // for printing .dat file
-    //////////////////////////////////
-    
     if (Functions::isFileCorrect(fileName))         // file opened correctly
     {
         string initContext(contextDepth, 'A');      // initial context = "AA..."
@@ -138,14 +134,11 @@ void FCM::buildHashTable ()
 //                << sumOfEntropies << '\n'
 //                << totalNumberOfSymbols << '\n'
                 << "  "
-                << (int) mutationIndex << '\t'
                 << getInvertedRepeat() << '\t'
                 << (float) 1/alphaDen << '\t'
                 << (int) contextDepth << '\t'
                 << averageEntropy << '\n'
                 ;
-        
-        ++mutationIndex;    // for printing .dat file
         //////////////////////////////////
         
         fileIn.close();             // close file
