@@ -8,9 +8,9 @@ make
 INSTALL_XS=0    # to install "XS" from Github
 GEN_DATASET=0   # generate dataset using "XS"
 INSTALL_goose=0 # to install "goose" from Github
-RUN=0           # run the program
+RUN=1           # run the program
 
-numDatasets=50    # number of generated datasets
+numDatasets=2    # number of generated datasets
 
 # install "XS" from Github
 if [[ $INSTALL_XS == 1 ]]; then
@@ -103,7 +103,7 @@ do
     done
 done
 
-for mut in {1..50}
+for mut in `seq -s' ' 1 $numDatasets`
 do
     for dataset in "$nonRep$mut"
     do
