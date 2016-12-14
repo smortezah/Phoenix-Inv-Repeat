@@ -45,18 +45,21 @@ fi
     fi
 
 #XS/XS -v -ls 100 -n 100 -s 0 SAMPLE.fq
-XS/XS -ls 100 -n 100 -rn 1000 -rr -eh -eo -es SAMPLE0       # the most repetitive
+XS/XS -ls 100 -n 100 -rn 0 -f 0.20,0.20,0.20,0.20,0.20 -eh -eo -es SAMPLEX  # the least repetitive
 
 # MUTATE ======================================================================
 #goose/src/goose-fastq2fasta < SAMPLE.fq > SAMPLE.fa
 #goose/src/goose-fasta2seq   < SAMPLE.fa > SAMPLE
 #goose/src/goose-seq2fasta -n "Substitution0" < SAMPLE > SAMPLE0.fa
-#cat SAMPLE0.fa > DB.mfa;
-for((x=1 ; x<2 ; ++x));
+
+echo ">X" > HEADER;
+cat HEADER SAMPLEX > SAMPLE0;
+for((x=1 ; x<3 ; ++x));
   do
   MRATE=`echo "scale=3;$x/100" | bc -l`;
   echo "Substitutions rate: $MRATE";
-  goose/src/goose-mutatedna -s $x -mr $MRATE " " < SAMPLE0 > SAMPLE$x;
+  goose/src/goose-mutatefasta -s $x -a5 -mr $MRATE " " < SAMPLE0 > SAMPLEY$x;
+  cat SAMPLEY$x | grep -v ">" > SAMPLE$x
 #  goose/src/goose-seq2fasta -n "Substitution$x" < SAMPLE$x > SAMPLE$x.fa
 #  cat SAMPLE$x.fa >> DB.mfa;
   done
