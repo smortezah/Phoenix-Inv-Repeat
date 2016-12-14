@@ -10,7 +10,7 @@ GEN_DATASET=0   # generate dataset using "XS"
 INSTALL_goose=0 # to install "goose" from Github
 RUN=1           # run the program
 
-numDatasets=2    # number of generated datasets
+numDatasets=3   # number of generated datasets
 
 # install "XS" from Github
 if [[ $INSTALL_XS == 1 ]]; then
@@ -45,7 +45,7 @@ if [[ $GEN_DATASET == 1 ]]; then
     fi  # end of installing "goose"
 
 # generate the original sequence ("nonRep0")
-XS/XS -ls 100 -n 100 -rn 0 -f 0.20,0.20,0.20,0.20,0.20 -eh -eo -es nonRep0  # non-repetitive
+XS/XS -ls 100 -n 100000 -rn 0 -f 0.20,0.20,0.20,0.20,0.20 -eh -eo -es nonRep0  # non-repetitive
 
 # add ">X" as the header of the sequence (build "nonRepX")
 echo ">X" > HEADER;
@@ -155,6 +155,7 @@ done
 gnuplot <<- EOF
 set xlabel "% mutation"
 set ylabel "bpb"
+set xtics 1
 set key right top                   # legend position
 set term $PIXFORMAT                 # set terminal for output picture format
 set output "$irName$ir.$PIXFORMAT"  # set output name
