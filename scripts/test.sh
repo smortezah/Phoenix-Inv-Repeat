@@ -5,27 +5,23 @@ cd ..
 cmake source
 make
 
-GET_XS=0        # to get XS code from Github
-INSTALL_XS=0    # to install XS from Github
-GEN_DATASET=0   # generate dataset using XS
-INSTALL_goose=0 # to install goose from Github
+INSTALL_XS=1    # to install "XS" from Github
+GEN_DATASET=1   # generate dataset using "XS"
+INSTALL_goose=1 # to install "goose" from Github
 
 numDataset=1    # number of generated datasets
 
-# get XS code from Github
-if [[ $GET_XS == 1 ]]; then
-git clone https://github.com/pratas/XS.git
-fi
-
-# install XS code from Github
+# install "XS" from Github
 if [[ $INSTALL_XS == 1 ]]; then
+rm -fr XS
+git clone https://github.com/pratas/XS.git
 cd XS
 make
 cd ..
 fi
 
-# generate dataset using XS and save in "dataset" directory
-#if [[ $GEN_DATASET == 1 ]]; then
+# generate dataset using "XS" and save in "dataset" directory
+if [[ $GEN_DATASET == 1 ]]; then
 
 #./XS -v -t 1 -i n=MySeq -ls 70 -n 10000 -rn 1000 -rr -eh -eo -es a.fa       # the most repetitive
 #./XS -v -t 1 -i n=MySeq -ls 70 -n 10000 -rn 50 -rr -eh -eo -es b.fa         # in the middle
@@ -35,25 +31,20 @@ fi
 #mv c.fa ..
 #cd ..
 
-    if [[ $INSTALL_XS == 1 ]]; then
-    rm -fr goose-* goose/ SAMPLE* DB-mfa;
-    # GET GOOSE FRAMEWORK =========================================================
+# install "goose" from Github
+    if [[ $INSTALL_goose == 1 ]]; then
+    rm -fr goose-* goose/ SAMPLE*
     git clone https://github.com/pratas/goose.git
     cd goose/src
     make
     cd ../../
     fi
 
-#XS/XS -v -ls 100 -n 100 -s 0 SAMPLE.fq
-XS/XS -ls 100 -n 100 -rn 0 -f 0.20,0.20,0.20,0.20,0.20 -eh -eo -es SAMPLEX  # the least repetitive
-
-# MUTATE ======================================================================
-#goose/src/goose-fastq2fasta < SAMPLE.fq > SAMPLE.fa
-#goose/src/goose-fasta2seq   < SAMPLE.fa > SAMPLE
-#goose/src/goose-seq2fasta -n "Substitution0" < SAMPLE > SAMPLE0.fa
+# generate the sequence
+XS/XS -ls 100 -n 100 -rn 0 -f 0.20,0.20,0.20,0.20,0.20 -eh -eo -es nonRepX  # non-repetitive
 
 echo ">X" > HEADER;
-cat HEADER SAMPLEX > SAMPLE0;
+cat HEADER nonRepX > nonRep0;
 for((x=1 ; x<3 ; ++x));
   do
   MRATE=`echo "scale=3;$x/100" | bc -l`;
@@ -75,7 +66,7 @@ for((x=1 ; x<3 ; ++x));
 #rm -rf datasets
 #mkdir -p datasets
 #mv ./XS/tooRep*.fa datasets
-#fi
+fi
 
 
 ## list of datasets
