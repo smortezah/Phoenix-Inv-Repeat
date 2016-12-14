@@ -5,9 +5,9 @@ cd ..
 cmake source
 make
 
-INSTALL_XS=1    # to install "XS" from Github
+INSTALL_XS=0    # to install "XS" from Github
 GEN_DATASET=1   # generate dataset using "XS"
-INSTALL_goose=1 # to install "goose" from Github
+INSTALL_goose=0 # to install "goose" from Github
 
 numDataset=1    # number of generated datasets
 
@@ -41,19 +41,21 @@ if [[ $GEN_DATASET == 1 ]]; then
     fi
 
 # generate the sequence
-XS/XS -ls 100 -n 100 -rn 0 -f 0.20,0.20,0.20,0.20,0.20 -eh -eo -es nonRepX  # non-repetitive
-
+XS/XS -ls 100 -n 100 -rn 0 -f 0.20,0.20,0.20,0.20,0.20 -eh -eo -es nonRep0  # non-repetitive
+# add ">X" as the header of the sequence
 echo ">X" > HEADER;
-cat HEADER nonRepX > nonRep0;
-for((x=1 ; x<3 ; ++x));
-  do
-  MRATE=`echo "scale=3;$x/100" | bc -l`;
-  echo "Substitutions rate: $MRATE";
-  goose/src/goose-mutatefasta -s $x -a5 -mr $MRATE " " < SAMPLE0 > SAMPLEY$x;
-  cat SAMPLEY$x | grep -v ">" > SAMPLE$x
-#  goose/src/goose-seq2fasta -n "Substitution$x" < SAMPLE$x > SAMPLE$x.fa
-#  cat SAMPLE$x.fa >> DB.mfa;
-  done
+cat HEADER nonRep0 > nonRepX;
+rm -f HEADER
+
+for((x=1 ; x<2 ; ++x));
+do
+MRATE=`echo "scale=3;$x/100" | bc -l`;
+echo "Substitutions rate: $MRATE";
+goose/src/goose-mutatefasta -s $x -a5 -mr $MRATE " " < nonRepX > nonRepTemp$x;
+cat nonRepTemp$x | grep -v ">" > nonRep$x
+done
+
+rm -f nonRepX nonRepTemp*
 
 
 #
@@ -62,10 +64,10 @@ for((x=1 ; x<3 ; ++x));
 #do
 #./XS -t 1 -i n=MySeq -ls 100 -n 100000 -rn 50000 -rr -rm 0.0$i -eh -eo -es tooRep$i.fa       # the most repetitive
 #done
-#cd ..
-#rm -rf datasets
-#mkdir -p datasets
-#mv ./XS/tooRep*.fa datasets
+
+rm -rf datasets
+mkdir -p datasets
+mv ./nonRep* datasets
 fi
 
 
