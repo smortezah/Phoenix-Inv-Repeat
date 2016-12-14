@@ -83,9 +83,8 @@ do
                 do
                 ./phoenix -m t,$ctx,$alphaDen,$ir -t ./datasets/$dataset.fa >> $irName$ir-$aName$alphaDen-$dataset.dat
                 done
-                # find min bpb for each dataset
-                myarr=$(awk 'NR==1 || $4 < min {min = $4}; END {print min}' $irName$ir-$aName$alphaDen-$dataset.dat)
-                echo ${myarr[0]}
+                # save min bpb for each dataset
+                minBpb[$mut]=$(awk 'NR==1 || $4 < min {min = $4}; END {print min}' $irName$ir-$aName$alphaDen-$dataset.dat)
             done
 
 ## show output in a figure, using gnuplot
@@ -111,6 +110,8 @@ do
         done
     done
 done
+
+echo ${minBpb[0]}
 
 #rm -rf dat              # remove "dat" folder, if it exists
 #mkdir -p dat            # make "dat" folder
