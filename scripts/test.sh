@@ -9,7 +9,7 @@ GET_XS=0        # to get XS code from Github
 INSTALL_XS=0    # to install XS code from Github
 GEN_DATASET=1   # generate dataset
 
-numDataset=50    # number of generated datasets
+numDataset=1    # number of generated datasets
 
 # get XS code from Github
 if [[ $GET_XS == 1 ]]; then
@@ -27,6 +27,7 @@ fi
 if [[ $GEN_DATASET == 1 ]]; then
 cd ./XS
 
+
 #./XS -v -t 1 -i n=MySeq -ls 70 -n 10000 -rn 1000 -rr -eh -eo -es a.fa       # the most repetitive
 #./XS -v -t 1 -i n=MySeq -ls 70 -n 10000 -rn 50 -rr -eh -eo -es b.fa         # in the middle
 #./XS -v -t 1 -i n=MySeq -ls 70 -n 10000 -rn 0 -eh -eo -es c.fa              # the least repetitive
@@ -35,15 +36,39 @@ cd ./XS
 #mv c.fa ..
 #cd ..
 
-# dataset names: tooRep=too repetitve,  midRep=mid repetitve,   nonRep=non repetitve
-for((i=0; i!=$numDataset; ++i))
-do
-./XS -t 1 -i n=MySeq -ls 100 -n 100000 -rn 50000 -rr -rm 0.0$i -eh -eo -es tooRep$i.fa       # the most repetitive
-done
+
+
+#./XS -v -ls 100 -n 100 -rn 50 -rr -s 0 SAMPLE.fq
+./XS -ls 100 -n 100 -rn 1000 -rr -eh -eo -es SAMPLE       # the most repetitive
+
+
+# MUTATE ======================================================================
 cd ..
-rm -rf datasets
-mkdir -p datasets
-mv ./XS/tooRep*.fa datasets
+#./goose/src/fastq2fasta < SAMPLE.fq > SAMPLE.fa
+#./goose/src/fasta2seq   < SAMPLE.fa > SAMPLE
+#./goose/src/seq2fasta -n "Substitution0" < SAMPLE > SAMPLE0.fa
+#cat SAMPLE0.fa > DB.mfa;
+
+# TODO x=50
+for((x=1 ; x<1 ; ++x));
+  do
+  MRATE=`echo "scale=3;$x/100" | bc -l`;
+  echo "Substitutions rate: $MRATE";
+  ./goose/src/mutatedna -s $x -mr $MRATE " " < SAMPLE > SAMPLE$x;
+#  ./goose/src/seq2fasta -n "Substitution$x" < SAMPLE$x > SAMPLE$x.fa
+#  cat SAMPLE$x.fa >> DB.mfa;
+  done
+
+
+## dataset names: tooRep=too repetitve,  midRep=mid repetitve,   nonRep=non repetitve
+#for((i=0; i!=$numDataset; ++i))
+#do
+#./XS -t 1 -i n=MySeq -ls 100 -n 100000 -rn 50000 -rr -rm 0.0$i -eh -eo -es tooRep$i.fa       # the most repetitive
+#done
+#cd ..
+#rm -rf datasets
+#mkdir -p datasets
+#mv ./XS/tooRep*.fa datasets
 fi
 
 ## list of datasets
