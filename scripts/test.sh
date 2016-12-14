@@ -61,11 +61,6 @@ for((x=1 ; x<2 ; ++x));
 #  cat SAMPLE$x.fa >> DB.mfa;
   done
 
-#
-##./XS -v -ls 100 -n 100 -rn 50 -rr -s 0 SAMPLE.fq
-#./XS -ls 100 -n 100 -rn 1000 -rr -eh -eo -es SAMPLE       # the most repetitive
-
-
 
 #
 ## dataset names: tooRep=too repetitve,  midRep=mid repetitve,   nonRep=non repetitve
