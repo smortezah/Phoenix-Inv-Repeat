@@ -9,7 +9,7 @@ INSTALL_XS=0    # to install "XS" from Github
 GEN_DATASET=1   # generate dataset using "XS"
 INSTALL_goose=0 # to install "goose" from Github
 
-numDataset=1    # number of generated datasets
+numDatasets=50    # number of generated datasets
 
 # install "XS" from Github
 if [[ $INSTALL_XS == 1 ]]; then
@@ -40,25 +40,26 @@ if [[ $GEN_DATASET == 1 ]]; then
     cd ../../
     fi
 
-# generate the sequence
+# generate the sequence ("nonRep0")
 XS/XS -ls 100 -n 100 -rn 0 -f 0.20,0.20,0.20,0.20,0.20 -eh -eo -es nonRep0  # non-repetitive
-# add ">X" as the header of the sequence
+
+# add ">X" as the header of the sequence (build "nonRepX")
 echo ">X" > HEADER;
 cat HEADER nonRep0 > nonRepX;
 rm -f HEADER
 
-for((x=1 ; x<2 ; ++x));
+# generate the mutated sequences
+for((x=1 ; x<$numDatasets ; ++x));
 do
 MRATE=`echo "scale=3;$x/100" | bc -l`;
 echo "Substitutions rate: $MRATE";
 goose/src/goose-mutatefasta -s $x -a5 -mr $MRATE " " < nonRepX > nonRepTemp$x;
-cat nonRepTemp$x | grep -v ">" > nonRep$x
+cat nonRepTemp$x | grep -v ">" > nonRep$x   # remove the header line
 done
-
+# remove temporary files
 rm -f nonRepX nonRepTemp*
 
 
-#
 ## dataset names: tooRep=too repetitve,  midRep=mid repetitve,   nonRep=non repetitve
 #for((i=0; i!=$numDataset; ++i))
 #do
