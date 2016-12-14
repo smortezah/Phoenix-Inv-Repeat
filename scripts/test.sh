@@ -74,7 +74,7 @@ if [[ $RUN == 1 ]]; then
 tooRep="tooRep"
 midRep="midRep"
 nonRep="nonRep"
-datasets="tooRep midRep nonRep"
+datasets="nonRep midRep tooRep"
 
 #invRepeats="0 1"            # list of inverted repeats
 #alphaDens="1 10 100"        # list of alpha denominators
