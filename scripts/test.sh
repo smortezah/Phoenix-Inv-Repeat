@@ -11,7 +11,7 @@ make
 #***********************************************************
 #   parameters to install and run needed programs
 #***********************************************************
-GEN_DATASET=0   # generate dataset using "XS"
+GEN_DATASET=1   # generate dataset using "XS"
 INSTALL_XS=0    # to install "XS" from Github
 INSTALL_goose=0 # to install "goose" from Github
 RUN=1           # run the program
@@ -22,7 +22,7 @@ RUN=1           # run the program
 #***********************************************************
 if [[ $GEN_DATASET == 1 ]]; then
 
-numDatasets=3   # number of datasets to be generated
+numDatasets=50   # number of datasets to be generated
 
 # dataset names: nonRep=non repetitve,  midRep=mid repetitve,   tooRep=too repetitve
 
@@ -121,7 +121,7 @@ aName=ad
 #-----------------------------------
 #invRepeats="0 1"            # list of inverted repeats
 #alphaDens="1 10 100"        # list of alpha denominators
-invRepeats="0"
+invRepeats="0 1"
 alphaDens="20"
 
 #-----------------------------------
@@ -195,6 +195,8 @@ done
 #-----------------------------------
 #   plot output using "gnuplot"
 #-----------------------------------
+for ir in $invRepeats
+do
 gnuplot <<- EOF
 set xlabel "% mutation"                 # set label of x axis
 set ylabel "bpb"                        # set label of y axis
@@ -207,6 +209,7 @@ plot "$irName$ir-${aName}20-$nonRep.dat" using 1:2  with linespoints ls 7 title 
 
 # the following line (EOF) MUST be left as it is; i.e. no space, etc
 EOF
+done
 
 #-----------------------------------
 #   create "dat" folder to save the results of running
