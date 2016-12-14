@@ -2,12 +2,13 @@
 
 # change directory to "source" and make the project
 cd ..
-cmake ./source
+cmake source
 make
 
 GET_XS=0        # to get XS code from Github
-INSTALL_XS=0    # to install XS code from Github
-GEN_DATASET=1   # generate dataset
+INSTALL_XS=0    # to install XS from Github
+GEN_DATASET=0   # generate dataset using XS
+INSTALL_goose=0 # to install goose from Github
 
 numDataset=1    # number of generated datasets
 
@@ -18,14 +19,13 @@ fi
 
 # install XS code from Github
 if [[ $INSTALL_XS == 1 ]]; then
-cd ./XS
+cd XS
 make
 cd ..
 fi
 
 # generate dataset using XS and save in "dataset" directory
-if [[ $GEN_DATASET == 1 ]]; then
-cd ./XS
+#if [[ $GEN_DATASET == 1 ]]; then
 
 #./XS -v -t 1 -i n=MySeq -ls 70 -n 10000 -rn 1000 -rr -eh -eo -es a.fa       # the most repetitive
 #./XS -v -t 1 -i n=MySeq -ls 70 -n 10000 -rn 50 -rr -eh -eo -es b.fa         # in the middle
@@ -35,49 +35,39 @@ cd ./XS
 #mv c.fa ..
 #cd ..
 
+    if [[ $INSTALL_XS == 1 ]]; then
+    rm -fr goose-* goose/ SAMPLE* DB-mfa;
+    # GET GOOSE FRAMEWORK =========================================================
+    git clone https://github.com/pratas/goose.git
+    cd goose/src
+    make
+    cd ../../
+    fi
 
-./XS -v -ls 100 -n 100 -s 0 SAMPLE.fq
+#XS/XS -v -ls 100 -n 100 -s 0 SAMPLE.fq
+#./XS -ls 100 -n 100 -rn 1000 -rr -eh -eo -es SAMPLE       # the most repetitive
+
 # MUTATE ======================================================================
-./goose-fastq2fasta < SAMPLE.fq > SAMPLE.fa
-./goose-fasta2seq   < SAMPLE.fa > SAMPLE
-./goose-seq2fasta -n "Substitution0" < SAMPLE > SAMPLE0.fa
+goose/src/goose-fastq2fasta < SAMPLE.fq > SAMPLE.fa
+goose/src/goose-fasta2seq   < SAMPLE.fa > SAMPLE
+goose/src/goose-seq2fasta -n "Substitution0" < SAMPLE > SAMPLE0.fa
 cat SAMPLE0.fa > DB.mfa;
-for((x=1 ; x<$MLIMIT ; ++x));
+for((x=1 ; x<2 ; ++x));
   do
   MRATE=`echo "scale=3;$x/100" | bc -l`;
   echo "Substitutions rate: $MRATE";
-  ./goose-mutatedna -s $x -mr $MRATE $EXTRAMUT < SAMPLE > SAMPLE$x;
-  ./goose-seq2fasta -n "Substitution$x" < SAMPLE$x > SAMPLE$x.fa
+  goose/src/goose-mutatedna -s $x -mr $MRATE $EXTRAMUT < SAMPLE > SAMPLE$x;
+  goose/src/goose-seq2fasta -n "Substitution$x" < SAMPLE$x > SAMPLE$x.fa
   cat SAMPLE$x.fa >> DB.mfa;
   done
-
-
+#
+#
 ##./XS -v -ls 100 -n 100 -rn 50 -rr -s 0 SAMPLE.fq
 #./XS -ls 100 -n 100 -rn 1000 -rr -eh -eo -es SAMPLE       # the most repetitive
+
+
+
 #
-#
-## MUTATE ======================================================================
-#cd ..
-##./goose/src/fastq2fasta < SAMPLE.fq > SAMPLE.fa
-##./goose/src/fasta2seq   < SAMPLE.fa > SAMPLE
-##./goose/src/seq2fasta -n "Substitution0" < SAMPLE > SAMPLE0.fa
-##cat SAMPLE0.fa > DB.mfa;
-#
-## TODO x=50
-#for((x=1 ; x<2 ; ++x));
-#  do
-#  MRATE=`echo "scale=3;$x/100" | bc -l`;
-#  echo "Substitutions rate: $MRATE";
-#  ./goose/src/mutatedna -s $x -mr $MRATE " " < ./XS/SAMPLE > SAMPLE$x;
-##  ./goose/src/seq2fasta -n "Substitution$x" < SAMPLE$x > SAMPLE$x.fa
-##  cat SAMPLE$x.fa >> DB.mfa;
-#  done
-
-
-
-
-
-
 ## dataset names: tooRep=too repetitve,  midRep=mid repetitve,   nonRep=non repetitve
 #for((i=0; i!=$numDataset; ++i))
 #do
@@ -87,7 +77,8 @@ for((x=1 ; x<$MLIMIT ; ++x));
 #rm -rf datasets
 #mkdir -p datasets
 #mv ./XS/tooRep*.fa datasets
-fi
+#fi
+
 
 ## list of datasets
 #tooRep="tooRep"
