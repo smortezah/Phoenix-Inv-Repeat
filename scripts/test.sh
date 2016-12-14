@@ -66,7 +66,7 @@ irName=ir
 aName=ad
 maxCtx=21   # real: -=1
 
-for mut in {0..0}
+for mut in {0..1}
 do
     for dataset in "tooRep${mut}"
     do
@@ -83,6 +83,9 @@ do
                 do
                 ./phoenix -m t,$ctx,$alphaDen,$ir -t ./datasets/$dataset.fa >> $irName$ir-$aName$alphaDen-$dataset.dat
                 done
+                # find min bpb for each dataset
+                myarr=$(awk 'NR==1 || $4 < min {min = $4}; END {print min}' $irName$ir-$aName$alphaDen-$dataset.dat)
+                echo ${myarr[0]}
             done
 
 ## show output in a figure, using gnuplot
