@@ -200,7 +200,7 @@ do
 gnuplot <<- EOF
 set xlabel "% mutation"                 # set label of x axis
 set ylabel "bpb"                        # set label of y axis
-set xtics (1,5,10,50)                            # set steps for x axis
+set xtics 0,5,50                            # set steps for x axis
 set key right                           # legend position
 set term $PIX_FORMAT                    # set terminal for output picture format
 set output "$irName$ir.$PIX_FORMAT"     # set output name
