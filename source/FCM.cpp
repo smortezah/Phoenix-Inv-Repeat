@@ -83,20 +83,32 @@ void FCM::buildHashTable ()
             // fill hash table by number of occurrences of symbols A, C, N, G, T
             for (; lineIter != dataSetLineSize; ++lineIter)
             {
-//
-//                //////////////////////////////////
-//                // htable includes an array of uint16_t numbers
-//                nSym = hTable[ context ][ vecDatasetLineInt[ lineIter ]];
-//
-//                // sum(n_a)
-//                sumNSyms = 0;
+
+                //////////////////////////////////
+                // htable includes an array of uint16_t numbers
+                nSym = hTable[ context ][ vecDatasetLineInt[ lineIter ]];
+
+                // sum(n_a)
+                sumNSyms = 0;
+    
+                for(
+                        unordered_map::iterator it = unordered_map::begin(); it!=unordered_map::end();++it
+//                        std::vector<int>::iterator it = vector.begin(); it != vector.end(); ++it
+                )
+//                    sumNSyms += *it;
+                
+                    
+                    
+//                sumNSyms = hTable[ context ][ 0 ] + hTable[ context ][ 1 ] + hTable[ context ][ 2 ]
+//                           + hTable[ context ][ 3 ] + hTable[ context ][ 4 ];
+
 //                for (uint8_t i = 0; i < ALPHABET_SIZE; ++i)     sumNSyms += hTable[ context ][ i ];
 //
-//                // P(s|c^t)
-//                probability = (nSym + (double) 1/alphaDen) / (sumNSyms + (double) ALPHABET_SIZE/alphaDen);
-//
-//                // sum( log_2 P(s|c^t) )
-//                sumOfEntropies += log2(probability);
+                // P(s|c^t)
+                probability = (nSym + (double) 1/alphaDen) / (sumNSyms + (double) ALPHABET_SIZE/alphaDen);
+
+                // sum( log_2 P(s|c^t) )
+                sumOfEntropies += log2(probability);
 //                //////////////////////////////////
 
                 // update hash table
