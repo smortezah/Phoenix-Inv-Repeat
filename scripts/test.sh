@@ -11,7 +11,7 @@ make
 #***********************************************************
 #   parameters to install and run needed programs
 #***********************************************************
-GEN_DATASET=1   # generate dataset using "XS"
+GEN_DATASET=0   # generate dataset using "XS"
 INSTALL_XS=0    # to install "XS" from Github
 INSTALL_goose=0 # to install "goose" from Github
 RUN=1           # run the program
@@ -127,7 +127,9 @@ alphaDens="20"
 #-----------------------------------
 #   max context size
 #-----------------------------------
-maxCtx=21   # real: -=1
+#maxCtx=21   # real: -=1
+maxCtx=3   # real: -=1
+
 
 #-----------------------------------
 #   create a couple of files to save per mutation results
@@ -215,11 +217,11 @@ plot "$irName$ir-${aName}20-$nonRep.dat" using 1:2  with linespoints ls 7 title 
 EOF
 done
 
-#-----------------------------------
-#   create "dat" folder to save the results of running
-#-----------------------------------
-rm -rf dat              # remove "dat" folder, if it already exists
-mkdir -p dat            # make "dat" folder
-mv $irName*.dat dat     # move all created dat files to the "dat" folder
+##-----------------------------------
+##   create "dat" folder to save the results of running
+##-----------------------------------
+#rm -rf dat              # remove "dat" folder, if it already exists
+#mkdir -p dat            # make "dat" folder
+#mv $irName*.dat dat     # move all created dat files to the "dat" folder
 
 fi  # end of running the program
