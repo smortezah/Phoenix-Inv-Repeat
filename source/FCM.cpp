@@ -137,7 +137,8 @@ void FCM::buildHashTable ()
                 << getInvertedRepeat() << '\t'
                 << (float) 1/alphaDen << '\t'
                 << (int) contextDepth << '\t'
-                << averageEntropy << '\n'
+                << averageEntropy
+//                << '\n'
                 ;
         //////////////////////////////////
         
