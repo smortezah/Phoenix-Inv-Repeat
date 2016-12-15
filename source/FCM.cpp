@@ -16,6 +16,8 @@ using std::ios;
 using std::fixed;
 using std::setprecision;
 
+//TODO TEST
+using std::chrono::high_resolution_clock;
 
 /***********************************************************
     constructor
@@ -61,6 +63,10 @@ void FCM::buildHashTable ()
         uint64_t totalNumberOfSymbols = 0;  // number of all symbols in the sequence
         double   averageEntropy = 0;        // average entropy (H)
         //////////////////////////////////
+    
+        //TODO TEST
+        high_resolution_clock::time_point exeStartTime = high_resolution_clock::now();
+    
         
         do
         {
@@ -77,25 +83,25 @@ void FCM::buildHashTable ()
             // fill hash table by number of occurrences of symbols A, C, N, G, T
             for (; lineIter != dataSetLineSize; ++lineIter)
             {
-                
-                //////////////////////////////////
-                // htable includes an array of uint16_t numbers
-                nSym = hTable[ context ][ vecDatasetLineInt[ lineIter ]];
-                
-                // sum(n_a)
-                sumNSyms = 0;
-                for (uint8_t i = 0; i < ALPHABET_SIZE; ++i)     sumNSyms += hTable[ context ][ i ];
-                
-                // P(s|c^t)
-                probability = (nSym + (double) 1/alphaDen) / (sumNSyms + (double) ALPHABET_SIZE/alphaDen);
-                
-                // sum( log_2 P(s|c^t) )
-                sumOfEntropies += log2(probability);
-                //////////////////////////////////
-                
+//
+//                //////////////////////////////////
+//                // htable includes an array of uint16_t numbers
+//                nSym = hTable[ context ][ vecDatasetLineInt[ lineIter ]];
+//
+//                // sum(n_a)
+//                sumNSyms = 0;
+//                for (uint8_t i = 0; i < ALPHABET_SIZE; ++i)     sumNSyms += hTable[ context ][ i ];
+//
+//                // P(s|c^t)
+//                probability = (nSym + (double) 1/alphaDen) / (sumNSyms + (double) ALPHABET_SIZE/alphaDen);
+//
+//                // sum( log_2 P(s|c^t) )
+//                sumOfEntropies += log2(probability);
+//                //////////////////////////////////
+
                 // update hash table
                 ++hTable[ context ][ vecDatasetLineInt[ lineIter ]];
-                
+
                 // considering inverted repeats to update hash table
                 if (isInvertedRepeat)
                 {
@@ -106,20 +112,27 @@ void FCM::buildHashTable ()
                     // 52 - context[ i ] = 4 - (context[ i ] - 48). 48 is ASCII code of '0'
                     for (int i = contextDepth - 1; i != 0; --i)
                         invRepeatContext += to_string( 52 - context[ i ] );
-    
+
                     // update hash table considering inverted repeats
                     ++hTable[ invRepeatContext ][ 52 - context[0] ];
                 }
-    
+
                 // update context
                 context = (contextDepth == 1)
                           ? to_string(vecDatasetLineInt[ lineIter ])
                           : context.substr(1, (unsigned) contextDepth - 1)
                             + to_string(vecDatasetLineInt[ lineIter ]);
             }
-    
+
             lineIter = 0;           // iterator for non-first lines of file becomes 0
         } while ( getline(fileIn, datasetLine) );   // read file line by line
+    
+    
+        //TODO TEST
+        high_resolution_clock::time_point exeFinishTime = high_resolution_clock::now();
+        std::chrono::duration< double > elapsed = exeFinishTime - exeStartTime;
+        cout << '\t' << "build_hash="<<elapsed.count();
+    
         
         //////////////////////////////////
         totalNumberOfSymbols -= contextDepth;   // first line includes contextDepth of "AA..."
@@ -146,6 +159,14 @@ void FCM::buildHashTable ()
 
         FCM::setHashTable(hTable);  // save the built hash table
     }   // end - file opened correctly
+    
+    
+//
+//    //TODO TEST
+//    high_resolution_clock::time_point exeFinishTime = high_resolution_clock::now();
+//    std::chrono::duration< double > elapsed = exeFinishTime - exeStartTime;
+//    cout << '\t' << "build_hash="<<elapsed.count();
+    
 }
 
 
