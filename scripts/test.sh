@@ -16,13 +16,12 @@ INSTALL_XS=0    # to install "XS" from Github
 INSTALL_goose=0 # to install "goose" from Github
 RUN=1           # run the program
 
+numDatasets=100   # number of datasets to be generated
 
 #***********************************************************
 #   generate dataset using "XS" and "goose"
 #***********************************************************
 if [[ $GEN_DATASET == 1 ]]; then
-
-numDatasets=100   # number of datasets to be generated
 
 # dataset names: nonRep=non repetitve,  midRep=mid repetitve,   tooRep=too repetitve
 
@@ -202,7 +201,7 @@ do
 gnuplot <<- EOF
 set xlabel "% mutation"                 # set label of x axis
 set ylabel "bpb"                        # set label of y axis
-set xtics 0,5,50                        # set steps for x axis
+set xtics 0,5,100                        # set steps for x axis
 set xtics add ("1" 1)
 set key right                           # legend position
 set term $PIX_FORMAT                    # set terminal for output picture format
