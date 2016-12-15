@@ -45,7 +45,7 @@ int32_t main (int argc, char *argv[])
 //            << '\n'
             << '\t'
 //            << "Elapsed time: "
-            << elapsed.count()
+            << "full="<<elapsed.count()
 //            << " s"
             << '\n'
  ;

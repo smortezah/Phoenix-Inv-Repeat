@@ -18,6 +18,8 @@ using std::ifstream;
 using std::ios;
 using std::invalid_argument;
 
+//TODO TEST
+using std::chrono::high_resolution_clock;
 
 /***********************************************************
     constructor
@@ -157,6 +159,14 @@ void Functions::commandLineParser (int argc, char **argv)
     
     if (m_flag)
     {
+        //TODO TEST
+        high_resolution_clock::time_point exeStartTime = high_resolution_clock::now();
+        high_resolution_clock::time_point exeFinishTime = high_resolution_clock::now();
+        std::chrono::duration< double > elapsed = exeFinishTime - exeStartTime;
+        cout << '\t' << "beg_m_flag="<<elapsed.count();
+        exeStartTime = high_resolution_clock::now();
+    
+    
         // check if target or reference file addresses are entered
         if (!t_flag && !r_flag)     cerr << "Input file address is needed.";
         else
@@ -212,8 +222,24 @@ void Functions::commandLineParser (int argc, char **argv)
                 // set the inverted repeat condition of the model
                 !stoi(vecParameters[ vecParamIndex++ ]) ? models[ n ].setInvertedRepeat(false)
                                                         : models[ n ].setInvertedRepeat(true);
+    
+    
+                //TODO TEST
+                exeFinishTime = high_resolution_clock::now();
+                elapsed = exeFinishTime - exeStartTime;
+                cout << '\t' << "bef_build_hash="<<elapsed.count();
+                exeStartTime = high_resolution_clock::now();
+                
                 
                 models[ n ].buildHashTable();   // build hash table for the model
+    
+    
+                //TODO TEST
+                exeFinishTime = high_resolution_clock::now();
+                elapsed = exeFinishTime - exeStartTime;
+                cout << '\t' << "aft_build_hash="<<elapsed.count();
+                
+                
                 
 //                // print the built hash table
 //                cout << "Model " << n + 1 << " parameters:\n";
