@@ -82,7 +82,7 @@ rm -f nonRepX nonRepTemp*                   # remove temporary files
 #-----------------------------------
 #   move all generated dataset files to "datasets" folder
 #-----------------------------------
-rm -rf datasets
+rm -fr datasets
 mkdir -p datasets
 mv ./nonRep* datasets
 
@@ -217,11 +217,11 @@ plot "$irName$ir-${aName}20-$nonRep.dat" using 1:2  with linespoints ls 7 title 
 EOF
 done
 
-##-----------------------------------
-##   create "dat" folder to save the results of running
-##-----------------------------------
-#rm -rf dat              # remove "dat" folder, if it already exists
-#mkdir -p dat            # make "dat" folder
-#mv $irName*.dat dat     # move all created dat files to the "dat" folder
+#-----------------------------------
+#   create "dat" folder to save the results of running
+#-----------------------------------
+rm -fr dat              # remove "dat" folder, if it already exists
+mkdir -p dat            # make "dat" folder
+mv $irName*.dat dat     # move all created dat files to the "dat" folder
 
 fi  # end of running the program
