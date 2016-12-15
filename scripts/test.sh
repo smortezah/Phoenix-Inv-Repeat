@@ -201,11 +201,13 @@ gnuplot <<- EOF
 set xlabel "% mutation"                 # set label of x axis
 set ylabel "bpb"                        # set label of y axis
 set xtics 0,5,50                        # set steps for x axis
+set xtics add ("1" 1)
 set key right                           # legend position
 set term $PIX_FORMAT                    # set terminal for output picture format
 set output "$irName$ir.$PIX_FORMAT"     # set output name
 plot "$irName$ir-${aName}20-$nonRep.dat" using 1:2  with linespoints ls 7 title "ir=$ir, alpha=1/20, $nonRep"
 
+#set xtics add ("1" 1)
 set ylabel "context size"               # set label of y axis
 set output "$irName$ir-ctx.$PIX_FORMAT" # set output name
 plot "$irName$ir-${aName}20-ctx-$nonRep.dat" using 1:3  with linespoints ls 7 title "ir=$ir, alpha=1/20, $nonRep"
