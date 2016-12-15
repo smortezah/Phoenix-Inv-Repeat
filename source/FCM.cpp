@@ -70,9 +70,6 @@ void FCM::buildHashTable ()
         
         do
         {
-            // save integer version of each line in a vector
-            vector< uint8_t > vecDatasetLineInt;
-            for (char ch : datasetLine)  vecDatasetLineInt.push_back( symCharToInt(ch) );
             
             //////////////////////////////////
             dataSetLineSize = (uint8_t) datasetLine.size();
@@ -84,14 +81,16 @@ void FCM::buildHashTable ()
             for (; lineIter != dataSetLineSize; ++lineIter)
             {
 
-//                //////////////////////////////////
-//                // htable includes an array of uint16_t numbers
-//                nSym = hTable[ context ][ vecDatasetLineInt[ lineIter ]];
+                //////////////////////////////////
+                // htable includes an array of uint16_t numbers
+                uint8_t currSymInt = symCharToInt(datasetLine[ lineIter ]);
+                
+                nSym = hTable[ context ][ currSymInt ];
 
                 // sum(n_a)
                 sumNSyms = 0;
-//                for (uint16_t u : hTable[ context ])      sumNSyms += u;
-//
+                for (uint16_t u : hTable[ context ])      sumNSyms += u;
+
                 // P(s|c^t)
                 probability = (nSym + (double) 1/alphaDen) / (sumNSyms + (double) ALPHABET_SIZE/alphaDen);
 
@@ -100,14 +99,14 @@ void FCM::buildHashTable ()
 ////                //////////////////////////////////
 
                 // update hash table
-                ++hTable[ context ][ vecDatasetLineInt[ lineIter ]];
+                ++hTable[ context ][ currSymInt ];
 
                 // considering inverted repeats to update hash table
                 if (isInvertedRepeat)
                 {
                     // save inverted repeat context
                     string invRepeatContext = "";
-                    invRepeatContext += to_string(4 - vecDatasetLineInt[ lineIter ]);
+                    invRepeatContext += to_string(4 - currSymInt);
                     // convert a number from char into integer format. '0'->0. '4'->4 by
                     // 52 - context[ i ] = 4 - (context[ i ] - 48). 48 is ASCII code of '0'
                     for (int i = contextDepth - 1; i != 0; --i)
@@ -119,9 +118,9 @@ void FCM::buildHashTable ()
 
                 // update context
                 context = (contextDepth == 1)
-                          ? to_string(vecDatasetLineInt[ lineIter ])
+                          ? to_string(currSymInt)
                           : context.substr(1, (unsigned) contextDepth - 1)
-                            + to_string(vecDatasetLineInt[ lineIter ]);
+                            + to_string(currSymInt);
             }
 
             lineIter = 0;           // iterator for non-first lines of file becomes 0
