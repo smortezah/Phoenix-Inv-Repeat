@@ -11,7 +11,7 @@ make
 #***********************************************************
 #   parameters to install and run needed programs
 #***********************************************************
-GEN_DATASET=0   # generate dataset using "XS"
+GEN_DATASET=1   # generate dataset using "XS"
 INSTALL_XS=0    # to install "XS" from Github
 INSTALL_goose=0 # to install "goose" from Github
 RUN=1           # run the program
@@ -22,7 +22,7 @@ RUN=1           # run the program
 #***********************************************************
 if [[ $GEN_DATASET == 1 ]]; then
 
-numDatasets=1   # number of datasets to be generated
+numDatasets=100   # number of datasets to be generated
 
 # dataset names: nonRep=non repetitve,  midRep=mid repetitve,   tooRep=too repetitve
 
@@ -128,7 +128,7 @@ alphaDens="20"
 #   max context size
 #-----------------------------------
 #maxCtx=21   # real: -=1
-maxCtx=3   # real: -=1
+maxCtx=21   # real: -=1
 
 
 #-----------------------------------
@@ -157,7 +157,7 @@ do
             do
 #            rm -f $irName$ir-$aName$alphaDen-$dataset.dat
             touch $irName$ir-$aName$alphaDen-$dataset.dat
-            echo -e "# ir\talpha\tctx\tbpb\ttime(s)" >> $irName$ir-$aName$alphaDen-$dataset.dat
+            echo -e "# ir\talpha\tctx\tbpb" >> $irName$ir-$aName$alphaDen-$dataset.dat
 
                 for((ctx=2; ctx<$maxCtx; ++ctx))
                 do

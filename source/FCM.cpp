@@ -16,8 +16,8 @@ using std::ios;
 using std::fixed;
 using std::setprecision;
 
-//TODO TEST
-using std::chrono::high_resolution_clock;
+////TODO TEST
+//using std::chrono::high_resolution_clock;
 
 /***********************************************************
     constructor
@@ -64,8 +64,8 @@ void FCM::buildHashTable ()
         double   averageEntropy = 0;        // average entropy (H)
         //////////////////////////////////
     
-        //TODO TEST
-        high_resolution_clock::time_point exeStartTime = high_resolution_clock::now();
+//        //TODO TEST
+//        high_resolution_clock::time_point exeStartTime = high_resolution_clock::now();
     
         
         do
@@ -127,10 +127,10 @@ void FCM::buildHashTable ()
         } while ( getline(fileIn, datasetLine) );   // read file line by line
     
     
-        //TODO TEST
-        high_resolution_clock::time_point exeFinishTime = high_resolution_clock::now();
-        std::chrono::duration< double > elapsed = exeFinishTime - exeStartTime;
-        cout << '\t' << "build_hash="<<elapsed.count();
+//        //TODO TEST
+//        high_resolution_clock::time_point exeFinishTime = high_resolution_clock::now();
+//        std::chrono::duration< double > elapsed = exeFinishTime - exeStartTime;
+//        cout << '\t' << "build_hash="<<elapsed.count();
     
         
         //////////////////////////////////
