@@ -18,80 +18,82 @@ GEN_MUTATIONS=0 # generate mutations using "goose"
 RUN=0           # run the program
 
 MUT_LIST="1 2 3 4 5 6 7 8 9 10 12 14 16 18 20 25 30 35 40 45 50"
+#echo $MUT_LIST
 
-for i in {1..22}; do datasets="hs_ref_GRCh38.p7_chr$i"; done
+
+#for i in {1..22}; do datasets="hs_ref_GRCh38.p7_chr$i"; done
 #for i in "alts chrMT chrX chrY unlocalized unplaced"; do datasets="$datasets $i"; done
-echo $datasets
+#echo $datasets
 
-##***********************************************************
-##   install "XS" from Github
-##***********************************************************
-#if [[ $INSTALL_XS == 1 ]]; then
-#
-#rm -fr XS
-#git clone https://github.com/pratas/XS.git
-#cd XS
-#make
-#cd ..
-#
-#fi  # end of installing "XS"
-#
-#
-##***********************************************************
-##   install "goose" from Github
-##***********************************************************
-#if [[ $INSTALL_goose == 1 ]]; then
-#
-#rm -fr goose-* goose/ SAMPLE*
-#git clone https://github.com/pratas/goose.git
-#cd goose/src
-#make
-#cd ../../
-#
-#fi  # end of installing "goose"
-#
-#
-##***********************************************************
-##   generate datasets using "XS"
-##***********************************************************
-#if [[ $GEN_DATASETS == 1 ]]; then
-#
-#NUM_DATASETS=1  # number of datasets to be generated
-#
-#XS/XS -ls 100 -n 100000 -rn 0 -f 0.20,0.20,0.20,0.20,0.20 -eh -eo -es nonRep0   # non-repetitive
-## add ">X" as the header of the sequence (build "nonRepX")
-#echo ">X" > HEADER;
-#cat HEADER nonRep0 > nonRepX;
-#rm -f HEADER
-#
-#fi  # end of generating datasets using "XS"
-#
-#
-##***********************************************************
-##   generate mutations using "goose"
-##***********************************************************
-#if [[ $GEN_MUTATIONS == 1 ]]; then
-#
-#NUM_MUTATIONS=1 # number of mutations to be generated
-#
-#for x in $MUT_LIST #((x=1; x<$((NUM_MUTATIONS+1)); x+=1));
-#do
-#MRATE=`echo "scale=3;$x/100" | bc -l`;      # handle transition 0.09 -> 0.10
-#goose/src/goose-mutatefasta -s $x -a5 -mr $MRATE " " < chromosomes/hs_ref_GRCh38.p7_chr21.fa > chr21temp$x;
-#cat chr21temp$x | grep -v ">" > chr21_$x    # remove the header line
-#done
-#rm -f chr21temp*    # remove temporary files
-#
-##-----------------------------------
-##   move all generated dataset files to "datasets" folder
-##-----------------------------------
-#rm -fr datasets
-#mkdir -p datasets
-#mv ./chr21* datasets
-#
-#fi  # end of generating mutations using "goose"
-#
-#
+#***********************************************************
+#   install "XS" from Github
+#***********************************************************
+if [[ $INSTALL_XS == 1 ]]; then
+
+rm -fr XS
+git clone https://github.com/pratas/XS.git
+cd XS
+make
+cd ..
+
+fi  # end of installing "XS"
+
+
+#***********************************************************
+#   install "goose" from Github
+#***********************************************************
+if [[ $INSTALL_goose == 1 ]]; then
+
+rm -fr goose-* goose/ SAMPLE*
+git clone https://github.com/pratas/goose.git
+cd goose/src
+make
+cd ../../
+
+fi  # end of installing "goose"
+
+
+#***********************************************************
+#   generate datasets using "XS"
+#***********************************************************
+if [[ $GEN_DATASETS == 1 ]]; then
+
+NUM_DATASETS=1  # number of datasets to be generated
+
+XS/XS -ls 100 -n 100000 -rn 0 -f 0.20,0.20,0.20,0.20,0.20 -eh -eo -es nonRep0   # non-repetitive
+# add ">X" as the header of the sequence (build "nonRepX")
+echo ">X" > HEADER;
+cat HEADER nonRep0 > nonRepX;
+rm -f HEADER
+
+fi  # end of generating datasets using "XS"
+
+
+#***********************************************************
+#   generate mutations using "goose"
+#***********************************************************
+if [[ $GEN_MUTATIONS == 1 ]]; then
+
+NUM_MUTATIONS=1 # number of mutations to be generated
+
+for x in $MUT_LIST #((x=1; x<$((NUM_MUTATIONS+1)); x+=1));
+do
+MRATE=`echo "scale=3;$x/100" | bc -l`;      # handle transition 0.09 -> 0.10
+goose/src/goose-mutatefasta -s $x -a5 -mr $MRATE " " < chromosomes/hs_ref_GRCh38.p7_chr21.fa > chr21temp$x;
+cat chr21temp$x | grep -v ">" > chr21_$x    # remove the header line
+done
+rm -f chr21temp*    # remove temporary files
+
+#-----------------------------------
+#   move all generated dataset files to "datasets" folder
+#-----------------------------------
+rm -fr datasets
+mkdir -p datasets
+mv ./chr21* datasets
+
+fi  # end of generating mutations using "goose"
+
+
 ##***********************************************************
 ##   running the program
 ##***********************************************************
