@@ -13,12 +13,9 @@ make
 #***********************************************************
 INSTALL_XS=0    # to install "XS" from Github
 INSTALL_goose=0 # to install "goose" from Github
-GEN_DATASET=0   # generate dataset using "XS"
-GEN_MUTATION=0  # generate mutations using "goose"
-RUN=1           # run the program
-
-NUM_DATASETS=1  # number of datasets to be generated
-NUM_MUTATIONS=1 # number of mutations to be generated
+GEN_DATASETS=0  # generate datasets using "XS"
+GEN_MUTATIONS=1 # generate mutations using "goose"
+RUN=0           # run the program
 
 
 #***********************************************************
@@ -46,43 +43,41 @@ fi  # end of installing "goose"
 
 
 #***********************************************************
-#   generate dataset using "XS" and "goose"
+#   generate datasets using "XS"
 #***********************************************************
-if [[ $GEN_DATASET == 1 ]]; then
+if [[ $GEN_DATASETS == 1 ]]; then
+NUM_DATASETS=1  # number of datasets to be generated
 
-# dataset names: nonRep=non repetitve,  midRep=mid repetitve,   tooRep=too repetitve
-
-
-#-----------------------------------
-#   generate the original sequence ("nonRep0")
-#-----------------------------------
 XS/XS -ls 100 -n 100000 -rn 0 -f 0.20,0.20,0.20,0.20,0.20 -eh -eo -es nonRep0   # non-repetitive
-
 # add ">X" as the header of the sequence (build "nonRepX")
 echo ">X" > HEADER;
 cat HEADER nonRep0 > nonRepX;
 rm -f HEADER
+fi  # end of generating datasets using "XS"
 
-#-----------------------------------
-#   generate the mutated sequences
-#-----------------------------------
-for((x=1; x<$((NUM_DATASETS+1)); x+=80));
+
+#***********************************************************
+#   generate mutations using "goose"
+#***********************************************************
+if [[ $GEN_MUTATIONS == 1 ]]; then
+NUM_MUTATIONS=1 # number of mutations to be generated
+
+for x in 1 2 3 12 #((x=1; x<$((NUM_MUTATIONS+1)); x+=1));
 do
 MRATE=`echo "scale=3;$x/100" | bc -l`;      # handle transition 0.09 -> 0.10
-#echo "Substitutions rate: $MRATE";
-goose/src/goose-mutatefasta -s $x -a5 -mr $MRATE " " < nonRepX > nonRepTemp$x;
-cat nonRepTemp$x | grep -v ">" > nonRep$x   # remove the header line
+goose/src/goose-mutatefasta -s $x -a5 -mr $MRATE " " < chromosomes/hs_ref_GRCh38.p7_chr21.fa > chr21temp$x;
+cat chr21temp$x | grep -v ">" > chr21_$x    # remove the header line
 done
-rm -f nonRepX nonRepTemp*                   # remove temporary files
+rm -f chr21temp*    # remove temporary files
 
-##-----------------------------------
-##   move all generated dataset files to "datasets" folder
-##-----------------------------------
-#rm -fr datasets
-#mkdir -p datasets
-#mv ./nonRep* datasets
+#-----------------------------------
+#   move all generated dataset files to "datasets" folder
+#-----------------------------------
+rm -fr datasets
+mkdir -p datasets
+mv ./chr21* datasets
 
-fi  # end of generating dataset
+fi  # end of generating mutations using "goose"
 
 
 #***********************************************************
@@ -161,29 +156,6 @@ do
                             END {print minBpb"\t"minCtx}' $IR_NAME$ir-$a_NAME$alphaDen-$dataset.dat)
                 echo -e "  $mut\t$minBpbCtx" >> $IR_NAME$ir-$a_NAME$alphaDen-$nonRep.dat
             done
-
-### show output in a figure, using gnuplot
-##gnuplot <<- EOF
-###set xlabel "context"
-##set xlabel "% mutation"
-##set ylabel "bpb"
-##set key right top                   # legend position
-##set term $PIX_FORMAT                 # set terminal for output picture format
-##set output "$IR_NAME$ir.$PIX_FORMAT"  # set output name
-##
-##plot for [i=5:13] 'immigration.dat' using 1:(column(i)/Sum[i]) title columnhea
-##plot for [i=0:1]
-#### find min bpb for each dataset
-###stats "$IR_NAME$ir-$a_NAME$ALPHA_DENS-$dataset.dat" using 4 name "bpb" nooutput
-###plot $mut $bpb_min
-##
-#### plot 3 figures at once, for constant "ir", but different "alpha"s and "context"s
-###plot "$IR_NAME$ir-${a_NAME}1-$dataset.dat" using 3:4  with linespoints ls 6 title "ir=$ir, alpha=1/1,     $dataset", \
-###     "$IR_NAME$ir-${a_NAME}10-$dataset.dat" using 3:4 with linespoints ls 7 title "ir=$ir, alpha=1/10,   $dataset", \
-###     "$IR_NAME$ir-${a_NAME}100-$dataset.dat" using 3:4 with linespoints ls 8 title "ir=$ir, alpha=1/100, $dataset"
-##
-### the following line (EOF) MUST be left as it is; i.e. no space, etc
-##EOF
         done
     done
 done
