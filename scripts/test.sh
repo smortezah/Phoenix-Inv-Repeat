@@ -59,8 +59,7 @@ if [[ $GEN_DATASET == 1 ]]; then
 #-----------------------------------
 #   generate the original sequence ("nonRep0")
 #-----------------------------------
-#XS/XS -ls 100 -n 100000 -rn 0 -f 0.20,0.20,0.20,0.20,0.20 -eh -eo -es nonRep0   # non-repetitive
-XS/XS -ls 100 -n 100000 -rn 50000 -f 0.20,0.20,0.20,0.20,0.20 -eh -eo -es nonRep0   # too-repetitive
+XS/XS -ls 100 -n 100000 -rn 0 -f 0.20,0.20,0.20,0.20,0.20 -eh -eo -es nonRep0   # non-repetitive
 
 # add ">X" as the header of the sequence (build "nonRepX")
 echo ">X" > HEADER;
