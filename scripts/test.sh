@@ -18,12 +18,11 @@ GEN_MUTATIONS=0 # generate mutations using "goose"
 RUN=0           # run the program
 
 MUT_LIST="1 2 3 4 5 6 7 8 9 10 12 14 16 18 20 25 30 35 40 45 50"
-#echo $MUT_LIST
 
+for i in {1..22} "a"; do    datasets+="hs_ref_GRCh38.p7_chr"$i' ';   done
 
-#for i in {1..22}; do datasets="hs_ref_GRCh38.p7_chr$i"; done
 #for i in "alts chrMT chrX chrY unlocalized unplaced"; do datasets="$datasets $i"; done
-#echo $datasets
+echo $datasets
 
 #***********************************************************
 #   install "XS" from Github
