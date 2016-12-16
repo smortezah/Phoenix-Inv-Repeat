@@ -150,7 +150,7 @@ void FCM::buildHashTable ()
                 << (float) 1/alphaDen << '\t'
                 << (int) contextDepth << '\t'
                 << averageEntropy
-                << '\n'
+//                << '\n'
                 ;
         //////////////////////////////////
         

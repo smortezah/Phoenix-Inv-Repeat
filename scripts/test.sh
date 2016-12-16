@@ -16,7 +16,7 @@ INSTALL_XS=0    # to install "XS" from Github
 INSTALL_goose=0 # to install "goose" from Github
 RUN=1           # run the program
 
-numDatasets=100   # number of datasets to be generated
+numDatasets=1   # number of datasets to be generated
 
 #***********************************************************
 #   generate dataset using "XS" and "goose"
@@ -99,7 +99,7 @@ if [[ $RUN == 1 ]]; then
 PIX_FORMAT=png
 #PIX_FORMAT=svg
 
-rm -f $irName*.$PIX_FORMAT   # remove FORMAT pictures, if they exist
+#rm -f $irName*.$PIX_FORMAT   # remove FORMAT pictures, if they exist
 
 #-----------------------------------
 #   list of datasets
@@ -127,7 +127,7 @@ alphaDens="20"
 #   max context size
 #-----------------------------------
 #maxCtx=21   # real: -=1
-maxCtx=21   # real: -=1
+maxCtx=3   # real: -=1
 
 
 #-----------------------------------
@@ -137,9 +137,9 @@ for ir in $invRepeats
 do
     for alphaDen in $alphaDens
     do
-#    rm -f $irName$ir-$aName$alphaDen-$tooRep.dat
+#    rm -f $irName$ir-$aName$alphaDen-$nonRep*.dat
     touch $irName$ir-$aName$alphaDen-$nonRep.dat
-    echo -e "# mut\tmin_bpb" >> $irName$ir-$aName$alphaDen-$nonRep.dat
+    echo -e "# mut\tmin_bpb\tctx" >> $irName$ir-$aName$alphaDen-$nonRep.dat
     done
 done
 
@@ -156,14 +156,14 @@ do
             do
 #            rm -f $irName$ir-$aName$alphaDen-$dataset.dat
             touch $irName$ir-$aName$alphaDen-$dataset.dat
-            echo -e "# ir\talpha\tctx\tbpb" >> $irName$ir-$aName$alphaDen-$dataset.dat
+            echo -e "# ir\talpha\tctx\tbpb\ttime(s)" >> $irName$ir-$aName$alphaDen-$dataset.dat
 
                 for((ctx=2; ctx<$maxCtx; ++ctx))
                 do
                 ./phoenix -m t,$ctx,$alphaDen,$ir -t ./datasets/$dataset >> $irName$ir-$aName$alphaDen-$dataset.dat
                 done
                 # save min bpb for each dataset
-                minBpb=$(awk 'NR==1 || $4 < min {min = $4}; END {print min}' $irName$ir-$aName$alphaDen-$dataset.dat)
+                minBpb=$(awk 'NR==1 || $4 < minBpb {minBpb=$4}; END {print minBpb"\t"minBpb}' $irName$ir-$aName$alphaDen-$dataset.dat)
                 echo -e "  $mut\t$minBpb" >> $irName$ir-$aName$alphaDen-$nonRep.dat
             done
 
@@ -193,34 +193,34 @@ do
     done
 done
 
-#-----------------------------------
-#   plot output using "gnuplot"
-#-----------------------------------
-for ir in $invRepeats
-do
-gnuplot <<- EOF
-set xlabel "% mutation"                 # set label of x axis
-set ylabel "bpb"                        # set label of y axis
-set xtics 0,5,100                        # set steps for x axis
-set xtics add ("1" 1)
-set key right                           # legend position
-set term $PIX_FORMAT                    # set terminal for output picture format
-set output "$irName$ir.$PIX_FORMAT"     # set output name
-plot "$irName$ir-${aName}20-$nonRep.dat" using 1:2  with linespoints ls 7 title "ir=$ir, alpha=1/20, $nonRep"
+##-----------------------------------
+##   plot output using "gnuplot"
+##-----------------------------------
+#for ir in $invRepeats
+#do
+#gnuplot <<- EOF
+#set xlabel "% mutation"                 # set label of x axis
+#set ylabel "bpb"                        # set label of y axis
+#set xtics 0,5,100                        # set steps for x axis
+#set xtics add ("1" 1)
+#set key right                           # legend position
+#set term $PIX_FORMAT                    # set terminal for output picture format
+#set output "$irName$ir.$PIX_FORMAT"     # set output name
+#plot "$irName$ir-${aName}20-$nonRep.dat" using 1:2  with linespoints ls 7 title "ir=$ir, alpha=1/20, $nonRep"
+#
+##set ylabel "context size"               # set label of y axis
+##set output "$irName$ir-ctx.$PIX_FORMAT" # set output name
+##plot "$irName$ir-${aName}20-ctx-$nonRep.dat" using 1:3  with linespoints ls 7 title "ir=$ir, alpha=1/20, $nonRep"
+#
+## the following line (EOF) MUST be left as it is; i.e. no space, etc
+#EOF
+#done
 
-#set ylabel "context size"               # set label of y axis
-#set output "$irName$ir-ctx.$PIX_FORMAT" # set output name
-#plot "$irName$ir-${aName}20-ctx-$nonRep.dat" using 1:3  with linespoints ls 7 title "ir=$ir, alpha=1/20, $nonRep"
-
-# the following line (EOF) MUST be left as it is; i.e. no space, etc
-EOF
-done
-
-#-----------------------------------
-#   create "dat" folder to save the results of running
-#-----------------------------------
-rm -fr dat              # remove "dat" folder, if it already exists
-mkdir -p dat            # make "dat" folder
-mv $irName*.dat dat     # move all created dat files to the "dat" folder
+##-----------------------------------
+##   create "dat" folder to save the results of running
+##-----------------------------------
+#rm -fr dat              # remove "dat" folder, if it already exists
+#mkdir -p dat            # make "dat" folder
+#mv $irName*.dat dat     # move all created dat files to the "dat" folder
 
 fi  # end of running the program
