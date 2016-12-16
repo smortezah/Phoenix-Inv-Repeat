@@ -16,13 +16,12 @@ INSTALL_goose=0 # to install "goose" from Github
 GEN_DATASETS=0  # generate datasets using "XS"
 GEN_MUTATIONS=0 # generate mutations using "goose"
 RUN=0           # run the program
-
+# mutations list
 MUT_LIST="1 2 3 4 5 6 7 8 9 10 12 14 16 18 20 25 30 35 40 45 50"
+# human chromosomes list
+for i in chr{1..22} chr{X,Y,MT} alts unlocalized unplaced
+do  datasets+="hs_ref_GRCh38.p7_"${i}".fa ";   done
 
-for i in {1..22} "a"; do    datasets+="hs_ref_GRCh38.p7_chr"$i' ';   done
-
-#for i in "alts chrMT chrX chrY unlocalized unplaced"; do datasets="$datasets $i"; done
-echo $datasets
 
 #***********************************************************
 #   install "XS" from Github
