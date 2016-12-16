@@ -127,94 +127,95 @@ alphaDens="20"
 #   max context size
 #-----------------------------------
 #maxCtx=21   # real: -=1
-maxCtx=3   # real: -=1
+maxCtx=21   # real: -=1
 
-
-#-----------------------------------
-#   create a couple of files to save per mutation results
-#-----------------------------------
-for ir in $invRepeats
-do
-    for alphaDen in $alphaDens
-    do
-#    rm -f $irName$ir-$aName$alphaDen-$nonRep*.dat
-    touch $irName$ir-$aName$alphaDen-$nonRep.dat
-    echo -e "# mut\tmin_bpb\tctx" >> $irName$ir-$aName$alphaDen-$nonRep.dat
-    done
-done
-
-#-----------------------------------
-#   run the program for different datasets, ir, alphaDen and context sizes
-#-----------------------------------
-for mut in `seq -s' ' 1 $numDatasets`
-do
-    for dataset in "$nonRep$mut"
-    do
-        for ir in $invRepeats
-        do
-            for alphaDen in $alphaDens
-            do
-#            rm -f $irName$ir-$aName$alphaDen-$dataset.dat
-            touch $irName$ir-$aName$alphaDen-$dataset.dat
-            echo -e "# ir\talpha\tctx\tbpb\ttime(s)" >> $irName$ir-$aName$alphaDen-$dataset.dat
-
-                for((ctx=2; ctx<$maxCtx; ++ctx))
-                do
-                ./phoenix -m t,$ctx,$alphaDen,$ir -t ./datasets/$dataset >> $irName$ir-$aName$alphaDen-$dataset.dat
-                done
-                # save min bpb for each dataset
-                minBpb=$(awk 'NR==1 || $4 < minBpb {minBpb=$4}; END {print minBpb"\t"minBpb}' $irName$ir-$aName$alphaDen-$dataset.dat)
-                echo -e "  $mut\t$minBpb" >> $irName$ir-$aName$alphaDen-$nonRep.dat
-            done
-
-## show output in a figure, using gnuplot
-#gnuplot <<- EOF
-##set xlabel "context"
-#set xlabel "% mutation"
-#set ylabel "bpb"
-#set key right top                   # legend position
-#set term $PIX_FORMAT                 # set terminal for output picture format
-#set output "$irName$ir.$PIX_FORMAT"  # set output name
-#
-#plot for [i=5:13] 'immigration.dat' using 1:(column(i)/Sum[i]) title columnhea
-#plot for [i=0:1]
-### find min bpb for each dataset
-##stats "$irName$ir-$aName$alphaDens-$dataset.dat" using 4 name "bpb" nooutput
-##plot $mut $bpb_min
-#
-### plot 3 figures at once, for constant "ir", but different "alpha"s and "context"s
-##plot "$irName$ir-${aName}1-$dataset.dat" using 3:4  with linespoints ls 6 title "ir=$ir, alpha=1/1,     $dataset", \
-##     "$irName$ir-${aName}10-$dataset.dat" using 3:4 with linespoints ls 7 title "ir=$ir, alpha=1/10,   $dataset", \
-##     "$irName$ir-${aName}100-$dataset.dat" using 3:4 with linespoints ls 8 title "ir=$ir, alpha=1/100, $dataset"
-#
-## the following line (EOF) MUST be left as it is; i.e. no space, etc
-#EOF
-        done
-    done
-done
 
 ##-----------------------------------
-##   plot output using "gnuplot"
+##   create a couple of files to save per mutation results
 ##-----------------------------------
 #for ir in $invRepeats
 #do
-#gnuplot <<- EOF
-#set xlabel "% mutation"                 # set label of x axis
-#set ylabel "bpb"                        # set label of y axis
-#set xtics 0,5,100                        # set steps for x axis
-#set xtics add ("1" 1)
-#set key right                           # legend position
-#set term $PIX_FORMAT                    # set terminal for output picture format
-#set output "$irName$ir.$PIX_FORMAT"     # set output name
-#plot "$irName$ir-${aName}20-$nonRep.dat" using 1:2  with linespoints ls 7 title "ir=$ir, alpha=1/20, $nonRep"
-#
-##set ylabel "context size"               # set label of y axis
-##set output "$irName$ir-ctx.$PIX_FORMAT" # set output name
-##plot "$irName$ir-${aName}20-ctx-$nonRep.dat" using 1:3  with linespoints ls 7 title "ir=$ir, alpha=1/20, $nonRep"
-#
-## the following line (EOF) MUST be left as it is; i.e. no space, etc
-#EOF
+#    for alphaDen in $alphaDens
+#    do
+#    rm -f $irName$ir-$aName$alphaDen-$nonRep*.dat
+#    touch $irName$ir-$aName$alphaDen-$nonRep.dat
+#    echo -e "# mut\tmin_bpb\tmin_ctx" >> $irName$ir-$aName$alphaDen-$nonRep.dat
+#    done
 #done
+#
+##-----------------------------------
+##   run the program for different datasets, ir, alphaDen and context sizes
+##-----------------------------------
+#for mut in `seq -s' ' 1 $numDatasets`
+#do
+#    for dataset in "$nonRep$mut"
+#    do
+#        for ir in $invRepeats
+#        do
+#            for alphaDen in $alphaDens
+#            do
+##            rm -f $irName$ir-$aName$alphaDen-$dataset.dat
+#            touch $irName$ir-$aName$alphaDen-$dataset.dat
+#            echo -e "# ir\talpha\tctx\tbpb\ttime(s)" >> $irName$ir-$aName$alphaDen-$dataset.dat
+#
+#                for((ctx=2; ctx<$maxCtx; ++ctx))
+#                do
+#                ./phoenix -m t,$ctx,$alphaDen,$ir -t ./datasets/$dataset >> $irName$ir-$aName$alphaDen-$dataset.dat
+#                done
+#                # save "min bpb" and "min ctx" for each dataset
+#                minBpbCtx=$(awk 'NR==1 || $4 < minBpb {minBpb=$4; minCtx=$3}; \
+#                            END {print minBpb"\t"minCtx}' $irName$ir-$aName$alphaDen-$dataset.dat)
+#                echo -e "  $mut\t$minBpbCtx" >> $irName$ir-$aName$alphaDen-$nonRep.dat
+#            done
+#
+### show output in a figure, using gnuplot
+##gnuplot <<- EOF
+###set xlabel "context"
+##set xlabel "% mutation"
+##set ylabel "bpb"
+##set key right top                   # legend position
+##set term $PIX_FORMAT                 # set terminal for output picture format
+##set output "$irName$ir.$PIX_FORMAT"  # set output name
+##
+##plot for [i=5:13] 'immigration.dat' using 1:(column(i)/Sum[i]) title columnhea
+##plot for [i=0:1]
+#### find min bpb for each dataset
+###stats "$irName$ir-$aName$alphaDens-$dataset.dat" using 4 name "bpb" nooutput
+###plot $mut $bpb_min
+##
+#### plot 3 figures at once, for constant "ir", but different "alpha"s and "context"s
+###plot "$irName$ir-${aName}1-$dataset.dat" using 3:4  with linespoints ls 6 title "ir=$ir, alpha=1/1,     $dataset", \
+###     "$irName$ir-${aName}10-$dataset.dat" using 3:4 with linespoints ls 7 title "ir=$ir, alpha=1/10,   $dataset", \
+###     "$irName$ir-${aName}100-$dataset.dat" using 3:4 with linespoints ls 8 title "ir=$ir, alpha=1/100, $dataset"
+##
+### the following line (EOF) MUST be left as it is; i.e. no space, etc
+##EOF
+#        done
+#    done
+#done
+
+#-----------------------------------
+#   plot output using "gnuplot"
+#-----------------------------------
+for ir in $invRepeats
+do
+gnuplot <<- EOF
+set xlabel "% mutation"                 # set label of x axis
+set ylabel "bpb"                        # set label of y axis
+set xtics 0,5,100                        # set steps for x axis
+set xtics add ("1" 1)
+set key right                           # legend position
+set term $PIX_FORMAT                    # set terminal for output picture format
+set output "$irName$ir.$PIX_FORMAT"     # set output name
+plot "$irName$ir-${aName}20-$nonRep.dat" using 1:2  with linespoints ls 7 title "ir=$ir, alpha=1/20, $nonRep"
+
+#set ylabel "context size"               # set label of y axis
+#set output "$irName$ir-ctx.$PIX_FORMAT" # set output name
+#plot "$irName$ir-${aName}20-ctx-$nonRep.dat" using 1:3  with linespoints ls 7 title "ir=$ir, alpha=1/20, $nonRep"
+
+# the following line (EOF) MUST be left as it is; i.e. no space, etc
+EOF
+done
 
 ##-----------------------------------
 ##   create "dat" folder to save the results of running
