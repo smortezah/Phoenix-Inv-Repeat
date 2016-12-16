@@ -14,8 +14,10 @@ make
 INSTALL_XS=0    # to install "XS" from Github
 INSTALL_goose=0 # to install "goose" from Github
 GEN_DATASETS=0  # generate datasets using "XS"
-GEN_MUTATIONS=1 # generate mutations using "goose"
+GEN_MUTATIONS=0 # generate mutations using "goose"
 RUN=0           # run the program
+
+MUT_LIST="1 2 3 4 5 6 7 8 9 10 12 14 16 18 20 25 30 35 40 45 50"
 
 
 #***********************************************************
@@ -62,7 +64,7 @@ fi  # end of generating datasets using "XS"
 if [[ $GEN_MUTATIONS == 1 ]]; then
 NUM_MUTATIONS=1 # number of mutations to be generated
 
-for x in 1 2 3 12 #((x=1; x<$((NUM_MUTATIONS+1)); x+=1));
+for x in $MUT_LIST #((x=1; x<$((NUM_MUTATIONS+1)); x+=1));
 do
 MRATE=`echo "scale=3;$x/100" | bc -l`;      # handle transition 0.09 -> 0.10
 goose/src/goose-mutatefasta -s $x -a5 -mr $MRATE " " < chromosomes/hs_ref_GRCh38.p7_chr21.fa > chr21temp$x;
@@ -85,13 +87,15 @@ fi  # end of generating mutations using "goose"
 #***********************************************************
 if [[ $RUN == 1 ]]; then
 
-#-----------------------------------
-#   set output format
-#-----------------------------------
-PIX_FORMAT=png
-#PIX_FORMAT=svg
+IR_NAME=ir          # inverted repeat
+a_NAME=ad           # alpha denominator
 
-#rm -f $IR_NAME*.$PIX_FORMAT   # remove FORMAT pictures, if they exist
+INV_REPEATS="0"     # list of inverted repeats  "0 1"
+ALPHA_DENS="20"     # list of alpha denominators "1 20 100"
+MAX_CTX=21          # max context size    real: -=1
+
+PIX_FORMAT=png      # output format: png, svg
+#rm -f *.$PIX_FORMAT# remove FORMAT pictures, if they exist
 
 #-----------------------------------
 #   list of datasets
@@ -102,21 +106,8 @@ tooRep="tooRep"
 datasets="nonRep midRep tooRep"
 
 #-----------------------------------
-#   names for inverted repeat and alpha denominator
-#-----------------------------------
-IR_NAME=ir
-a_NAME=ad
-
-#-----------------------------------
-#   list of inverted repeats and alpha denominators
-#-----------------------------------
-INV_REPEATS="0"       # "0 1"        list of inverted repeats
-ALPHA_DENS="20"        # "1 20 100"   list of alpha denominators
-
-#-----------------------------------
 #   max context size
 #-----------------------------------
-MAX_CTX=21   # 21    real: -=1
 
 
 #-----------------------------------
