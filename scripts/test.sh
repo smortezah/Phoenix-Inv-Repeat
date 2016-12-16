@@ -14,19 +14,20 @@ make
 INSTALL_XS=0    # to install "XS" from Github
 INSTALL_goose=0 # to install "goose" from Github
 GEN_DATASETS=0  # generate datasets using "XS"
-GEN_MUTATIONS=1 # generate mutations using "goose"
+GEN_MUTATIONS=0 # generate mutations using "goose"
 RUN=0           # run the program
-PLOT_RESULTS=0  # plot results using "gnuplot"
+PLOT_RESULTS=1  # plot results using "gnuplot"
 
 # mutations list:   `seq -s' ' 1 10`
 #MUT_LIST="1 2 3 4 5 6 7 8 9 10 12 14 16 18 20 25 30 35 40 45 50"
-MUT_LIST="1 2"
+MUT_LIST="1"
 
 ## datasets: human chromosomes full list
 #for i in chr{1..22} chr{X,Y,MT} alts unlocalized unplaced
 #do  datasets+="hs_ref_GRCh38.p7_"${i}".fa ";   done
 HUMAN_CHR="hs_ref_GRCh38.p7_"
-datasets="${HUMAN_CHR}chr21"
+CURR_CHR="chr21"
+datasets="$HUMAN_CHR$CURR_CHR"
 
 INV_REPEATS="0"     # list of inverted repeats      "0 1"
 ALPHA_DENS="20"     # list of alpha denominators    "1 20 100"
@@ -58,7 +59,7 @@ fi  # end of installing "XS"
 #***********************************************************
 if [[ $INSTALL_goose == 1 ]]; then
 
-rm -fr goose-* goose/ SAMPLE*
+rm -fr goose
 git clone https://github.com/pratas/goose.git
 cd goose/src
 make
@@ -91,7 +92,7 @@ if [[ $GEN_MUTATIONS == 1 ]]; then
 for d in $datasets; do
     for x in $MUT_LIST; do      #((x=1; x<$((NUM_MUTATIONS+1)); x+=1));
     MRATE=`echo "scale=3;$x/100" | bc -l`;      # handle transition 0.09 -> 0.10
-    goose/src/goose-mutatefasta -s $x -a5 -mr $MRATE " " < ./chromosomes/${d}.fa > temp;
+    goose/src/goose-mutatefasta -s $x -a5 -mr $MRATE " " < chromosomes/${d}.fa > temp;
     cat temp | grep -v ">" > ${d}_$x      # remove the header line
     done
 done
@@ -102,7 +103,7 @@ rm -f temp*    # remove temporary files
 #-----------------------------------
 rm -fr datasets
 mkdir -p datasets
-mv ./${HUMAN_CHR}* datasets
+mv ${HUMAN_CHR}* datasets
 
 fi  # end of generating mutations using "goose"
 
@@ -134,6 +135,13 @@ for ir in $INV_REPEATS; do
     done
 done
 
+#-----------------------------------
+#   create "dat" folder and save the results
+#-----------------------------------
+rm -fr dat              # remove "dat" folder, if it already exists
+mkdir -p dat            # make "dat" folder
+mv ${IR_NAME}*.dat dat  # move all created dat files to the "dat" folder
+
 fi  # end of running the program
 
 
@@ -154,12 +162,12 @@ set xtics add ("1" 1)
 set key right                           # legend position
 set term $PIX_FORMAT                    # set terminal for output picture format
 set output "$dataset.$PIX_FORMAT"    # set output name
-plot "$IR_NAME$ir-$a_NAME$ALPHA_DENS-$dataset.dat" using 1:2  with linespoints ls 7 title "ir=$ir, alpha=1/$ALPHA_DENS, $dataset"
+plot "dat/$IR_NAME$ir-$a_NAME$ALPHA_DENS-$dataset.dat" using 1:2  with linespoints ls 7 title "$IR_NAME=$ir, $a_NAME=1/$ALPHA_DENS, $CURR_CHR"
 
 set ylabel "context-order size"         # set label of y axis
 set ytics 2,1,20                        # set steps for y axis
 set output "$dataset-ctx.$PIX_FORMAT"    # set output name
-plot "$IR_NAME$ir-$a_NAME$ALPHA_DENS-$dataset.dat" using 1:3  with linespoints ls 7 title "ir=$ir, alpha=1/$ALPHA_DENS, $dataset"
+plot "dat/$IR_NAME$ir-$a_NAME$ALPHA_DENS-$dataset.dat" using 1:3  with linespoints ls 7 title "$IR_NAME=$ir, $a_NAME=1/$ALPHA_DENS, $CURR_CHR"
 
 # the following line (EOF) MUST be left as it is; i.e. no space, etc
 EOF
@@ -169,11 +177,3 @@ EOF
 done
 
 fi  #end of plot output using "gnuplot"
-
-
-#-----------------------------------
-#   create "dat" folder and save the results
-#-----------------------------------
-rm -fr dat              # remove "dat" folder, if it already exists
-mkdir -p dat            # make "dat" folder
-mv ${IR_NAME}*.dat dat    # move all created dat files to the "dat" folder
