@@ -11,12 +11,12 @@ make
 #***********************************************************
 #   parameters to install and run needed programs
 #***********************************************************
-GEN_DATASET=1   # generate dataset using "XS"
+GEN_DATASET=0   # generate dataset using "XS"
 INSTALL_XS=0    # to install "XS" from Github
-INSTALL_goose=1 # to install "goose" from Github
-RUN=0           # run the program
+INSTALL_goose=0 # to install "goose" from Github
+RUN=1           # run the program
 
-NUM_DATASETS=20   # number of datasets to be generated
+NUM_DATASETS=1   # number of datasets to be generated
 
 #***********************************************************
 #   generate dataset using "XS" and "goose"
@@ -59,7 +59,8 @@ if [[ $GEN_DATASET == 1 ]]; then
 #-----------------------------------
 #   generate the original sequence ("nonRep0")
 #-----------------------------------
-XS/XS -ls 100 -n 100000 -rn 0 -f 0.20,0.20,0.20,0.20,0.20 -eh -eo -es nonRep0   # non-repetitive
+#XS/XS -ls 100 -n 100000 -rn 0 -f 0.20,0.20,0.20,0.20,0.20 -eh -eo -es nonRep0   # non-repetitive
+XS/XS -ls 100 -n 100000 -rn 50000 -f 0.20,0.20,0.20,0.20,0.20 -eh -eo -es nonRep0   # too-repetitive
 
 # add ">X" as the header of the sequence (build "nonRepX")
 echo ">X" > HEADER;
@@ -69,7 +70,7 @@ rm -f HEADER
 #-----------------------------------
 #   generate the mutated sequences
 #-----------------------------------
-for((x=1; x!=$((NUM_DATASETS+1)); x+=5));
+for((x=1; x<$((NUM_DATASETS+1)); x+=80));
 do
 MRATE=`echo "scale=3;$x/100" | bc -l`;      # handle transition 0.09 -> 0.10
 #echo "Substitutions rate: $MRATE";
@@ -119,12 +120,12 @@ a_NAME=ad
 #   list of inverted repeats and alpha denominators
 #-----------------------------------
 INV_REPEATS="0"       # "0 1"        list of inverted repeats
-ALPHA_DENS="1"        # "1 10 100"   list of alpha denominators
+ALPHA_DENS="20"        # "1 20 100"   list of alpha denominators
 
 #-----------------------------------
 #   max context size
 #-----------------------------------
-MAX_CTX=3   # 21    real: -=1
+MAX_CTX=21   # 21    real: -=1
 
 
 #-----------------------------------
@@ -143,7 +144,7 @@ done
 #-----------------------------------
 #   run the program for different datasets, ir, alphaDen and context sizes
 #-----------------------------------
-for mut in `seq -s' ' 1 $NUM_DATASETS`
+for mut in 1 #`seq -s' ' 1 $NUM_DATASETS`
 do
     for dataset in "$nonRep$mut"
     do
@@ -199,20 +200,24 @@ do
 gnuplot <<- EOF
 set xlabel "% mutation"                 # set label of x axis
 set ylabel "bpb"                        # set label of y axis
-set xtics 0,5,100                        # set steps for x axis
+set xtics 0,5,100                       # set steps for x axis
 set xtics add ("1" 1)
 set key right                           # legend position
 set term $PIX_FORMAT                    # set terminal for output picture format
-set output "$IR_NAME$ir.$PIX_FORMAT"     # set output name
+set output "$IR_NAME$ir.$PIX_FORMAT"    # set output name
 plot "$IR_NAME$ir-${a_NAME}20-$nonRep.dat" using 1:2  with linespoints ls 7 title "ir=$ir, alpha=1/20, $nonRep"
 
-#set ylabel "context size"               # set label of y axis
-#set output "$IR_NAME$ir-ctx.$PIX_FORMAT" # set output name
-#plot "$IR_NAME$ir-${a_NAME}20-ctx-$nonRep.dat" using 1:3  with linespoints ls 7 title "ir=$ir, alpha=1/20, $nonRep"
+set ylabel "context size"               # set label of y axis
+set ytics 2,1,20                        # set steps for y axis
+set output "$IR_NAME$ir-ctx.$PIX_FORMAT"    # set output name
+plot "$IR_NAME$ir-${a_NAME}20-$nonRep.dat" using 1:3  with linespoints ls 7 title "ir=$ir, alpha=1/20, $nonRep"
 
 # the following line (EOF) MUST be left as it is; i.e. no space, etc
 EOF
 done
+
+fi  # end of running the program
+
 
 #-----------------------------------
 #   create "dat" folder to save the results of running
@@ -220,5 +225,3 @@ done
 rm -fr dat              # remove "dat" folder, if it already exists
 mkdir -p dat            # make "dat" folder
 mv $IR_NAME*.dat dat     # move all created dat files to the "dat" folder
-
-fi  # end of running the program
