@@ -110,55 +110,58 @@ fi  # end of generating mutations using "goose"
 #   running the program
 #***********************************************************
 if [[ $RUN == 1 ]]; then
+echo a
+fi
 
-for ir in $INV_REPEATS; do
-    for alphaDen in $ALPHA_DENS; do
-        for dataset in $datasets; do
-#        rm -f $IR_NAME$ir-$a_NAME$alphaDen-${dataset}.dat
-        touch $IR_NAME$ir-$a_NAME$alphaDen-$dataset.dat
-        echo -e "# mut\tmin_bpb\tmin_ctx" >> $IR_NAME$ir-$a_NAME$alphaDen-$dataset.dat
-            for mut in $MUT_LIST; do
-#            rm -f $IR_NAME$ir-$a_NAME$alphaDen-${dataset}_$MUT_LIST.dat
-            touch $IR_NAME$ir-$a_NAME$alphaDen-${dataset}_$MUT_LIST.dat
-            echo -e "# ir\talpha\tctx\tbpb\ttime(s)" >> $IR_NAME$ir-$a_NAME$alphaDen-${dataset}_$MUT_LIST.dat
-                for((ctx=2; ctx<$MAX_CTX; ++ctx)); do
-                ./phoenix -m t,$ctx,$alphaDen,$ir -t datasets/${dataset}_$MUT_LIST >> $IR_NAME$ir-$a_NAME$alphaDen-${dataset}_$MUT_LIST.dat
-                done
-                # save "min bpb" and "min ctx" for each dataset
-                minBpbCtx=$(awk 'NR==1 || $4 < minBpb {minBpb=$4; minCtx=$3}; \
-                            END {print minBpb"\t"minCtx}' $IR_NAME$ir-$a_NAME$alphaDen-${dataset}_$MUT_LIST.dat)
-                echo -e "  $mut\t$minBpbCtx" >> $IR_NAME$ir-$a_NAME$alphaDen-$dataset.dat
-            done
-        done
-    done
-#-----------------------------------
-#   plot output using "gnuplot"
-#-----------------------------------
-gnuplot <<- EOF
-set xlabel "% mutation"                 # set label of x axis
-set ylabel "bpb"                        # set label of y axis
-#set xtics 0,5,100                       # set steps for x axis
-set xtics add ("1" 1)
-set key right                           # legend position
-set term $PIX_FORMAT                    # set terminal for output picture format
-set output "$CURR_CHROM.$PIX_FORMAT"    # set output name
-plot "$IR_NAME$ir-$a_NAME$ALPHA_DENS-$CURR_CHROM.dat" using 1:2  with linespoints ls 7 title "ir=$ir, alpha=1/$ALPHA_DENS, $CURR_CHROM"
+#for ir in $INV_REPEATS; do
+#    for alphaDen in $ALPHA_DENS; do
+#        for dataset in $datasets; do
+##        rm -f $IR_NAME$ir-$a_NAME$alphaDen-${dataset}.dat
+#        touch $IR_NAME$ir-$a_NAME$alphaDen-$dataset.dat
+#        echo -e "# mut\tmin_bpb\tmin_ctx" >> $IR_NAME$ir-$a_NAME$alphaDen-$dataset.dat
+#            for mut in $MUT_LIST; do
+##            rm -f $IR_NAME$ir-$a_NAME$alphaDen-${dataset}_$MUT_LIST.dat
+#            touch $IR_NAME$ir-$a_NAME$alphaDen-${dataset}_$MUT_LIST.dat
+#            echo -e "# ir\talpha\tctx\tbpb\ttime(s)" >> $IR_NAME$ir-$a_NAME$alphaDen-${dataset}_$MUT_LIST.dat
+#                for((ctx=2; ctx<$MAX_CTX; ++ctx)); do
+#                ./phoenix -m t,$ctx,$alphaDen,$ir -t datasets/${dataset}_$MUT_LIST >> $IR_NAME$ir-$a_NAME$alphaDen-${dataset}_$MUT_LIST.dat
+#                done
+#                # save "min bpb" and "min ctx" for each dataset
+#                minBpbCtx=$(awk 'NR==1 || $4 < minBpb {minBpb=$4; minCtx=$3}; \
+#                            END {print minBpb"\t"minCtx}' $IR_NAME$ir-$a_NAME$alphaDen-${dataset}_$MUT_LIST.dat)
+#                echo -e "  $mut\t$minBpbCtx" >> $IR_NAME$ir-$a_NAME$alphaDen-$dataset.dat
+#            done
+#        done
+#    done
+#done
 
-set ylabel "context-order size"         # set label of y axis
-set ytics 2,1,20                        # set steps for y axis
-set output "$CURR_CHROM-ctx.$PIX_FORMAT"    # set output name
-plot "$IR_NAME$ir-$a_NAME$ALPHA_DENS-$CURR_CHROM.dat" using 1:3  with linespoints ls 7 title "ir=$ir, alpha=1/$ALPHA_DENS, $CURR_CHROM"
+#fi  # end of running the program
 
-# the following line (EOF) MUST be left as it is; i.e. no space, etc
-EOF
-done
+##-----------------------------------
+##   plot output using "gnuplot"
+##-----------------------------------
+#gnuplot <<- EOF
+#set xlabel "% mutation"                 # set label of x axis
+#set ylabel "bpb"                        # set label of y axis
+##set xtics 0,5,100                       # set steps for x axis
+#set xtics add ("1" 1)
+#set key right                           # legend position
+#set term $PIX_FORMAT                    # set terminal for output picture format
+#set output "$CURR_CHROM.$PIX_FORMAT"    # set output name
+#plot "$IR_NAME$ir-$a_NAME$ALPHA_DENS-$CURR_CHROM.dat" using 1:2  with linespoints ls 7 title "ir=$ir, alpha=1/$ALPHA_DENS, $CURR_CHROM"
+#
+#set ylabel "context-order size"         # set label of y axis
+#set ytics 2,1,20                        # set steps for y axis
+#set output "$CURR_CHROM-ctx.$PIX_FORMAT"    # set output name
+#plot "$IR_NAME$ir-$a_NAME$ALPHA_DENS-$CURR_CHROM.dat" using 1:3  with linespoints ls 7 title "ir=$ir, alpha=1/$ALPHA_DENS, $CURR_CHROM"
+#
+## the following line (EOF) MUST be left as it is; i.e. no space, etc
+#EOF
 
-fi  # end of running the program
 
-
-#-----------------------------------
-#   create "dat" folder and save the results
-#-----------------------------------
-rm -fr dat              # remove "dat" folder, if it already exists
-mkdir -p dat            # make "dat" folder
-mv $IR_NAME*.dat dat    # move all created dat files to the "dat" folder
+##-----------------------------------
+##   create "dat" folder and save the results
+##-----------------------------------
+#rm -fr dat              # remove "dat" folder, if it already exists
+#mkdir -p dat            # make "dat" folder
+#mv $IR_NAME*.dat dat    # move all created dat files to the "dat" folder
