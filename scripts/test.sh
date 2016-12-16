@@ -11,12 +11,12 @@ make
 #***********************************************************
 #   parameters to install and run needed programs
 #***********************************************************
-GEN_DATASET=0   # generate dataset using "XS"
+GEN_DATASET=1   # generate dataset using "XS"
 INSTALL_XS=0    # to install "XS" from Github
-INSTALL_goose=0 # to install "goose" from Github
-RUN=1           # run the program
+INSTALL_goose=1 # to install "goose" from Github
+RUN=0           # run the program
 
-NUM_DATASETS=1   # number of datasets to be generated
+NUM_DATASETS=20   # number of datasets to be generated
 
 #***********************************************************
 #   generate dataset using "XS" and "goose"
@@ -69,7 +69,7 @@ rm -f HEADER
 #-----------------------------------
 #   generate the mutated sequences
 #-----------------------------------
-for((x=1; x!=$((NUM_DATASETS+1)); ++x));
+for((x=1; x!=$((NUM_DATASETS+1)); x+=5));
 do
 MRATE=`echo "scale=3;$x/100" | bc -l`;      # handle transition 0.09 -> 0.10
 #echo "Substitutions rate: $MRATE";
