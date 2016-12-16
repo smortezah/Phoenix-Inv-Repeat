@@ -15,14 +15,27 @@ INSTALL_XS=0    # to install "XS" from Github
 INSTALL_goose=0 # to install "goose" from Github
 GEN_DATASETS=0  # generate datasets using "XS"
 GEN_MUTATIONS=0 # generate mutations using "goose"
-RUN=0           # run the program
+RUN=1           # run the program
+
 # mutations list:   `seq -s' ' 1 10`
-MUT_LIST="1 2 3 4 5 6 7 8 9 10 12 14 16 18 20 25 30 35 40 45 50"
+#MUT_LIST="1 2 3 4 5 6 7 8 9 10 12 14 16 18 20 25 30 35 40 45 50"
+MUT_LIST="1"
+
 # datasets: human chromosomes full list
 for i in chr{1..22} chr{X,Y,MT} alts unlocalized unplaced
 do  datasets+="hs_ref_GRCh38.p7_"${i}".fa ";   done
 
 CURR_CHROM="chr21"  # current chromosome
+
+INV_REPEATS="0"     # list of inverted repeats      "0 1"
+ALPHA_DENS="20"     # list of alpha denominators    "1 20 100"
+MAX_CTX=3          # max context size              real: -=1
+
+PIX_FORMAT=png      # output format: png, svg
+#rm -f *.$PIX_FORMAT# remove FORMAT pictures, if they exist
+
+IR_NAME=ir          # inverted repeat name
+a_NAME=ad           # alpha denominator name
 
 
 #***********************************************************
@@ -88,7 +101,7 @@ rm -f ${CURR_CHROM}temp*    # remove temporary files
 #-----------------------------------
 rm -fr datasets
 mkdir -p datasets
-mv ./chr21* datasets
+mv ./${CURR_CHROM}* datasets
 
 fi  # end of generating mutations using "goose"
 
@@ -98,37 +111,23 @@ fi  # end of generating mutations using "goose"
 #***********************************************************
 if [[ $RUN == 1 ]]; then
 
-IR_NAME=ir          # inverted repeat name
-a_NAME=ad           # alpha denominator name
-
-INV_REPEATS="0"     # list of inverted repeats      "0 1"
-ALPHA_DENS="20"     # list of alpha denominators    "1 20 100"
-MAX_CTX=21          # max context size              real: -=1
-
-PIX_FORMAT=png      # output format: png, svg
-#rm -f *.$PIX_FORMAT# remove FORMAT pictures, if they exist
-
-#-----------------------------------
-#   run the program for different datasets, ir, alphaDen and context sizes
-#-----------------------------------
 for ir in $INV_REPEATS; do
     for alphaDen in $ALPHA_DENS; do
-#    rm -f $IR_NAME$ir-$a_NAME$alphaDen-$CURR_CHROM*.dat
-    touch $IR_NAME$ir-$a_NAME$alphaDen-$CURR_CHROM.dat
-    echo -e "# mut\tmin_bpb\tmin_ctx" >> $IR_NAME$ir-$a_NAME$alphaDen-$CURR_CHROM.dat
-
-        for mut in 1; do    #$MUT_LIST
-            for dataset in ${CURR_CHROM}_$mut; do
-#            rm -f $IR_NAME$ir-$a_NAME$alphaDen-$dataset.dat
-            touch $IR_NAME$ir-$a_NAME$alphaDen-$dataset.dat
-            echo -e "# ir\talpha\tctx\tbpb\ttime(s)" >> $IR_NAME$ir-$a_NAME$alphaDen-$dataset.dat
+        for dataset in $datasets; do
+#        rm -f $IR_NAME$ir-$a_NAME$alphaDen-${dataset}.dat
+        touch $IR_NAME$ir-$a_NAME$alphaDen-$dataset.dat
+        echo -e "# mut\tmin_bpb\tmin_ctx" >> $IR_NAME$ir-$a_NAME$alphaDen-$dataset.dat
+            for mut in $MUT_LIST; do
+#            rm -f $IR_NAME$ir-$a_NAME$alphaDen-${dataset}_$MUT_LIST.dat
+            touch $IR_NAME$ir-$a_NAME$alphaDen-${dataset}_$MUT_LIST.dat
+            echo -e "# ir\talpha\tctx\tbpb\ttime(s)" >> $IR_NAME$ir-$a_NAME$alphaDen-${dataset}_$MUT_LIST.dat
                 for((ctx=2; ctx<$MAX_CTX; ++ctx)); do
-                ./phoenix -m t,$ctx,$alphaDen,$ir -t datasets/$dataset >> $IR_NAME$ir-$a_NAME$alphaDen-$dataset.dat
+                ./phoenix -m t,$ctx,$alphaDen,$ir -t datasets/${dataset}_$MUT_LIST >> $IR_NAME$ir-$a_NAME$alphaDen-${dataset}_$MUT_LIST.dat
                 done
                 # save "min bpb" and "min ctx" for each dataset
                 minBpbCtx=$(awk 'NR==1 || $4 < minBpb {minBpb=$4; minCtx=$3}; \
-                            END {print minBpb"\t"minCtx}' $IR_NAME$ir-$a_NAME$alphaDen-$dataset.dat)
-                echo -e "  $mut\t$minBpbCtx" >> $IR_NAME$ir-$a_NAME$alphaDen-$CURR_CHROM.dat
+                            END {print minBpb"\t"minCtx}' $IR_NAME$ir-$a_NAME$alphaDen-${dataset}_$MUT_LIST.dat)
+                echo -e "  $mut\t$minBpbCtx" >> $IR_NAME$ir-$a_NAME$alphaDen-$dataset.dat
             done
         done
     done
@@ -157,9 +156,9 @@ done
 fi  # end of running the program
 
 
-##-----------------------------------
-##   create "dat" folder to save the results of running
-##-----------------------------------
-#rm -fr dat              # remove "dat" folder, if it already exists
-#mkdir -p dat            # make "dat" folder
-#mv $IR_NAME*.dat dat     # move all created dat files to the "dat" folder
+#-----------------------------------
+#   create "dat" folder and save the results
+#-----------------------------------
+rm -fr dat              # remove "dat" folder, if it already exists
+mkdir -p dat            # make "dat" folder
+mv $IR_NAME*.dat dat    # move all created dat files to the "dat" folder
