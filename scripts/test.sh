@@ -146,7 +146,7 @@ done
 #-----------------------------------
 for mut in 1 #`seq -s' ' 1 $NUM_DATASETS`
 do
-    for dataset in "$nonRep$mut"
+    for dataset in "hs_ref_GRCh38.p7_chr21.fa" #"$nonRep$mut"
     do
         for ir in $INV_REPEATS
         do
@@ -219,9 +219,9 @@ done
 fi  # end of running the program
 
 
-#-----------------------------------
-#   create "dat" folder to save the results of running
-#-----------------------------------
-rm -fr dat              # remove "dat" folder, if it already exists
-mkdir -p dat            # make "dat" folder
-mv $IR_NAME*.dat dat     # move all created dat files to the "dat" folder
+##-----------------------------------
+##   create "dat" folder to save the results of running
+##-----------------------------------
+#rm -fr dat              # remove "dat" folder, if it already exists
+#mkdir -p dat            # make "dat" folder
+#mv $IR_NAME*.dat dat     # move all created dat files to the "dat" folder
