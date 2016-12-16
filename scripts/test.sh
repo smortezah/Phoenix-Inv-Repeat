@@ -14,19 +14,19 @@ make
 INSTALL_XS=0    # to install "XS" from Github
 INSTALL_goose=0 # to install "goose" from Github
 GEN_DATASETS=0  # generate datasets using "XS"
-GEN_MUTATIONS=0 # generate mutations using "goose"
-RUN=1           # run the program
-PLOT_RESULTS=1  # plot results using "gnuplot"
+GEN_MUTATIONS=1 # generate mutations using "goose"
+RUN=0           # run the program
+PLOT_RESULTS=0  # plot results using "gnuplot"
 
 # mutations list:   `seq -s' ' 1 10`
 #MUT_LIST="1 2 3 4 5 6 7 8 9 10 12 14 16 18 20 25 30 35 40 45 50"
-MUT_LIST="1"
+MUT_LIST="1 2"
 
-# datasets: human chromosomes full list
-for i in chr{1..22} chr{X,Y,MT} alts unlocalized unplaced
-do  datasets+="hs_ref_GRCh38.p7_"${i}".fa ";   done
-
-CURR_CHROM="chr21"  # current chromosome
+## datasets: human chromosomes full list
+#for i in chr{1..22} chr{X,Y,MT} alts unlocalized unplaced
+#do  datasets+="hs_ref_GRCh38.p7_"${i}".fa ";   done
+HUMAN_CHR="hs_ref_GRCh38.p7_"
+datasets="${HUMAN_CHR}chr21"
 
 INV_REPEATS="0"     # list of inverted repeats      "0 1"
 ALPHA_DENS="20"     # list of alpha denominators    "1 20 100"
@@ -72,10 +72,10 @@ fi  # end of installing "goose"
 #***********************************************************
 if [[ $GEN_DATASETS == 1 ]]; then
 
-XS/XS -ls 100 -n 100000 -rn 0 -f 0.20,0.20,0.20,0.20,0.20 -eh -eo -es nonRep0   # non-repetitive
+XS/XS -ls 100 -n 100000 -rn 0 -f 0.20,0.20,0.20,0.20,0.20 -eh -eo -es datasetXS
 # add ">X" as the header of the sequence (build "nonRepX")
-echo ">X" > HEADER;
-cat HEADER nonRep0 > nonRepX;
+echo ">X" > HEADER
+cat HEADER datasetXS > dataset
 rm -f HEADER
 
 fi  # end of generating datasets using "XS"
@@ -88,19 +88,21 @@ if [[ $GEN_MUTATIONS == 1 ]]; then
 
 #NUM_MUTATIONS=1     # number of mutations to be generated
 
-for x in $MUT_LIST; do      #((x=1; x<$((NUM_MUTATIONS+1)); x+=1));
-MRATE=`echo "scale=3;$x/100" | bc -l`;                      # handle transition 0.09 -> 0.10
-goose/src/goose-mutatefasta -s $x -a5 -mr $MRATE " " < chromosomes/hs_ref_GRCh38.p7_chr21.fa > ${CURR_CHROM}temp$x;
-cat ${CURR_CHROM}temp$x | grep -v ">" > ${CURR_CHROM}_$x    # remove the header line
+for d in $datasets; do
+    for x in $MUT_LIST; do      #((x=1; x<$((NUM_MUTATIONS+1)); x+=1));
+    MRATE=`echo "scale=3;$x/100" | bc -l`;      # handle transition 0.09 -> 0.10
+    goose/src/goose-mutatefasta -s $x -a5 -mr $MRATE " " < ./chromosomes/${d}.fa > temp;
+    cat temp | grep -v ">" > ${d}_$x      # remove the header line
+    done
 done
-rm -f ${CURR_CHROM}temp*    # remove temporary files
+rm -f temp*    # remove temporary files
 
 #-----------------------------------
-#   move all generated dataset files to "datasets" folder
+#   move all generated mutations files to "datasets" folder
 #-----------------------------------
 rm -fr datasets
 mkdir -p datasets
-mv ./${CURR_CHROM}* datasets
+mv ./${HUMAN_CHR}* datasets
 
 fi  # end of generating mutations using "goose"
 
@@ -174,4 +176,4 @@ fi  #end of plot output using "gnuplot"
 #-----------------------------------
 rm -fr dat              # remove "dat" folder, if it already exists
 mkdir -p dat            # make "dat" folder
-mv $IR_NAME*.dat dat    # move all created dat files to the "dat" folder
+mv ${IR_NAME}*.dat dat    # move all created dat files to the "dat" folder
