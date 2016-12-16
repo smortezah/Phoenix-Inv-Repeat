@@ -16,7 +16,7 @@ INSTALL_goose=0 # to install "goose" from Github
 GEN_DATASETS=0  # generate datasets using "XS"
 GEN_MUTATIONS=0 # generate mutations using "goose"
 RUN=1           # run the program
-PLOT_RESULTS=1  # plot the results using "gnuplot"
+PLOT_RESULTS=1  # plot results using "gnuplot"
 
 # mutations list:   `seq -s' ' 1 10`
 #MUT_LIST="1 2 3 4 5 6 7 8 9 10 12 14 16 18 20 25 30 35 40 45 50"
@@ -136,10 +136,11 @@ done
 
 fi  # end of running the program
 
-#-----------------------------------
-#   plot output using "gnuplot"
-#-----------------------------------
-if [[ $RUN == 1 ]]; then
+
+#***********************************************************
+#   plot results using "gnuplot"
+#***********************************************************
+if [[ $PLOT_RESULTS == 1 ]]; then
 
 for ir in $INV_REPEATS; do
     for alphaDen in $ALPHA_DENS; do
@@ -152,7 +153,7 @@ set ylabel "bpb"                        # set label of y axis
 set xtics add ("1" 1)
 set key right                           # legend position
 set term $PIX_FORMAT                    # set terminal for output picture format
-set output "$CURR_CHROM.$PIX_FORMAT"    # set output name
+set output "$dataset.$PIX_FORMAT"    # set output name
 plot "$IR_NAME$ir-$a_NAME$ALPHA_DENS-$dataset.dat" using 1:2  with linespoints ls 7 title "ir=$ir, alpha=1/$ALPHA_DENS, $dataset"
 
 set ylabel "context-order size"         # set label of y axis
