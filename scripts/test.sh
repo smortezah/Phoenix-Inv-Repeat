@@ -16,7 +16,7 @@ INSTALL_XS=0    # to install "XS" from Github
 INSTALL_goose=0 # to install "goose" from Github
 RUN=1           # run the program
 
-numDatasets=1   # number of datasets to be generated
+NUM_DATASETS=1   # number of datasets to be generated
 
 #***********************************************************
 #   generate dataset using "XS" and "goose"
@@ -69,11 +69,11 @@ rm -f HEADER
 #-----------------------------------
 #   generate the mutated sequences
 #-----------------------------------
-for((x=1; x!=$((numDatasets+1)); ++x));
+for((x=1; x!=$((NUM_DATASETS+1)); ++x));
 do
 MRATE=`echo "scale=3;$x/100" | bc -l`;      # handle transition 0.09 -> 0.10
 #echo "Substitutions rate: $MRATE";
-goose/src/goose-mutatefasta -s 101 -a5 -mr $MRATE " " < nonRepX > nonRepTemp$x;
+goose/src/goose-mutatefasta -s $x -a5 -mr $MRATE " " < nonRepX > nonRepTemp$x;
 cat nonRepTemp$x | grep -v ">" > nonRep$x   # remove the header line
 done
 rm -f nonRepX nonRepTemp*                   # remove temporary files
@@ -99,7 +99,7 @@ if [[ $RUN == 1 ]]; then
 PIX_FORMAT=png
 #PIX_FORMAT=svg
 
-#rm -f $irName*.$PIX_FORMAT   # remove FORMAT pictures, if they exist
+#rm -f $IR_NAME*.$PIX_FORMAT   # remove FORMAT pictures, if they exist
 
 #-----------------------------------
 #   list of datasets
@@ -112,62 +112,59 @@ datasets="nonRep midRep tooRep"
 #-----------------------------------
 #   names for inverted repeat and alpha denominator
 #-----------------------------------
-irName=ir
-aName=ad
+IR_NAME=ir
+a_NAME=ad
 
 #-----------------------------------
 #   list of inverted repeats and alpha denominators
 #-----------------------------------
-#invRepeats="0 1"            # list of inverted repeats
-#alphaDens="1 10 100"        # list of alpha denominators
-invRepeats="0"
-alphaDens="20"
+INV_REPEATS="0"       # "0 1"        list of inverted repeats
+ALPHA_DENS="1"        # "1 10 100"   list of alpha denominators
 
 #-----------------------------------
 #   max context size
 #-----------------------------------
-#maxCtx=21   # real: -=1
-maxCtx=21   # real: -=1
+MAX_CTX=3   # 21    real: -=1
 
 
-##-----------------------------------
-##   create a couple of files to save per mutation results
-##-----------------------------------
-#for ir in $invRepeats
-#do
-#    for alphaDen in $alphaDens
-#    do
-#    rm -f $irName$ir-$aName$alphaDen-$nonRep*.dat
-#    touch $irName$ir-$aName$alphaDen-$nonRep.dat
-#    echo -e "# mut\tmin_bpb\tmin_ctx" >> $irName$ir-$aName$alphaDen-$nonRep.dat
-#    done
-#done
-#
-##-----------------------------------
-##   run the program for different datasets, ir, alphaDen and context sizes
-##-----------------------------------
-#for mut in `seq -s' ' 1 $numDatasets`
-#do
-#    for dataset in "$nonRep$mut"
-#    do
-#        for ir in $invRepeats
-#        do
-#            for alphaDen in $alphaDens
-#            do
-##            rm -f $irName$ir-$aName$alphaDen-$dataset.dat
-#            touch $irName$ir-$aName$alphaDen-$dataset.dat
-#            echo -e "# ir\talpha\tctx\tbpb\ttime(s)" >> $irName$ir-$aName$alphaDen-$dataset.dat
-#
-#                for((ctx=2; ctx<$maxCtx; ++ctx))
-#                do
-#                ./phoenix -m t,$ctx,$alphaDen,$ir -t ./datasets/$dataset >> $irName$ir-$aName$alphaDen-$dataset.dat
-#                done
-#                # save "min bpb" and "min ctx" for each dataset
-#                minBpbCtx=$(awk 'NR==1 || $4 < minBpb {minBpb=$4; minCtx=$3}; \
-#                            END {print minBpb"\t"minCtx}' $irName$ir-$aName$alphaDen-$dataset.dat)
-#                echo -e "  $mut\t$minBpbCtx" >> $irName$ir-$aName$alphaDen-$nonRep.dat
-#            done
-#
+#-----------------------------------
+#   create a couple of files to save per mutation results
+#-----------------------------------
+for ir in $INV_REPEATS
+do
+    for alphaDen in $ALPHA_DENS
+    do
+    rm -f $IR_NAME$ir-$a_NAME$alphaDen-$nonRep*.dat
+    touch $IR_NAME$ir-$a_NAME$alphaDen-$nonRep.dat
+    echo -e "# mut\tmin_bpb\tmin_ctx" >> $IR_NAME$ir-$a_NAME$alphaDen-$nonRep.dat
+    done
+done
+
+#-----------------------------------
+#   run the program for different datasets, ir, alphaDen and context sizes
+#-----------------------------------
+for mut in `seq -s' ' 1 $NUM_DATASETS`
+do
+    for dataset in "$nonRep$mut"
+    do
+        for ir in $INV_REPEATS
+        do
+            for alphaDen in $ALPHA_DENS
+            do
+#            rm -f $IR_NAME$ir-$a_NAME$alphaDen-$dataset.dat
+            touch $IR_NAME$ir-$a_NAME$alphaDen-$dataset.dat
+            echo -e "# ir\talpha\tctx\tbpb\ttime(s)" >> $IR_NAME$ir-$a_NAME$alphaDen-$dataset.dat
+
+                for((ctx=2; ctx<$MAX_CTX; ++ctx))
+                do
+                ./phoenix -m t,$ctx,$alphaDen,$ir -t ./datasets/$dataset >> $IR_NAME$ir-$a_NAME$alphaDen-$dataset.dat
+                done
+                # save "min bpb" and "min ctx" for each dataset
+                minBpbCtx=$(awk 'NR==1 || $4 < minBpb {minBpb=$4; minCtx=$3}; \
+                            END {print minBpb"\t"minCtx}' $IR_NAME$ir-$a_NAME$alphaDen-$dataset.dat)
+                echo -e "  $mut\t$minBpbCtx" >> $IR_NAME$ir-$a_NAME$alphaDen-$nonRep.dat
+            done
+
 ### show output in a figure, using gnuplot
 ##gnuplot <<- EOF
 ###set xlabel "context"
@@ -175,29 +172,29 @@ maxCtx=21   # real: -=1
 ##set ylabel "bpb"
 ##set key right top                   # legend position
 ##set term $PIX_FORMAT                 # set terminal for output picture format
-##set output "$irName$ir.$PIX_FORMAT"  # set output name
+##set output "$IR_NAME$ir.$PIX_FORMAT"  # set output name
 ##
 ##plot for [i=5:13] 'immigration.dat' using 1:(column(i)/Sum[i]) title columnhea
 ##plot for [i=0:1]
 #### find min bpb for each dataset
-###stats "$irName$ir-$aName$alphaDens-$dataset.dat" using 4 name "bpb" nooutput
+###stats "$IR_NAME$ir-$a_NAME$ALPHA_DENS-$dataset.dat" using 4 name "bpb" nooutput
 ###plot $mut $bpb_min
 ##
 #### plot 3 figures at once, for constant "ir", but different "alpha"s and "context"s
-###plot "$irName$ir-${aName}1-$dataset.dat" using 3:4  with linespoints ls 6 title "ir=$ir, alpha=1/1,     $dataset", \
-###     "$irName$ir-${aName}10-$dataset.dat" using 3:4 with linespoints ls 7 title "ir=$ir, alpha=1/10,   $dataset", \
-###     "$irName$ir-${aName}100-$dataset.dat" using 3:4 with linespoints ls 8 title "ir=$ir, alpha=1/100, $dataset"
+###plot "$IR_NAME$ir-${a_NAME}1-$dataset.dat" using 3:4  with linespoints ls 6 title "ir=$ir, alpha=1/1,     $dataset", \
+###     "$IR_NAME$ir-${a_NAME}10-$dataset.dat" using 3:4 with linespoints ls 7 title "ir=$ir, alpha=1/10,   $dataset", \
+###     "$IR_NAME$ir-${a_NAME}100-$dataset.dat" using 3:4 with linespoints ls 8 title "ir=$ir, alpha=1/100, $dataset"
 ##
 ### the following line (EOF) MUST be left as it is; i.e. no space, etc
 ##EOF
-#        done
-#    done
-#done
+        done
+    done
+done
 
 #-----------------------------------
 #   plot output using "gnuplot"
 #-----------------------------------
-for ir in $invRepeats
+for ir in $INV_REPEATS
 do
 gnuplot <<- EOF
 set xlabel "% mutation"                 # set label of x axis
@@ -206,22 +203,22 @@ set xtics 0,5,100                        # set steps for x axis
 set xtics add ("1" 1)
 set key right                           # legend position
 set term $PIX_FORMAT                    # set terminal for output picture format
-set output "$irName$ir.$PIX_FORMAT"     # set output name
-plot "$irName$ir-${aName}20-$nonRep.dat" using 1:2  with linespoints ls 7 title "ir=$ir, alpha=1/20, $nonRep"
+set output "$IR_NAME$ir.$PIX_FORMAT"     # set output name
+plot "$IR_NAME$ir-${a_NAME}20-$nonRep.dat" using 1:2  with linespoints ls 7 title "ir=$ir, alpha=1/20, $nonRep"
 
 #set ylabel "context size"               # set label of y axis
-#set output "$irName$ir-ctx.$PIX_FORMAT" # set output name
-#plot "$irName$ir-${aName}20-ctx-$nonRep.dat" using 1:3  with linespoints ls 7 title "ir=$ir, alpha=1/20, $nonRep"
+#set output "$IR_NAME$ir-ctx.$PIX_FORMAT" # set output name
+#plot "$IR_NAME$ir-${a_NAME}20-ctx-$nonRep.dat" using 1:3  with linespoints ls 7 title "ir=$ir, alpha=1/20, $nonRep"
 
 # the following line (EOF) MUST be left as it is; i.e. no space, etc
 EOF
 done
 
-##-----------------------------------
-##   create "dat" folder to save the results of running
-##-----------------------------------
-#rm -fr dat              # remove "dat" folder, if it already exists
-#mkdir -p dat            # make "dat" folder
-#mv $irName*.dat dat     # move all created dat files to the "dat" folder
+#-----------------------------------
+#   create "dat" folder to save the results of running
+#-----------------------------------
+rm -fr dat              # remove "dat" folder, if it already exists
+mkdir -p dat            # make "dat" folder
+mv $IR_NAME*.dat dat     # move all created dat files to the "dat" folder
 
 fi  # end of running the program
