@@ -35,8 +35,8 @@ MAX_CTX=3          # max context size              real: -=1
 PIX_FORMAT=png      # output format: png, svg
 #rm -f *.$PIX_FORMAT# remove FORMAT pictures, if they exist
 
-IR_NAME=ir          # inverted repeat name
-a_NAME=ad           # alpha denominator name
+IR_NAME=i           # inverted repeat name
+a_NAME=a           # alpha denominator name
 
 
 #***********************************************************
@@ -72,8 +72,6 @@ fi  # end of installing "goose"
 #***********************************************************
 if [[ $GEN_DATASETS == 1 ]]; then
 
-NUM_DATASETS=1  # number of datasets to be generated
-
 XS/XS -ls 100 -n 100000 -rn 0 -f 0.20,0.20,0.20,0.20,0.20 -eh -eo -es nonRep0   # non-repetitive
 # add ">X" as the header of the sequence (build "nonRepX")
 echo ">X" > HEADER;
@@ -88,9 +86,9 @@ fi  # end of generating datasets using "XS"
 #***********************************************************
 if [[ $GEN_MUTATIONS == 1 ]]; then
 
-NUM_MUTATIONS=1     # number of mutations to be generated
+#NUM_MUTATIONS=1     # number of mutations to be generated
 
-for x in $MUT_LIST; do #((x=1; x<$((NUM_MUTATIONS+1)); x+=1));
+for x in $MUT_LIST; do      #((x=1; x<$((NUM_MUTATIONS+1)); x+=1));
 MRATE=`echo "scale=3;$x/100" | bc -l`;                      # handle transition 0.09 -> 0.10
 goose/src/goose-mutatefasta -s $x -a5 -mr $MRATE " " < chromosomes/hs_ref_GRCh38.p7_chr21.fa > ${CURR_CHROM}temp$x;
 cat ${CURR_CHROM}temp$x | grep -v ">" > ${CURR_CHROM}_$x    # remove the header line
