@@ -11,7 +11,7 @@ make
 #***********************************************************
 #   parameters to install and run needed programs
 #***********************************************************
-GEN_DATASET=1   # generate dataset using "XS"
+GEN_DATASET=0   # generate dataset using "XS"
 INSTALL_XS=0    # to install "XS" from Github
 INSTALL_goose=0 # to install "goose" from Github
 RUN=1           # run the program
