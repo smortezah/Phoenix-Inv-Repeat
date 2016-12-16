@@ -11,12 +11,39 @@ make
 #***********************************************************
 #   parameters to install and run needed programs
 #***********************************************************
-GEN_DATASET=0   # generate dataset using "XS"
 INSTALL_XS=0    # to install "XS" from Github
 INSTALL_goose=0 # to install "goose" from Github
+GEN_DATASET=0   # generate dataset using "XS"
+GEN_MUTATION=0  # generate mutations using "goose"
 RUN=1           # run the program
 
-NUM_DATASETS=1   # number of datasets to be generated
+NUM_DATASETS=1  # number of datasets to be generated
+NUM_MUTATIONS=1 # number of mutations to be generated
+
+
+#***********************************************************
+#   install "XS" from Github
+#***********************************************************
+if [[ $INSTALL_XS == 1 ]]; then
+rm -fr XS
+git clone https://github.com/pratas/XS.git
+cd XS
+make
+cd ..
+fi  # end of installing "XS"
+
+
+#***********************************************************
+#   install "goose" from Github
+#***********************************************************
+if [[ $INSTALL_goose == 1 ]]; then
+rm -fr goose-* goose/ SAMPLE*
+git clone https://github.com/pratas/goose.git
+cd goose/src
+make
+cd ../../
+fi  # end of installing "goose"
+
 
 #***********************************************************
 #   generate dataset using "XS" and "goose"
@@ -25,36 +52,6 @@ if [[ $GEN_DATASET == 1 ]]; then
 
 # dataset names: nonRep=non repetitve,  midRep=mid repetitve,   tooRep=too repetitve
 
-#-----------------------------------
-#   install "XS" from Github
-#-----------------------------------
-    if [[ $INSTALL_XS == 1 ]]; then
-    rm -fr XS
-    git clone https://github.com/pratas/XS.git
-    cd XS
-    make
-    cd ..
-    fi  # end of installing "XS"
-
-
-#./XS -v -t 1 -i n=MySeq -ls 70 -n 10000 -rn 1000 -rr -eh -eo -es a     # the most repetitive
-#./XS -v -t 1 -i n=MySeq -ls 70 -n 10000 -rn 50 -rr -eh -eo -es b       # in the middle
-#./XS -v -t 1 -i n=MySeq -ls 70 -n 10000 -rn 0 -eh -eo -es c            # the least repetitive
-#mv a ..
-#mv b ..
-#mv c ..
-#cd ..
-
-#-----------------------------------
-#   install "goose" from Github
-#-----------------------------------
-    if [[ $INSTALL_goose == 1 ]]; then
-    rm -fr goose-* goose/ SAMPLE*
-    git clone https://github.com/pratas/goose.git
-    cd goose/src
-    make
-    cd ../../
-    fi  # end of installing "goose"
 
 #-----------------------------------
 #   generate the original sequence ("nonRep0")
