@@ -78,12 +78,12 @@ cat nonRepTemp$x | grep -v ">" > nonRep$x   # remove the header line
 done
 rm -f nonRepX nonRepTemp*                   # remove temporary files
 
-#-----------------------------------
-#   move all generated dataset files to "datasets" folder
-#-----------------------------------
-rm -fr datasets
-mkdir -p datasets
-mv ./nonRep* datasets
+##-----------------------------------
+##   move all generated dataset files to "datasets" folder
+##-----------------------------------
+#rm -fr datasets
+#mkdir -p datasets
+#mv ./nonRep* datasets
 
 fi  # end of generating dataset
 
