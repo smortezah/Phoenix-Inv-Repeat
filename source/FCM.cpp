@@ -83,7 +83,12 @@ void FCM::buildHashTable ()
 
                 //////////////////////////////////
                 // htable includes an array of uint16_t numbers
-                uint8_t currSymInt = symCharToInt(datasetLine[ lineIter ]);
+//                uint8_t currSymInt = symCharToInt(datasetLine[ lineIter ]);
+                char c = datasetLine[ lineIter ];
+                uint8_t currSymInt = (c == 'A') ? (uint8_t) 0 :
+                                     (c == 'C') ? (uint8_t) 1 :
+                                     (c == 'G') ? (uint8_t) 3 :
+                                     (c == 'T') ? (uint8_t) 4 : (uint8_t) 2;
                 
                 nSym = hTable[ context ][ currSymInt ];
 
@@ -171,16 +176,16 @@ void FCM::buildHashTable ()
 }
 
 
-/***********************************************************
-    transform char symbols into int (ACNGT -> 01234)
-************************************************************/
-uint8_t FCM::symCharToInt (char c) const
-{
-    return (c == 'A') ? (uint8_t) 0 :
-           (c == 'C') ? (uint8_t) 1 :
-           (c == 'G') ? (uint8_t) 3 :
-           (c == 'T') ? (uint8_t) 4 : (uint8_t) 2;
-}
+///***********************************************************
+//    transform char symbols into int (ACNGT -> 01234)
+//************************************************************/
+//uint8_t FCM::symCharToInt (char c) const
+//{
+//    return (c == 'A') ? (uint8_t) 0 :
+//           (c == 'C') ? (uint8_t) 1 :
+//           (c == 'G') ? (uint8_t) 3 :
+//           (c == 'T') ? (uint8_t) 4 : (uint8_t) 2;
+//}
 
 
 /***********************************************************
