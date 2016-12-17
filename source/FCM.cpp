@@ -98,8 +98,9 @@ void FCM::buildHashTable ()
                 for (uint16_t u : hTable[ context ])      sumNSyms += u;
 
                 // P(s|c^t)
-                probability = (nSym + (double) 1/alphaDen) / (sumNSyms + (double) ALPHABET_SIZE/alphaDen);
-
+//                probability = (nSym + (double) 1/alphaDen) / (sumNSyms + (double) ALPHABET_SIZE/alphaDen);
+                probability = (double) (alphaDen*nSym + alphaDen) / (alphaDen*sumNSyms + ALPHABET_SIZE);
+    
                 // sum( log_2 P(s|c^t) )
                 sumOfEntropies += log2(probability);
 ////                //////////////////////////////////
