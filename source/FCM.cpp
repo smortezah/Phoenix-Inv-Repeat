@@ -89,7 +89,8 @@ void FCM::buildHashTable ()
                                      (c == 'C') ? (uint8_t) 1 :
                                      (c == 'G') ? (uint8_t) 3 :
                                      (c == 'T') ? (uint8_t) 4 : (uint8_t) 2;
-                
+    
+    
                 nSym = hTable[ context ][ currSymInt ];
 
                 // sum(n_a)
@@ -155,8 +156,8 @@ void FCM::buildHashTable ()
                 << (float) 1/alphaDen << '\t'
                 << (int) contextDepth << '\t'
                 << averageEntropy
-                << '\t'
-                << hTable.size();
+//                << '\t'
+//                << hTable.size();
 //                << '\n'
                 ;
         //////////////////////////////////

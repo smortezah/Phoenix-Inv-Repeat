@@ -32,9 +32,7 @@ int32_t main (int argc, char *argv[])
     // for access to Functions (object 'function' on memory stack)
     Functions function;
     function.commandLineParser(argc, argv); // parse the command line
-
-
-
+    
     
     
 
