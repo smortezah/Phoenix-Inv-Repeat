@@ -23,33 +23,35 @@ using std::chrono::high_resolution_clock;
 
 int32_t main (int argc, char *argv[])
 {
-    // Record start time
-    high_resolution_clock::time_point exeStartTime = high_resolution_clock::now();
-    
-    
-    
-    
-    // for access to Functions (object 'function' on memory stack)
-    Functions function;
-    function.commandLineParser(argc, argv); // parse the command line
-    
-
-    
-    
-    // Record end time
-    high_resolution_clock::time_point exeFinishTime = high_resolution_clock::now();
-
-    // calculate and show duration in seconds
-    std::chrono::duration< double > elapsed = exeFinishTime - exeStartTime;
-    cout
+//    // Record start time
+//    high_resolution_clock::time_point exeStartTime = high_resolution_clock::now();
+//
+//
+//
+//
+//    // for access to Functions (object 'function' on memory stack)
+//    Functions function;
+//    function.commandLineParser(argc, argv); // parse the command line
+//
+//
+//
+//
+//    // Record end time
+//    high_resolution_clock::time_point exeFinishTime = high_resolution_clock::now();
+//
+//    // calculate and show duration in seconds
+//    std::chrono::duration< double > elapsed = exeFinishTime - exeStartTime;
+//    cout
+////            << '\n'
+//            << '\t'
+////            << "Elapsed time: "
+//            << elapsed.count()
+////            << " s"
 //            << '\n'
-            << '\t'
-//            << "Elapsed time: "
-            << elapsed.count()
-//            << " s"
-            << '\n'
- ;
+// ;
 
+    
+    
     
     return 0;
 }

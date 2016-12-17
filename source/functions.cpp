@@ -215,9 +215,9 @@ void Functions::commandLineParser (int argc, char **argv)
                 
                 models[ n ].buildHashTable();   // build hash table for the model
     
-//                // print the built hash table
+                // print the built hash table
 //                cout << "Model " << n + 1 << " parameters:\n";
-//                models[ n ].printHashTable();
+                models[ n ].printHashTable();
             }
             
             delete[] models;   // delete all models created

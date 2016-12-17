@@ -150,6 +150,8 @@ void FCM::buildHashTable ()
                 << (float) 1/alphaDen << '\t'
                 << (int) contextDepth << '\t'
                 << averageEntropy
+                << '\t'
+                << hTable.size();
 //                << '\n'
                 ;
         //////////////////////////////////
@@ -224,6 +226,10 @@ void FCM::printHashTable () const
 //            sum += i;
         }
 
+        
+        
+        
+        
 //        for (int i = 0; i < 5; ++i)
 //        {
 //            cout << fixed << setprecision(1)
