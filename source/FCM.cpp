@@ -8,7 +8,6 @@
 
 using std::cout;
 using std::string;
-using std::vector;
 using std::ifstream;
 using std::getline;
 using std::to_string;
