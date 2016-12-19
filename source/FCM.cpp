@@ -55,10 +55,7 @@ void FCM::buildHashTable ()
         getline(fileIn, datasetFirstLine);
         string datasetLine;                         // to keep each line of file
         for (size_t i = 0; i != contextDepth ; ++i)    datasetLine += '0';
-    
         datasetLine += datasetFirstLine;               // read first line of file
-//        datasetLine = initContext + datasetLine;    // add "AA..." at beginning of first line
-//cout<<datasetLine;
         
         // iterator for each line of file.
         // starts from index "contextDepth" at first line, and index 0 at other lines
@@ -98,20 +95,20 @@ void FCM::buildHashTable ()
                                      (c == 'G') ? (uint8_t) 3 :
                                      (c == 'T') ? (uint8_t) 4 : (uint8_t) 2;
 
-                //////////////////////////////////
-                nSym = hTable[ context ][ currSymInt ];
-
-                // sum(n_a)
-                sumNSyms = 0;
-                for (uint16_t u : hTable[ context ])      sumNSyms += u;
-
-                // P(s|c^t)
-//                probability = (nSym + (double) 1/alphaDen) / (sumNSyms + (double) ALPHABET_SIZE/alphaDen);
-                probability = (double) (alphaDen*nSym + alphaDen) / (alphaDen*sumNSyms + ALPHABET_SIZE);
-
-                // sum( log_2 P(s|c^t) )
-                sumOfEntropies += log2(probability);
-                /////////////////////////////////
+//                //////////////////////////////////
+//                nSym = hTable[ context ][ currSymInt ];
+//
+//                // sum(n_a)
+//                sumNSyms = 0;
+//                for (uint16_t u : hTable[ context ])      sumNSyms += u;
+//
+//                // P(s|c^t)
+////                probability = (nSym + (double) 1/alphaDen) / (sumNSyms + (double) ALPHABET_SIZE/alphaDen);
+//                probability = (double) (alphaDen*nSym + alphaDen) / (alphaDen*sumNSyms + ALPHABET_SIZE);
+//
+//                // sum( log_2 P(s|c^t) )
+//                sumOfEntropies += log2(probability);
+//                /////////////////////////////////
 
                 // update hash table
                 ++hTable[ context ][ currSymInt ];
@@ -136,10 +133,10 @@ void FCM::buildHashTable ()
 //                          ? to_string(currSymInt)
 //                          : context.substr(1, (unsigned) contextDepth - 1)
 //                            + to_string(currSymInt);
-//                for(uint8_t u:context)cout<<(int)u;
-//                cout<<'\n';
-                memmove(context, context + 1, contextDepth - 1);
-                context[ contextDepth-1 ] = currSymInt;
+                for(uint8_t u:context)cout<<(int)u;
+                cout<<'\n';
+//                memmove(context, context + 1, contextDepth - 1);
+//                context[ contextDepth-1 ] = currSymInt;
             }
 
             lineIter = 0;           // iterator for non-first lines of file becomes 0
@@ -153,28 +150,34 @@ void FCM::buildHashTable ()
 
 
         //////////////////////////////////
-        totalNumberOfSymbols -= contextDepth;   // first line includes contextDepth of "AA..."
-
-        // H_N = -1/N sum( log_2 P(s|c^t) )
-        averageEntropy = (-1) * sumOfEntropies / totalNumberOfSymbols;
-
-        cout
-//                << nSym << '\n'
-//                << sumNSyms << '\n'
-//                << probability << '\n'
-//                << sumOfEntropies << '\n'
-//                << totalNumberOfSymbols << '\n'
-                << "  "
-                << getInvertedRepeat() << '\t'
-                << (float) 1/alphaDen << '\t'
-                << (int) contextDepth << '\t'
-                << averageEntropy
-                << '\t'
-                << hTable.size();
-//                << '\n'
-                ;
-        
-//        for(uint16_t u:hTable[context]) cout<<u;
+//        totalNumberOfSymbols -= contextDepth;   // first line includes contextDepth of "AA..."
+//
+//        // H_N = -1/N sum( log_2 P(s|c^t) )
+//        averageEntropy = (-1) * sumOfEntropies / totalNumberOfSymbols;
+//
+//        cout
+////                << nSym << '\n'
+////                << sumNSyms << '\n'
+////                << probability << '\n'
+////                << sumOfEntropies << '\n'
+////                << totalNumberOfSymbols << '\n'
+//                << "  "
+//                << getInvertedRepeat() << '\t'
+//                << (float) 1/alphaDen << '\t'
+//                << (int) contextDepth << '\t'
+//                << averageEntropy
+//                << '\t'
+//                << hTable.size();
+////                << '\n'
+//                ;
+//
+////        for (htable_t::iterator it = hTable.begin(); it != hTable.end(); ++it)
+////        {
+////            cout << it->first << "\t";
+////            for (int i : it->second)    cout << i << "\t";
+////            cout << '\n';
+////        }
+////        for(uint16_t u:hTable[context]) cout<<u;
         //////////////////////////////////
 
         fileIn.close();             // close file
@@ -234,31 +237,39 @@ void FCM::printHashTable () const
          //              << "------------------------------------------"
          << '\n';
     
-//    int sum;
-//    int alpha = 1;
+//    for(uint16_t u:hTable[{0,0}])
+//    cout<<u;
     
-    for (htable_t::iterator it = hTable.begin(); it != hTable.end(); ++it)
-    {
-//        sum = 0;
-        cout << it->first << "\t";
-        for (int i : it->second)
-        {
-            cout << i << "\t";
-//            sum += i;
-        }
+//    for (htable_t::iterator it = hTable.begin(); it != hTable.end(); ++it)
+//    {
+//        cout << it->first << "\t";
+//        for (int i : it->second)    cout << i << "\t";
+//        cout << '\n';
+//    }
 
-        
-        
-        
-        
-//        for (int i = 0; i < 5; ++i)
+    
+
+
+//    int sum;
+//    for (htable_t::iterator it = hTable.begin(); it != hTable.end(); ++it)
+//    {
+////        sum = 0;
+//        cout << it->first << "\t";
+//        for (int i : it->second)
 //        {
-//            cout << fixed << setprecision(1)
-//                 << (float) (it->second[ i ] + alpha) /
-//                         (sum + ALPHABET_SIZE * alpha) << "\t";
+//            cout << i << "\t";
+////            sum += i;
 //        }
-        cout << '\n';
-    }
+//
+//
+////        for (int i = 0; i < 5; ++i)
+////        {
+////            cout << fixed << setprecision(1)
+////                 << (float) (it->second[ i ] + alpha) /
+////                         (sum + ALPHABET_SIZE * alpha) << "\t";
+////        }
+//        cout << '\n';
+//    }
     
     cout << '\n';
 }
