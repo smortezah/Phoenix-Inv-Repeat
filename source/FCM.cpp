@@ -2,6 +2,7 @@
 #include <fstream>
 #include <algorithm>
 #include <iomanip>      // setw, setprecision
+#include <cstring>      // memmove
 
 #include "FCM.h"
 #include "functions.h"

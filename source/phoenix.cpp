@@ -42,13 +42,16 @@ int32_t main (int argc, char *argv[])
 
     // for access to Functions (object 'function' on memory stack)
     Functions function;
-//    function.commandLineParser(argc, argv); // parse the command line
+    function.commandLineParser(argc, argv); // parse the command line
     
     
+//    int q;std::cin>>q;
+//    int a[3] = {4, 5, 6};
+////    for (int &i:a) i = (++i);
+//    std::memmove(a,a+1,q);
+//    for (int i:a) cout << i;
     
-    int a[3] = {4, 5, 6};
-    for (int &i:a) i = (++i);
-    for (int i:a) cout << i;
+    
     
 //    int a;std::cin>>a;
 //    std::unordered_map< int*, std::array< int ,2>> umap;
