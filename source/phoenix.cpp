@@ -8,6 +8,9 @@
     #include <io.h>
 #else
     #include <unistd.h>
+
+#include <climits>  // UINT_MAX
+
 #endif
 
 #include "def.h"
@@ -20,19 +23,16 @@ using std::chrono::high_resolution_clock;
 ///////////////////////////////////////////////////////////
 /////////                 M A I N                 /////////
 ///////////////////////////////////////////////////////////
-//#define FIXEDSIZE 20
-//template<typename T, std::size_t N>
-//class arrayHash {
-//public:
-//    std::size_t operator()(std::array<T, N> const &arr) const {
-//        std::size_t sum(0);
-//        for(auto &&i : arr) sum += std::hash<T>()(i);
-//        return sum;
-//    }
-//};
 
 
-
+unsigned int chopWithBuiltin(unsigned int x) {
+    //get number of leading redundant sign bits,
+    //which is one less than the position of the MSB
+    int msb_idx = __builtin_clz(x);
+    //now make a mask that is all the bits below the MSB
+    int mask = UINT_MAX >> (msb_idx+1);
+    return x & mask;
+}
 
 
 int32_t main (int argc, char *argv[])
@@ -44,8 +44,9 @@ int32_t main (int argc, char *argv[])
     Functions function;
 //    function.commandLineParser(argc, argv); // parse the command line
     
-    int i=3;
-    cout<<(i<<2);
+    
+    cout<<chopWithBuiltin(10);
+    
     
 //    string s="18446744073709551615";
 //    uint64_t i=std::stoul(s);
