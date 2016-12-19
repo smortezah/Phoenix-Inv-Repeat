@@ -1,11 +1,9 @@
 #!/bin/bash
 
 #***********************************************************
-#   change directory to "source" and make the project
+#   change directory to home
 #***********************************************************
 cd ..
-cmake source
-make
 
 
 #***********************************************************
@@ -25,8 +23,11 @@ MUT_LIST="1"
 ## datasets: human chromosomes full list
 #for i in chr{1..22} chr{X,Y,MT} alts unlocalized unplaced
 #do  datasets+="hs_ref_GRCh38.p7_"${i}".fa ";   done
-HUMAN_CHR="hs_ref_GRCh38.p7_"
-CURR_CHR="chr21"
+HUMAN_CHR_REAL="hs_ref_GRCh38.p7_"
+CHR="chr"
+CURR_CHR="21"
+chromosomes="$HUMAN_CHR_REAL$CHR$CURR_CHR"
+HUMAN_CHR="HS"
 datasets="$HUMAN_CHR$CURR_CHR"
 
 INV_REPEATS="0"     # list of inverted repeats      "0 1"
@@ -90,11 +91,11 @@ if [[ $GEN_MUTATIONS == 1 ]]; then
 
 #NUM_MUTATIONS=1     # number of mutations to be generated:     real: -=1
 
-for d in $datasets; do
+for c in $chromosomes; do
     for x in $MUT_LIST; do      #((x=1; x<$NUM_MUTATIONS; x+=1));
     MRATE=`echo "scale=3;$x/100" | bc -l`;      # handle transition 0.09 -> 0.10
-    goose/src/goose-mutatefasta -s $x -a5 -mr $MRATE " " < chromosomes/${d}.fa > temp;
-    cat temp | grep -v ">" > ${d}_$x      # remove the header line
+    goose/src/goose-mutatefasta -s $x -a5 -mr $MRATE " " < chromosomes/${c}.fa > temp;
+    cat temp | grep -v ">" > $HUMAN_CHR${CURR_CHR}_$x      # remove the header line
     done
 done
 rm -f temp*    # remove temporary files
@@ -112,6 +113,9 @@ fi  # end of generating mutations using "goose"
 #***********************************************************
 #   running the program
 #***********************************************************
+cmake source
+make
+
 if [[ $RUN == 1 ]]; then
 
 for ir in $INV_REPEATS; do
@@ -162,13 +166,13 @@ set ylabel "bpb"                        # set label of y axis
 set xtics add ("1" 1)
 set key right                           # legend position
 set term $PIX_FORMAT                    # set terminal for output picture format
-set output "$dataset.$PIX_FORMAT"    # set output name
-plot "dat/$IR_NAME$ir-$a_NAME$ALPHA_DENS-$dataset.dat" using 1:2  with linespoints ls 7 title "$IR_NAME=$ir, $a_NAME=1/$ALPHA_DENS, $CURR_CHR"
+set output "$dataset.$PIX_FORMAT"       # set output name
+plot "dat/$IR_NAME$ir-$a_NAME$ALPHA_DENS-$dataset.dat" using 1:2  with linespoints ls 7 title "$IR_NAME=$ir, $a_NAME=1/$ALPHA_DENS, $CHR$CURR_CHR"
 
 set ylabel "context-order size"         # set label of y axis
 set ytics 2,1,20                        # set steps for y axis
 set output "$dataset-ctx.$PIX_FORMAT"    # set output name
-plot "dat/$IR_NAME$ir-$a_NAME$ALPHA_DENS-$dataset.dat" using 1:3  with linespoints ls 7 title "$IR_NAME=$ir, $a_NAME=1/$ALPHA_DENS, $CURR_CHR"
+plot "dat/$IR_NAME$ir-$a_NAME$ALPHA_DENS-$dataset.dat" using 1:3  with linespoints ls 7 title "$IR_NAME=$ir, $a_NAME=1/$ALPHA_DENS, $CHR$CURR_CHR"
 
 # the following line (EOF) MUST be left as it is; i.e. no space, etc
 EOF
