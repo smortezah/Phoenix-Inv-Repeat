@@ -22,8 +22,8 @@ public:
     void setTargetOrReference (char);           // setter of target or reference
     uint8_t getContextDepth () const;           // getter of context depth
     void setContextDepth (uint8_t);             // setter of context depth
-    uint32_t getAlphaDenom () const;            // getter of alpha denominator
-    void setAlphaDenom (uint32_t);              // setter of alpha denominator
+    uint16_t getAlphaDenom () const;            // getter of alpha denominator
+    void setAlphaDenom (uint16_t);              // setter of alpha denominator
     bool getInvertedRepeat () const;            // getter of inverted repeat
     void setInvertedRepeat (bool);              // setter of inverted repeat
     const htable_t &getHashTable () const;      // getter of hash table
@@ -36,7 +36,7 @@ public:
 private:
     char targetOrReference;                     // target or reference
     uint8_t contextDepth;                       // context depth (SIZE <= 255)
-    uint32_t alphaDenom;                        // alpha denominator
+    uint16_t alphaDenom;                        // alpha denominator
     bool invertedRepeat;                        // inverted repeat
     htable_t hashTable;                         // hash table
     string tarFileAddress;                      // target file address

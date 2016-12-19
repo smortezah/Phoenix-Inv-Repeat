@@ -20,7 +20,7 @@ using std::chrono::high_resolution_clock;
 ///////////////////////////////////////////////////////////
 /////////                 M A I N                 /////////
 ///////////////////////////////////////////////////////////
-#define FIXEDSIZE 3
+#define FIXEDSIZE 20
 template<typename T, std::size_t N>
 class arrayHash {
 public:
@@ -40,31 +40,42 @@ int32_t main (int argc, char *argv[])
     // Record start time
     high_resolution_clock::time_point exeStartTime = high_resolution_clock::now();
 
-
-
-
     // for access to Functions (object 'function' on memory stack)
     Functions function;
 //    function.commandLineParser(argc, argv); // parse the command line
     
     
     
-    std::unordered_map<std::array<int, FIXEDSIZE>, int, arrayHash<int, FIXEDSIZE>> umap;
-    std::array<int, FIXEDSIZE> arr {{1, 2, 3}};
-    umap[arr] = 1;
-    std::cout << umap[arr] << std::endl;
+    int a[3] = {4, 5, 6};
+    for (int &i:a) i = (++i);
+    for (int i:a) cout << i;
     
-//    typedef unordered_map< array<uint16_t, 1>, int > htable_t;
-//    htable_t ht;
+//    int a;std::cin>>a;
+//    std::unordered_map< int*, std::array< int ,2>> umap;
+////    std::array< int, FIXEDSIZE > arr{{1, 2, 3}};
 //
-////    ht.insert(1, 5);
+//    int context[a];for(int &i:context)i=0;
+//    for(int i:context)cout<<i;
+////    std::array arr{{10,11}};
+////    umap[context]=arr[0];
+////    cout<<umap[context][1];
 //
-//    for (htable_t::iterator it = ht.begin(); it != ht.end(); ++it)
-//    {
-//        cout << it->first << "\t";
-//        for (int i : it->second)
-//            cout << i << "\t";
-//    }
+////    for(auto i:umap)
+////    std::cout << umap[ arr ] << std::endl;
+////
+////
+////
+////    typedef unordered_map< uint8_t*, std::array<uint8_t ,5> > htable_t;
+////    htable_t ht;
+////
+//////    ht.insert(1, 5);
+////
+////    for (htable_t::iterator it = ht.begin(); it != ht.end(); ++it)
+////    {
+////        cout << it->first << "\t";
+////        for (int i : it->second)
+////            cout << i << "\t";
+////    }
 
     
     

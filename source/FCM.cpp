@@ -30,7 +30,7 @@ FCM::FCM () {}
 void FCM::buildHashTable ()
 {
     uint8_t contextDepth    = getContextDepth();    // get context depth
-    uint32_t alphaDen       = getAlphaDenom();      // get alpha denominator
+    uint16_t alphaDen       = getAlphaDenom();      // get alpha denominator
     bool isInvertedRepeat   = getInvertedRepeat();  // get inverted repeat
     // TODO: supprt for both target and reference file addresses
     string fileName         = getTarFileAddress();
@@ -79,8 +79,6 @@ void FCM::buildHashTable ()
             // fill hash table by number of occurrences of symbols A, C, N, G, T
             for (; lineIter != dataSetLineSize; ++lineIter)
             {
-
-                //////////////////////////////////
                 // htable includes an array of uint16_t numbers
 //                uint8_t currSymInt = symCharToInt(datasetLine[ lineIter ]);
                 char c = datasetLine[ lineIter ];
@@ -89,7 +87,7 @@ void FCM::buildHashTable ()
                                      (c == 'G') ? (uint8_t) 3 :
                                      (c == 'T') ? (uint8_t) 4 : (uint8_t) 2;
     
-    
+                //////////////////////////////////
                 nSym = hTable[ context ][ currSymInt ];
 
                 // sum(n_a)
@@ -102,7 +100,7 @@ void FCM::buildHashTable ()
     
                 // sum( log_2 P(s|c^t) )
                 sumOfEntropies += log2(probability);
-////                //////////////////////////////////
+                /////////////////////////////////
 
                 // update hash table
                 ++hTable[ context ][ currSymInt ];
@@ -256,8 +254,8 @@ char FCM::getTargetOrReference () const         { return targetOrReference; }
 void FCM::setTargetOrReference (char tOrR)      { FCM::targetOrReference = tOrR; }
 uint8_t FCM::getContextDepth () const           { return contextDepth; }
 void FCM::setContextDepth (uint8_t ctxDp)       { FCM::contextDepth = ctxDp; }
-uint32_t FCM::getAlphaDenom () const            { return alphaDenom; }
-void FCM::setAlphaDenom (uint32_t alphaDen)     { FCM::alphaDenom = alphaDen; }
+uint16_t FCM::getAlphaDenom () const            { return alphaDenom; }
+void FCM::setAlphaDenom (uint16_t alphaDen)     { FCM::alphaDenom = alphaDen; }
 bool FCM::getInvertedRepeat () const            { return invertedRepeat; }
 void FCM::setInvertedRepeat (bool invRep)       { FCM::invertedRepeat = invRep; }
 const htable_t &FCM::getHashTable () const      { return hashTable; }
