@@ -45,8 +45,8 @@ int32_t main (int argc, char *argv[])
 //    function.commandLineParser(argc, argv); // parse the command line
     
     
-    cout<<chopWithBuiltin(10);
-    
+//    cout<<chopWithBuiltin(10);
+    cout<<(5>>1);
     
 //    string s="18446744073709551615";
 //    uint64_t i=std::stoul(s);
