@@ -20,16 +20,16 @@ using std::chrono::high_resolution_clock;
 ///////////////////////////////////////////////////////////
 /////////                 M A I N                 /////////
 ///////////////////////////////////////////////////////////
-#define FIXEDSIZE 20
-template<typename T, std::size_t N>
-class arrayHash {
-public:
-    std::size_t operator()(std::array<T, N> const &arr) const {
-        std::size_t sum(0);
-        for(auto &&i : arr) sum += std::hash<T>()(i);
-        return sum;
-    }
-};
+//#define FIXEDSIZE 20
+//template<typename T, std::size_t N>
+//class arrayHash {
+//public:
+//    std::size_t operator()(std::array<T, N> const &arr) const {
+//        std::size_t sum(0);
+//        for(auto &&i : arr) sum += std::hash<T>()(i);
+//        return sum;
+//    }
+//};
 
 
 
@@ -44,6 +44,10 @@ int32_t main (int argc, char *argv[])
     Functions function;
     function.commandLineParser(argc, argv); // parse the command line
     
+//    uint8_t contextDepth=5;
+//    uint8_t initContext[contextDepth];          // initial context = "00..."
+//    std::memset(initContext,0,contextDepth);
+//    for (uint8_t i:initContext) cout << (int)i;
     
 //    int q;std::cin>>q;
 //    int a[3] = {4, 5, 6};

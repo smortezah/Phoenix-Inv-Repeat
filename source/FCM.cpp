@@ -2,7 +2,7 @@
 #include <fstream>
 #include <algorithm>
 #include <iomanip>      // setw, setprecision
-#include <cstring>      // memmove
+#include <cstring>      // memset, memmove
 
 #include "FCM.h"
 #include "functions.h"
@@ -13,6 +13,8 @@ using std::ifstream;
 using std::getline;
 using std::to_string;
 using std::ios;
+using std::memset;
+using std::memmove;
 using std::fixed;
 using std::setprecision;
 
@@ -40,8 +42,14 @@ void FCM::buildHashTable ()
     
     if (Functions::isFileCorrect(fileName))         // file opened correctly
     {
-        string initContext(contextDepth, 'A');      // initial context = "AA..."
-        string context(contextDepth, '0');          // context, that slides in the dataset
+//        string initContext(contextDepth, 'A');      // initial context = "AA..."
+//        string context(contextDepth, '0');          // context, that slides in the dataset
+        // initial context = "00..."
+        uint8_t initContext[contextDepth];
+        memset(initContext, 0, contextDepth);
+        // context, that slides in the dataset
+        uint8_t context[contextDepth];
+        memset(context, 0, contextDepth);
     
         htable_t hTable;                            // create hash table
         hTable.insert({context, {0, 0, 0, 0, 0}});  // initialize hash table with 0'z
