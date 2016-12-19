@@ -23,11 +23,11 @@ MUT_LIST="1"
 ## datasets: human chromosomes full list
 #for i in chr{1..22} chr{X,Y,MT} alts unlocalized unplaced
 #do  datasets+="hs_ref_GRCh38.p7_"${i}".fa ";   done
-HUMAN_CHR_REAL="hs_ref_GRCh38.p7_"
+HUMAN_CHR_PREFIX="hs_ref_GRCh38.p7_"
 CHR="chr"
-CURR_CHR="21"
-chromosomes="$HUMAN_CHR_REAL$CHR$CURR_CHR"
 HUMAN_CHR="HS"
+CURR_CHR="21"
+chromosomes="$HUMAN_CHR_PREFIX$CHR$CURR_CHR"
 datasets="$HUMAN_CHR$CURR_CHR"
 
 INV_REPEATS="0"     # list of inverted repeats      "0 1"
