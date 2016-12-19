@@ -2,7 +2,7 @@
 #include <fstream>
 #include <algorithm>
 #include <iomanip>      // setw, setprecision
-#include <cstring>      // memset, memmove
+#include <cstring>      // memset, memcpy
 
 #include "FCM.h"
 #include "functions.h"
@@ -43,10 +43,10 @@ void FCM::buildHashTable ()
     if (Functions::isFileCorrect(fileName))         // file opened correctly
     {
 //        string initContext(contextDepth, 'A');      // initial context = "AA..."
-//        string context(contextDepth, '0');          // context, that slides in the dataset
-        // context, that slides in the dataset
-        uint8_t context[contextDepth];
-        memset(context, 0, contextDepth);
+        string context(contextDepth, '0');          // context, that slides in the dataset
+//        // context, that slides in the dataset
+//        uint8_t context[contextDepth];
+//        memset(context, 0, contextDepth);
     
         htable_t hTable;                            // create hash table
         hTable.insert({context, {0, 0, 0, 0, 0}});  // initialize hash table with 0'z
@@ -94,65 +94,56 @@ void FCM::buildHashTable ()
                                      (c == 'G') ? (uint8_t) 3 :
                                      (c == 'T') ? (uint8_t) 4 : (uint8_t) 2;
 
-//                //////////////////////////////////
-//                nSym = hTable[ context ][ currSymInt ];
-//
-//                // sum(n_a)
-//                sumNSyms = 0;
-//                for (uint16_t u : hTable[ context ])      sumNSyms += u;
-//
-//                // P(s|c^t)
-////                probability = (nSym + (double) 1/alphaDen) / (sumNSyms + (double) ALPHABET_SIZE/alphaDen);
-//                probability = (double) (alphaDen*nSym + alphaDen) / (alphaDen*sumNSyms + ALPHABET_SIZE);
-//
-//                // sum( log_2 P(s|c^t) )
-//                sumOfEntropies += log2(probability);
-//                /////////////////////////////////
+                //////////////////////////////////
+                nSym = hTable[ context ][ currSymInt ];
 
+                // sum(n_a)
+                sumNSyms = 0;
+                for (uint16_t u : hTable[ context ])      sumNSyms += u;
+
+                // P(s|c^t)
+//                probability = (nSym + (double) 1/alphaDen) / (sumNSyms + (double) ALPHABET_SIZE/alphaDen);
+                probability = (double) (alphaDen*nSym + alphaDen) / (alphaDen*sumNSyms + ALPHABET_SIZE);
+
+                // sum( log_2 P(s|c^t) )
+                sumOfEntropies += log2(probability);
+                /////////////////////////////////
+    
+    
+//                cout << "ctx_bef ";for (uint8_t u:context) cout << (int) u;
+//                cout << '\n' << "curr_Sym " << (int) currSymInt << '\n';
+                
                 // update hash table
                 ++hTable[ context ][ currSymInt ];
 
-////                // considering inverted repeats to update hash table
-////                if (isInvertedRepeat)
-////                {
-////                    // save inverted repeat context
-////                    string invRepeatContext = "";
-////                    invRepeatContext += to_string(4 - currSymInt);
-////                    // convert a number from char into integer format. '0'->0. '4'->4 by
-////                    // 52 - context[ i ] = 4 - (context[ i ] - 48). 48 is ASCII code of '0'
-////                    for (int i = contextDepth - 1; i != 0; --i)
-////                        invRepeatContext += to_string( 52 - context[ i ] );
-////
-////                    // update hash table considering inverted repeats
-////                    ++hTable[ invRepeatContext ][ 52 - context[0] ];
-////                }
+                // considering inverted repeats to update hash table
+                if (isInvertedRepeat)
+                {
+                    // save inverted repeat context
+                    string invRepeatContext = "";
+                    invRepeatContext += to_string(4 - currSymInt);
+                    // convert a number from char into integer format. '0'->0. '4'->4 by
+                    // 52 - context[ i ] = 4 - (context[ i ] - 48). 48 is ASCII code of '0'
+                    for (int i = contextDepth - 1; i != 0; --i)
+                        invRepeatContext += to_string( 52 - context[ i ] );
+
+                    // update hash table considering inverted repeats
+                    ++hTable[ invRepeatContext ][ 52 - context[0] ];
+                }
+
+                // update context
+                context = (contextDepth == 1)
+                          ? to_string(currSymInt)
+                          : context.substr(1, (unsigned) contextDepth - 1)
+                            + to_string(currSymInt);
+////                cout << "ctx_bef ";for (uint8_t u:context) cout << (int) u;
+////                cout << '\n' << "curr_Sym " << (int) currSymInt << '\n';
+//                for (int i = 0; i < 5; ++i) cout<<(hTable[ context ])[ i ];
+//                cout<<"\n";
+//                cout<<'\n';
 //
-//                // update context
-//                context = (contextDepth == 1)
-//                          ? to_string(currSymInt)
-//                          : context.substr(1, (unsigned) contextDepth - 1)
-//                            + to_string(currSymInt);
-                cout << "ctx_bef ";for (uint8_t u:context) cout << (int) u;
-                cout << '\n' << "curr_Sym " << (int) currSymInt << '\n';
-                uint8_t a0[2]={0,0};
-                uint8_t a1[2]={0,1};
-                uint8_t a2[2]={0,2};
-                uint8_t a3[2]={0,3};
-                uint8_t a4[2]={0,4};
-//                for(uint8_t u:hTable[a0])cout<<(int )u;cout<<'\n';
-//                for(uint8_t u:hTable[a1])cout<<(int )u;cout<<'\n';
-//                for(uint8_t u:hTable[a2])cout<<(int )u;cout<<'\n';
-//                for(uint8_t u:hTable[a3])cout<<(int )u;cout<<'\n';
-//                for(uint8_t u:hTable[a4])cout<<(int )u;cout<<'\n';
-//                cout<<(hTable[ context ])[ 0 ];
-                cout<<(hTable[ context ])[ 1 ];
-//                cout<<(hTable[ context ])[ 2 ];
-//                cout<<(hTable[ context ])[ 3 ];
-//                cout<<(hTable[ context ])[ 4 ]<<"\n";
-                memcpy(context, context + 1, contextDepth - 1);
-                context[ contextDepth-1 ] = currSymInt;
-                cout<<'\n';
-//                cout << "ctx_aft ";for (uint8_t u:context) cout << (int) u;cout<<'\n';
+//                memcpy(context, context + 1, contextDepth - 1);
+//                context[ contextDepth-1 ] = currSymInt;
             }
 
             lineIter = 0;           // iterator for non-first lines of file becomes 0
@@ -266,26 +257,26 @@ void FCM::printHashTable () const
     
 
 
-//    int sum;
-//    for (htable_t::iterator it = hTable.begin(); it != hTable.end(); ++it)
-//    {
-////        sum = 0;
-//        cout << it->first << "\t";
-//        for (int i : it->second)
+    int sum;
+    for (htable_t::iterator it = hTable.begin(); it != hTable.end(); ++it)
+    {
+//        sum = 0;
+        cout << it->first << "\t";
+        for (int i : it->second)
+        {
+            cout << i << "\t";
+//            sum += i;
+        }
+
+
+//        for (int i = 0; i < 5; ++i)
 //        {
-//            cout << i << "\t";
-////            sum += i;
+//            cout << fixed << setprecision(1)
+//                 << (float) (it->second[ i ] + alpha) /
+//                         (sum + ALPHABET_SIZE * alpha) << "\t";
 //        }
-//
-//
-////        for (int i = 0; i < 5; ++i)
-////        {
-////            cout << fixed << setprecision(1)
-////                 << (float) (it->second[ i ] + alpha) /
-////                         (sum + ALPHABET_SIZE * alpha) << "\t";
-////        }
-//        cout << '\n';
-//    }
+        cout << '\n';
+    }
     
     cout << '\n';
 }
