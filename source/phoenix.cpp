@@ -42,8 +42,10 @@ int32_t main (int argc, char *argv[])
 
     // for access to Functions (object 'function' on memory stack)
     Functions function;
-    function.commandLineParser(argc, argv); // parse the command line
+//    function.commandLineParser(argc, argv); // parse the command line
     
+    int i=3;
+    cout<<(i<<2);
     
 //    string s="18446744073709551615";
 //    uint64_t i=std::stoul(s);
