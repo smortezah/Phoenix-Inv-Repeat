@@ -74,7 +74,6 @@ void FCM::buildHashTable ()
 //        //TODO TEST
 //        high_resolution_clock::time_point exeStartTime = high_resolution_clock::now();
 
-int index=0;
         do
         {
 
@@ -133,18 +132,27 @@ int index=0;
 //                          ? to_string(currSymInt)
 //                          : context.substr(1, (unsigned) contextDepth - 1)
 //                            + to_string(currSymInt);
-                cout<<index<<'\n';
                 cout << "ctx_bef ";for (uint8_t u:context) cout << (int) u;
                 cout << '\n' << "curr_Sym " << (int) currSymInt << '\n';
-                cout<<hTable[ context ][ 0 ];
-                cout<<hTable[ context ][ 1 ];
-                cout<<hTable[ context ][ 2 ];
-                cout<<hTable[ context ][ 3 ];
-                cout<<hTable[ context ][ 4 ]<<"\n";
+                uint8_t a0[2]={0,0};
+                uint8_t a1[2]={0,1};
+                uint8_t a2[2]={0,2};
+                uint8_t a3[2]={0,3};
+                uint8_t a4[2]={0,4};
+//                for(uint8_t u:hTable[a0])cout<<(int )u;cout<<'\n';
+//                for(uint8_t u:hTable[a1])cout<<(int )u;cout<<'\n';
+//                for(uint8_t u:hTable[a2])cout<<(int )u;cout<<'\n';
+//                for(uint8_t u:hTable[a3])cout<<(int )u;cout<<'\n';
+//                for(uint8_t u:hTable[a4])cout<<(int )u;cout<<'\n';
+//                cout<<(hTable[ context ])[ 0 ];
+                cout<<(hTable[ context ])[ 1 ];
+//                cout<<(hTable[ context ])[ 2 ];
+//                cout<<(hTable[ context ])[ 3 ];
+//                cout<<(hTable[ context ])[ 4 ]<<"\n";
                 memcpy(context, context + 1, contextDepth - 1);
                 context[ contextDepth-1 ] = currSymInt;
-                cout << "ctx_aft ";for (uint8_t u:context) cout << (int) u;cout<<'\n';
-                ++index;
+                cout<<'\n';
+//                cout << "ctx_aft ";for (uint8_t u:context) cout << (int) u;cout<<'\n';
             }
 
             lineIter = 0;           // iterator for non-first lines of file becomes 0
@@ -157,7 +165,7 @@ int index=0;
 //        cout << '\t' << "build_hash="<<elapsed.count();
 
 
-        //////////////////////////////////
+//        ////////////////////////////////
 //        totalNumberOfSymbols -= contextDepth;   // first line includes contextDepth of "AA..."
 //
 //        // H_N = -1/N sum( log_2 P(s|c^t) )
@@ -186,7 +194,7 @@ int index=0;
 ////            cout << '\n';
 ////        }
 ////        for(uint16_t u:hTable[context]) cout<<u;
-        //////////////////////////////////
+//        ////////////////////////////////
 
         fileIn.close();             // close file
 
