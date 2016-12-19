@@ -62,8 +62,8 @@ void FCM::buildHashTable ()
         size_t lineIter = contextDepth;
 
         //////////////////////////////////
-        uint16_t nSym;                      // number of symbols (n_s). To calculate probability
-        uint32_t sumNSyms;                  // sum of number of symbols (sum n_a). To calculate probability
+        uint64_t nSym;                      // number of symbols (n_s). To calculate probability
+        uint64_t sumNSyms;                  // sum of number of symbols (sum n_a). To calculate probability
         double   probability = 0;           // probability of a symbol, based on an identified context
         double   sumOfEntropies = 0;        // sum of entropies for different symbols
         uint8_t  dataSetLineSize;           // size of each line of dataset
@@ -99,7 +99,7 @@ void FCM::buildHashTable ()
 
                 // sum(n_a)
                 sumNSyms = 0;
-                for (uint16_t u : hTable[ context ])      sumNSyms += u;
+                for (uint64_t u : hTable[ context ])      sumNSyms += u;
 
                 // P(s|c^t)
 //                probability = (nSym + (double) 1/alphaDen) / (sumNSyms + (double) ALPHABET_SIZE/alphaDen);
@@ -139,8 +139,7 @@ void FCM::buildHashTable ()
 ////                cout << "ctx_bef ";for (uint8_t u:context) cout << (int) u;
 ////                cout << '\n' << "curr_Sym " << (int) currSymInt << '\n';
 //                for (int i = 0; i < 5; ++i) cout<<(hTable[ context ])[ i ];
-//                cout<<"\n";
-//                cout<<'\n';
+//                cout<<"\n\n";
 //
 //                memcpy(context, context + 1, contextDepth - 1);
 //                context[ contextDepth-1 ] = currSymInt;
@@ -156,36 +155,36 @@ void FCM::buildHashTable ()
 //        cout << '\t' << "build_hash="<<elapsed.count();
 
 
-//        ////////////////////////////////
-//        totalNumberOfSymbols -= contextDepth;   // first line includes contextDepth of "AA..."
-//
-//        // H_N = -1/N sum( log_2 P(s|c^t) )
-//        averageEntropy = (-1) * sumOfEntropies / totalNumberOfSymbols;
-//
-//        cout
-////                << nSym << '\n'
-////                << sumNSyms << '\n'
-////                << probability << '\n'
-////                << sumOfEntropies << '\n'
-////                << totalNumberOfSymbols << '\n'
-//                << "  "
-//                << getInvertedRepeat() << '\t'
-//                << (float) 1/alphaDen << '\t'
-//                << (int) contextDepth << '\t'
-//                << averageEntropy
+        ////////////////////////////////
+        totalNumberOfSymbols -= contextDepth;   // first line includes contextDepth of "AA..."
+
+        // H_N = -1/N sum( log_2 P(s|c^t) )
+        averageEntropy = (-1) * sumOfEntropies / totalNumberOfSymbols;
+
+        cout
+//                << nSym << '\n'
+//                << sumNSyms << '\n'
+//                << probability << '\n'
+//                << sumOfEntropies << '\n'
+//                << totalNumberOfSymbols << '\n'
+                << "  "
+                << getInvertedRepeat() << '\t'
+                << (float) 1/alphaDen << '\t'
+                << (int) contextDepth << '\t'
+                << averageEntropy
 //                << '\t'
 //                << hTable.size();
-////                << '\n'
-//                ;
-//
-////        for (htable_t::iterator it = hTable.begin(); it != hTable.end(); ++it)
-////        {
-////            cout << it->first << "\t";
-////            for (int i : it->second)    cout << i << "\t";
-////            cout << '\n';
-////        }
-////        for(uint16_t u:hTable[context]) cout<<u;
-//        ////////////////////////////////
+//                << '\n'
+                ;
+
+//        for (htable_t::iterator it = hTable.begin(); it != hTable.end(); ++it)
+//        {
+//            cout << it->first << "\t";
+//            for (int i : it->second)    cout << i << "\t";
+//            cout << '\n';
+//        }
+//        for(uint16_t u:hTable[context]) cout<<u;
+        ////////////////////////////////
 
         fileIn.close();             // close file
 

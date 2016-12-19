@@ -44,6 +44,13 @@ int32_t main (int argc, char *argv[])
     Functions function;
     function.commandLineParser(argc, argv); // parse the command line
     
+    
+//    string s="18446744073709551615";
+//    uint64_t i=std::stoul(s);
+//    cout<<i;
+    
+    
+    
 //    uint8_t contextDepth=5;
 //    uint8_t initContext[contextDepth];          // initial context = "00..."
 //    std::memset(initContext,0,contextDepth);
