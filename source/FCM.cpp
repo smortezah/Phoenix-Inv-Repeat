@@ -74,7 +74,7 @@ void FCM::buildHashTable ()
 //        //TODO TEST
 //        high_resolution_clock::time_point exeStartTime = high_resolution_clock::now();
 
-
+int index=0;
         do
         {
 
@@ -133,10 +133,18 @@ void FCM::buildHashTable ()
 //                          ? to_string(currSymInt)
 //                          : context.substr(1, (unsigned) contextDepth - 1)
 //                            + to_string(currSymInt);
-                for(uint8_t u:context)cout<<(int)u;
-                cout<<'\n';
-//                memmove(context, context + 1, contextDepth - 1);
-//                context[ contextDepth-1 ] = currSymInt;
+                cout<<index<<'\n';
+                cout << "ctx_bef ";for (uint8_t u:context) cout << (int) u;
+                cout << '\n' << "curr_Sym " << (int) currSymInt << '\n';
+                cout<<hTable[ context ][ 0 ];
+                cout<<hTable[ context ][ 1 ];
+                cout<<hTable[ context ][ 2 ];
+                cout<<hTable[ context ][ 3 ];
+                cout<<hTable[ context ][ 4 ]<<"\n";
+                memcpy(context, context + 1, contextDepth - 1);
+                context[ contextDepth-1 ] = currSymInt;
+                cout << "ctx_aft ";for (uint8_t u:context) cout << (int) u;cout<<'\n';
+                ++index;
             }
 
             lineIter = 0;           // iterator for non-first lines of file becomes 0
