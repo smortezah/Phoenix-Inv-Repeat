@@ -57,7 +57,10 @@ void FCM::buildHashTable ()
         string datasetLine;                         // to keep each line of file
         getline(fileIn, datasetLine);               // read first line of file
 //        datasetLine = initContext + datasetLine;    // add "AA..." at beginning of first line
-
+for(uint8_t &u:initContext)to_string(u);
+        cout<<initContext;
+        
+        
 //        // iterator for each line of file.
 //        // starts from index "contextDepth" at first line, and index 0 at other lines
 //        size_t lineIter = contextDepth;
