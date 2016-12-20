@@ -29,11 +29,12 @@ HUMAN_CHR="HS"
 CURR_CHR="21"
 chromosomes="$HUMAN_CHR_PREFIX$CHR$CURR_CHR"
 datasets="$HUMAN_CHR$CURR_CHR"
+#datasets="tmp"
 
 INV_REPEATS="0"     # list of inverted repeats      "0 1"
-ALPHA_DENS="20"     # list of alpha denominators    "1 20 100"
-MIN_CTX=2          # min context size
-MAX_CTX=3          # max context size   ->  real: -=1
+ALPHA_DENS="1"     # list of alpha denominators    "1 20 100"
+MIN_CTX=13          # min context size
+MAX_CTX=14          # max context size   ->  real: -=1
 
 PIX_FORMAT=png      # output format: png, svg
 #rm -f *.$PIX_FORMAT# remove FORMAT pictures, if they exist
@@ -158,25 +159,28 @@ if [[ $PLOT_RESULTS == 1 ]]; then
 for ir in $INV_REPEATS; do
     for alphaDen in $ALPHA_DENS; do
         for dataset in $datasets; do
+            for mut in $MUT_LIST; do
 
 gnuplot <<- EOF
-set xlabel "% mutation"                 # set label of x axis
+#set xlabel "% mutation"                # set label of x axis
+set xlabel "ctx"
 set ylabel "bpb"                        # set label of y axis
-#set xtics 0,5,100                       # set steps for x axis
+#set xtics 0,5,100                      # set steps for x axis
 set xtics add ("1" 1)
 set key right                           # legend position
 set term $PIX_FORMAT                    # set terminal for output picture format
 set output "$dataset.$PIX_FORMAT"       # set output name
-plot "dat/$IR_NAME$ir-$a_NAME$ALPHA_DENS-$dataset.dat" using 1:2  with linespoints ls 7 title "$IR_NAME=$ir, $a_NAME=1/$ALPHA_DENS, $CHR$CURR_CHR"
+plot "dat/$IR_NAME$ir-$a_NAME$ALPHA_DENS-${dataset}_$mut.dat" using 3:4  with linespoints ls 7 title "$IR_NAME=$ir, $a_NAME=1/$ALPHA_DENS, $CHR$CURR_CHR"
 
-set ylabel "context-order size"         # set label of y axis
-set ytics 2,1,20                        # set steps for y axis
-set output "$dataset-ctx.$PIX_FORMAT"    # set output name
-plot "dat/$IR_NAME$ir-$a_NAME$ALPHA_DENS-$dataset.dat" using 1:3  with linespoints ls 7 title "$IR_NAME=$ir, $a_NAME=1/$ALPHA_DENS, $CHR$CURR_CHR"
+#set ylabel "context-order size"         # set label of y axis
+#set ytics 2,1,20                        # set steps for y axis
+#set output "$dataset-ctx.$PIX_FORMAT"    # set output name
+#plot "dat/$IR_NAME$ir-$a_NAME$ALPHA_DENS-$dataset.dat" using 1:3  with linespoints ls 7 title "$IR_NAME=$ir, $a_NAME=1/$ALPHA_DENS, $CHR$CURR_CHR"
 
 # the following line (EOF) MUST be left as it is; i.e. no space, etc
 EOF
 
+            done
         done
     done
 done

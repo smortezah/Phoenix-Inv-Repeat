@@ -8,9 +8,6 @@
     #include <io.h>
 #else
     #include <unistd.h>
-
-#include <climits>  // UINT_MAX
-
 #endif
 
 #include "def.h"
@@ -23,17 +20,8 @@ using std::chrono::high_resolution_clock;
 ///////////////////////////////////////////////////////////
 /////////                 M A I N                 /////////
 ///////////////////////////////////////////////////////////
-
-
-unsigned int chopWithBuiltin(unsigned int x) {
-    //get number of leading redundant sign bits,
-    //which is one less than the position of the MSB
-    int msb_idx = __builtin_clz(x);
-    //now make a mask that is all the bits below the MSB
-    int mask = UINT_MAX >> (msb_idx+1);
-    return x & mask;
-}
-
+#include <iomanip>      // setw, setprecision
+#include <fstream>
 
 int32_t main (int argc, char *argv[])
 {
@@ -42,58 +30,16 @@ int32_t main (int argc, char *argv[])
 
     // for access to Functions (object 'function' on memory stack)
     Functions function;
-//    function.commandLineParser(argc, argv); // parse the command line
+    function.commandLineParser(argc, argv); // parse the command line
     
     
-//    cout<<chopWithBuiltin(10);
-    cout<<(5>>1);
-    
-//    string s="18446744073709551615";
-//    uint64_t i=std::stoul(s);
-//    cout<<i;
-    
-    
-    
-//    uint8_t contextDepth=5;
-//    uint8_t initContext[contextDepth];          // initial context = "00..."
-//    std::memset(initContext,0,contextDepth);
-//    for (uint8_t i:initContext) cout << (int)i;
-    
-//    int q;std::cin>>q;
-//    int a[3] = {4, 5, 6};
-////    for (int &i:a) i = (++i);
-//    std::memmove(a,a+1,q);
-//    for (int i:a) cout << i;
-    
-    
-    
-//    int a;std::cin>>a;
-//    std::unordered_map< int*, std::array< int ,2>> umap;
-////    std::array< int, FIXEDSIZE > arr{{1, 2, 3}};
-//
-//    int context[a];for(int &i:context)i=0;
-//    for(int i:context)cout<<i;
-////    std::array arr{{10,11}};
-////    umap[context]=arr[0];
-////    cout<<umap[context][1];
-//
-////    for(auto i:umap)
-////    std::cout << umap[ arr ] << std::endl;
-////
-////
-////
-////    typedef unordered_map< uint8_t*, std::array<uint8_t ,5> > htable_t;
-////    htable_t ht;
-////
-//////    ht.insert(1, 5);
-////
-////    for (htable_t::iterator it = ht.begin(); it != ht.end(); ++it)
-////    {
-////        cout << it->first << "\t";
-////        for (int i : it->second)
-////            cout << i << "\t";
-////    }
-
+//    uint16_t alphaDen=1;
+//    uint64_t nSym=4;
+//    uint64_t sumNSyms=13;
+//    double probability = (double) ((uint64_t) alphaDen*nSym + (uint64_t)alphaDen) / (double) ((uint64_t) alphaDen*sumNSyms + (uint64_t) ALPHABET_SIZE);
+//    std::cout << std::fixed;
+//    std::cout << std::setprecision(15);
+//    cout<<probability;
     
     
     

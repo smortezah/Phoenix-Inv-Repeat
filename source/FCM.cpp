@@ -50,12 +50,13 @@ void FCM::buildHashTable ()
     
         htable_t hTable;                            // create hash table
         hTable.insert({context, {0, 0, 0, 0, 0}});  // initialize hash table with 0'z
+//        hTable.insert({context, {0, 0, 0, 0, 0, 0}});// initialize hash table with 0'z
 
-        string datasetFirstLine;
-        getline(fileIn, datasetFirstLine);
-        string datasetLine;                         // to keep each line of file
-        for (size_t i = 0; i != contextDepth ; ++i)    datasetLine += '0';
-        datasetLine += datasetFirstLine;               // read first line of file
+        string datasetFirstLine;                    // keep first line of file
+        getline(fileIn, datasetFirstLine);          // read first line of file
+        string datasetLine(contextDepth, '0');      // to keep each line of file
+//        for (size_t i = 0; i != contextDepth ; ++i)    datasetLine += '0';
+        datasetLine += datasetFirstLine;
         
         // iterator for each line of file.
         // starts from index "contextDepth" at first line, and index 0 at other lines
@@ -73,7 +74,7 @@ void FCM::buildHashTable ()
 
 //        //TODO TEST
 //        high_resolution_clock::time_point exeStartTime = high_resolution_clock::now();
-
+//        sumNSyms = 0;
         do
         {
 
@@ -95,15 +96,21 @@ void FCM::buildHashTable ()
                                      (c == 'T') ? (uint8_t) 4 : (uint8_t) 2;
 
                 //////////////////////////////////
-                nSym = hTable[ context ][ currSymInt ];
+                // update hash table
+                nSym = hTable[ context ][ currSymInt ]++;
 
-                // sum(n_a)
+////                // sum(n_a)
                 sumNSyms = 0;
                 for (uint64_t u : hTable[ context ])      sumNSyms += u;
+//                sumNSyms += hTable[ context ][0]+hTable[ context ][1]+hTable[ context ][2]+
+//                        hTable[ context ][3]+hTable[ context ][4];
+//                cout<<"\n"<<context<<'\t'<<sumNSyms<<"\n";
+//                hTable[ context ][ 5 ] = sumNSyms;
+                if(sumNSyms<0)cout<<sumNSyms;
 
                 // P(s|c^t)
 //                probability = (nSym + (double) 1/alphaDen) / (sumNSyms + (double) ALPHABET_SIZE/alphaDen);
-                probability = (double) (alphaDen*nSym + alphaDen) / (alphaDen*sumNSyms + ALPHABET_SIZE);
+                probability = (double) (alphaDen*nSym + 1) / (alphaDen*sumNSyms + ALPHABET_SIZE);
 
                 // sum( log_2 P(s|c^t) )
                 sumOfEntropies += log2(probability);
@@ -114,7 +121,8 @@ void FCM::buildHashTable ()
 //                cout << '\n' << "curr_Sym " << (int) currSymInt << '\n';
                 
                 // update hash table
-                ++hTable[ context ][ currSymInt ];
+//                ++hTable[ context ][ currSymInt ];
+//                ++hTable[ context ][ 5 ];
 
                 // considering inverted repeats to update hash table
                 if (isInvertedRepeat)
@@ -128,7 +136,8 @@ void FCM::buildHashTable ()
                         invRepeatContext += to_string( 52 - context[ i ] );
 
                     // update hash table considering inverted repeats
-                    ++hTable[ invRepeatContext ][ 52 - context[0] ];
+                    ++hTable[ invRepeatContext ][ 52 - context[ 0 ]];
+//                    ++hTable[ invRepeatContext ][ 5 ];
                 }
 
                 // update context

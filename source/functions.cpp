@@ -208,7 +208,7 @@ void Functions::commandLineParser (int argc, char **argv)
                 // set the context depth of the model
                 models[ n ].setContextDepth((uint8_t) stoi(vecParameters[ vecParamIndex++ ]));
                 // set the alpha denominator of the model
-                models[ n ].setAlphaDenom((uint8_t) stoi(vecParameters[ vecParamIndex++ ]));
+                models[ n ].setAlphaDenom((uint16_t) stoi(vecParameters[ vecParamIndex++ ]));
                 // set the inverted repeat condition of the model
                 !stoi(vecParameters[ vecParamIndex++ ]) ? models[ n ].setInvertedRepeat(false)
                                                         : models[ n ].setInvertedRepeat(true);
