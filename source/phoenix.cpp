@@ -32,6 +32,19 @@ int32_t main (int argc, char *argv[])
     Functions function;
     function.commandLineParser(argc, argv); // parse the command line
     
+//    int i=0;
+//    char c;
+//    std::cin>>c;
+//    switch (c)
+//    {
+//        case 'c':
+//            i+=5*5*5;
+//            break;
+//        case 'n':
+//            i+=2*5*5*5;
+//            break;
+//    }
+//    cout<<i;
     
 //    array<int,2> a={4,6};
 //    for (array<int,2>::iterator i = a.begin(); i !=a.end(); ++i)
