@@ -49,25 +49,18 @@ void FCM::buildHashTable ()
         
         htable_t hTable;                            // create hash table
         hTable.insert({context, {0, 0, 0, 0, 0}});  // initialize hash table with 0'z
-        
-//        //TODO
-//        hTable.at(context)={1,2,3,4,5};
-        
 //        hTable.insert({context, {0, 0, 0, 0, 0, 0}});// initialize hash table with 0'z
 
         string datasetFirstLine;                    // keep first line of file
         getline(fileIn, datasetFirstLine);          // read first line of file
         string datasetLine(contextDepth, '0');      // to keep each line of file
-//        for (size_t i = 0; i != contextDepth ; ++i)    datasetLine += '0';
         datasetLine += datasetFirstLine;
 
         // iterator for each line of file.
         // starts from index "contextDepth" at first line, and index 0 at other lines
 //        size_t lineIter = contextDepth;
-//        string::iterator lineIter = datasetFirstLine.begin();
-        string::iterator lineIter = datasetLine;
-    
-    
+        string::iterator lineIter = datasetLine.begin() + contextDepth;
+        
         //////////////////////////////////
         uint64_t nSym;                      // number of symbols (n_s). To calculate probability
         uint64_t sumNSyms;                  // sum of number of symbols (sum n_a). To calculate probability
@@ -81,11 +74,9 @@ void FCM::buildHashTable ()
 //        //TODO TEST
 //        high_resolution_clock::time_point exeStartTime = high_resolution_clock::now();
 //        sumNSyms = 0;
-        int idx=0;
         do
         {
-            cout<<idx<<'\n';
-            ++idx;
+            
             //////////////////////////////////
 //            dataSetLineSize = (uint8_t) datasetLine.size();
 //
@@ -95,12 +86,12 @@ void FCM::buildHashTable ()
 
             // fill hash table by number of occurrences of symbols A, C, N, G, T
 //            for (; lineIter != dataSetLineSize; ++lineIter)
-            for (; lineIter != datasetFirstLine.end(); ++lineIter)
+            for (; lineIter != datasetLine.end(); ++lineIter)
             {
                 // htable includes an array of uint16_t numbers
 //                uint8_t currSymInt = symCharToInt(datasetLine[ lineIter ]);
 //                char c = datasetLine[ lineIter ];
-                char c = *lineIter;
+                const char c = *lineIter;
                 uint8_t currSymInt = (c == 'A') ? (uint8_t) 0 :
                                      (c == 'C') ? (uint8_t) 1 :
                                      (c == 'G') ? (uint8_t) 3 :
@@ -109,22 +100,22 @@ void FCM::buildHashTable ()
                 //////////////////////////////////
                 // update hash table
                 nSym = hTable[ context ][ currSymInt ]++;
-//
-//////                // sum(n_a)
-//                sumNSyms = 0;
-//                for (uint64_t u : hTable[ context ])      sumNSyms += u;
-////                sumNSyms += hTable[ context ][0]+hTable[ context ][1]+hTable[ context ][2]+
-////                        hTable[ context ][3]+hTable[ context ][4];
-////                cout<<"\n"<<context<<'\t'<<sumNSyms<<"\n";
-//                if(sumNSyms<0)cout<<sumNSyms;
-//
-//                // P(s|c^t)
-////                probability = (nSym + (double) 1/alphaDen) / (sumNSyms + (double) ALPHABET_SIZE/alphaDen);
-//                probability = (double) (alphaDen*nSym + 1) / (alphaDen*sumNSyms + ALPHABET_SIZE);
-//
-//                // sum( log_2 P(s|c^t) )
-//                sumOfEntropies += log2(probability);
-//                /////////////////////////////////
+
+////                // sum(n_a)
+                sumNSyms = 0;
+                for (uint64_t u : hTable[ context ])      sumNSyms += u;
+//                sumNSyms += hTable[ context ][0]+hTable[ context ][1]+hTable[ context ][2]+
+//                        hTable[ context ][3]+hTable[ context ][4];
+//                cout<<"\n"<<context<<'\t'<<sumNSyms<<"\n";
+                if(sumNSyms<0)cout<<sumNSyms;
+
+                // P(s|c^t)
+//                probability = (nSym + (double) 1/alphaDen) / (sumNSyms + (double) ALPHABET_SIZE/alphaDen);
+                probability = (double) (alphaDen*nSym + 1) / (alphaDen*sumNSyms + ALPHABET_SIZE);
+
+                // sum( log_2 P(s|c^t) )
+                sumOfEntropies += log2(probability);
+                /////////////////////////////////
 
 //                // considering inverted repeats to update hash table
 //                if (isInvertedRepeat)
@@ -153,12 +144,16 @@ void FCM::buildHashTable ()
 //                            + to_string(currSymInt);
 
 //                cout << "ctx_bef ";for (uint8_t u:context) cout << (int) u;
-                cout << '\n' << "curr_Sym " << (int) currSymInt << '\n';
+//                cout << '\n' << "curr_Sym " << (int) currSymInt << '\n';
 //                for (int i = 0; i < 5; ++i) cout<<(hTable[ context ])[ i ];
 //                cout<<"\n\n";
 //
 //                memcpy(context, context + 1, contextDepth - 1);
-//                context[ contextDepth-1 ] = currSymInt;
+                for (int i = 1; i < contextDepth; ++i)
+                {
+                    context[i]=context[i+1];
+                }
+                context[ contextDepth-1 ] = currSymInt;
             }
 
 //            lineIter = 0;           // iterator for non-first lines of file becomes 0
@@ -171,8 +166,7 @@ void FCM::buildHashTable ()
 //        high_resolution_clock::time_point exeFinishTime = high_resolution_clock::now();
 //        std::chrono::duration< double > elapsed = exeFinishTime - exeStartTime;
 //        cout << '\t' << "build_hash="<<elapsed.count();
-
-
+        
         ////////////////////////////////
         totalNumberOfSymbols -= contextDepth;   // first line includes contextDepth of "AA..."
         
@@ -193,7 +187,7 @@ void FCM::buildHashTable ()
 //                << '\t'
 //                << hTable.size();
 //                << '\n'
-;
+                ;
 
 //        for (htable_t::iterator it = hTable.begin(); it != hTable.end(); ++it)
 //        {
@@ -263,12 +257,11 @@ void FCM::printHashTable () const
 
     for (htable_t::iterator it = hTable.begin(); it != hTable.end(); ++it)
     {
-        cout << it->first;
+//        cout << it->first;
         cout << "\t";
         for (uint64_t i : it->second)    cout << i << "\t";
         cout << '\n';
     }
-    
     cout << '\n';
 }
 
