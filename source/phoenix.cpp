@@ -31,6 +31,14 @@ int32_t main (int argc, char *argv[])
     // for access to Functions (object 'function' on memory stack)
     Functions function;
     function.commandLineParser(argc, argv); // parse the command line
+
+//    string s1="ac";
+//    string s2="ntac";
+//    string::iterator i1=s1.begin();
+//    string::iterator i2=s2.begin();
+////    cout<<*i2;
+//    s2="qwe";
+//    cout<<*i2;
     
 //    int i=0;
 //    char c;
