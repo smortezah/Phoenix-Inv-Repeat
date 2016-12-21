@@ -5,6 +5,8 @@
 #include <chrono>           // time
 #include <unordered_map>    // hash table
 
+#include <functional>
+
 using std::string;
 using std::unordered_map;
 using std::array;
@@ -32,6 +34,5 @@ using std::array;
 //typedef unordered_map< string, array< uint64_t, ALPH_SUM_SIZE > > htable_t;
 //typedef unordered_map< string, array< uint64_t, ALPHABET_SIZE > > htable_t;
 typedef unordered_map< uint8_t*, array<uint64_t, ALPHABET_SIZE> > htable_t;
-
 
 #endif //PHOENIX_DEF_H

@@ -99,8 +99,8 @@ void FCM::buildHashTable ()
 
                 //////////////////////////////////
                 // update hash table
-//                nSym = hTable[ context ][ currSymInt ]++;
-                hTable[ context ][ currSymInt ]+=1;
+                nSym = hTable[ context ][ currSymInt ]++;
+//                hTable[ context ][ currSymInt ]+=1;
                 
                 for(uint8_t u:context)  cout<<(int)u;cout<<'\t';
 //                for(char u:context)  cout<<u;cout<<'\t';
@@ -108,7 +108,7 @@ void FCM::buildHashTable ()
                 
 ////                // sum(n_a)
                 sumNSyms = 0;
-                for (uint64_t u : hTable[ context ])      sumNSyms += u;
+                for (uint64_t u : hTable[ context ])    sumNSyms += u;
 //                sumNSyms += hTable[ context ][0]+hTable[ context ][1]+hTable[ context ][2]+
 //                        hTable[ context ][3]+hTable[ context ][4];
 //                cout<<"\n"<<context<<'\t'<<sumNSyms<<"\n";
@@ -246,7 +246,7 @@ void FCM::printHashTable () const
 
     for (htable_t::iterator it = hTable.begin(); it != hTable.end(); ++it)
     {
-//        cout << it->first;
+        cout << it->first;
         cout << "\t";
         for (uint64_t i : it->second)    cout << i << "\t";
         cout << '\n';

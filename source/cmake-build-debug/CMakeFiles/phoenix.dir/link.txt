@@ -1,1 +1,1 @@
-/usr/bin/c++    -std=c++14 -g   CMakeFiles/phoenix.dir/phoenix.cpp.o CMakeFiles/phoenix.dir/messages.cpp.o CMakeFiles/phoenix.dir/functions.cpp.o CMakeFiles/phoenix.dir/FCM.cpp.o  -o phoenix -rdynamic 
+/usr/bin/c++    -std=c++11 -g   CMakeFiles/phoenix.dir/phoenix.cpp.o CMakeFiles/phoenix.dir/messages.cpp.o CMakeFiles/phoenix.dir/functions.cpp.o CMakeFiles/phoenix.dir/FCM.cpp.o  -o phoenix -rdynamic 
