@@ -28,8 +28,8 @@ CHR="chr"
 HUMAN_CHR="HS"
 CURR_CHR="21"
 chromosomes="$HUMAN_CHR_PREFIX$CHR$CURR_CHR"
-datasets="$HUMAN_CHR$CURR_CHR"
-#datasets="tmp"
+#datasets="$HUMAN_CHR$CURR_CHR"
+datasets="tmp"
 
 INV_REPEATS="0"     # list of inverted repeats      "0 1"
 ALPHA_DENS="1"     # list of alpha denominators    "1 20 100"
@@ -126,15 +126,15 @@ for ir in $INV_REPEATS; do
         touch $IR_NAME$ir-$a_NAME$alphaDen-$dataset.dat
         echo -e "# mut\tmin_bpb\tmin_ctx" >> $IR_NAME$ir-$a_NAME$alphaDen-$dataset.dat
             for mut in $MUT_LIST; do
-#            rm -f $IR_NAME$ir-$a_NAME$alphaDen-${dataset}_$MUT_LIST.dat
-            touch $IR_NAME$ir-$a_NAME$alphaDen-${dataset}_$MUT_LIST.dat
-            echo -e "# ir\talpha\tctx\tbpb\ttime(s)" >> $IR_NAME$ir-$a_NAME$alphaDen-${dataset}_$MUT_LIST.dat
+#            rm -f $IR_NAME$ir-$a_NAME$alphaDen-${dataset}_$mut.dat
+            touch $IR_NAME$ir-$a_NAME$alphaDen-${dataset}_$mut.dat
+            echo -e "# ir\talpha\tctx\tbpb\ttime(s)" >> $IR_NAME$ir-$a_NAME$alphaDen-${dataset}_$mut.dat
                 for((ctx=$MIN_CTX; ctx!=$MAX_CTX; ++ctx)); do
-                ./phoenix -m t,$ctx,$alphaDen,$ir -t datasets/${dataset}_$MUT_LIST #>> $IR_NAME$ir-$a_NAME$alphaDen-${dataset}_$MUT_LIST.dat
+                ./phoenix -m t,$ctx,$alphaDen,$ir -t datasets/${dataset}_$mut #>> $IR_NAME$ir-$a_NAME$alphaDen-${dataset}_$mut.dat
                 done
                 # save "min bpb" and "min ctx" for each dataset
                 minBpbCtx=$(awk 'NR==1 || $4 < minBpb {minBpb=$4; minCtx=$3}; \
-                            END {print minBpb"\t"minCtx}' $IR_NAME$ir-$a_NAME$alphaDen-${dataset}_$MUT_LIST.dat)
+                            END {print minBpb"\t"minCtx}' $IR_NAME$ir-$a_NAME$alphaDen-${dataset}_$mut.dat)
                 echo -e "  $mut\t$minBpbCtx" >> $IR_NAME$ir-$a_NAME$alphaDen-$dataset.dat
             done
         done

@@ -42,10 +42,10 @@ void FCM::buildHashTable ()
     
     if (Functions::isFileCorrect(fileName))         // file opened correctly
     {
-        string context(contextDepth, '0');          // context, that slides in the dataset
+//        string context(contextDepth, '0');          // context, that slides in the dataset
 //        // context, that slides in the dataset
-//        uint8_t context[contextDepth];
-//        memset(context, 0, contextDepth);
+        uint8_t context[contextDepth];
+        memset(context, 0, contextDepth);
         
         htable_t hTable;                            // create hash table
         hTable.insert({context, {0, 0, 0, 0, 0}});  // initialize hash table with 0'z
@@ -64,7 +64,7 @@ void FCM::buildHashTable ()
         // iterator for each line of file.
         // starts from index "contextDepth" at first line, and index 0 at other lines
 //        size_t lineIter = contextDepth;
-        string::iterator lineIter = datasetFirstLine.begin();
+        string::iterator lineIter;// = datasetFirstLine.begin();
         
         //////////////////////////////////
         uint64_t nSym;                      // number of symbols (n_s). To calculate probability
@@ -79,18 +79,22 @@ void FCM::buildHashTable ()
 //        //TODO TEST
 //        high_resolution_clock::time_point exeStartTime = high_resolution_clock::now();
 //        sumNSyms = 0;
+        int idx=0;
         do
         {
-            
+            lineIter = datasetLine.begin();
+            cout<<idx<<'\n';
+            ++idx;
             //////////////////////////////////
-            dataSetLineSize = (uint8_t) datasetLine.size();
-
-            totalNumberOfSymbols += dataSetLineSize;    // number of symbols in each line of dataset
+//            dataSetLineSize = (uint8_t) datasetLine.size();
+//
+//            totalNumberOfSymbols += dataSetLineSize;    // number of symbols in each line of dataset
+            totalNumberOfSymbols += datasetLine.size();    // number of symbols in each line of dataset
             //////////////////////////////////
 
             // fill hash table by number of occurrences of symbols A, C, N, G, T
 //            for (; lineIter != dataSetLineSize; ++lineIter)
-            for (; lineIter != datasetLine.end(); ++lineIter)
+            for (lineIter = datasetFirstLine.begin(); lineIter != datasetLine.end(); ++lineIter)
             {
                 // htable includes an array of uint16_t numbers
 //                uint8_t currSymInt = symCharToInt(datasetLine[ lineIter ]);
@@ -111,7 +115,6 @@ void FCM::buildHashTable ()
 //                sumNSyms += hTable[ context ][0]+hTable[ context ][1]+hTable[ context ][2]+
 //                        hTable[ context ][3]+hTable[ context ][4];
 //                cout<<"\n"<<context<<'\t'<<sumNSyms<<"\n";
-//                hTable[ context ][ 5 ] = sumNSyms;
                 if(sumNSyms<0)cout<<sumNSyms;
 
                 // P(s|c^t)
@@ -122,46 +125,43 @@ void FCM::buildHashTable ()
                 sumOfEntropies += log2(probability);
                 /////////////////////////////////
 
-
-//                cout << "ctx_bef ";for (uint8_t u:context) cout << (int) u;
-//                cout << '\n' << "curr_Sym " << (int) currSymInt << '\n';
-
-                // update hash table
-//                ++hTable[ context ][ currSymInt ];
-//                ++hTable[ context ][ 5 ];
-
-                // considering inverted repeats to update hash table
-                if (isInvertedRepeat)
-                {
-                    // save inverted repeat context
-                    string invRepeatContext = "";
-                    invRepeatContext += to_string(4 - currSymInt);
-                    // convert a number from char into integer format. '0'->0. '4'->4 by
-                    // 52 - context[ i ] = 4 - (context[ i ] - 48). 48 is ASCII code of '0'
-                    for (int i = contextDepth - 1; i != 0; --i)
-                        invRepeatContext += to_string( 52 - context[ i ] );
-
-                    // update hash table considering inverted repeats
-                    ++hTable[ invRepeatContext ][ 52 - context[ 0 ]];
-//                    ++hTable[ invRepeatContext ][ 5 ];
-                }
+//                // considering inverted repeats to update hash table
+//                if (isInvertedRepeat)
+//                {
+//                    // save inverted repeat context
+//                    string invRepeatContext = "";
+//                    invRepeatContext += to_string(4 - currSymInt);
+//                    // convert a number from char into integer format. '0'->0. '4'->4 by
+//                    // 52 - context[ i ] = 4 - (context[ i ] - 48). 48 is ASCII code of '0'
+//                    for (int i = contextDepth - 1; i != 0; --i)
+//                        invRepeatContext += to_string( 52 - context[ i ] );
+//
+//                    // update hash table considering inverted repeats
+//                    ++hTable[ invRepeatContext ][ 52 - context[ 0 ]];
+////                    ++hTable[ invRepeatContext ][ 5 ];
+//                }
 
                 // update context
-                context = (contextDepth == 1)
-                          ? to_string(currSymInt)
-                          : context.substr(1, (unsigned) contextDepth - 1)
-                            + to_string(currSymInt);
-////                cout << "ctx_bef ";for (uint8_t u:context) cout << (int) u;
-////                cout << '\n' << "curr_Sym " << (int) currSymInt << '\n';
+//                context = (contextDepth == 1)
+//                          ? to_string(currSymInt)
+//                          : context.substr(1, (unsigned) contextDepth - 1)
+//                            + to_string(currSymInt);
+//                context = (contextDepth == 1)
+//                          ? to_string(currSymInt)
+//                          : context.substr(1, (unsigned) contextDepth - 1)
+//                            + to_string(currSymInt);
+
+                cout << "ctx_bef ";for (uint8_t u:context) cout << (int) u;
+                cout << '\n' << "curr_Sym " << (int) currSymInt << '\n';
 //                for (int i = 0; i < 5; ++i) cout<<(hTable[ context ])[ i ];
 //                cout<<"\n\n";
 //
-//                memcpy(context, context + 1, contextDepth - 1);
-//                context[ contextDepth-1 ] = currSymInt;
+                memcpy(context, context + 1, contextDepth - 1);
+                context[ contextDepth-1 ] = currSymInt;
             }
 
 //            lineIter = 0;           // iterator for non-first lines of file becomes 0
-            lineIter = datasetLine.begin();         // iterator for non-first lines of file becomes 0
+//            lineIter = datasetLine.begin();         // iterator for non-first lines of file becomes 0
     
         } while ( getline(fileIn, datasetLine) );   // read file line by line
 
