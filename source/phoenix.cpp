@@ -33,6 +33,13 @@ int32_t main (int argc, char *argv[])
     function.commandLineParser(argc, argv); // parse the command line
     
     
+//    array<int,2> a={4,6};
+//    for (array<int,2>::iterator i = a.begin(); i !=a.end(); ++i)
+//    {
+//        cout<<*(i);
+//    }
+    
+    
 //    uint16_t alphaDen=1;
 //    uint64_t nSym=4;
 //    uint64_t sumNSyms=13;
