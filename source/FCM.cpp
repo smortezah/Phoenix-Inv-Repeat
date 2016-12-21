@@ -122,10 +122,14 @@ void FCM::buildHashTable ()
                 }
                 
                 // update context
-                context = (contextDepth == 1)
-                          ? to_string(currSymInt)
-                          : context.substr(1, (unsigned) contextDepth - 1)
-                            + to_string(currSymInt);
+//                context = (contextDepth == 1)
+//                          ? to_string(currSymInt)
+//                          : context.substr(1, (unsigned) contextDepth - 1)
+//                            + to_string(currSymInt);
+    
+                for (string::iterator it = context.begin() + 1; it != context.end(); ++it)
+                    *(it - 1) = *(it);
+                *context.end()='a';
 //                std::copy(context.begin() + 1, context.end(), context.begin());
 //                context[ contextDepth-1 ] = currSymInt;
 ////                context.insert(context.end(),to_string(currSymInt));
