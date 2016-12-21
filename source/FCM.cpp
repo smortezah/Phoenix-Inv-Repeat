@@ -94,9 +94,7 @@ void FCM::buildHashTable ()
                 // sum(n_a)
                 sumNSyms = 0;
                 for (uint64_t u : hTable[ context ])    sumNSyms += u;
-//                sumNSyms += hTable[ context ][0]+hTable[ context ][1]+hTable[ context ][2]+
-//                        hTable[ context ][3]+hTable[ context ][4];
-                cout<<"\n"<<context<<'\t'<<sumNSyms<<"\n";
+//                cout<<"\n"<<context<<'\t'<<sumNSyms<<"\n";
                 if(sumNSyms<0)cout<<sumNSyms;
 
                 // P(s|c^t)
@@ -129,46 +127,34 @@ void FCM::buildHashTable ()
                           : context.substr(1, (unsigned) contextDepth - 1)
                             + to_string(currSymInt);
 
-//                cout << "ctx_bef ";for (uint8_t u:context) cout << (int) u;
-//                cout << '\n' << "curr_Sym " << (int) currSymInt << '\n';
-//                for (int i = 0; i < 5; ++i) cout<<(hTable[ context ])[ i ];
-//                cout<<"\n\n";
-//
 //                memcpy(context, context + 1, contextDepth - 1);
 //                context[ contextDepth-1 ] = currSymInt;
 ////                *(context+contextDepth-1) = currSymInt;
             }
 
-//            lineIter = 0;           // iterator for non-first lines of file becomes 0
             lineIter = datasetLine.begin();         // iterator for non-first lines of file becomes 0
     
         } while ( getline(fileIn, datasetLine) );   // read file line by line
-
-
-//        //TODO TEST
-//        high_resolution_clock::time_point exeFinishTime = high_resolution_clock::now();
-//        std::chrono::duration< double > elapsed = exeFinishTime - exeStartTime;
-//        cout << '\t' << "build_hash="<<elapsed.count();
         
         ////////////////////////////////
-        totalNumberOfSymbols -= contextDepth;   // first line includes contextDepth of "AA..."
+        totalNumberOfSymbols -= contextDepth;       // first line includes contextDepth of "AA..."
         
         // H_N = -1/N sum( log_2 P(s|c^t) )
         averageEntropy = (-1) * sumOfEntropies / totalNumberOfSymbols;
         
         cout
-//                << sumNSyms << '\n'
-//                << probability << '\n'
-//                << sumOfEntropies << '\n'
-//                << totalNumberOfSymbols << '\n'
+                << sumNSyms << '\n'
+                << probability << '\n'
+                << sumOfEntropies << '\n'
+                << totalNumberOfSymbols << '\n'
                 << "  "
                 << getInvertedRepeat() << '\t'
                 << (float) 1/alphaDen << '\t'
                 << (int) contextDepth << '\t'
                 << averageEntropy
-//                << '\t'
-//                << hTable.size();
-//                << '\n'
+                << '\t'
+                << hTable.size()
+                << '\n'
                 ;
         ////////////////////////////////
 
@@ -176,14 +162,6 @@ void FCM::buildHashTable ()
 
         FCM::setHashTable(hTable);  // save the built hash table
     }   // end - file opened correctly
-    
-    
-//
-//    //TODO TEST
-//    high_resolution_clock::time_point exeFinishTime = high_resolution_clock::now();
-//    std::chrono::duration< double > elapsed = exeFinishTime - exeStartTime;
-//    cout << '\t' << "build_hash="<<elapsed.count();
-    
 }
 
 
