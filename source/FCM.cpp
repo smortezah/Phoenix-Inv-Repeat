@@ -42,10 +42,10 @@ void FCM::buildHashTable ()
     
     if (Functions::isFileCorrect(fileName))         // file opened correctly
     {
-//        string context(contextDepth, '0');          // context, that slides in the dataset
+        string context(contextDepth, '0');          // context, that slides in the dataset
 //        // context, that slides in the dataset
-        uint8_t context[contextDepth];
-        memset(context, 0, contextDepth);
+//        uint8_t context[contextDepth];
+//        memset(context, 0, contextDepth);
         
         htable_t hTable;                            // create hash table
         hTable.insert({context, {0, 0, 0, 0, 0}});  // initialize hash table with 0'z
@@ -101,7 +101,8 @@ void FCM::buildHashTable ()
                 // update hash table
                 nSym = hTable[ context ][ currSymInt ]++;
     
-                for(uint8_t u:context)  cout<<(int)u;cout<<'\t';
+//                for(uint8_t u:context)  cout<<(int)u;cout<<'\t';
+                for(char u:context)  cout<<u;cout<<'\t';
                 for(uint64_t u:hTable[ context ])  cout<<u;cout<<'\n';
                 
 //////                // sum(n_a)
@@ -137,22 +138,22 @@ void FCM::buildHashTable ()
 //                }
 
                 // update context
-//                context = (contextDepth == 1)
-//                          ? to_string(currSymInt)
-//                          : context.substr(1, (unsigned) contextDepth - 1)
-//                            + to_string(currSymInt);
+                context = (contextDepth == 1)
+                          ? to_string(currSymInt)
+                          : context.substr(1, (unsigned) contextDepth - 1)
+                            + to_string(currSymInt);
 
 //                cout << "ctx_bef ";for (uint8_t u:context) cout << (int) u;
 //                cout << '\n' << "curr_Sym " << (int) currSymInt << '\n';
 //                for (int i = 0; i < 5; ++i) cout<<(hTable[ context ])[ i ];
 //                cout<<"\n\n";
 //
-                memcpy(context, context + 1, contextDepth - 1);
+//                memcpy(context, context + 1, contextDepth - 1);
 //                for (int i = 1; i < contextDepth; ++i)
 //                {
 //                    context[i]=context[i+1];
 //                }
-                context[ contextDepth-1 ] = currSymInt;
+//                context[ contextDepth-1 ] = currSymInt;
 //                *(context+contextDepth-1) = currSymInt;
             }
 
