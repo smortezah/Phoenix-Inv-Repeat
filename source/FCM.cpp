@@ -126,10 +126,14 @@ void FCM::buildHashTable ()
                           ? to_string(currSymInt)
                           : context.substr(1, (unsigned) contextDepth - 1)
                             + to_string(currSymInt);
-
-//                memcpy(context, context + 1, contextDepth - 1);
+//                std::copy(context.begin() + 1, context.end(), context.begin());
 //                context[ contextDepth-1 ] = currSymInt;
-////                *(context+contextDepth-1) = currSymInt;
+////                context.insert(context.end(),to_string(currSymInt));
+//                char c2=currSymInt;
+//                cout<< to_string(c2) << ' ';
+////                memcpy(context, context + 1, contextDepth - 1);
+////                context[ contextDepth-1 ] = currSymInt;
+//////                *(context+contextDepth-1) = currSymInt;
             }
 
             lineIter = datasetLine.begin();         // iterator for non-first lines of file becomes 0
@@ -143,17 +147,17 @@ void FCM::buildHashTable ()
         averageEntropy = (-1) * sumOfEntropies / totalNumberOfSymbols;
         
         cout
-                << sumNSyms << '\n'
-                << probability << '\n'
-                << sumOfEntropies << '\n'
-                << totalNumberOfSymbols << '\n'
-                << "  "
-                << getInvertedRepeat() << '\t'
-                << (float) 1/alphaDen << '\t'
-                << (int) contextDepth << '\t'
-                << averageEntropy
-                << '\t'
-                << hTable.size()
+//                << sumNSyms << '\n'
+//                << probability << '\n'
+//                << sumOfEntropies << '\n'
+//                << totalNumberOfSymbols << '\n'
+//                << "  "
+//                << getInvertedRepeat() << '\t'
+//                << (float) 1/alphaDen << '\t'
+//                << (int) contextDepth << '\t'
+//                << averageEntropy
+//                << '\t'
+//                << hTable.size()
                 << '\n'
                 ;
         ////////////////////////////////
@@ -209,8 +213,7 @@ void FCM::printHashTable () const
 
     for (htable_t::iterator it = hTable.begin(); it != hTable.end(); ++it)
     {
-//        cout << it->first;
-        cout << (int)it->first[0] << (int)it->first[1];
+        cout << it->first;
         cout << "\t";
         for (uint64_t i : it->second)    cout << i << "\t";
         cout << '\n';
