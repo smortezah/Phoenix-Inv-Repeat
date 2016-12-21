@@ -64,8 +64,10 @@ void FCM::buildHashTable ()
         // iterator for each line of file.
         // starts from index "contextDepth" at first line, and index 0 at other lines
 //        size_t lineIter = contextDepth;
-        string::iterator lineIter = datasetFirstLine.begin();
-        
+//        string::iterator lineIter = datasetFirstLine.begin();
+        string::iterator lineIter = datasetLine;
+    
+    
         //////////////////////////////////
         uint64_t nSym;                      // number of symbols (n_s). To calculate probability
         uint64_t sumNSyms;                  // sum of number of symbols (sum n_a). To calculate probability
@@ -93,7 +95,7 @@ void FCM::buildHashTable ()
 
             // fill hash table by number of occurrences of symbols A, C, N, G, T
 //            for (; lineIter != dataSetLineSize; ++lineIter)
-            for (; lineIter != datasetLine.end(); ++lineIter)
+            for (; lineIter != datasetFirstLine.end(); ++lineIter)
             {
                 // htable includes an array of uint16_t numbers
 //                uint8_t currSymInt = symCharToInt(datasetLine[ lineIter ]);
@@ -150,8 +152,8 @@ void FCM::buildHashTable ()
 //                          : context.substr(1, (unsigned) contextDepth - 1)
 //                            + to_string(currSymInt);
 
-                cout << "ctx_bef ";for (uint8_t u:context) cout << (int) u;
-//                cout << '\n' << "curr_Sym " << (int) currSymInt << '\n';
+//                cout << "ctx_bef ";for (uint8_t u:context) cout << (int) u;
+                cout << '\n' << "curr_Sym " << (int) currSymInt << '\n';
 //                for (int i = 0; i < 5; ++i) cout<<(hTable[ context ])[ i ];
 //                cout<<"\n\n";
 //
