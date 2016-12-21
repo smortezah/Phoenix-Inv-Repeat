@@ -53,9 +53,8 @@ void FCM::buildHashTable ()
         //TODO
 //        for(int i=0;i<5;++i)
         hTable.at(context)={1,2,3,4,5};
-//        for (auto& x: hTable) {
-//            std::cout << x.second << std::endl;
-//        }
+        ++hTable[context][0];
+cout<<hTable[context][0];
         
 //        hTable.insert({context, {0, 0, 0, 0, 0, 0}});// initialize hash table with 0'z
 //
