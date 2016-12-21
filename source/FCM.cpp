@@ -101,8 +101,7 @@ void FCM::buildHashTable ()
                 // update hash table
 //                nSym = hTable[ context ][ currSymInt ]++;
                 hTable[ context ][ currSymInt ]+=1;
-
-
+                
                 for(uint8_t u:context)  cout<<(int)u;cout<<'\t';
 //                for(char u:context)  cout<<u;cout<<'\t';
                 for(uint64_t u:hTable[ context ])  cout<<u;cout<<'\n';
