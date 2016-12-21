@@ -30,46 +30,9 @@ int32_t main (int argc, char *argv[])
 
     // for access to Functions (object 'function' on memory stack)
     Functions function;
-    function.commandLineParser(argc, argv); // parse the command line
-
-//    string s1="actg";
-//    string s2="ntactg";
-//    string::iterator i1=s1.begin();
-//    string::iterator i2=s2.begin();
-//    string::iterator j=s2.begin()+2;
-////for(;i1!=s1.end();++i1) cout<<*i1;
-////    char* c=&(*i1);
-////    cout <<*c;
-//    cout<<*j;
-    
-//    int i=0;
-//    char c;
-//    std::cin>>c;
-//    switch (c)
-//    {
-//        case 'c':
-//            i+=5*5*5;
-//            break;
-//        case 'n':
-//            i+=2*5*5*5;
-//            break;
-//    }
-//    cout<<i;
-    
-//    array<int,2> a={4,6};
-//    for (array<int,2>::iterator i = a.begin(); i !=a.end(); ++i)
-//    {
-//        cout<<*(i);
-//    }
+//    function.commandLineParser(argc, argv); // parse the command line
     
     
-//    uint16_t alphaDen=1;
-//    uint64_t nSym=4;
-//    uint64_t sumNSyms=13;
-//    double probability = (double) ((uint64_t) alphaDen*nSym + (uint64_t)alphaDen) / (double) ((uint64_t) alphaDen*sumNSyms + (uint64_t) ALPHABET_SIZE);
-//    std::cout << std::fixed;
-//    std::cout << std::setprecision(15);
-//    cout<<probability;
     
     
     
