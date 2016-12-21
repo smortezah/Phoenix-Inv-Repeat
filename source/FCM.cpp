@@ -121,28 +121,28 @@ void FCM::buildHashTable ()
                 // sum( log_2 P(s|c^t) )
                 sumOfEntropies += log2(probability);
                 /////////////////////////////////
-
-//                // considering inverted repeats to update hash table
-//                if (isInvertedRepeat)
-//                {
-//                    // save inverted repeat context
-//                    string invRepeatContext = "";
-//                    invRepeatContext += to_string(4 - currSymInt);
-//                    // convert a number from char into integer format. '0'->0. '4'->4 by
-//                    // 52 - context[ i ] = 4 - (context[ i ] - 48). 48 is ASCII code of '0'
-//                    for (int i = contextDepth - 1; i != 0; --i)
-//                        invRepeatContext += to_string( 52 - context[ i ] );
-//
-//                    // update hash table considering inverted repeats
-//                    ++hTable[ invRepeatContext ][ 52 - context[ 0 ]];
-////                    ++hTable[ invRepeatContext ][ 5 ];
-//                }
-
+                
+                // considering inverted repeats to update hash table
+                if (isInvertedRepeat)
+                {
+                    // save inverted repeat context
+                    string invRepeatContext = "";
+                    invRepeatContext += to_string(4 - currSymInt);
+                    // convert a number from char into integer format. '0'->0. '4'->4 by
+                    // 52 - context[ i ] = 4 - (context[ i ] - 48). 48 is ASCII code of '0'
+                    for (int i = contextDepth - 1; i != 0; --i)
+                        invRepeatContext += to_string( 52 - context[ i ] );
+                    
+                    // update hash table considering inverted repeats
+                    ++hTable[ invRepeatContext ][ 52 - context[ 0 ]];
+//                    ++hTable[ invRepeatContext ][ 5 ];
+                }
+                
 //                // update context
-                context = (contextDepth == 1)
-                          ? to_string(currSymInt)
-                          : context.substr(1, (unsigned) contextDepth - 1)
-                            + to_string(currSymInt);
+//                context = (contextDepth == 1)
+//                          ? to_string(currSymInt)
+//                          : context.substr(1, (unsigned) contextDepth - 1)
+//                            + to_string(currSymInt);
 
 //                cout << "ctx_bef ";for (uint8_t u:context) cout << (int) u;
 //                cout << '\n' << "curr_Sym " << (int) currSymInt << '\n';
@@ -246,7 +246,8 @@ void FCM::printHashTable () const
 
     for (htable_t::iterator it = hTable.begin(); it != hTable.end(); ++it)
     {
-        cout << it->first;
+//        cout << it->first;
+        cout << (int)it->first[0] << (int)it->first[1];
         cout << "\t";
         for (uint64_t i : it->second)    cout << i << "\t";
         cout << '\n';
