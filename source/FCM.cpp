@@ -32,11 +32,11 @@ FCM::FCM () {}
 ************************************************************/
 void FCM::buildHashTable ()
 {
-    uint8_t contextDepth    = getContextDepth();    // get context depth
-    uint16_t alphaDen       = getAlphaDenom();      // get alpha denominator
-    bool isInvertedRepeat   = getInvertedRepeat();  // get inverted repeat
+    const uint8_t contextDepth  = getContextDepth();    // get context depth
+    const uint16_t alphaDen     = getAlphaDenom();      // get alpha denominator
+    const bool isInvertedRepeat = getInvertedRepeat();  // get inverted repeat
     // TODO: supprt for both target and reference file addresses
-    string fileName         = getTarFileAddress();
+    string fileName             = getTarFileAddress();
 
     ifstream fileIn(fileName, ios::in);             // open file located in fileName
     
@@ -44,7 +44,7 @@ void FCM::buildHashTable ()
     {
         string context(contextDepth, '0');          // context, that slides in the dataset
 //        // context, that slides in the dataset
-//        uint8_t context[contextDepth];
+//        uint8_t context[contextDepth];    // context as uint8_t*
 //        memset(context, 0, contextDepth);
         
         htable_t hTable;                            // create hash table
@@ -57,8 +57,7 @@ void FCM::buildHashTable ()
         datasetLine += datasetFirstLine;
 
         // iterator for each line of file.
-        // starts from index "contextDepth" at first line, and index 0 at other lines
-//        size_t lineIter = contextDepth;
+        // index "contextDepth" for first line; index 0 for other lines
         string::iterator lineIter = datasetLine.begin() + contextDepth;
         
         //////////////////////////////////
@@ -66,52 +65,38 @@ void FCM::buildHashTable ()
         uint64_t sumNSyms;                  // sum of number of symbols (sum n_a). To calculate probability
         double   probability = 0;           // probability of a symbol, based on an identified context
         double   sumOfEntropies = 0;        // sum of entropies for different symbols
-        uint8_t  dataSetLineSize;           // size of each line of dataset
         uint64_t totalNumberOfSymbols = 0;  // number of all symbols in the sequence
         double   averageEntropy = 0;        // average entropy (H)
         //////////////////////////////////
 
-//        //TODO TEST
-//        high_resolution_clock::time_point exeStartTime = high_resolution_clock::now();
-//        sumNSyms = 0;
         do
         {
             
             //////////////////////////////////
-//            dataSetLineSize = (uint8_t) datasetLine.size();
-//
-//            totalNumberOfSymbols += dataSetLineSize;    // number of symbols in each line of dataset
             totalNumberOfSymbols += datasetLine.size();    // number of symbols in each line of dataset
             //////////////////////////////////
 
             // fill hash table by number of occurrences of symbols A, C, N, G, T
-//            for (; lineIter != dataSetLineSize; ++lineIter)
             for (; lineIter != datasetLine.end(); ++lineIter)
             {
-                // htable includes an array of uint16_t numbers
+                // htable includes an array of uint64_t numbers
 //                uint8_t currSymInt = symCharToInt(datasetLine[ lineIter ]);
-//                char c = datasetLine[ lineIter ];
                 const char c = *lineIter;
-                uint8_t currSymInt = (c == 'A') ? (uint8_t) 0 :
-                                     (c == 'C') ? (uint8_t) 1 :
-                                     (c == 'G') ? (uint8_t) 3 :
-                                     (c == 'T') ? (uint8_t) 4 : (uint8_t) 2;
+                const uint8_t currSymInt = (c == 'A') ? (uint8_t) 0 :
+                                           (c == 'C') ? (uint8_t) 1 :
+                                           (c == 'G') ? (uint8_t) 3 :
+                                           (c == 'T') ? (uint8_t) 4 : (uint8_t) 2;
 
                 //////////////////////////////////
                 // update hash table
                 nSym = hTable[ context ][ currSymInt ]++;
-//                hTable[ context ][ currSymInt ]+=1;
                 
-                for(uint8_t u:context)  cout<<(int)u;cout<<'\t';
-//                for(char u:context)  cout<<u;cout<<'\t';
-                for(uint64_t u:hTable[ context ])  cout<<u;cout<<'\n';
-                
-////                // sum(n_a)
+                // sum(n_a)
                 sumNSyms = 0;
                 for (uint64_t u : hTable[ context ])    sumNSyms += u;
 //                sumNSyms += hTable[ context ][0]+hTable[ context ][1]+hTable[ context ][2]+
 //                        hTable[ context ][3]+hTable[ context ][4];
-//                cout<<"\n"<<context<<'\t'<<sumNSyms<<"\n";
+                cout<<"\n"<<context<<'\t'<<sumNSyms<<"\n";
                 if(sumNSyms<0)cout<<sumNSyms;
 
                 // P(s|c^t)
@@ -138,11 +123,11 @@ void FCM::buildHashTable ()
 //                    ++hTable[ invRepeatContext ][ 5 ];
                 }
                 
-//                // update context
-//                context = (contextDepth == 1)
-//                          ? to_string(currSymInt)
-//                          : context.substr(1, (unsigned) contextDepth - 1)
-//                            + to_string(currSymInt);
+                // update context
+                context = (contextDepth == 1)
+                          ? to_string(currSymInt)
+                          : context.substr(1, (unsigned) contextDepth - 1)
+                            + to_string(currSymInt);
 
 //                cout << "ctx_bef ";for (uint8_t u:context) cout << (int) u;
 //                cout << '\n' << "curr_Sym " << (int) currSymInt << '\n';
