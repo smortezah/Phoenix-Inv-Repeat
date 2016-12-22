@@ -62,11 +62,11 @@ void FCM::buildHashTable ()
         
         //////////////////////////////////
         uint64_t nSym;                      // number of symbols (n_s). To calculate probability
-//        uint64_t nSymA;                      // number of symbols (n_s). To calculate probability
-//        uint64_t nSymC;                      // number of symbols (n_s). To calculate probability
-//        uint64_t nSymN;                      // number of symbols (n_s). To calculate probability
-//        uint64_t nSymG;                      // number of symbols (n_s). To calculate probability
-//        uint64_t nSymT;                      // number of symbols (n_s). To calculate probability
+        uint64_t nSymA=0;                      // number of symbols (n_s). To calculate probability
+        uint64_t nSymC=0;                      // number of symbols (n_s). To calculate probability
+        uint64_t nSymN=0;                      // number of symbols (n_s). To calculate probability
+        uint64_t nSymG=0;                      // number of symbols (n_s). To calculate probability
+        uint64_t nSymT=0;                      // number of symbols (n_s). To calculate probability
     
         uint64_t sumNSyms;                  // sum of number of symbols (sum n_a). To calculate probability
         double   probability = 0;           // probability of a symbol, based on an identified context
@@ -110,36 +110,41 @@ void FCM::buildHashTable ()
     
                 //////////////////////////////////
                 // update hash table
-                nSym = hTable[ context ][ currSymInt ]++;
-//                switch (currSymInt)
-//                {
-//                    case 0:
-//                        nSymA = hTable[ context ][ 0 ]++;
-//                        nSym=nSymA;
-//                        break;
-//                    case 1:
-//                        nSymC = hTable[ context ][ 1 ]++;
-//                        nSym=nSymC;
-//                        break;
-//                    case 2:
-//                        nSymN = hTable[ context ][ 2 ]++;
-//                        nSym=nSymN;
-//                        break;
-//                    case 3:
-//                        nSymG = hTable[ context ][ 3 ]++;
-//                        nSym=nSymG;
-//                        break;
-//                    case 4:
-//                        nSymT = hTable[ context ][ 4 ]++;
-//                        nSym=nSymT;
-//                        break;
-//                    default:    break;
-//                }
+//                nSym = hTable[ context ][ currSymInt ]++;
+                switch (currSymInt)
+                {
+                    case 0:
+                        ++hTable[ context ][ 0 ];
+                        ++nSymA;
+                        nSym=nSymA;
+                        break;
+                    case 1:
+                        ++hTable[ context ][ 1 ];
+                        ++nSymC;
+                        nSym=nSymC;
+                        break;
+                    case 2:
+                        ++hTable[ context ][ 2 ];
+                        ++nSymN;
+                        nSym=nSymN;
+                        break;
+                    case 3:
+                        ++hTable[ context ][ 3 ];
+                        ++nSymG;
+                        nSym=nSymG;
+                        break;
+                    case 4:
+                        ++hTable[ context ][ 4 ];
+                        ++nSymT;
+                        nSym=nSymT;
+                        break;
+                    default:    break;
+                }
 //
 //                // sum(n_a)
-//                sumNSyms = nSymA+nSymC+nSymN+nSymG+nSymT;
-                sumNSyms = 0;
-                for (uint64_t u : hTable[ context ])    sumNSyms += u;
+                sumNSyms = nSymA+nSymC+nSymN+nSymG+nSymT;
+//                sumNSyms = 0;
+//                for (uint64_t u : hTable[ context ])    sumNSyms += u;
 //                cout<<"\n"<<context<<'\t'<<sumNSyms<<"\n";
                 if (sumNSyms < 0)   cout << sumNSyms;
     
