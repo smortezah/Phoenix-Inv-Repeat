@@ -75,7 +75,7 @@ void FCM::buildHashTable ()
             //////////////////////////////////
             totalNumberOfSymbols += datasetLine.size();    // number of symbols in each line of dataset
             //////////////////////////////////
-
+            
             // fill hash table by number of occurrences of symbols A, C, N, G, T
             for (; lineIter != datasetLine.end(); ++lineIter)
             {
