@@ -239,33 +239,26 @@ void Functions::commandLineParser (int argc, char **argv)
 }
 
 
-/***********************************************************
-    check if file opened correctly
-************************************************************/
-//bool Functions::isFileCorrect (const string &fileName)
-bool Functions::isFileCorrect (ifstream &fileIn)
-{
-//    ifstream fileIn(fileName, ios::in);   // open file
-
-    string fileName = "";
-    fileIn >> fileName;
-    // check if file doesn't exist or is empty
-    if (!fileIn)
-    {
-        cerr << "File '" << fileName << "' could not be opened.\n";
-//        cerr << "The file cannot be opened, or it is empty.\n";
-        fileIn.close(); // close file
-        return false;   // error occurred while opening file
-    }
-//    // check if file is empty
-//    else if (fileIn.peek() == ifstream::traits_type::eof())
+///***********************************************************
+//    check if file opened correctly
+//************************************************************/
+////bool Functions::isFileCorrect (const string &fileName)
+//bool Functions::isFileCorrect (ifstream &fileIn)
+//{
+//    // check if file doesn't exist or is empty
+//    if (!fileIn)
 //    {
-////        cerr << "File '" << fileName << "' is empty.\n";
+////        cerr << "The file cannot be opened, or it is empty.\n";
 //        fileIn.close(); // close file
 //        return false;   // error occurred while opening file
 //    }
+////    // check if file is empty
+////    else if (fileIn.peek() == ifstream::traits_type::eof())
+////    {
+////        cerr << "The File is empty.\n";
+////        fileIn.close(); // close file
+////        return false;   // error occurred while opening file
+////    }
 //
-////    fileIn.close(); // close file
-    
-    return true;    // file opened correctly
-}
+//    return true;    // file opened correctly
+//}

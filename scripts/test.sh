@@ -130,7 +130,7 @@ for ir in $INV_REPEATS; do
             touch $IR_NAME$ir-$a_NAME$alphaDen-${dataset}_$mut.dat
             echo -e "# ir\talpha\tctx\tbpb\ttime(s)" >> $IR_NAME$ir-$a_NAME$alphaDen-${dataset}_$mut.dat
                 for((ctx=$MIN_CTX; ctx!=$MAX_CTX; ++ctx)); do
-                ./phoenix -m t,$ctx,$alphaDen,$ir -t datasets/${dataset}_1$mut #>> $IR_NAME$ir-$a_NAME$alphaDen-${dataset}_$mut.dat
+                ./phoenix -m t,$ctx,$alphaDen,$ir -t datasets/${dataset}_$mut #>> $IR_NAME$ir-$a_NAME$alphaDen-${dataset}_$mut.dat
                 done
                 # save "min bpb" and "min ctx" for each dataset
                 minBpbCtx=$(awk 'NR==1 || $4 < minBpb {minBpb=$4; minCtx=$3}; \
