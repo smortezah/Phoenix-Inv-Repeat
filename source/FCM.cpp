@@ -62,12 +62,6 @@ void FCM::buildHashTable ()
         
         //////////////////////////////////
         uint64_t nSym;                      // number of symbols (n_s). To calculate probability
-        uint64_t nSymA=2;                      // number of symbols (n_s). To calculate probability
-        uint64_t nSymC=0;                      // number of symbols (n_s). To calculate probability
-        uint64_t nSymN=0;                      // number of symbols (n_s). To calculate probability
-        uint64_t nSymG=0;                      // number of symbols (n_s). To calculate probability
-        uint64_t nSymT=0;                      // number of symbols (n_s). To calculate probability
-    
         uint64_t sumNSyms;                  // sum of number of symbols (sum n_a). To calculate probability
         double   probability = 0;           // probability of a symbol, based on an identified context
         double   sumOfEntropies = 0;        // sum of entropies for different symbols
@@ -92,29 +86,31 @@ void FCM::buildHashTable ()
                                            (c == 'C') ? (uint8_t) 1 :
                                            (c == 'G') ? (uint8_t) 3 :
                                            (c == 'T') ? (uint8_t) 4 : (uint8_t) 2;
-                
-//                // considering inverted repeats to update hash table
-//                if (isInvertedRepeat)
-//                {
-//                    // save inverted repeat context
-//                    string invRepeatContext = to_string(4 - currSymInt);
-//                    // convert a number from char into integer format. '0'->0. '4'->4 by
-//                    // 4 - (context[ i ] - 48) = 52 - context[ i ]. 48 is ASCII code of '0'
-//                    for (string::iterator it = context.end() - 1; it != context.begin(); --it)
-//                        invRepeatContext += std::to_string(52 - *it);
-//
-//                    // update hash table considering inverted repeats
-//                    ++hTable[ invRepeatContext ][ 52 - context[ 0 ]];
-////                    ++hTable[ invRepeatContext ][ 5 ];
-//                }
     
-                //////////////////////////////////
                 // update hash table
                 nSym = hTable[ context ][ currSymInt ]++;
+//                sumNSyms=++hTable[ context ][ 5 ];
+                
+                // considering inverted repeats to update hash table
+                if (isInvertedRepeat)
+                {
+                    // save inverted repeat context
+                    string invRepeatContext = to_string(4 - currSymInt);
+                    // convert a number from char into integer format. '0'->0. '4'->4 by
+                    // 4 - (context[ i ] - 48) = 52 - context[ i ]. 48 is ASCII code of '0'
+                    for (string::iterator it = context.end() - 1; it != context.begin(); --it)
+                        invRepeatContext += std::to_string(52 - *it);
 
+                    // update hash table considering inverted repeats
+                    ++hTable[ invRepeatContext ][ 52 - context[ 0 ]];
+//                    ++hTable[ invRepeatContext ][ 5 ];
+                }
+    
+                //////////////////////////////////
                 // sum(n_a)
                 sumNSyms = 0;
                 for (uint64_t u : hTable[ context ])    sumNSyms += u;
+                
 //                cout<<"\n"<<context<<'\t'<<sumNSyms<<"\n";
                 if (sumNSyms < 0)   cout << sumNSyms;
     
