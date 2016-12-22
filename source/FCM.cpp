@@ -50,12 +50,12 @@ void FCM::buildHashTable ()
 //        std::fclose(fp);
 //    }
     
-    ifstream fileIn(fileName, ios::in); // open file located in fileName
+    ifstream fileIn(fileName, ios::in);         // open file located in fileName
     
-    if (!fileIn)                        // error occurred while opening file
+    if (!fileIn)                                // error occurred while opening file
     {
         std::cerr << "The file '" << fileName << "' cannot be opened, or it is empty.\n";
-        fileIn.close();                 // close file
+        fileIn.close();                         // close file
         return;
     }
 
