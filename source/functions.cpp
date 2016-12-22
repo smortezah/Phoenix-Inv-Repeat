@@ -242,21 +242,22 @@ void Functions::commandLineParser (int argc, char **argv)
 /***********************************************************
     check if file opened correctly
 ************************************************************/
-bool Functions::isFileCorrect (const string &fileName)
+//bool Functions::isFileCorrect (const string &fileName)
+bool Functions::isFileCorrect (ifstream &fileIn)
 {
-    ifstream fileIn(fileName, ios::in);   // open file
-    
+//    ifstream fileIn(fileName, ios::in);   // open file
+
     // check if file doesn't exist
     if (!fileIn)
     {
-        cerr << "File '" << fileName << "' could not be opened.\n";
+//        cerr << "File '" << fileName << "' could not be opened.\n";
         fileIn.close(); // close file
         return false;   // error occurred while opening file
     }
     // check if file is empty
     else if (fileIn.peek() == ifstream::traits_type::eof())
     {
-        cerr << "File '" << fileName << "' is empty.\n";
+//        cerr << "File '" << fileName << "' is empty.\n";
         fileIn.close(); // close file
         return false;   // error occurred while opening file
     }

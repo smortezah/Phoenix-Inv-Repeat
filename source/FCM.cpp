@@ -37,16 +37,29 @@ void FCM::buildHashTable ()
     const bool isInvertedRepeat = getInvertedRepeat();  // get inverted repeat
     // TODO: supprt for both target and reference file addresses
     string fileName             = getTarFileAddress();
-
-    ifstream fileIn(fileName, ios::in);             // open file located in fileName
     
-    if (Functions::isFileCorrect(fileName))         // file opened correctly
+//    const char* filename= fileName.c_str();;
+//    std::FILE *fp = std::fopen(filename, "rb");
+//    if (fp)
+//    {
+//        std::string contents;
+//        std::fseek(fp, 0, SEEK_END);
+//        contents.resize(std::ftell(fp));
+//        std::rewind(fp);
+//        std::fread(&contents[0], 1, contents.size(), fp);
+//        std::fclose(fp);
+//    }
+    
+    ifstream fileIn(fileName, ios::in);             // open file located in fileName
+
+//    if (Functions::isFileCorrect(fileName))         // file opened correctly
+    if (Functions::isFileCorrect(fileIn))         // file opened correctly
     {
         string context(contextDepth, '0');          // context, that slides in the dataset
 //        // context, that slides in the dataset
 //        uint8_t context[contextDepth];    // context as uint8_t*
 //        memset(context, 0, contextDepth);
-        
+
         htable_t hTable;                            // create hash table
         hTable.insert({context, {0, 0, 0, 0, 0}});  // initialize hash table with 0'z
 //        hTable.insert({context, {0, 0, 0, 0, 0, 0}});// initialize hash table with 0'z
@@ -59,7 +72,7 @@ void FCM::buildHashTable ()
         // iterator for each line of file.
         // index "contextDepth" for first line; index 0 for other lines
         string::iterator lineIter = datasetLine.begin() + contextDepth;
-        
+
         //////////////////////////////////
         uint64_t nSym;                      // number of symbols (n_s). To calculate probability
         uint64_t sumNSyms;                  // sum of number of symbols (sum n_a). To calculate probability
@@ -71,11 +84,11 @@ void FCM::buildHashTable ()
 
         do
         {
-            
+
             //////////////////////////////////
             totalNumberOfSymbols += datasetLine.size();    // number of symbols in each line of dataset
             //////////////////////////////////
-            
+
             // fill hash table by number of occurrences of symbols A, C, N, G, T
             for (; lineIter != datasetLine.end(); ++lineIter)
             {
@@ -86,11 +99,11 @@ void FCM::buildHashTable ()
                                            (c == 'C') ? (uint8_t) 1 :
                                            (c == 'G') ? (uint8_t) 3 :
                                            (c == 'T') ? (uint8_t) 4 : (uint8_t) 2;
-    
+
                 // update hash table
                 nSym = hTable[ context ][ currSymInt ]++;
 //                sumNSyms=++hTable[ context ][ 5 ];
-                
+
                 // considering inverted repeats to update hash table
                 if (isInvertedRepeat)
                 {
@@ -105,23 +118,23 @@ void FCM::buildHashTable ()
                     ++hTable[ invRepeatContext ][ 52 - context[ 0 ]];
 //                    ++hTable[ invRepeatContext ][ 5 ];
                 }
-    
+
                 //////////////////////////////////
                 // sum(n_a)
                 sumNSyms = 0;
                 for (uint64_t u : hTable[ context ])    sumNSyms += u;
-                
+
 //                cout<<"\n"<<context<<'\t'<<sumNSyms<<"\n";
                 if (sumNSyms < 0)   cout << sumNSyms;
-    
+
                 // P(s|c^t)
 //                probability = (nSym + (double) 1/alphaDen) / (sumNSyms + (double) ALPHABET_SIZE/alphaDen);
                 probability = (double) (alphaDen*nSym + 1) / (alphaDen*sumNSyms + ALPHABET_SIZE);
-    
+
                 // sum( log_2 P(s|c^t) )
                 sumOfEntropies += log2(probability);
                 /////////////////////////////////
-                
+
                 // update context
                 context = context.substr(1, (unsigned) contextDepth - 1) + to_string(currSymInt);
 
@@ -131,15 +144,15 @@ void FCM::buildHashTable ()
             }
 
             lineIter = datasetLine.begin();         // iterator for non-first lines of file becomes 0
-    
+
         } while ( getline(fileIn, datasetLine) );   // read file line by line
-        
+
         ////////////////////////////////
         totalNumberOfSymbols -= contextDepth;       // first line includes contextDepth of "AA..."
-        
+
         // H_N = -1/N sum( log_2 P(s|c^t) )
         averageEntropy = (-1) * sumOfEntropies / totalNumberOfSymbols;
-        
+
         cout
 //                << sumOfEntropies << '\n'
 //                << totalNumberOfSymbols << '\n'

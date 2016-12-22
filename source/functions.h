@@ -5,6 +5,7 @@
 #include <iostream>
 
 using std::string;
+using std::ifstream;
 
 
 class Functions
@@ -13,7 +14,8 @@ public:
     Functions ();                               // constructor
     
     void commandLineParser (int, char**);       // parse command line
-    static bool isFileCorrect (const string &); // check if file opened correctly
+//    static bool isFileCorrect (const string &); // check if file opened correctly
+    static bool isFileCorrect (ifstream&); // check if file opened correctly
 };
 
 
