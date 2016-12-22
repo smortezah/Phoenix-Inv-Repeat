@@ -93,58 +93,28 @@ void FCM::buildHashTable ()
                                            (c == 'G') ? (uint8_t) 3 :
                                            (c == 'T') ? (uint8_t) 4 : (uint8_t) 2;
                 
-                // considering inverted repeats to update hash table
-                if (isInvertedRepeat)
-                {
-                    // save inverted repeat context
-                    string invRepeatContext = to_string(4 - currSymInt);
-                    // convert a number from char into integer format. '0'->0. '4'->4 by
-                    // 4 - (context[ i ] - 48) = 52 - context[ i ]. 48 is ASCII code of '0'
-                    for (string::iterator it = context.end() - 1; it != context.begin(); --it)
-                        invRepeatContext += std::to_string(52 - *it);
-    
-                    // update hash table considering inverted repeats
-                    ++hTable[ invRepeatContext ][ 52 - context[ 0 ]];
-//                    ++hTable[ invRepeatContext ][ 5 ];
-                }
+//                // considering inverted repeats to update hash table
+//                if (isInvertedRepeat)
+//                {
+//                    // save inverted repeat context
+//                    string invRepeatContext = to_string(4 - currSymInt);
+//                    // convert a number from char into integer format. '0'->0. '4'->4 by
+//                    // 4 - (context[ i ] - 48) = 52 - context[ i ]. 48 is ASCII code of '0'
+//                    for (string::iterator it = context.end() - 1; it != context.begin(); --it)
+//                        invRepeatContext += std::to_string(52 - *it);
+//
+//                    // update hash table considering inverted repeats
+//                    ++hTable[ invRepeatContext ][ 52 - context[ 0 ]];
+////                    ++hTable[ invRepeatContext ][ 5 ];
+//                }
     
                 //////////////////////////////////
                 // update hash table
-//                nSym = hTable[ context ][ currSymInt ]++;
-                switch (currSymInt)
-                {
-                    case 0:
-                        ++hTable[ context ][ 0 ];
-                        ++nSymA;
-                        nSym=nSymA;
-                        break;
-                    case 1:
-                        ++hTable[ context ][ 1 ];
-                        ++nSymC;
-                        nSym=nSymC;
-                        break;
-                    case 2:
-                        ++hTable[ context ][ 2 ];
-                        ++nSymN;
-                        nSym=nSymN;
-                        break;
-                    case 3:
-                        ++hTable[ context ][ 3 ];
-                        ++nSymG;
-                        nSym=nSymG;
-                        break;
-                    case 4:
-                        ++hTable[ context ][ 4 ];
-                        ++nSymT;
-                        nSym=nSymT;
-                        break;
-                    default:    break;
-                }
-//
-//                // sum(n_a)
-                sumNSyms = nSymA+nSymC+nSymN+nSymG+nSymT;
-//                sumNSyms = 0;
-//                for (uint64_t u : hTable[ context ])    sumNSyms += u;
+                nSym = hTable[ context ][ currSymInt ]++;
+
+                // sum(n_a)
+                sumNSyms = 0;
+                for (uint64_t u : hTable[ context ])    sumNSyms += u;
 //                cout<<"\n"<<context<<'\t'<<sumNSyms<<"\n";
                 if (sumNSyms < 0)   cout << sumNSyms;
     
