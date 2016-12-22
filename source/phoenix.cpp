@@ -30,7 +30,7 @@ int32_t main (int argc, char *argv[])
 
     // for access to Functions (object 'function' on memory stack)
     Functions function;
-//    function.commandLineParser(argc, argv); // parse the command line
+    function.commandLineParser(argc, argv); // parse the command line
     
     
 //    const uint8_t currSymInt = (c == 'A') ? (uint8_t) 0 :
@@ -38,11 +38,13 @@ int32_t main (int argc, char *argv[])
 //                               (c == 'G') ? (uint8_t) 3 :
 //                               (c == 'T') ? (uint8_t) 4 : (uint8_t) 2;
     
-    uint8_t currSymInt = (uint8_t) 4;
-    string context = "AC";
-    string inv = std::to_string(4 - currSymInt);
-    for (int i = context.size() - 1; i != -1; --i)  inv += context[ i ];
-    cout << inv;
+//    uint8_t currSymInt = (uint8_t) 1;
+//    string context = "1234";
+//    string inv = std::to_string(4 - currSymInt);
+////    for (int i = context.size() - 1; i != 0; --i)  inv += std::to_string(52-context[ i ]);
+//    for (string::iterator i = context.end() - 1; i != context.begin(); --i) inv += std::to_string(52 - *i);
+//    cout << inv;
+////    cout<<context[ 1 ]-48<<' '<<context[ 0 ]-48;
     
     
     // Record end time

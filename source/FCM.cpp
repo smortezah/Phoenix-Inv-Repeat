@@ -81,6 +81,7 @@ void FCM::buildHashTable ()
             {
                 // htable includes an array of uint64_t numbers
 //                uint8_t currSymInt = symCharToInt(datasetLine[ lineIter ]);
+//                uint8_t currSymInt = symCharToInt(*lineIter);
                 const char c = *lineIter;
                 const uint8_t currSymInt = (c == 'A') ? (uint8_t) 0 :
                                            (c == 'C') ? (uint8_t) 1 :
@@ -94,9 +95,9 @@ void FCM::buildHashTable ()
                     string invRepeatContext = to_string(4 - currSymInt);
                     // convert a number from char into integer format. '0'->0. '4'->4 by
                     // 4 - (context[ i ] - 48) = 52 - context[ i ]. 48 is ASCII code of '0'
-                    for (int i = contextDepth - 1; i != 0; --i)
-                        invRepeatContext += to_string( 52 - context[ i ] );
-                    
+                    for (string::iterator it = context.end() - 1; it != context.begin(); --it)
+                        invRepeatContext += std::to_string(52 - *it);
+    
                     // update hash table considering inverted repeats
                     ++hTable[ invRepeatContext ][ 52 - context[ 0 ]];
 //                    ++hTable[ invRepeatContext ][ 5 ];
@@ -139,12 +140,12 @@ void FCM::buildHashTable ()
         averageEntropy = (-1) * sumOfEntropies / totalNumberOfSymbols;
         
         cout
-                << sumOfEntropies << '\n'
-                << totalNumberOfSymbols << '\n'
-                << "  "
-                << getInvertedRepeat() << '\t'
-                << (float) 1/alphaDen << '\t'
-                << (int) contextDepth << '\t'
+//                << sumOfEntropies << '\n'
+//                << totalNumberOfSymbols << '\n'
+//                << "  "
+//                << getInvertedRepeat() << '\t'
+//                << (float) 1/alphaDen << '\t'
+//                << (int) contextDepth << '\t'
                 << averageEntropy
 //                << '\t'
 //                << hTable.size()
