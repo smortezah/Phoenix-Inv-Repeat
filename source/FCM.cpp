@@ -95,7 +95,7 @@ void FCM::buildHashTable ()
                 sumNSyms = 0;
                 for (uint64_t u : hTable[ context ])    sumNSyms += u;
 //                cout<<"\n"<<context<<'\t'<<sumNSyms<<"\n";
-                if(sumNSyms<0)cout<<sumNSyms;
+                if (sumNSyms < 0)   cout << sumNSyms;
 
                 // P(s|c^t)
 //                probability = (nSym + (double) 1/alphaDen) / (sumNSyms + (double) ALPHABET_SIZE/alphaDen);
@@ -109,10 +109,9 @@ void FCM::buildHashTable ()
                 if (isInvertedRepeat)
                 {
                     // save inverted repeat context
-                    string invRepeatContext = "";
-                    invRepeatContext += to_string(4 - currSymInt);
+                    string invRepeatContext = to_string(4 - currSymInt);
                     // convert a number from char into integer format. '0'->0. '4'->4 by
-                    // 52 - context[ i ] = 4 - (context[ i ] - 48). 48 is ASCII code of '0'
+                    // 4 - (context[ i ] - 48) = 52 - context[ i ]. 48 is ASCII code of '0'
                     for (int i = contextDepth - 1; i != 0; --i)
                         invRepeatContext += to_string( 52 - context[ i ] );
                     
@@ -140,10 +139,8 @@ void FCM::buildHashTable ()
         averageEntropy = (-1) * sumOfEntropies / totalNumberOfSymbols;
         
         cout
-//                << sumNSyms << '\n'
-//                << probability << '\n'
-//                << sumOfEntropies << '\n'
-//                << totalNumberOfSymbols << '\n'
+                << sumOfEntropies << '\n'
+                << totalNumberOfSymbols << '\n'
                 << "  "
                 << getInvertedRepeat() << '\t'
                 << (float) 1/alphaDen << '\t'

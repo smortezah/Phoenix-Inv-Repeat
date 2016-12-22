@@ -30,8 +30,12 @@ int32_t main (int argc, char *argv[])
 
     // for access to Functions (object 'function' on memory stack)
     Functions function;
-    function.commandLineParser(argc, argv); // parse the command line
+//    function.commandLineParser(argc, argv); // parse the command line
     
+    string s = "h";
+    uint8_t u = 6;
+    s += std::to_string(u - 48);
+    cout << s << ',';
     
     
     // Record end time
