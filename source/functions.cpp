@@ -247,22 +247,23 @@ bool Functions::isFileCorrect (ifstream &fileIn)
 {
 //    ifstream fileIn(fileName, ios::in);   // open file
 
-    // check if file doesn't exist
+    // check if file doesn't exist or is empty
     if (!fileIn)
     {
 //        cerr << "File '" << fileName << "' could not be opened.\n";
+        cerr << "The file cannot be opened, or it is empty.\n";
         fileIn.close(); // close file
         return false;   // error occurred while opening file
     }
-    // check if file is empty
-    else if (fileIn.peek() == ifstream::traits_type::eof())
-    {
-//        cerr << "File '" << fileName << "' is empty.\n";
-        fileIn.close(); // close file
-        return false;   // error occurred while opening file
-    }
-    
-    fileIn.close(); // close file
+//    // check if file is empty
+//    else if (fileIn.peek() == ifstream::traits_type::eof())
+//    {
+////        cerr << "File '" << fileName << "' is empty.\n";
+//        fileIn.close(); // close file
+//        return false;   // error occurred while opening file
+//    }
+//
+//    fileIn.close(); // close file
     
     return true;    // file opened correctly
 }

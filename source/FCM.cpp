@@ -51,8 +51,8 @@ void FCM::buildHashTable ()
 //    }
     
     ifstream fileIn(fileName, ios::in);             // open file located in fileName
-
-//    if (Functions::isFileCorrect(fileName))         // file opened correctly
+    
+////    if (Functions::isFileCorrect(fileName))         // file opened correctly
     if (Functions::isFileCorrect(fileIn))         // file opened correctly
     {
         string context(contextDepth, '0');          // context, that slides in the dataset
@@ -84,11 +84,11 @@ void FCM::buildHashTable ()
 
         do
         {
-
+            
             //////////////////////////////////
             totalNumberOfSymbols += datasetLine.size();    // number of symbols in each line of dataset
             //////////////////////////////////
-
+            
             // fill hash table by number of occurrences of symbols A, C, N, G, T
             for (; lineIter != datasetLine.end(); ++lineIter)
             {
