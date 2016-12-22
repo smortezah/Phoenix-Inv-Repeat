@@ -62,7 +62,7 @@ void FCM::buildHashTable ()
         
         //////////////////////////////////
         uint64_t nSym;                      // number of symbols (n_s). To calculate probability
-        uint64_t nSymA=0;                      // number of symbols (n_s). To calculate probability
+        uint64_t nSymA=2;                      // number of symbols (n_s). To calculate probability
         uint64_t nSymC=0;                      // number of symbols (n_s). To calculate probability
         uint64_t nSymN=0;                      // number of symbols (n_s). To calculate probability
         uint64_t nSymG=0;                      // number of symbols (n_s). To calculate probability
