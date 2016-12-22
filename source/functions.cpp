@@ -247,11 +247,13 @@ bool Functions::isFileCorrect (ifstream &fileIn)
 {
 //    ifstream fileIn(fileName, ios::in);   // open file
 
+    string fileName = "";
+    fileIn >> fileName;
     // check if file doesn't exist or is empty
     if (!fileIn)
     {
-//        cerr << "File '" << fileName << "' could not be opened.\n";
-        cerr << "The file cannot be opened, or it is empty.\n";
+        cerr << "File '" << fileName << "' could not be opened.\n";
+//        cerr << "The file cannot be opened, or it is empty.\n";
         fileIn.close(); // close file
         return false;   // error occurred while opening file
     }
