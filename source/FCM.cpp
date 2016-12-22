@@ -86,24 +86,6 @@ void FCM::buildHashTable ()
                                            (c == 'C') ? (uint8_t) 1 :
                                            (c == 'G') ? (uint8_t) 3 :
                                            (c == 'T') ? (uint8_t) 4 : (uint8_t) 2;
-
-                //////////////////////////////////
-                // update hash table
-                nSym = hTable[ context ][ currSymInt ]++;
-                
-                // sum(n_a)
-                sumNSyms = 0;
-                for (uint64_t u : hTable[ context ])    sumNSyms += u;
-//                cout<<"\n"<<context<<'\t'<<sumNSyms<<"\n";
-                if (sumNSyms < 0)   cout << sumNSyms;
-
-                // P(s|c^t)
-//                probability = (nSym + (double) 1/alphaDen) / (sumNSyms + (double) ALPHABET_SIZE/alphaDen);
-                probability = (double) (alphaDen*nSym + 1) / (alphaDen*sumNSyms + ALPHABET_SIZE);
-
-                // sum( log_2 P(s|c^t) )
-                sumOfEntropies += log2(probability);
-                /////////////////////////////////
                 
                 // considering inverted repeats to update hash table
                 if (isInvertedRepeat)
@@ -119,6 +101,24 @@ void FCM::buildHashTable ()
                     ++hTable[ invRepeatContext ][ 52 - context[ 0 ]];
 //                    ++hTable[ invRepeatContext ][ 5 ];
                 }
+    
+                //////////////////////////////////
+                // update hash table
+                nSym = hTable[ context ][ currSymInt ]++;
+    
+                // sum(n_a)
+                sumNSyms = 0;
+                for (uint64_t u : hTable[ context ])    sumNSyms += u;
+//                cout<<"\n"<<context<<'\t'<<sumNSyms<<"\n";
+                if (sumNSyms < 0)   cout << sumNSyms;
+    
+                // P(s|c^t)
+//                probability = (nSym + (double) 1/alphaDen) / (sumNSyms + (double) ALPHABET_SIZE/alphaDen);
+                probability = (double) (alphaDen*nSym + 1) / (alphaDen*sumNSyms + ALPHABET_SIZE);
+    
+                // sum( log_2 P(s|c^t) )
+                sumOfEntropies += log2(probability);
+                /////////////////////////////////
                 
                 // update context
                 context = context.substr(1, (unsigned) contextDepth - 1) + to_string(currSymInt);
