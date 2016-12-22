@@ -32,10 +32,17 @@ int32_t main (int argc, char *argv[])
     Functions function;
 //    function.commandLineParser(argc, argv); // parse the command line
     
-    string s = "h";
-    uint8_t u = 6;
-    s += std::to_string(u - 48);
-    cout << s << ',';
+    
+//    const uint8_t currSymInt = (c == 'A') ? (uint8_t) 0 :
+//                               (c == 'C') ? (uint8_t) 1 :
+//                               (c == 'G') ? (uint8_t) 3 :
+//                               (c == 'T') ? (uint8_t) 4 : (uint8_t) 2;
+    
+    uint8_t currSymInt = (uint8_t) 4;
+    string context = "AC";
+    string inv = std::to_string(4 - currSymInt);
+    for (int i = context.size() - 1; i != -1; --i)  inv += context[ i ];
+    cout << inv;
     
     
     // Record end time
