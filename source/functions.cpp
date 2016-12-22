@@ -265,7 +265,7 @@ bool Functions::isFileCorrect (ifstream &fileIn)
 //        return false;   // error occurred while opening file
 //    }
 //
-//    fileIn.close(); // close file
+////    fileIn.close(); // close file
     
     return true;    // file opened correctly
 }
