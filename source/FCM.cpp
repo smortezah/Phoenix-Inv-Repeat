@@ -122,19 +122,8 @@ void FCM::buildHashTable ()
                 }
                 
                 // update context
-//                context = (contextDepth == 1)
-//                          ? to_string(currSymInt)
-//                          : context.substr(1, (unsigned) contextDepth - 1)
-//                            + to_string(currSymInt);
-    
-                for (string::iterator it = context.begin() + 1; it != context.end(); ++it)
-                    *(it - 1) = *(it);
-                *context.end()='a';
-//                std::copy(context.begin() + 1, context.end(), context.begin());
-//                context[ contextDepth-1 ] = currSymInt;
-////                context.insert(context.end(),to_string(currSymInt));
-//                char c2=currSymInt;
-//                cout<< to_string(c2) << ' ';
+                context = context.substr(1, (unsigned) contextDepth - 1) + to_string(currSymInt);
+
 ////                memcpy(context, context + 1, contextDepth - 1);
 ////                context[ contextDepth-1 ] = currSymInt;
 //////                *(context+contextDepth-1) = currSymInt;
@@ -155,11 +144,11 @@ void FCM::buildHashTable ()
 //                << probability << '\n'
 //                << sumOfEntropies << '\n'
 //                << totalNumberOfSymbols << '\n'
-//                << "  "
-//                << getInvertedRepeat() << '\t'
-//                << (float) 1/alphaDen << '\t'
-//                << (int) contextDepth << '\t'
-//                << averageEntropy
+                << "  "
+                << getInvertedRepeat() << '\t'
+                << (float) 1/alphaDen << '\t'
+                << (int) contextDepth << '\t'
+                << averageEntropy
 //                << '\t'
 //                << hTable.size()
                 << '\n'
