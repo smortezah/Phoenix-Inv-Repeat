@@ -31,7 +31,7 @@ FCM::FCM () {}
 /***********************************************************
     build hash table
 ************************************************************/
-void FCM::buildHashTable ()
+void FCM::buildTableOrHashTable ()
 {
     const uint8_t contextDepth  = getContextDepth();    // get context depth
     const uint16_t alphaDen     = getAlphaDenom();      // get alpha denominator
