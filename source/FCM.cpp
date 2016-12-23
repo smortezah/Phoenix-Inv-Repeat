@@ -29,7 +29,7 @@ FCM::FCM () {}
 
 
 /***********************************************************
-    build hash table
+    build table or hash table
 ************************************************************/
 void FCM::buildTableOrHashTable ()
 {

@@ -20,8 +20,9 @@ using std::array;
 /***********************************************************
     constant
 ************************************************************/
-#define ALPHABET_SIZE   5     // alphabet {A, C, N, G, T}
-#define ALPH_SUM_SIZE   6     // size of alphabet plus sum
+#define ALPHABET_SIZE       5   // alphabet {A, C, N, G, T}
+#define ALPH_SUM_SIZE       6   // size of alphabet plus sum
+#define TABLE_MAX_CONTEXT   11  // max context size for building table
 
 
 /***********************************************************

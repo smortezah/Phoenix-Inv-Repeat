@@ -14,7 +14,7 @@ class FCM
 public:
     FCM ();                                     // constructor
                                                 
-    void buildTableOrHashTable ();                     // build hash table
+    void buildTableOrHashTable ();              // build table or hash table
 //    uint8_t symCharToInt (char) const;          // ACNGT -> 01234
     void printHashTable () const;               // print hash table
                                                 
