@@ -58,7 +58,7 @@ void FCM::buildTableOrHashTable ()
     {
         cerr << "The file '" << fileName << "' cannot be opened, or it is empty.\n";
         fileIn.close();                         // close file
-        return;
+        return;                                 // exit this function
     }
     
     string context(contextDepth, '0');          // context, that slides in the dataset
@@ -98,11 +98,11 @@ void FCM::buildTableOrHashTable ()
                                        (c == 'C') ? (uint8_t) 1 :
                                        (c == 'G') ? (uint8_t) 3 :
                                        (c == 'T') ? (uint8_t) 4 : (uint8_t) 2;
-        
+    
             // update hash table
             nSym = hTable[ context ][ currSymInt ]++;
 //            sumNSyms=++hTable[ context ][ 5 ];
-        
+            
             // considering inverted repeats to update hash table
             if (isInvertedRepeat)
             {
