@@ -14,7 +14,7 @@ INSTALL_goose=0 # to install "goose" from Github
 GEN_DATASETS=0  # generate datasets using "XS"
 GEN_MUTATIONS=0 # generate mutations using "goose"
 RUN=1           # run the program
-PLOT_RESULTS=0  # plot results using "gnuplot"
+PLOT_RESULTS=1  # plot results using "gnuplot"
 
 # mutations list:   `seq -s' ' 1 10`
 #MUT_LIST="1 2 3 4 5 6 7 8 9 10 12 14 16 18 20 25 30 35 40 45 50"
@@ -34,7 +34,7 @@ datasets="$HUMAN_CHR$CURR_CHR"
 INV_REPEATS="0"     # list of inverted repeats      "0 1"
 ALPHA_DENS="1"     # list of alpha denominators    "1 20 100"
 MIN_CTX=2          # min context size
-MAX_CTX=3          # max context size   ->  real: -=1
+MAX_CTX=21          # max context size   ->  real: -=1
 
 PIX_FORMAT=png      # output format: png, svg
 #rm -f *.$PIX_FORMAT# remove FORMAT pictures, if they exist
@@ -129,7 +129,8 @@ for ir in $INV_REPEATS; do
 #            rm -f $IR_NAME$ir-$a_NAME$alphaDen-${dataset}_$mut.dat
             touch $IR_NAME$ir-$a_NAME$alphaDen-${dataset}_$mut.dat
             echo -e "# ir\talpha\tctx\tbpb\ttime(s)" >> $IR_NAME$ir-$a_NAME$alphaDen-${dataset}_$mut.dat
-                for((ctx=$MIN_CTX; ctx!=$MAX_CTX; ++ctx)); do
+#                for((ctx=$MIN_CTX; ctx<$MAX_CTX; ctx+=9)); do
+		 for ctx in {2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20}; do
                 ./phoenix -m t,$ctx,$alphaDen,$ir -t datasets/${dataset}_$mut >> $IR_NAME$ir-$a_NAME$alphaDen-${dataset}_$mut.dat
                 done
                 # save "min bpb" and "min ctx" for each dataset
@@ -170,7 +171,7 @@ set xtics add ("1" 1)
 set key right                           # legend position
 set term $PIX_FORMAT                    # set terminal for output picture format
 set output "$dataset.$PIX_FORMAT"       # set output name
-plot "dat/$IR_NAME$ir-$a_NAME$ALPHA_DENS-${dataset}_$mut.dat" using 3:4  with linespoints ls 7 title "$IR_NAME=$ir, $a_NAME=1/$ALPHA_DENS, $CHR$CURR_CHR"
+plot "dat/$IR_NAME$ir-$a_NAME$alphaDen-${dataset}_$mut.dat" using 3:4  with linespoints ls 7 title "$IR_NAME=$ir, $a_NAME=1/$ALPHA_DENS, $CHR$CURR_CHR"
 
 #set ylabel "context-order size"         # set label of y axis
 #set ytics 2,1,20                        # set steps for y axis

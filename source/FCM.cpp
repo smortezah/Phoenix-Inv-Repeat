@@ -145,14 +145,15 @@ void FCM::buildHashTable ()
     cout
 //            << sumOfEntropies << '\n'
 //            << totalNumberOfSymbols << '\n'
-//            << "  "
-//            << getInvertedRepeat() << '\t'
-//            << (float) 1/alphaDen << '\t'
-//            << (int) contextDepth << '\t'
+            << "  "
+            << getInvertedRepeat() << '\t'
+            << (float) 1/alphaDen << '\t'
+            << (int) contextDepth << '\t'
             << averageEntropy
 //            << '\t'
 //            << hTable.size()
-            << '\n';
+//            << '\n'
+;
     ////////////////////////////////
     
     fileIn.close();             // close file
