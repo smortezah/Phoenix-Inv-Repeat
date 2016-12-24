@@ -38,7 +38,7 @@ void FCM::buildTableOrHashTable ()
     const bool isInvertedRepeat = getInvertedRepeat();  // get inverted repeat
     // TODO: supprt for both target and reference file addresses
     string fileName             = getTarFileAddress();  // get target file address
-
+    
 //    const char* filename= fileName.c_str();;
 //    std::FILE *fp = std::fopen(filename, "rb");
 //    if (fp)
@@ -146,7 +146,7 @@ void FCM::buildTableOrHashTable ()
 //            << sumOfEntropies << '\n'
 //            << totalNumberOfSymbols << '\n'
             << "  "
-            << getInvertedRepeat() << '\t'
+//            << getInvertedRepeat() << '\t'
             << (float) 1/alphaDen << '\t'
             << (int) contextDepth << '\t'
             << averageEntropy
@@ -184,18 +184,18 @@ void FCM::printHashTable () const
     string tar_or_ref = (this->getTargetOrReference() == 't' ? "target" : "reference");
     string Tar_or_Ref = (this->getTargetOrReference() == 't' ? "Target" : "Reference");
     
-    cout
-         << " >>> Context model:\t\tBuilt from "  << tar_or_ref << '\n'
-         << " >>> Context order size:\t" << (uint16_t) this->getContextDepth() << '\n'
-         << " >>> Alpha denominator:\t\t" << this->getAlphaDenom() << '\n'
-         << " >>> Inverted repeat:\t\t" << (this->getInvertedRepeat() ? "Considered"
-                                                                      : "Not considered")
-         << '\n'
-         << " >>> " << Tar_or_Ref << " file address:\t"
-         // TODO: this line must be changed to
-         // << ( tar_or_ref == "target" ? this->getTarFileAddress() : this->getRefFileAddress() )
-         << ( tar_or_ref == "target" ? this->getTarFileAddress() : this->getTarFileAddress() )
-         << "\n\n";
+//    cout
+//         << " >>> Context model:\t\tBuilt from "  << tar_or_ref << '\n'
+//         << " >>> Context order size:\t" << (uint16_t) this->getContextDepth() << '\n'
+//         << " >>> Alpha denominator:\t\t" << this->getAlphaDenom() << '\n'
+//         << " >>> Inverted repeat:\t\t" << (this->getInvertedRepeat() ? "Considered"
+//                                                                      : "Not considered")
+//         << '\n'
+//         << " >>> " << Tar_or_Ref << " file address:\t"
+//         // TODO: this line must be changed to
+//         // << ( tar_or_ref == "target" ? this->getTarFileAddress() : this->getRefFileAddress() )
+//         << ( tar_or_ref == "target" ? this->getTarFileAddress() : this->getTarFileAddress() )
+//         << "\n\n";
     
     cout << "\tA\tC\tN\tG\tT"
          //              << "\tP_A\tP_C\tP_N\tP_G\tP_T"
