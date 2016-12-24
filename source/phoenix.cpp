@@ -28,21 +28,21 @@ int32_t main (int argc, char *argv[])
     high_resolution_clock::time_point exeStartTime = high_resolution_clock::now();
 
     // for access to Functions (object 'function' on memory stack)
-//    Functions function;
-//    function.commandLineParser(argc, argv); // parse the command line
+    Functions function;
+    function.commandLineParser(argc, argv); // parse the command line
     
     
     
-    int a = 'A';
-    int c = 'C';
-    int g = 'G';
-    int n = 'N';
-    int t = 'T';
-    
-    int arr[5] = {a, g, c, n, t};
-    
-    for (int i = 0; i != 5; ++i)
-        cout << arr[ i ]%5 << '\n';
+//    int a = 'A';
+//    int c = 'C';
+//    int g = 'G';
+//    int n = 'N';
+//    int t = 'T';
+//
+//    int arr[5] = {a, g, c, n, t};
+//
+//    for (int i = 0; i != 5; ++i)
+//        cout << arr[ i ]%5 << '\n';
     
     
     
