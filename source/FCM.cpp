@@ -107,11 +107,11 @@ void FCM::buildTableOrHashTable ()
     
             
     
-//            for (string::iterator it = context.end(); it != context.begin() - 1; --it)
-//                cout << *it;
-            uint64_t m = 0;
-            for (int i = 0; i != contextDepth; ++i)
-                m += (context[ i ] - 48) * pow(5, contextDepth - i - 1);
+////            for (string::iterator it = context.end(); it != context.begin() - 1; --it)
+////                cout << *it;
+//            uint64_t m = 0;
+//            for (int i = 0; i != contextDepth; ++i)
+//                m += (context[ i ] - 48) * pow(5, contextDepth - i - 1);
 //            cout << m;
 //            cout << '\n';
             
