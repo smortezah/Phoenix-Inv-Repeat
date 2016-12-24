@@ -21,18 +21,23 @@ using std::chrono::high_resolution_clock;
 ///////////////////////////////////////////////////////////
 /////////                 M A I N                 /////////
 ///////////////////////////////////////////////////////////
-
+#include <vector>
 int32_t main (int argc, char *argv[])
 {
     // Record start time
     high_resolution_clock::time_point exeStartTime = high_resolution_clock::now();
 
     // for access to Functions (object 'function' on memory stack)
-//    Functions function;
-//    function.commandLineParser(argc, argv); // parse the command line
+    Functions function;
+    function.commandLineParser(argc, argv); // parse the command line
     
     
-    
+//    std::vector< int> v;
+////    auto p = std::make_pair("q", 3);
+////    v.push_back(p);
+//v.push_back(2);
+////    for(std::vector::iterator i=v.begin();i!=v.end();++i)
+////        cout<<*i;
     
     
     // Record end time

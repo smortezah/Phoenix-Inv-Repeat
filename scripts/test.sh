@@ -187,3 +187,7 @@ EOF
 done
 
 fi  #end of plot output using "gnuplot"
+
+
+########################
+cd ./scripts
