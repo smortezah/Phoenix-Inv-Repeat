@@ -104,7 +104,7 @@ void FCM::buildTableOrHashTable ()
 //                                       (c == 'C') ? (uint8_t) 1 :
 //                                       (c == 'G') ? (uint8_t) 3 :
 //                                       (c == 'T') ? (uint8_t) 4 : (uint8_t) 2;
-            const uint8_t currSymInt = c%5;
+            const uint8_t currSymInt = c % 5;
             
     
 ////            for (string::iterator it = context.end(); it != context.begin() - 1; --it)

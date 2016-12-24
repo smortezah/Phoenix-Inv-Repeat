@@ -42,7 +42,7 @@ int32_t main (int argc, char *argv[])
 //    int arr[5] = {a, g, c, n, t};
 //
 //    for (int i = 0; i != 5; ++i)
-//        cout << arr[ i ]%5 << '\n';
+//        cout << arr[ i ] << '\n';
     
     
     
