@@ -203,13 +203,13 @@ void Functions::commandLineParser (int argc, char **argv)
                 // models[ n ].setRefFileAddress(referenceFileName)
                 (tarOrRefChar == 't') ? models[ n ].setTarFileAddress(targetFileName)
                                       : models[ n ].setTarFileAddress(targetFileName);
-                
                 // set the context depth of the model
-                uint8_t ctxDepth = (uint8_t) stoi(vecParameters[ vecParamIndex++ ]);
-                models[ n ].setContextDepth(ctxDepth);
-                // set the mode of the model ('t'=table, 'h'=hash table)
-                (ctxDepth < TABLE_MAX_CONTEXT) ? models[ n ].setMode('t')
-                                               : models[ n ].setMode('h');
+                models[ n ].setContextDepth((uint8_t) stoi(vecParameters[ vecParamIndex++ ]));
+//                uint8_t ctxDepth = (uint8_t) stoi(vecParameters[ vecParamIndex++ ]);
+//                models[ n ].setContextDepth(ctxDepth);
+//                // set the mode of the model ('t'=table, 'h'=hash table)
+//                (ctxDepth < TABLE_MAX_CONTEXT) ? models[ n ].setMode('t')
+//                                               : models[ n ].setMode('h');
                 // set the alpha denominator of the model
                 models[ n ].setAlphaDenom((uint16_t) stoi(vecParameters[ vecParamIndex++ ]));
                 // set the inverted repeat condition of the model

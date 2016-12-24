@@ -38,6 +38,9 @@ void FCM::buildTableOrHashTable ()
     const bool isInvertedRepeat = getInvertedRepeat();  // get inverted repeat
     // TODO: supprt for both target and reference file addresses
     string fileName = getTarFileAddress();  // get target file address
+    
+    // 't'=table, 'h'=hash table
+    char mode = (contextDepth < TABLE_MAX_CONTEXT) ? 't' : 'h';
 
 //    const char* filename= fileName.c_str();;
 //    std::FILE *fp = std::fopen(filename, "rb");
@@ -67,10 +70,11 @@ void FCM::buildTableOrHashTable ()
 //    memset(context, 0, contextDepth);
     
     htable_t hTable;                            // create hash table
-        if (1 < 2){
-    hTable.insert({context, {0, 0, 0, 0, 0}});  // initialize hash table with 0'z
-//    hTable.insert({context, {0, 0, 0, 0, 0, 0}});// initialize hash table with 0'z
-}
+    
+    // initialize table or hash table with 0'z
+    (mode != 't') ? hTable.insert({context, {0, 0, 0, 0, 0}})
+                  : hTable.insert({context, {0, 0, 0, 0, 0}});
+    
     //////////////////////////////////
     uint64_t nSym;                      // number of symbols (n_s). To calculate probability
     uint64_t sumNSyms;                  // sum of number of symbols (sum n_a). To calculate probability
@@ -101,7 +105,8 @@ void FCM::buildTableOrHashTable ()
                                        (c == 'T') ? (uint8_t) 4 : (uint8_t) 2;
     
             // update hash table
-            nSym = hTable[ context ][ currSymInt ]++;
+            (mode != 't') ? nSym = hTable[ context ][ currSymInt ]++
+                          : nSym = hTable[ context ][ currSymInt ]++;
 //            sumNSyms=++hTable[ context ][ 5 ];
             
             // considering inverted repeats to update hash table
@@ -114,13 +119,16 @@ void FCM::buildTableOrHashTable ()
                 for (string::iterator it = context.end() - 1; it != context.begin(); --it)
                     invRepeatContext += to_string(52 - *it);
                 // update hash table considering inverted repeats
-                ++hTable[ invRepeatContext ][ 52 - context[ 0 ]];
+                (mode != 't') ? ++hTable[ invRepeatContext ][ 52 - context[ 0 ]]
+                              : ++hTable[ invRepeatContext ][ 52 - context[ 0 ]];
 //                ++hTable[ invRepeatContext ][ 5 ];
             }
         
             //////////////////////////////////
             // sum(n_a)
-            sumNSyms = 0;   for (uint64_t u : hTable[ context ])    sumNSyms += u;
+            sumNSyms = 0;
+            if (mode != 't')    for (uint64_t u : hTable[ context ])    sumNSyms += u;
+            else                for (uint64_t u : hTable[ context ])    sumNSyms += u;
         
             // P(s|c^t)
 //            probability = (nSym + (double) 1/alphaDen) / (sumNSyms + (double) ALPHABET_SIZE/alphaDen);
@@ -147,7 +155,7 @@ void FCM::buildTableOrHashTable ()
 //            << sumOfEntropies << '\n'
 //            << totalNumberOfSymbols << '\n'
             << "  "
-//            << getInvertedRepeat() << '\t'
+            << getInvertedRepeat() << '\t'
             << (float) 1/alphaDen << '\t'
             << (int) contextDepth << '\t'
             << averageEntropy
@@ -159,7 +167,9 @@ void FCM::buildTableOrHashTable ()
     
     fileIn.close();             // close file
     
-    FCM::setHashTable(hTable);  // save the built hash table
+    // save the built hash table
+    (mode != 't') ? FCM::setHashTable(hTable)
+                  : FCM::setHashTable(hTable);
 }
     
 
@@ -185,18 +195,18 @@ void FCM::printHashTable () const
     string tar_or_ref = (this->getTargetOrReference() == 't' ? "target" : "reference");
     string Tar_or_Ref = (this->getTargetOrReference() == 't' ? "Target" : "Reference");
     
-//    cout
-//         << " >>> Context model:\t\tBuilt from "  << tar_or_ref << '\n'
-//         << " >>> Context order size:\t" << (uint16_t) this->getContextDepth() << '\n'
-//         << " >>> Alpha denominator:\t\t" << this->getAlphaDenom() << '\n'
-//         << " >>> Inverted repeat:\t\t" << (this->getInvertedRepeat() ? "Considered"
-//                                                                      : "Not considered")
-//         << '\n'
-//         << " >>> " << Tar_or_Ref << " file address:\t"
-//         // TODO: this line must be changed to
-//         // << ( tar_or_ref == "target" ? this->getTarFileAddress() : this->getRefFileAddress() )
-//         << ( tar_or_ref == "target" ? this->getTarFileAddress() : this->getTarFileAddress() )
-//         << "\n\n";
+    cout
+         << " >>> Context model:\t\tBuilt from "  << tar_or_ref << '\n'
+         << " >>> Context order size:\t" << (uint16_t) this->getContextDepth() << '\n'
+         << " >>> Alpha denominator:\t\t" << this->getAlphaDenom() << '\n'
+         << " >>> Inverted repeat:\t\t" << (this->getInvertedRepeat() ? "Considered"
+                                                                      : "Not considered")
+         << '\n'
+         << " >>> " << Tar_or_Ref << " file address:\t"
+         // TODO: this line must be changed
+         // << ( tar_or_ref == "target" ? this->getTarFileAddress() : this->getRefFileAddress() )
+         << ( tar_or_ref == "target" ? this->getTarFileAddress() : this->getTarFileAddress() )
+         << "\n\n";
     
     cout << "\tA\tC\tN\tG\tT"
          //              << "\tP_A\tP_C\tP_N\tP_G\tP_T"
@@ -223,8 +233,8 @@ char FCM::getTargetOrReference () const         { return targetOrReference; }
 void FCM::setTargetOrReference (char tOrR)      { FCM::targetOrReference = tOrR; }
 uint8_t FCM::getContextDepth () const           { return contextDepth; }
 void FCM::setContextDepth (uint8_t ctxDp)       { FCM::contextDepth = ctxDp; }
-char FCM::getMode () const                      { return mode; }
-void FCM::setMode (char mode)                   { FCM::mode = mode; }
+//char FCM::getMode () const                      { return mode; }
+//void FCM::setMode (char mode)                   { FCM::mode = mode; }
 uint16_t FCM::getAlphaDenom () const            { return alphaDenom; }
 void FCM::setAlphaDenom (uint16_t alphaDen)     { FCM::alphaDenom = alphaDen; }
 bool FCM::getInvertedRepeat () const            { return invertedRepeat; }

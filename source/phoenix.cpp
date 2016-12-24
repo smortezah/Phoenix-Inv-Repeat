@@ -28,8 +28,9 @@ int32_t main (int argc, char *argv[])
     high_resolution_clock::time_point exeStartTime = high_resolution_clock::now();
 
     // for access to Functions (object 'function' on memory stack)
-    Functions function;
-    function.commandLineParser(argc, argv); // parse the command line
+//    Functions function;
+//    function.commandLineParser(argc, argv); // parse the command line
+    
     
     
     
