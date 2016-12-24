@@ -33,12 +33,12 @@ FCM::FCM () {}
 ************************************************************/
 void FCM::buildTableOrHashTable ()
 {
-    const uint8_t contextDepth  = getContextDepth();    // get context depth
-    const uint16_t alphaDen     = getAlphaDenom();      // get alpha denominator
+    const uint8_t contextDepth = getContextDepth();    // get context depth
+    const uint16_t alphaDen = getAlphaDenom();      // get alpha denominator
     const bool isInvertedRepeat = getInvertedRepeat();  // get inverted repeat
     // TODO: supprt for both target and reference file addresses
-    string fileName             = getTarFileAddress();  // get target file address
-    
+    string fileName = getTarFileAddress();  // get target file address
+
 //    const char* filename= fileName.c_str();;
 //    std::FILE *fp = std::fopen(filename, "rb");
 //    if (fp)
@@ -67,9 +67,10 @@ void FCM::buildTableOrHashTable ()
 //    memset(context, 0, contextDepth);
     
     htable_t hTable;                            // create hash table
+        if (1 < 2){
     hTable.insert({context, {0, 0, 0, 0, 0}});  // initialize hash table with 0'z
 //    hTable.insert({context, {0, 0, 0, 0, 0, 0}});// initialize hash table with 0'z
-    
+}
     //////////////////////////////////
     uint64_t nSym;                      // number of symbols (n_s). To calculate probability
     uint64_t sumNSyms;                  // sum of number of symbols (sum n_a). To calculate probability
@@ -222,6 +223,8 @@ char FCM::getTargetOrReference () const         { return targetOrReference; }
 void FCM::setTargetOrReference (char tOrR)      { FCM::targetOrReference = tOrR; }
 uint8_t FCM::getContextDepth () const           { return contextDepth; }
 void FCM::setContextDepth (uint8_t ctxDp)       { FCM::contextDepth = ctxDp; }
+char FCM::getMode () const                      { return mode; }
+void FCM::setMode (char mode)                   { FCM::mode = mode; }
 uint16_t FCM::getAlphaDenom () const            { return alphaDenom; }
 void FCM::setAlphaDenom (uint16_t alphaDen)     { FCM::alphaDenom = alphaDen; }
 bool FCM::getInvertedRepeat () const            { return invertedRepeat; }
