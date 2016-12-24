@@ -39,10 +39,10 @@ int32_t main (int argc, char *argv[])
     int n = 'N';
     int t = 'T';
     
-    int arr[5] = {a, c, g, n, t};
+    int arr[5] = {a, g, c, n, t};
     
     for (int i = 0; i != 5; ++i)
-        cout << arr[ i ] << '\n';
+        cout << arr[ i ]%5 << '\n';
     
     
     
