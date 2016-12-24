@@ -198,12 +198,11 @@ void Functions::commandLineParser (int argc, char **argv)
                 char tarOrRefChar = vecParameters[ vecParamIndex++ ][ 0 ];
                 models[ n ].setTargetOrReference(tarOrRefChar);
                 
-                if (tarOrRefChar == 't')    // set target file address
-                    models[ n ].setTarFileAddress(targetFileName);
-                else                        // set reference file address
-                    // TODO: this line must be changed to
-                    // models[ n ].setRefFileAddress(referenceFileName)
-                    models[ n ].setTarFileAddress(targetFileName);
+                // set target or reference file address
+                // TODO: the following line must be added
+                // models[ n ].setRefFileAddress(referenceFileName)
+                (tarOrRefChar == 't') ? models[ n ].setTarFileAddress(targetFileName)
+                                      : models[ n ].setTarFileAddress(targetFileName);
                 
                 // set the context depth of the model
                 models[ n ].setContextDepth((uint8_t) stoi(vecParameters[ vecParamIndex++ ]));
