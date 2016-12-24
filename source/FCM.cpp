@@ -104,7 +104,7 @@ void FCM::buildTableOrHashTable ()
                                        (c == 'C') ? (uint8_t) 1 :
                                        (c == 'G') ? (uint8_t) 3 :
                                        (c == 'T') ? (uint8_t) 4 : (uint8_t) 2;
-    
+            
             // update hash table
             (mode != 't') ? nSym = hTable[ context ][ currSymInt ]++
                           : nSym = hTable[ context ][ currSymInt ]++;
@@ -112,20 +112,20 @@ void FCM::buildTableOrHashTable ()
 //                          : nSym = hTable[ context ][ currSymInt ]++;
 //            sumNSyms=++hTable[ context ][ 5 ];
             
-//            // considering inverted repeats to update hash table
-//            if (isInvertedRepeat)
-//            {
-//                // save inverted repeat context
-//                string invRepeatContext = to_string(4 - currSymInt);
-//                // convert a number from char into integer format. '0'->0. '4'->4 by
-//                // 4 - (context[ i ] - 48) = 52 - context[ i ]. 48 is ASCII code of '0'
-//                for (string::iterator it = context.end() - 1; it != context.begin(); --it)
-//                    invRepeatContext += to_string(52 - *it);
-//                // update hash table considering inverted repeats
-//                (mode != 't') ? ++hTable[ invRepeatContext ][ 52 - context[ 0 ]]
-//                              : ++hTable[ invRepeatContext ][ 52 - context[ 0 ]];
-////                ++hTable[ invRepeatContext ][ 5 ];
-//            }
+            // considering inverted repeats to update hash table
+            if (isInvertedRepeat)
+            {
+                // save inverted repeat context
+                string invRepeatContext = to_string(4 - currSymInt);
+                // convert a number from char into integer format. '0'->0. '4'->4 by
+                // 4 - (context[ i ] - 48) = 52 - context[ i ]. 48 is ASCII code of '0'
+                for (string::iterator it = context.end() - 1; it != context.begin(); --it)
+                    invRepeatContext += to_string(52 - *it);
+                // update hash table considering inverted repeats
+                (mode != 't') ? ++hTable[ invRepeatContext ][ 52 - context[ 0 ]]
+                              : ++hTable[ invRepeatContext ][ 52 - context[ 0 ]];
+//                ++hTable[ invRepeatContext ][ 5 ];
+            }
         
             //////////////////////////////////
             // sum(n_a)
