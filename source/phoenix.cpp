@@ -38,7 +38,7 @@ int32_t main (int argc, char *argv[])
         b*=5;
     }
     
-    cout<<(a+b);
+    cout<<(a|b);
     
 //    uint8_t u=(uint8_t) 2;
 //    uint64_t contextInt = 0;
