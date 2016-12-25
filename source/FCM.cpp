@@ -158,9 +158,9 @@ void FCM::buildTableOrHashTable ()
             if (mode != 't')
                 context = context.substr(1, (unsigned) contextDepth - 1) + to_string(currSymInt);
             else
-                contextInt = contextInt * 5 + currSymInt;
-
-            cout<<contextInt<<'\t';
+                contextInt = (contextInt * 5 + currSymInt) % tableColSize;
+    
+//            cout << contextInt << '\t';
             
 ////            memcpy(context, context + 1, contextDepth - 1);
 ////            context[ contextDepth-1 ] = currSymInt;
@@ -175,7 +175,7 @@ void FCM::buildTableOrHashTable ()
 //            cout << table[ i ][ j ] << '\t';
 //        cout << '\n';
 //    }
-    
+//
     ////////////////////////////////
     // H_N = -1/N sum( log_2 P(s|c^t) )
     averageEntropy = (-1) * sumOfEntropies / totalNumberOfSymbols;
