@@ -40,8 +40,8 @@ void FCM::buildTableOrHashTable ()
     string fileName = getTarFileAddress();  // get target file address
     
     // 't'=table, 'h'=hash table
-    char mode = (contextDepth < TABLE_MAX_CONTEXT) ? 't' : 'h';
-//    char mode = 'h';
+//    char mode = (contextDepth < TABLE_MAX_CONTEXT) ? 't' : 'h';
+    char mode = 'h';
     
 //    const char* filename= fileName.c_str();;
 //    std::FILE *fp = std::fopen(filename, "rb");
@@ -76,15 +76,11 @@ void FCM::buildTableOrHashTable ()
     
     size_t tableColSize = (uint64_t) pow(5, contextDepth);
 //    std::array< array< uint64_t, ALPHABET_SIZE+1 >, tableColSize > table;
-    uint64_t table[tableColSize][ALPHABET_SIZE + 1];
+    uint64_t table[tableColSize][ALPHABET_SIZE];
     
     // initialize table or hash table with 0'z
     if (mode != 't')    hTable.insert({context, {0, 0, 0, 0, 0}});
-    else
-    {
-        memset(table, 0, sizeof(table[ 0 ][ 0 ]) * tableColSize * (ALPHABET_SIZE + 1));
-        for (uint64_t i = 0; i != tableColSize; ++i)     table[ i ][ 0 ] = i;
-    }
+    else                memset(table, 0, sizeof(table[ 0 ][ 0 ]) * tableColSize * (ALPHABET_SIZE));
     
     //////////////////////////////////
     uint64_t nSym;                      // number of symbols (n_s). To calculate probability
@@ -118,7 +114,7 @@ void FCM::buildTableOrHashTable ()
     
             // update hash table
             nSym = (mode != 't') ? hTable[ context ][ currSymInt ]++
-                                 : table[ contextInt ][ currSymInt+1 ]++;
+                                 : table[ contextInt ][ currSymInt ]++;
 //            sumNSyms=++hTable[ context ][ 5 ];
             
 //            cout<<contextInt<<'\t'<<(int)currSymInt<<'\t'<<nSym<<'\n';
@@ -173,12 +169,12 @@ void FCM::buildTableOrHashTable ()
     }
     
     
-    for (int i = 0; i < tableColSize; ++i)
-    {
-        for (int j = 0; j < 6; ++j)
-            cout << table[ i ][ j ] << '\t';
-        cout << '\n';
-    }
+//    for (int i = 0; i < tableColSize; ++i)
+//    {
+//        for (int j = 0; j < 5; ++j)
+//            cout << table[ i ][j ] << '\t';
+//        cout << '\n';
+//    }
 
     ////////////////////////////////
     // H_N = -1/N sum( log_2 P(s|c^t) )
