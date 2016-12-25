@@ -77,7 +77,7 @@ void FCM::buildTableOrHashTable ()
     size_t tableColSize = (uint64_t) pow(5, contextDepth);
 //    std::array< array< uint64_t, ALPHABET_SIZE+1 >, tableColSize > table;
     uint64_t table[tableColSize][ALPHABET_SIZE + 1];
-    memset(table, 0, sizeof(table[0][0]) * (ALPHABET_SIZE + 1) * tableColSize);
+    memset(table, 0, sizeof(table[ 0 ][ 0 ]) * (ALPHABET_SIZE + 1) * tableColSize);
     
     // initialize table or hash table with 0'z
     if (mode != 't')    hTable.insert({context, {0, 0, 0, 0, 0}});
@@ -175,7 +175,7 @@ void FCM::buildTableOrHashTable ()
 //            cout << table[ i ][ j ] << '\t';
 //        cout << '\n';
 //    }
-//
+
     ////////////////////////////////
     // H_N = -1/N sum( log_2 P(s|c^t) )
     averageEntropy = (-1) * sumOfEntropies / totalNumberOfSymbols;
