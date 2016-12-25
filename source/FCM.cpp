@@ -114,9 +114,10 @@ void FCM::buildTableOrHashTable ()
     
             // update hash table
             nSym = (mode != 't') ? hTable[ context ][ currSymInt ]++
-                                 : table[ contextInt ][ currSymInt ]++;
+                                 : table[ contextInt ][ currSymInt+1 ]++;
 //            sumNSyms=++hTable[ context ][ 5 ];
-            cout<<contextInt<<'\t'<<(int)currSymInt<<'\t'<<nSym<<'\n';
+            
+//            cout<<contextInt<<'\t'<<(int)currSymInt<<'\t'<<nSym<<'\n';
 
 //            uint64_t m = 0;
 //            for (int i = 0; i != contextDepth; ++i)
@@ -168,12 +169,12 @@ void FCM::buildTableOrHashTable ()
     }
     
     
-//    for (int i = 0; i < tableColSize; ++i)
-//    {
-//        for (int j = 0; j < 6; ++j)
-//            cout << table[ i ][ j ] << '\t';
-//        cout << '\n';
-//    }
+    for (int i = 0; i < tableColSize; ++i)
+    {
+        for (int j = 0; j < 6; ++j)
+            cout << table[ i ][ j ] << '\t';
+        cout << '\n';
+    }
 
     ////////////////////////////////
     // H_N = -1/N sum( log_2 P(s|c^t) )
