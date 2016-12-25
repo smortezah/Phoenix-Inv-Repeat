@@ -159,6 +159,7 @@ void FCM::buildTableOrHashTable ()
             else
                 contextInt = contextInt * 5 + currSymInt;
 
+            cout<<contextInt<<'\t';
             
 ////            memcpy(context, context + 1, contextDepth - 1);
 ////            context[ contextDepth-1 ] = currSymInt;
@@ -167,12 +168,12 @@ void FCM::buildTableOrHashTable ()
     }
     
     
-    for (int i = 0; i < tableColSize; ++i)
-    {
-        for (int j = 0; j < 6; ++j)
-            cout << table[ i ][ j ] << '\t';
-        cout << '\n';
-    }
+//    for (int i = 0; i < tableColSize; ++i)
+//    {
+//        for (int j = 0; j < 6; ++j)
+//            cout << table[ i ][ j ] << '\t';
+//        cout << '\n';
+//    }
     
     ////////////////////////////////
     // H_N = -1/N sum( log_2 P(s|c^t) )
