@@ -40,8 +40,8 @@ void FCM::buildTableOrHashTable ()
     string fileName = getTarFileAddress();  // get target file address
     
     // 't'=table, 'h'=hash table
-//    char mode = (contextDepth < TABLE_MAX_CONTEXT) ? 't' : 'h';
-    char mode = 'h';
+    char mode = (contextDepth < TABLE_MAX_CONTEXT) ? 't' : 'h';
+//    char mode = 'h';
     
 //    const char* filename= fileName.c_str();;
 //    std::FILE *fp = std::fopen(filename, "rb");
@@ -72,12 +72,15 @@ void FCM::buildTableOrHashTable ()
     
     uint64_t contextInt = 0;
     
-    htable_t hTable;                            // create hash table
-    std::vector< array<uint64_t, ALPHABET_SIZE+1> > table;
+    htable_t hTable;                            // create hash
+    size_t tableColSize = (uint64_t) pow(5, contextDepth);
+//    std::array< array< uint64_t, ALPHABET_SIZE+1 >, tableColSize > table;
+    uint64_t table[tableColSize][ALPHABET_SIZE + 1];
+    memset(table, 0, sizeof(table[0][0]) * (ALPHABET_SIZE + 1) * tableColSize);
     
     // initialize table or hash table with 0'z
-    (mode != 't') ? hTable.insert({context, {0, 0, 0, 0, 0}})
-                  : hTable.insert({context, {0, 0, 0, 0, 0}});
+    if (mode != 't')    hTable.insert({context, {0, 0, 0, 0, 0}});
+    else                for (uint64_t u : table[ contextInt ])  u = 0;
     
     //////////////////////////////////
     uint64_t nSym;                      // number of symbols (n_s). To calculate probability
@@ -109,42 +112,38 @@ void FCM::buildTableOrHashTable ()
                                        (c == 'T') ? (uint8_t) 4 : (uint8_t) 2;
 //            const uint8_t currSymInt = c % 5;
             
-    
-////            for (string::iterator it = context.end(); it != context.begin() - 1; --it)
-////                cout << *it;
+            // update hash table
+            (mode != 't') ? nSym = hTable[ context ][ currSymInt ]++
+                          : nSym = table[ contextInt ][ currSymInt ]++;
+//            sumNSyms=++hTable[ context ][ 5 ];
+            
+
 //            uint64_t m = 0;
 //            for (int i = 0; i != contextDepth; ++i)
 //                m += (context[ i ] - 48) * pow(5, contextDepth - i - 1);
 //            cout << m;
 //            cout << '\n';
             
-            // update hash table
-            (mode != 't') ? nSym = hTable[ context ][ currSymInt ]++
-                          : nSym = hTable[ context ][ currSymInt ]++;
-//            (mode != 't') ? nSym = hTable[ context ][ currSymInt ]++
-//                          : nSym = hTable[ context ][ currSymInt ]++;
-//            sumNSyms=++hTable[ context ][ 5 ];
-            
-            // considering inverted repeats to update hash table
-            if (isInvertedRepeat)
-            {
-                // save inverted repeat context
-                string invRepeatContext = to_string(4 - currSymInt);
-                // convert a number from char into integer format. '0'->0. '4'->4 by
-                // 4 - (context[ i ] - 48) = 52 - context[ i ]. 48 is ASCII code of '0'
-                for (string::iterator it = context.end() - 1; it != context.begin(); --it)
-                    invRepeatContext += to_string(52 - *it);
-                // update hash table considering inverted repeats
-                (mode != 't') ? ++hTable[ invRepeatContext ][ 52 - context[ 0 ]]
-                              : ++hTable[ invRepeatContext ][ 52 - context[ 0 ]];
-//                ++hTable[ invRepeatContext ][ 5 ];
-            }
+//            // considering inverted repeats to update hash table
+//            if (isInvertedRepeat)
+//            {
+//                // save inverted repeat context
+//                string invRepeatContext = to_string(4 - currSymInt);
+//                // convert a number from char into integer format. '0'->0. '4'->4 by
+//                // 4 - (context[ i ] - 48) = 52 - context[ i ]. 48 is ASCII code of '0'
+//                for (string::iterator it = context.end() - 1; it != context.begin(); --it)
+//                    invRepeatContext += to_string(52 - *it);
+//                // update hash table considering inverted repeats
+//                (mode != 't') ? ++hTable[ invRepeatContext ][ 52 - context[ 0 ]]
+//                              : ++hTable[ invRepeatContext ][ 52 - context[ 0 ]];
+////                ++hTable[ invRepeatContext ][ 5 ];
+//            }
         
             //////////////////////////////////
             // sum(n_a)
             sumNSyms = 0;
             if (mode != 't')    for (uint64_t u : hTable[ context ])    sumNSyms += u;
-            else                for (uint64_t u : hTable[ context ])    sumNSyms += u;
+            else                for (uint64_t u : table[ contextInt ])  sumNSyms += u;
         
             // P(s|c^t)
 //            probability = (nSym + (double) 1/alphaDen) / (sumNSyms + (double) ALPHABET_SIZE/alphaDen);
@@ -153,14 +152,26 @@ void FCM::buildTableOrHashTable ()
             // sum( log_2 P(s|c^t) )
             sumOfEntropies += log2(probability);
             /////////////////////////////////
-        
+    
             // update context
-            context = context.substr(1, (unsigned) contextDepth - 1) + to_string(currSymInt);
+            if (mode != 't')
+                context = context.substr(1, (unsigned) contextDepth - 1) + to_string(currSymInt);
+            else
+                contextInt = contextInt * 5 + currSymInt;
 
+            
 ////            memcpy(context, context + 1, contextDepth - 1);
 ////            context[ contextDepth-1 ] = currSymInt;
 ////              *(context+contextDepth-1) = currSymInt;
         }
+    }
+    
+    
+    for (int i = 0; i < tableColSize; ++i)
+    {
+        for (int j = 0; j < 6; ++j)
+            cout << table[ i ][ j ] << '\t';
+        cout << '\n';
     }
     
     ////////////////////////////////
@@ -178,7 +189,7 @@ void FCM::buildTableOrHashTable ()
 //            << '\t'
 //            << hTable.size()
 //            << '\n'
-;
+            ;
     ////////////////////////////////
     
     fileIn.close();             // close file
