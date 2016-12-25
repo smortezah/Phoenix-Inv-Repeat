@@ -70,7 +70,10 @@ void FCM::buildTableOrHashTable ()
 //    uint8_t context[contextDepth];    // context as uint8_t*
 //    memset(context, 0, contextDepth);
     
+    uint64_t contextInt = 0;
+    
     htable_t hTable;                            // create hash table
+    std::vector< array<uint64_t, ALPHABET_SIZE+1> > table;
     
     // initialize table or hash table with 0'z
     (mode != 't') ? hTable.insert({context, {0, 0, 0, 0, 0}})
