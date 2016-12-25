@@ -79,8 +79,12 @@ void FCM::buildTableOrHashTable ()
     uint64_t table[tableColSize][ALPHABET_SIZE + 1];
     
     // initialize table or hash table with 0'z
-    if (mode != 't')  hTable.insert({context, {0, 0, 0, 0, 0}});
-    else              memset(table, 0, sizeof(table[ 0 ][ 0 ]) * tableColSize * (ALPHABET_SIZE + 1));
+    if (mode != 't')    hTable.insert({context, {0, 0, 0, 0, 0}});
+    else
+    {
+        memset(table, 0, sizeof(table[ 0 ][ 0 ]) * tableColSize * (ALPHABET_SIZE + 1));
+        for (uint64_t i = 0; i != tableColSize; ++i)     table[ i ][ 0 ] = i;
+    }
     
     //////////////////////////////////
     uint64_t nSym;                      // number of symbols (n_s). To calculate probability
