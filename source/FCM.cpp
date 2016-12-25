@@ -111,12 +111,12 @@ void FCM::buildTableOrHashTable ()
                                        (c == 'G') ? (uint8_t) 3 :
                                        (c == 'T') ? (uint8_t) 4 : (uint8_t) 2;
 //            const uint8_t currSymInt = c % 5;
-            
+    
             // update hash table
-            (mode != 't') ? nSym = hTable[ context ][ currSymInt ]++
-                          : nSym = table[ contextInt ][ currSymInt ]++;
+            nSym = (mode != 't') ? hTable[ context ][ currSymInt ]++
+                                 : table[ contextInt ][ currSymInt ]++;
 //            sumNSyms=++hTable[ context ][ 5 ];
-            
+            cout<<contextInt<<'\t'<<(int)currSymInt<<'\t'<<nSym<<'\n';
 
 //            uint64_t m = 0;
 //            for (int i = 0; i != contextDepth; ++i)
