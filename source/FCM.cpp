@@ -72,7 +72,8 @@ void FCM::buildTableOrHashTable ()
     
     uint64_t contextInt = 0;
     
-    htable_t hTable;                            // create hash
+    htable_t hTable;                            // create hash table
+    
     size_t tableColSize = (uint64_t) pow(5, contextDepth);
 //    std::array< array< uint64_t, ALPHABET_SIZE+1 >, tableColSize > table;
     uint64_t table[tableColSize][ALPHABET_SIZE + 1];
