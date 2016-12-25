@@ -100,11 +100,11 @@ void FCM::buildTableOrHashTable ()
             // htable includes an array of uint64_t numbers
 //            uint8_t currSymInt = symCharToInt(*lineIter);
             const char c = *lineIter;
-//            const uint8_t currSymInt = (c == 'A') ? (uint8_t) 0 :
-//                                       (c == 'C') ? (uint8_t) 1 :
-//                                       (c == 'G') ? (uint8_t) 3 :
-//                                       (c == 'T') ? (uint8_t) 4 : (uint8_t) 2;
-            const uint8_t currSymInt = c % 5;
+            const uint8_t currSymInt = (c == 'A') ? (uint8_t) 0 :
+                                       (c == 'C') ? (uint8_t) 1 :
+                                       (c == 'G') ? (uint8_t) 3 :
+                                       (c == 'T') ? (uint8_t) 4 : (uint8_t) 2;
+//            const uint8_t currSymInt = c % 5;
             
     
 ////            for (string::iterator it = context.end(); it != context.begin() - 1; --it)
@@ -115,7 +115,7 @@ void FCM::buildTableOrHashTable ()
 //            cout << m;
 //            cout << '\n';
             
-                // update hash table
+            // update hash table
             (mode != 't') ? nSym = hTable[ context ][ currSymInt ]++
                           : nSym = hTable[ context ][ currSymInt ]++;
 //            (mode != 't') ? nSym = hTable[ context ][ currSymInt ]++
