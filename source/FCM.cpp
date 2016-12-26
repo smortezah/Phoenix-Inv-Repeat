@@ -145,8 +145,8 @@ void FCM::buildTableOrHashTable ()
             sumNSyms = 0;
             if (mode != 't')    for (uint64_t u : hTable[ context ])    sumNSyms += u;
             else                for (uint64_t u : table[ contextInt ])  sumNSyms += u;
-            cout << contextInt << '\t' << sumNSyms << '\n';
-    
+//            cout << contextInt << '\t' << nSym << '\t' << sumNSyms << '\n';
+            
             // P(s|c^t)
 //            probability = (nSym + (double) 1/alphaDen) / (sumNSyms + (double) ALPHABET_SIZE/alphaDen);
             probability = (double) (alphaDen * nSym + 1) / (alphaDen * sumNSyms + ALPHABET_SIZE);
@@ -170,12 +170,12 @@ void FCM::buildTableOrHashTable ()
     }
     
     
-//    for (int i = 0; i < tableNumOfRows; ++i)
-//    {
-//        for (int j = 0; j < 5; ++j)
-//            cout << table[ i ][j ] << '\t';
-//        cout << '\n';
-//    }
+    for (int i = 0; i < tableNumOfRows; ++i)
+    {
+        for (int j = 0; j < 5; ++j)
+            cout << table[ i ][j ] << '\t';
+        cout << '\n';
+    }
 
     ////////////////////////////////
     // H_N = -1/N sum( log_2 P(s|c^t) )
