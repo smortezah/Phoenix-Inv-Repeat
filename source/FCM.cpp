@@ -73,13 +73,13 @@ void FCM::buildTableOrHashTable ()
     
     htable_t hTable;                            // create hash table
     
-    size_t tableColSize = (uint64_t) pow(5, contextDepth);
-//    std::array< array< uint64_t, ALPHABET_SIZE+1 >, tableColSize > table;
-    uint64_t table[tableColSize][ALPHABET_SIZE];
+    size_t tableNumOfRows = (uint64_t) pow(5, contextDepth);
+//    std::array< array< uint64_t, ALPHABET_SIZE+1 >, tableNumOfRows > table;
+    uint64_t table[tableNumOfRows][ALPHABET_SIZE];
     
     // initialize table or hash table with 0'z
     if (mode != 't')    hTable.insert({context, {0, 0, 0, 0, 0}});
-    else                memset(table, 0, sizeof(table[ 0 ][ 0 ]) * tableColSize * (ALPHABET_SIZE));
+    else                memset(table, 0, sizeof(table[ 0 ][ 0 ]) * tableNumOfRows * (ALPHABET_SIZE));
     
     //////////////////////////////////
     uint64_t nSym;                      // number of symbols (n_s). To calculate probability
@@ -157,7 +157,7 @@ void FCM::buildTableOrHashTable ()
             if (mode != 't')
                 context = context.substr(1, (unsigned) contextDepth - 1) + to_string(currSymInt);
             else
-                contextInt = (contextInt * 5 + currSymInt) % tableColSize;
+                contextInt = (contextInt * 5 + currSymInt) % tableNumOfRows;
     
 //            cout << contextInt << '\t';
             
@@ -168,7 +168,7 @@ void FCM::buildTableOrHashTable ()
     }
     
     
-    for (int i = 0; i < tableColSize; ++i)
+    for (int i = 0; i < tableNumOfRows; ++i)
     {
         for (int j = 0; j < 5; ++j)
             cout << table[ i ][j ] << '\t';
