@@ -79,11 +79,13 @@ void FCM::buildTableOrHashTable ()
     uint64_t **table = new uint64_t *[ALPHABET_SIZE];
     for (int i = 0; i < ALPHABET_SIZE; ++i)
         table[ i ] = new uint64_t[tableNumOfRows];
-
+    
     // initialize table or hash table with 0'z
     if (mode != 't')    hTable.insert({context, {0, 0, 0, 0, 0}});
 //    else                memset(table, 0, sizeof(table[ 0 ][ 0 ]) * tableNumOfRows * ALPHABET_SIZE);
-
+    
+    for(int i = 0; i < ALPHABET_SIZE; ++i)  delete [] table[i];
+    delete [] table;
 //    //////////////////////////////////
 //    uint64_t nSym;                      // number of symbols (n_s). To calculate probability
 //    uint64_t sumNSyms;                  // sum of number of symbols (sum n_a). To calculate probability
