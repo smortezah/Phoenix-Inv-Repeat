@@ -74,12 +74,13 @@ void FCM::buildTableOrHashTable ()
     htable_t hTable;                            // create hash table
     
     size_t tableNumOfRows = (uint64_t) pow(5, contextDepth);
-//    std::array< array< uint64_t, ALPHABET_SIZE+1 >, tableNumOfRows > table;
+////    std::array< array< uint64_t, ALPHABET_SIZE+1 >, tableNumOfRows > table;
     uint64_t table[tableNumOfRows][ALPHABET_SIZE];
     
     // initialize table or hash table with 0'z
-    if (mode != 't')    hTable.insert({context, {0, 0, 0, 0, 0}});
-    else                memset(table, 0, sizeof(table[ 0 ][ 0 ]) * tableNumOfRows * ALPHABET_SIZE);
+//    if (mode != 't')
+        hTable.insert({context, {0, 0, 0, 0, 0}});
+//    else                memset(table, 0, sizeof(table[ 0 ][ 0 ]) * tableNumOfRows * ALPHABET_SIZE);
     
     //////////////////////////////////
     uint64_t nSym;                      // number of symbols (n_s). To calculate probability
@@ -112,11 +113,12 @@ void FCM::buildTableOrHashTable ()
 //            const uint8_t currSymInt = c % 5;
     
             // update hash table
-            nSym = (mode != 't') ? hTable[ context ][ currSymInt ]++
-                                 : table[ contextInt ][ currSymInt ]++;
+            nSym =
+//                    (mode != 't') ?
+                   hTable[ context ][ currSymInt ]++
+//                                 : table[ contextInt ][ currSymInt ]++
+                    ;
 //            sumNSyms=++hTable[ context ][ 5 ];
-    
-//            cout << contextInt << '\t' << (int) currSymInt << '\t' << nSym << '\n';
 
             
 //            uint64_t m = 0;
@@ -143,9 +145,9 @@ void FCM::buildTableOrHashTable ()
             //////////////////////////////////
             // sum(n_a)
             sumNSyms = 0;
-            if (mode != 't')    for (uint64_t u : hTable[ context ])    sumNSyms += u;
-            else                for (uint64_t u : table[ contextInt ])  sumNSyms += u;
-//            cout << contextInt << '\t' << nSym << '\t' << sumNSyms << '\n';
+//            if (mode != 't')
+                for (uint64_t u : hTable[ context ])    sumNSyms += u;
+//            else                for (uint64_t u : table[ contextInt ])  sumNSyms += u;
             
             // P(s|c^t)
 //            probability = (nSym + (double) 1/alphaDen) / (sumNSyms + (double) ALPHABET_SIZE/alphaDen);
@@ -156,10 +158,10 @@ void FCM::buildTableOrHashTable ()
             /////////////////////////////////
     
             // update context
-            if (mode != 't')
+//            if (mode != 't')
                 context = context.substr(1, (unsigned) contextDepth - 1) + to_string(currSymInt);
-            else
-                contextInt = (contextInt * 5 + currSymInt) % tableNumOfRows;
+//            else
+//                contextInt = (contextInt * 5 + currSymInt) % tableNumOfRows;
             
     
 //            *context.end() = currSymInt;
@@ -199,8 +201,10 @@ void FCM::buildTableOrHashTable ()
     fileIn.close();             // close file
     
     // save the built hash table
-    (mode != 't') ? FCM::setHashTable(hTable)
-                  : FCM::setHashTable(hTable);
+//    (mode != 't') ?
+    FCM::setHashTable(hTable)
+//                  : FCM::setHashTable(hTable)
+            ;
 }
     
 
