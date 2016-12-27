@@ -163,8 +163,9 @@ void FCM::buildTableOrHashTable ()
                 context = context.substr(1, (unsigned) contextDepth - 1) + to_string(currSymInt);
             else
                 contextInt = (contextInt * 5 + currSymInt) % tableNumOfRows;
+            
     
-//            cout << contextInt << '\t';
+//            *context.end() = currSymInt;
             
 ////            memcpy(context, context + 1, contextDepth - 1);
 ////            context[ contextDepth-1 ] = currSymInt;
