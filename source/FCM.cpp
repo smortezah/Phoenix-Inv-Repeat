@@ -69,13 +69,13 @@ void FCM::buildTableOrHashTable ()
     
     string context(contextDepth, '0');          // context, that slides in the dataset
     
-    uint64_t contextInt = 0;
+    uint32_t contextInt = 0;
     
     htable_t hTable;                            // create hash table
     
     size_t tableNumOfRows = (uint32_t) pow(5, contextDepth);cout<<tableNumOfRows;
 ////    std::array< array< uint64_t, ALPHABET_SIZE+1 >, tableNumOfRows > table;
-//    uint64_t table[tableNumOfRows][ALPHABET_SIZE];
+    uint64_t table[tableNumOfRows][ALPHABET_SIZE];
     
     // initialize table or hash table with 0'z
     if (mode != 't')
