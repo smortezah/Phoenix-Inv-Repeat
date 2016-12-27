@@ -68,9 +68,6 @@ void FCM::buildTableOrHashTable ()
     }
     
     string context(contextDepth, '0');          // context, that slides in the dataset
-//    // context, that slides in the dataset
-//    uint8_t context[contextDepth];    // context as uint8_t*
-//    memset(context, 0, contextDepth);
     
     uint64_t contextInt = 0;
     
