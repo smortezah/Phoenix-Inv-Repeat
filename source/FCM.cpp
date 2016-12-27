@@ -40,8 +40,11 @@ void FCM::buildTableOrHashTable ()
     string fileName = getTarFileAddress();  // get target file address
     
     // 't'=table, 'h'=hash table
-    char mode = (contextDepth > TABLE_MAX_CONTEXT) ? 'h' : 't';
-    
+//    char mode = (contextDepth > TABLE_MAX_CONTEXT) ? 'h' : 't';
+//    char mode = 't';
+    char mode = 'h';
+
+
 //    const char* filename= fileName.c_str();;
 //    std::FILE *fp = std::fopen(filename, "rb");
 //    if (fp)
@@ -170,12 +173,12 @@ void FCM::buildTableOrHashTable ()
     }
     
     
-    for (int i = 0; i < tableNumOfRows; ++i)
-    {
-        for (int j = 0; j < 5; ++j)
-            cout << table[ i ][j ] << '\t';
-        cout << '\n';
-    }
+//    for (int i = 0; i < tableNumOfRows; ++i)
+//    {
+//        for (int j = 0; j < 5; ++j)
+//            cout << table[ i ][j ] << '\t';
+//        cout << '\n';
+//    }
 
     ////////////////////////////////
     // H_N = -1/N sum( log_2 P(s|c^t) )
