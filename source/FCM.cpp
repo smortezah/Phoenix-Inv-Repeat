@@ -41,8 +41,8 @@ void FCM::buildTableOrHashTable ()
     
     // 't'=table, 'h'=hash table
 //    char mode = (contextDepth > TABLE_MAX_CONTEXT) ? 'h' : 't';
-//    char mode = 't';
-    char mode = 'h';
+    char mode = 't';
+//    char mode = 'h';
 
 
 //    const char* filename= fileName.c_str();;
@@ -73,12 +73,12 @@ void FCM::buildTableOrHashTable ()
     
     htable_t hTable;                            // create hash table
     
-    size_t tableNumOfRows = (uint64_t) pow(5, contextDepth);
+    size_t tableNumOfRows = (uint32_t) pow(5, contextDepth);cout<<tableNumOfRows;
 ////    std::array< array< uint64_t, ALPHABET_SIZE+1 >, tableNumOfRows > table;
-    uint64_t table[tableNumOfRows][ALPHABET_SIZE];
+//    uint64_t table[tableNumOfRows][ALPHABET_SIZE];
     
     // initialize table or hash table with 0'z
-//    if (mode != 't')
+    if (mode != 't')
         hTable.insert({context, {0, 0, 0, 0, 0}});
 //    else                memset(table, 0, sizeof(table[ 0 ][ 0 ]) * tableNumOfRows * ALPHABET_SIZE);
     
@@ -158,7 +158,7 @@ void FCM::buildTableOrHashTable ()
             /////////////////////////////////
     
             // update context
-//            if (mode != 't')
+            if (mode != 't')
                 context = context.substr(1, (unsigned) contextDepth - 1) + to_string(currSymInt);
 //            else
 //                contextInt = (contextInt * 5 + currSymInt) % tableNumOfRows;
