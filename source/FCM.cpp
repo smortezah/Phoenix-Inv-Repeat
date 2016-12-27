@@ -75,136 +75,136 @@ void FCM::buildTableOrHashTable ()
     
     size_t tableNumOfRows = (uint32_t) pow(5, contextDepth);cout<<tableNumOfRows;
 ////    std::array< array< uint64_t, ALPHABET_SIZE+1 >, tableNumOfRows > table;
-    uint64_t table[tableNumOfRows][ALPHABET_SIZE];
-    
-    // initialize table or hash table with 0'z
-    if (mode != 't')
-        hTable.insert({context, {0, 0, 0, 0, 0}});
-//    else                memset(table, 0, sizeof(table[ 0 ][ 0 ]) * tableNumOfRows * ALPHABET_SIZE);
-    
-    //////////////////////////////////
-    uint64_t nSym;                      // number of symbols (n_s). To calculate probability
-    uint64_t sumNSyms;                  // sum of number of symbols (sum n_a). To calculate probability
-    double   probability = 0;           // probability of a symbol, based on an identified context
-    double   sumOfEntropies = 0;        // sum of entropies for different symbols
-    uint64_t totalNumberOfSymbols = 0;  // number of all symbols in the sequence
-    double   averageEntropy = 0;        // average entropy (H)
-    //////////////////////////////////
-    
-    string datasetLine;                 // keep each line of the file
-    
-    while (getline(fileIn, datasetLine))
-    {
-    
-        //////////////////////////////////
-        totalNumberOfSymbols += datasetLine.size();    // number of symbols in each line of dataset
-        //////////////////////////////////
-    
-        // fill hash table by number of occurrences of symbols A, C, N, G, T
-        for (string::iterator lineIter = datasetLine.begin(); lineIter != datasetLine.end(); ++lineIter)
-        {
-            // htable includes an array of uint64_t numbers
-//            uint8_t currSymInt = symCharToInt(*lineIter);
-            const char c = *lineIter;
-            const uint8_t currSymInt = (c == 'A') ? (uint8_t) 0 :
-                                       (c == 'C') ? (uint8_t) 1 :
-                                       (c == 'G') ? (uint8_t) 3 :
-                                       (c == 'T') ? (uint8_t) 4 : (uint8_t) 2;
-//            const uint8_t currSymInt = c % 5;
-    
-            // update hash table
-            nSym =
-//                    (mode != 't') ?
-                   hTable[ context ][ currSymInt ]++
-//                                 : table[ contextInt ][ currSymInt ]++
-                    ;
-//            sumNSyms=++hTable[ context ][ 5 ];
-
-            
-//            uint64_t m = 0;
-//            for (int i = 0; i != contextDepth; ++i)
-//                m += (context[ i ] - 48) * pow(5, contextDepth - i - 1);
-//            cout << m;
-//            cout << '\n';
-            
-//            // considering inverted repeats to update hash table
-//            if (isInvertedRepeat)
-//            {
-//                // save inverted repeat context
-//                string invRepeatContext = to_string(4 - currSymInt);
-//                // convert a number from char into integer format. '0'->0. '4'->4 by
-//                // 4 - (context[ i ] - 48) = 52 - context[ i ]. 48 is ASCII code of '0'
-//                for (string::iterator it = context.end() - 1; it != context.begin(); --it)
-//                    invRepeatContext += to_string(52 - *it);
-//                // update hash table considering inverted repeats
-//                (mode != 't') ? ++hTable[ invRepeatContext ][ 52 - context[ 0 ]]
-//                              : ++hTable[ invRepeatContext ][ 52 - context[ 0 ]];
-////                ++hTable[ invRepeatContext ][ 5 ];
-//            }
-        
-            //////////////////////////////////
-            // sum(n_a)
-            sumNSyms = 0;
-//            if (mode != 't')
-                for (uint64_t u : hTable[ context ])    sumNSyms += u;
-//            else                for (uint64_t u : table[ contextInt ])  sumNSyms += u;
-            
-            // P(s|c^t)
-//            probability = (nSym + (double) 1/alphaDen) / (sumNSyms + (double) ALPHABET_SIZE/alphaDen);
-            probability = (double) (alphaDen * nSym + 1) / (alphaDen * sumNSyms + ALPHABET_SIZE);
-        
-            // sum( log_2 P(s|c^t) )
-            sumOfEntropies += log2(probability);
-            /////////////////////////////////
-    
-            // update context
-            if (mode != 't')
-                context = context.substr(1, (unsigned) contextDepth - 1) + to_string(currSymInt);
-//            else
-//                contextInt = (contextInt * 5 + currSymInt) % tableNumOfRows;
-            
-    
-//            *context.end() = currSymInt;
-            
-////            memcpy(context, context + 1, contextDepth - 1);
-////            context[ contextDepth-1 ] = currSymInt;
-////              *(context+contextDepth-1) = currSymInt;
-        }
-    }
-    
-    
-//    for (int i = 0; i < tableNumOfRows; ++i)
+//    uint64_t table[tableNumOfRows][ALPHABET_SIZE];
+//
+//    // initialize table or hash table with 0'z
+//    if (mode != 't')
+//        hTable.insert({context, {0, 0, 0, 0, 0}});
+////    else                memset(table, 0, sizeof(table[ 0 ][ 0 ]) * tableNumOfRows * ALPHABET_SIZE);
+//
+//    //////////////////////////////////
+//    uint64_t nSym;                      // number of symbols (n_s). To calculate probability
+//    uint64_t sumNSyms;                  // sum of number of symbols (sum n_a). To calculate probability
+//    double   probability = 0;           // probability of a symbol, based on an identified context
+//    double   sumOfEntropies = 0;        // sum of entropies for different symbols
+//    uint64_t totalNumberOfSymbols = 0;  // number of all symbols in the sequence
+//    double   averageEntropy = 0;        // average entropy (H)
+//    //////////////////////////////////
+//
+//    string datasetLine;                 // keep each line of the file
+//
+//    while (getline(fileIn, datasetLine))
 //    {
-//        for (int j = 0; j < 5; ++j)
-//            cout << table[ i ][j ] << '\t';
-//        cout << '\n';
+//
+//        //////////////////////////////////
+//        totalNumberOfSymbols += datasetLine.size();    // number of symbols in each line of dataset
+//        //////////////////////////////////
+//
+//        // fill hash table by number of occurrences of symbols A, C, N, G, T
+//        for (string::iterator lineIter = datasetLine.begin(); lineIter != datasetLine.end(); ++lineIter)
+//        {
+//            // htable includes an array of uint64_t numbers
+////            uint8_t currSymInt = symCharToInt(*lineIter);
+//            const char c = *lineIter;
+//            const uint8_t currSymInt = (c == 'A') ? (uint8_t) 0 :
+//                                       (c == 'C') ? (uint8_t) 1 :
+//                                       (c == 'G') ? (uint8_t) 3 :
+//                                       (c == 'T') ? (uint8_t) 4 : (uint8_t) 2;
+////            const uint8_t currSymInt = c % 5;
+//
+//            // update hash table
+//            nSym =
+////                    (mode != 't') ?
+//                   hTable[ context ][ currSymInt ]++
+////                                 : table[ contextInt ][ currSymInt ]++
+//                    ;
+////            sumNSyms=++hTable[ context ][ 5 ];
+//
+//
+////            uint64_t m = 0;
+////            for (int i = 0; i != contextDepth; ++i)
+////                m += (context[ i ] - 48) * pow(5, contextDepth - i - 1);
+////            cout << m;
+////            cout << '\n';
+//
+////            // considering inverted repeats to update hash table
+////            if (isInvertedRepeat)
+////            {
+////                // save inverted repeat context
+////                string invRepeatContext = to_string(4 - currSymInt);
+////                // convert a number from char into integer format. '0'->0. '4'->4 by
+////                // 4 - (context[ i ] - 48) = 52 - context[ i ]. 48 is ASCII code of '0'
+////                for (string::iterator it = context.end() - 1; it != context.begin(); --it)
+////                    invRepeatContext += to_string(52 - *it);
+////                // update hash table considering inverted repeats
+////                (mode != 't') ? ++hTable[ invRepeatContext ][ 52 - context[ 0 ]]
+////                              : ++hTable[ invRepeatContext ][ 52 - context[ 0 ]];
+//////                ++hTable[ invRepeatContext ][ 5 ];
+////            }
+//
+//            //////////////////////////////////
+//            // sum(n_a)
+//            sumNSyms = 0;
+////            if (mode != 't')
+//                for (uint64_t u : hTable[ context ])    sumNSyms += u;
+////            else                for (uint64_t u : table[ contextInt ])  sumNSyms += u;
+//
+//            // P(s|c^t)
+////            probability = (nSym + (double) 1/alphaDen) / (sumNSyms + (double) ALPHABET_SIZE/alphaDen);
+//            probability = (double) (alphaDen * nSym + 1) / (alphaDen * sumNSyms + ALPHABET_SIZE);
+//
+//            // sum( log_2 P(s|c^t) )
+//            sumOfEntropies += log2(probability);
+//            /////////////////////////////////
+//
+//            // update context
+//            if (mode != 't')
+//                context = context.substr(1, (unsigned) contextDepth - 1) + to_string(currSymInt);
+////            else
+////                contextInt = (contextInt * 5 + currSymInt) % tableNumOfRows;
+//
+//
+////            *context.end() = currSymInt;
+//
+//////            memcpy(context, context + 1, contextDepth - 1);
+//////            context[ contextDepth-1 ] = currSymInt;
+//////              *(context+contextDepth-1) = currSymInt;
+//        }
 //    }
-
-    ////////////////////////////////
-    // H_N = -1/N sum( log_2 P(s|c^t) )
-    averageEntropy = (-1) * sumOfEntropies / totalNumberOfSymbols;
-    
-    cout
-//            << sumOfEntropies << '\n'
-//            << totalNumberOfSymbols << '\n'
-            << "  "
-            << getInvertedRepeat() << '\t'
-            << (float) 1/alphaDen << '\t'
-            << (int) contextDepth << '\t'
-            << averageEntropy
-//            << '\t'
-//            << hTable.size()
-//            << '\n'
-            ;
-    ////////////////////////////////
-    
-    fileIn.close();             // close file
-    
-    // save the built hash table
-//    (mode != 't') ?
-    FCM::setHashTable(hTable)
-//                  : FCM::setHashTable(hTable)
-            ;
+//
+//
+////    for (int i = 0; i < tableNumOfRows; ++i)
+////    {
+////        for (int j = 0; j < 5; ++j)
+////            cout << table[ i ][j ] << '\t';
+////        cout << '\n';
+////    }
+//
+//    ////////////////////////////////
+//    // H_N = -1/N sum( log_2 P(s|c^t) )
+//    averageEntropy = (-1) * sumOfEntropies / totalNumberOfSymbols;
+//
+//    cout
+////            << sumOfEntropies << '\n'
+////            << totalNumberOfSymbols << '\n'
+//            << "  "
+//            << getInvertedRepeat() << '\t'
+//            << (float) 1/alphaDen << '\t'
+//            << (int) contextDepth << '\t'
+//            << averageEntropy
+////            << '\t'
+////            << hTable.size()
+////            << '\n'
+//            ;
+//    ////////////////////////////////
+//
+//    fileIn.close();             // close file
+//
+//    // save the built hash table
+////    (mode != 't') ?
+//    FCM::setHashTable(hTable)
+////                  : FCM::setHashTable(hTable)
+//            ;
 }
     
 
