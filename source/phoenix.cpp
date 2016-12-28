@@ -31,34 +31,6 @@ int32_t main (int argc, char *argv[])
     Functions function;
     function.commandLineParser(argc, argv); // parse the command line
     
-//    int a=30;
-//    int b=1;
-//    for (int i = 1; i < 3; ++i)
-//    {
-//        b*=5;
-//    }
-//
-//    cout<<(a|b);
-    
-//    uint8_t u=(uint8_t) 2;
-//    uint64_t contextInt = 0;
-//    for (int i = 0; i < 3; ++i)
-//    {
-//        contextInt = contextInt * 5 + u;
-//        cout<<contextInt<<'\t';
-//    }
-    
-    
-//    int a = 'A';
-//    int c = 'C';
-//    int g = 'G';
-//    int n = 'N';
-//    int t = 'T';
-//
-//    int arr[5] = {a, g, c, n, t};
-//
-//    for (int i = 0; i != 5; ++i)
-//        cout << arr[ i ] << '\n';
     
     
     

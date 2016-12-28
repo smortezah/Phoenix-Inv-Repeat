@@ -73,22 +73,24 @@ void FCM::buildTableOrHashTable ()
     
     htable_t hTable;                            // create hash table
     
-    size_t tableNumOfRows = (uint32_t) pow(5, contextDepth);cout<<tableNumOfRows;
+    size_t tableNumOfRows = (uint32_t) pow(5, contextDepth);
 ////    std::array< array< uint64_t, ALPHABET_SIZE+1 >, tableNumOfRows > table;
 //    uint64_t table[tableNumOfRows][ALPHABET_SIZE];
 //    uint64_t **table = new uint64_t *[ALPHABET_SIZE];
 //    for (int i = 0; i < ALPHABET_SIZE; ++i)
 //        table[ i ] = new uint64_t[tableNumOfRows];
-    cout<<tableNumOfRows;
     
     Matrix *table=new Matrix(tableNumOfRows,ALPHABET_SIZE);
+    table->insert(0,3,12);
+    table->increment(0,3);
+    
     for (int i = 0; i < tableNumOfRows; ++i)
     {
         for (int j = 0; j < ALPHABET_SIZE; ++j)
         {
-            cout<<table->at(i,j) << '\t';
+//            cout<<table->at(i,j) << '\t';
         }
-        cout<<'\n';
+//        cout<<'\n';
     }
     
     // initialize table or hash table with 0'z
