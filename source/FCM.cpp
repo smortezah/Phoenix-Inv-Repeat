@@ -122,37 +122,30 @@ void FCM::buildTableOrHashTable ()
 ////            cout << '\n';
 
             
-////            // considering inverted repeats to update hash table
-////            if (isInvertedRepeat)
-////            {
-////                // save inverted repeat context
-////                string invRepeatContext = to_string(4 - currSymInt);
-////                // convert a number from char into integer format. '0'->0. '4'->4 by
-////                // 4 - (context[ i ] - 48) = 52 - context[ i ]. 48 is ASCII code of '0'
-////                for (string::iterator it = context.end() - 1; it != context.begin(); --it)
-////                    invRepeatContext += to_string(52 - *it);
-////                // update hash table considering inverted repeats
-////                (mode != 't') ? ++hTable[ invRepeatContext ][ 52 - context[ 0 ]]
-////                              : ++hTable[ invRepeatContext ][ 52 - context[ 0 ]];
-//////                ++hTable[ invRepeatContext ][ 5 ];
-////            }
+            // considering inverted repeats to update hash table
+            if (isInvertedRepeat)
+            {
+                // save inverted repeat context
+                string invRepeatContext = to_string(4 - currSymInt);
+                // convert a number from char into integer format. '0'->0. '4'->4 by
+                // 4 - (context[ i ] - 48) = 52 - context[ i ]. 48 is ASCII code of '0'
+                for (string::iterator it = context.end() - 1; it != context.begin(); --it)
+                    invRepeatContext += to_string(52 - *it);
+                // update hash table considering inverted repeats
+                (mode != 't') ? ++hTable[ invRepeatContext ][ 52 - context[ 0 ]]
+                              : ++hTable[ invRepeatContext ][ 52 - context[ 0 ]];
+                
+                cout<<invRepeatContext;
+            }
 
             //////////////////////////////////
-//            int index = 1;
-//            int *ar = new int[10];
-//            for (int i = 0; i < 10; ++i)    ar[ i ] = i;
-//
-//            int *p = ar;
-//            int sum = 0;
-//            for (int j = 0; j < ALPHABET_SIZE; ++j) sum += *(p + index*ALPHABET_SIZE + j);
-    
             // sum(n_a)
             uint64_t *pointerToTable = table;
             sumNSyms = 0;
             if (mode != 't')
                 for (uint64_t u : hTable[ context ])    sumNSyms += u;
             else
-                for (size_t i = 0; i < ALPHABET_SIZE; ++i)
+                for (uint8_t i = 0; i < ALPHABET_SIZE; ++i)
                     sumNSyms += *(pointerToTable + contextInt*ALPHABET_SIZE + i);
 
             // P(s|c^t)
@@ -167,11 +160,11 @@ void FCM::buildTableOrHashTable ()
             if (mode != 't')
                 context = context.substr(1, (unsigned) contextDepth - 1) + to_string(currSymInt);
             else
-                contextInt = (uint32_t) (contextInt * 5 + currSymInt) % tableNumOfRows;
-
-
+                contextInt = (uint32_t) (contextInt*5 + currSymInt) % tableNumOfRows;
+            
+            
 ////            *context.end() = currSymInt;
-//
+
 //////            memcpy(context, context + 1, contextDepth - 1);
 //////            context[ contextDepth-1 ] = currSymInt;
 //////              *(context+contextDepth-1) = currSymInt;
@@ -179,6 +172,8 @@ void FCM::buildTableOrHashTable ()
     }   // end of while
     
     fileIn.close();             // close file
+    
+    if (mode != 't')    FCM::setHashTable(hTable);  // save the built hash table
     
     
 //    for (int j = 0; j < tableNumOfRows; ++j)
@@ -206,10 +201,7 @@ void FCM::buildTableOrHashTable ()
 //            << '\n'
             ;
     ////////////////////////////////
-
-    // save the built hash table
-    (mode != 't') ? FCM::setHashTable(hTable)
-                  : FCM::setHashTable(hTable);
+    
 }
     
 
