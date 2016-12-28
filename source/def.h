@@ -46,6 +46,8 @@ public:
     ~Matrix () { delete[] array; }
     
     int at (int x, int y) const { return array[ index(x, y) ]; }
+    
+//    int insert (int x, int y) const { m_width=x; }
 
 protected:
     int index (int x, int y) const { return x + m_width * y; }
