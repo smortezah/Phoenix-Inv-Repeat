@@ -41,8 +41,8 @@ void FCM::buildTableOrHashTable ()
     
     // 't'=table, 'h'=hash table
 //    char mode = (contextDepth > TABLE_MAX_CONTEXT) ? 'h' : 't';
-//    char mode = 't';
-    char mode = 'h';
+    char mode = 't';
+//    char mode = 'h';
 
 
 //    const char* filename= fileName.c_str();;
@@ -67,21 +67,15 @@ void FCM::buildTableOrHashTable ()
         return;                                 // exit this function
     }
     
-    string context(contextDepth, '0');          // context, that slides in the dataset
-    
+    // context, that slides in the dataset
+    string context(contextDepth, '0');
     uint32_t contextInt = 0;
     
     htable_t hTable;                            // create hash table
     
-    size_t tableNumOfRows = (uint32_t) pow(5, contextDepth);
+    size_t tableNumOfRows = (size_t) pow(5, contextDepth);
 ////    std::array< array< uint64_t, ALPHABET_SIZE+1 >, tableNumOfRows > table;
     uint64_t *table = new uint64_t[tableNumOfRows * ALPHABET_SIZE];
-
-
-//    Matrix *table=new Matrix(tableNumOfRows,ALPHABET_SIZE);
-//    table->insert(0,3,12);
-//    table->increment(0,3);
-    
     
     // initialize table or hash table with 0'z
     if (mode != 't')    hTable.insert({context, {0, 0, 0, 0, 0}});
@@ -109,7 +103,6 @@ void FCM::buildTableOrHashTable ()
         for (string::iterator lineIter = datasetLine.begin(); lineIter != datasetLine.end(); ++lineIter)
         {
             // htable includes an array of uint64_t numbers
-//            uint8_t currSymInt = symCharToInt(*lineIter);
             const char c = *lineIter;
             const uint8_t currSymInt = (c == 'A') ? (uint8_t) 0 :
                                        (c == 'C') ? (uint8_t) 1 :
@@ -120,7 +113,6 @@ void FCM::buildTableOrHashTable ()
             // update table or hash table
             nSym = (mode != 't') ? hTable[ context ][ currSymInt ]++
                                  : table[ contextInt*ALPHABET_SIZE + currSymInt ]++;
-//            sumNSyms=++hTable[ context ][ 5 ];
 
 
 ////            uint64_t m = 0;
@@ -186,6 +178,7 @@ void FCM::buildTableOrHashTable ()
         }   // end of for
     }   // end of while
     
+    fileIn.close();             // close file
     
     
 //    for (int j = 0; j < tableNumOfRows; ++j)
@@ -214,25 +207,11 @@ void FCM::buildTableOrHashTable ()
             ;
     ////////////////////////////////
 
-    fileIn.close();             // close file
-
     // save the built hash table
     (mode != 't') ? FCM::setHashTable(hTable)
                   : FCM::setHashTable(hTable);
 }
     
-
-///***********************************************************
-//    transform char symbols into int (ACNGT -> 01234)
-//************************************************************/
-//uint8_t FCM::symCharToInt (char c) const
-//{
-//    return (c == 'A') ? (uint8_t) 0 :
-//           (c == 'C') ? (uint8_t) 1 :
-//           (c == 'G') ? (uint8_t) 3 :
-//           (c == 'T') ? (uint8_t) 4 : (uint8_t) 2;
-//}
-
 
 /***********************************************************
     print hash table
