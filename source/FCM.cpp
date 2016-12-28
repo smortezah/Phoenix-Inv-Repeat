@@ -155,7 +155,7 @@ void FCM::buildTableOrHashTable ()
             // sum( log_2 P(s|c^t) )
             sumOfEntropies += log2(probability);
             /////////////////////////////////
-
+            
             // update context
             if (mode != 't')
                 context = context.substr(1, (unsigned) contextDepth - 1) + to_string(currSymInt);
