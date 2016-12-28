@@ -117,7 +117,7 @@ void FCM::buildTableOrHashTable ()
                                        (c == 'T') ? (uint8_t) 4 : (uint8_t) 2;
 //            const uint8_t currSymInt = c % 5;
 
-            // update hash table
+            // update table or hash table
             nSym = (mode != 't') ? hTable[ context ][ currSymInt ]++
                                  : table[ contextInt*ALPHABET_SIZE + currSymInt ]++;
 //            sumNSyms=++hTable[ context ][ 5 ];
@@ -143,21 +143,22 @@ void FCM::buildTableOrHashTable ()
 ////                              : ++hTable[ invRepeatContext ][ 52 - context[ 0 ]];
 //////                ++hTable[ invRepeatContext ][ 5 ];
 ////            }
-//
-//            //////////////////////////////////
-//            // sum(n_a)
-//            sumNSyms = 0;
-////            if (mode != 't')
-//                for (uint64_t u : hTable[ context ])    sumNSyms += u;
-////            else                for (uint64_t u : table[ contextInt ])  sumNSyms += u;
-//
-//            // P(s|c^t)
-////            probability = (nSym + (double) 1/alphaDen) / (sumNSyms + (double) ALPHABET_SIZE/alphaDen);
-//            probability = (double) (alphaDen * nSym + 1) / (alphaDen * sumNSyms + ALPHABET_SIZE);
-//
-//            // sum( log_2 P(s|c^t) )
-//            sumOfEntropies += log2(probability);
-//            /////////////////////////////////
+
+            //////////////////////////////////
+            // sum(n_a)
+            sumNSyms = 0;
+            if (mode != 't')
+                for (uint64_t u : hTable[ context ])    sumNSyms += u;
+            else
+//                for (uint64_t u : table[ contextInt ])  sumNSyms += u;
+
+            // P(s|c^t)
+//            probability = (nSym + (double) 1/alphaDen) / (sumNSyms + (double) ALPHABET_SIZE/alphaDen);
+            probability = (double) (alphaDen * nSym + 1) / (alphaDen * sumNSyms + ALPHABET_SIZE);
+
+            // sum( log_2 P(s|c^t) )
+            sumOfEntropies += log2(probability);
+            /////////////////////////////////
 
             // update context
             if (mode != 't')
@@ -176,12 +177,12 @@ void FCM::buildTableOrHashTable ()
     
     
     
-//    for (int j = 0; j < tableNumOfRows; ++j)
-//    {
-//        for (int i = 0; i < 5; ++i)
-//            cout << table[ j * ALPHABET_SIZE + i ] << ' ';
-//        cout << '\n';
-//    }
+    for (int j = 0; j < tableNumOfRows; ++j)
+    {
+        for (int i = 0; i < 5; ++i)
+            cout << table[ j * ALPHABET_SIZE + i ] << ' ';
+        cout << '\n';
+    }
     
     
     ////////////////////////////////
