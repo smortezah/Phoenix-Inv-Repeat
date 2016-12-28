@@ -21,7 +21,8 @@ using std::array;
 ************************************************************/
 #define ALPHABET_SIZE       5   // alphabet {A, C, N, G, T}
 #define ALPH_SUM_SIZE       6   // size of alphabet plus sum
-#define TABLE_MAX_CONTEXT   12  // max context depth for building table
+// max context depth for building table. 12 = possible but not cost effective
+#define TABLE_MAX_CONTEXT   11
 
 
 /***********************************************************

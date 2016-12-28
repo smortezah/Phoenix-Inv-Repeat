@@ -41,8 +41,8 @@ void FCM::buildTableOrHashTable ()
     
     // 't'=table, 'h'=hash table
 //    char mode = (contextDepth > TABLE_MAX_CONTEXT) ? 'h' : 't';
-    char mode = 't';
-//    char mode = 'h';
+//    char mode = 't';
+    char mode = 'h';
 
 
 //    const char* filename= fileName.c_str();;
@@ -146,16 +146,26 @@ void FCM::buildTableOrHashTable ()
 ////            }
 
             //////////////////////////////////
+//            int index = 1;
+//            int *ar = new int[10];
+//            for (int i = 0; i < 10; ++i)    ar[ i ] = i;
+//
+//            int *p = ar;
+//            int sum = 0;
+//            for (int j = 0; j < ALPHABET_SIZE; ++j) sum += *(p + index*ALPHABET_SIZE + j);
+    
             // sum(n_a)
+            uint64_t *pointerToTable = table;
             sumNSyms = 0;
             if (mode != 't')
                 for (uint64_t u : hTable[ context ])    sumNSyms += u;
             else
-//                for (uint64_t u : table[ contextInt ])  sumNSyms += u;
+                for (size_t i = 0; i < ALPHABET_SIZE; ++i)
+                    sumNSyms += *(pointerToTable + contextInt*ALPHABET_SIZE + i);
 
             // P(s|c^t)
 //            probability = (nSym + (double) 1/alphaDen) / (sumNSyms + (double) ALPHABET_SIZE/alphaDen);
-            probability = (double) (alphaDen * nSym + 1) / (alphaDen * sumNSyms + ALPHABET_SIZE);
+            probability = (double) (alphaDen*nSym + 1) / (alphaDen*sumNSyms + ALPHABET_SIZE);
 
             // sum( log_2 P(s|c^t) )
             sumOfEntropies += log2(probability);
@@ -185,24 +195,23 @@ void FCM::buildTableOrHashTable ()
 //        cout << '\n';
 //    }
     
-    cout<<table[24*ALPHABET_SIZE+3];
     
     ////////////////////////////////
     // H_N = -1/N sum( log_2 P(s|c^t) )
     averageEntropy = (-1) * sumOfEntropies / totalNumberOfSymbols;
 
-//    cout
-////            << sumOfEntropies << '\n'
-////            << totalNumberOfSymbols << '\n'
-//            << "  "
-//            << getInvertedRepeat() << '\t'
-//            << (float) 1/alphaDen << '\t'
-//            << (int) contextDepth << '\t'
-//            << averageEntropy
-////            << '\t'
-////            << hTable.size()
-////            << '\n'
-//            ;
+    cout
+//            << sumOfEntropies << '\n'
+//            << totalNumberOfSymbols << '\n'
+            << "  "
+            << getInvertedRepeat() << '\t'
+            << (float) 1/alphaDen << '\t'
+            << (int) contextDepth << '\t'
+            << averageEntropy
+//            << '\t'
+//            << hTable.size()
+//            << '\n'
+            ;
     ////////////////////////////////
 
     fileIn.close();             // close file
