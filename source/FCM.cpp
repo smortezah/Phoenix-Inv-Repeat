@@ -116,7 +116,7 @@ void FCM::buildTableOrHashTable ()
                                        (c == 'G') ? (uint8_t) 3 :
                                        (c == 'T') ? (uint8_t) 4 : (uint8_t) 2;
 //            const uint8_t currSymInt = c % 5;
-//
+
             // update hash table
             nSym = (mode != 't') ? hTable[ context ][ currSymInt ]++
                                  : table[ contextInt*ALPHABET_SIZE + currSymInt ]++;
