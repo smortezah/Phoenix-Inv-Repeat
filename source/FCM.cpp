@@ -146,20 +146,20 @@ void FCM::buildTableOrHashTable ()
 //////                ++hTable[ invRepeatContext ][ 5 ];
 ////            }
 //
-//            //////////////////////////////////
-//            // sum(n_a)
-//            sumNSyms = 0;
-////            if (mode != 't')
-//                for (uint64_t u : hTable[ context ])    sumNSyms += u;
-////            else                for (uint64_t u : table[ contextInt ])  sumNSyms += u;
-//
-//            // P(s|c^t)
-////            probability = (nSym + (double) 1/alphaDen) / (sumNSyms + (double) ALPHABET_SIZE/alphaDen);
-//            probability = (double) (alphaDen * nSym + 1) / (alphaDen * sumNSyms + ALPHABET_SIZE);
-//
-//            // sum( log_2 P(s|c^t) )
-//            sumOfEntropies += log2(probability);
-//            /////////////////////////////////
+            //////////////////////////////////
+            // sum(n_a)
+            sumNSyms = 0;
+//            if (mode != 't')
+                for (uint64_t u : hTable[ context ])    sumNSyms += u;
+//            else                for (uint64_t u : table[ contextInt ])  sumNSyms += u;
+
+            // P(s|c^t)
+//            probability = (nSym + (double) 1/alphaDen) / (sumNSyms + (double) ALPHABET_SIZE/alphaDen);
+            probability = (double) (alphaDen * nSym + 1) / (alphaDen * sumNSyms + ALPHABET_SIZE);
+
+            // sum( log_2 P(s|c^t) )
+            sumOfEntropies += log2(probability);
+            /////////////////////////////////
 
             // update context
             if (mode != 't')
@@ -186,31 +186,29 @@ void FCM::buildTableOrHashTable ()
     }
     
     
-//    ////////////////////////////////
-//    // H_N = -1/N sum( log_2 P(s|c^t) )
-//    averageEntropy = (-1) * sumOfEntropies / totalNumberOfSymbols;
-//
-//    cout
-////            << sumOfEntropies << '\n'
-////            << totalNumberOfSymbols << '\n'
-//            << "  "
-//            << getInvertedRepeat() << '\t'
-//            << (float) 1/alphaDen << '\t'
-//            << (int) contextDepth << '\t'
-//            << averageEntropy
-////            << '\t'
-////            << hTable.size()
-////            << '\n'
-//            ;
-//    ////////////////////////////////
+    ////////////////////////////////
+    // H_N = -1/N sum( log_2 P(s|c^t) )
+    averageEntropy = (-1) * sumOfEntropies / totalNumberOfSymbols;
+
+    cout
+//            << sumOfEntropies << '\n'
+//            << totalNumberOfSymbols << '\n'
+            << "  "
+            << getInvertedRepeat() << '\t'
+            << (float) 1/alphaDen << '\t'
+            << (int) contextDepth << '\t'
+            << averageEntropy
+//            << '\t'
+//            << hTable.size()
+//            << '\n'
+            ;
+    ////////////////////////////////
 
     fileIn.close();             // close file
 
     // save the built hash table
-//    (mode != 't') ?
-    FCM::setHashTable(hTable)
-//                  : FCM::setHashTable(hTable)
-            ;
+    (mode != 't') ? FCM::setHashTable(hTable)
+                  : FCM::setHashTable(hTable);
 }
     
 
