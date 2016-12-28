@@ -29,8 +29,23 @@ int32_t main (int argc, char *argv[])
 
     // for access to Functions (object 'function' on memory stack)
     Functions function;
-    function.commandLineParser(argc, argv); // parse the command line
+//    function.commandLineParser(argc, argv); // parse the command line
     
+    
+    int index = 1;
+    int *ar = new int[10];
+    for (int i = 0; i < 10; ++i)
+    {
+        ar[ i ] = 10 - i;
+    }
+    int *p = ar;
+    cout << *(p + 1);
+    
+    int sum = 0;
+    for (int j = 0; j < ALPHABET_SIZE; ++j)
+    {
+        sum += *(p + j);
+    }
     
     
     

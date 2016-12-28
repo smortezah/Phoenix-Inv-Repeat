@@ -36,6 +36,7 @@ typedef unordered_map< string, array< uint64_t, ALPHABET_SIZE > > htable_t;
 
 
 
+
 class Matrix
 {
     int *array;
