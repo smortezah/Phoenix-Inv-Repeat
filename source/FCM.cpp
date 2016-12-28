@@ -95,12 +95,12 @@ void FCM::buildTableOrHashTable ()
     uint64_t totalNumberOfSymbols = 0;  // number of all symbols in the sequence
     double   averageEntropy = 0;        // average entropy (H)
     //////////////////////////////////
-
+    
     string datasetLine;                 // keep each line of the file
-
+    
     while (getline(fileIn, datasetLine))
     {
-
+        
         //////////////////////////////////
         totalNumberOfSymbols += datasetLine.size();    // number of symbols in each line of dataset
         //////////////////////////////////
