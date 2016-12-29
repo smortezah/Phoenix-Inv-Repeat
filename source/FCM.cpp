@@ -64,7 +64,7 @@ void FCM::buildTable ()
     }
     
     /// create table
-    size_t tableNumOfRows = (size_t) pow(5, contextDepth);
+    uint32_t tableNumOfRows = (uint32_t) pow(5, contextDepth);
     uint64_t *table = new uint64_t[tableNumOfRows * ALPHABET_SIZE];
     /// initialize table with 0'z
     memset(table, 0, sizeof(table[ 0 ]) * tableNumOfRows * ALPHABET_SIZE);
@@ -115,7 +115,7 @@ void FCM::buildTable ()
                 iRCtxCurrSymDiv = div(iRCtxCurrSym, ALPHABET_SIZE);
                 
                 /// update inverted repeat context (integer)
-                invRepContextInt = iRCtxCurrSymDiv.quot;
+                invRepContextInt = (uint32_t) iRCtxCurrSymDiv.quot;
                 
                 /// update table considering inverted repeats
                 ++table[ invRepContextInt*ALPHABET_SIZE + iRCtxCurrSymDiv.rem ];
