@@ -63,15 +63,14 @@ void FCM::buildTable ()
         return;                                 // exit this function
     }
     
+    // create table
     size_t tableNumOfRows = (size_t) pow(5, contextDepth);
-////    std::array< array< uint64_t, ALPHABET_SIZE+1 >, tableNumOfRows > table;
     uint64_t *table = new uint64_t[tableNumOfRows * ALPHABET_SIZE];
-    
-    uint32_t contextInt = 0;                    // context, that slides in the dataset
-    uint32_t invRepContextInt = (uint32_t) tableNumOfRows - 1;  // inverted repeat context
-    
     // initialize table with 0'z
     memset(table, 0, sizeof(table[ 0 ]) * tableNumOfRows * ALPHABET_SIZE);
+    
+    uint32_t contextInt = 0;                    // context (integer), that slides in the dataset
+    uint32_t invRepContextInt = (uint32_t) tableNumOfRows - 1;  // inverted repeat context (integer)
     
     ////////////////////////////////
     uint64_t nSym;                      // number of symbols (n_s). To calculate probability
@@ -191,11 +190,11 @@ void FCM::buildTable ()
 ************************************************************/
 void FCM::buildHashTable ()
 {
-    const uint8_t contextDepth = getContextDepth();    // get context depth
-    const uint16_t alphaDen = getAlphaDenom();      // get alpha denominator
+    const uint8_t contextDepth  = getContextDepth();    // get context depth
+    const uint16_t alphaDen     = getAlphaDenom();      // get alpha denominator
     const bool isInvertedRepeat = getInvertedRepeat();  // get inverted repeat
     // TODO: supprt for both target and reference file addresses
-    string fileName = getTarFileAddress();  // get target file address
+    string fileName = getTarFileAddress();              // get target file address
     
     
 //    const char* filename= fileName.c_str();;
@@ -220,12 +219,10 @@ void FCM::buildHashTable ()
         return;                                 // exit this function
     }
     
-    htable_t hTable;                            // create hash table
-    
     string context(contextDepth, '0');          // context, that slides in the dataset
     
-    // initialize hash table with 0'z
-    hTable.insert({context, {0, 0, 0, 0, 0}});
+    htable_t hTable;                            // create hash table
+    hTable.insert({context, {0, 0, 0, 0, 0}});  // initialize hash table with 0'z
     
     ////////////////////////////////
     uint64_t nSym;                      // number of symbols (n_s). To calculate probability
@@ -258,14 +255,6 @@ void FCM::buildHashTable ()
             
             // update hash table
             nSym = hTable[ context ][ currSymInt ]++;
-
-
-////            uint64_t m = 0;
-////            for (int i = 0; i != contextDepth; ++i)
-////                m += (context[ i ] - 48) * pow(5, contextDepth - i - 1);
-////            cout << m;
-////            cout << '\n';
-            
             
             // considering inverted repeats to update hash table
             if (isInvertedRepeat)
@@ -308,15 +297,6 @@ void FCM::buildHashTable ()
     fileIn.close();             // close file
     
     FCM::setHashTable(hTable);  // save the built hash table
-
-
-//    for (int j = 0; j < tableNumOfRows; ++j)
-//    {
-//        for (int i = 0; i < 5; ++i)
-//            cout << table[ j * ALPHABET_SIZE + i ] << ' ';
-//        cout << '\n';
-//    }
-    
     
     ////////////////////////////////
     // H_N = -1/N sum( log_2 P(s|c^t) )
