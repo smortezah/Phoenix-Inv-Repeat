@@ -144,7 +144,7 @@ void FCM::buildTable ()
             // update context
             contextInt = (uint32_t) (contextInt*5 + currSymInt) % tableNumOfRows;
             
-            
+            cout<<contextInt<<' ';
 ////            *context.end() = currSymInt;
 
 //////            memcpy(context, context + 1, contextDepth - 1);
@@ -170,18 +170,18 @@ void FCM::buildTable ()
     // H_N = -1/N sum( log_2 P(s|c^t) )
     averageEntropy = (-1) * sumOfEntropies / totalNumberOfSymbols;
 
-    cout
-//            << sumOfEntropies << '\n'
-//            << totalNumberOfSymbols << '\n'
-            << "  "
-            << getInvertedRepeat() << '\t'
-            << (float) 1/alphaDen << '\t'
-            << (int) contextDepth << '\t'
-            << averageEntropy
-//            << '\t'
-//            << hTable.size()
-//            << '\n'
-            ;
+//    cout
+////            << sumOfEntropies << '\n'
+////            << totalNumberOfSymbols << '\n'
+//            << "  "
+//            << getInvertedRepeat() << '\t'
+//            << (float) 1/alphaDen << '\t'
+//            << (int) contextDepth << '\t'
+//            << averageEntropy
+////            << '\t'
+////            << hTable.size()
+////            << '\n'
+//            ;
     ////////////////////////////////
     
 }
