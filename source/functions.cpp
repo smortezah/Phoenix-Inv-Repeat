@@ -216,7 +216,7 @@ void Functions::commandLineParser (int argc, char **argv)
                 !stoi(vecParameters[ vecParamIndex++ ]) ? models[ n ].setInvertedRepeat(false)
                                                         : models[ n ].setInvertedRepeat(true);
                 
-                models[ n ].buildTableOrHashTable();   // build hash table for the model
+                models[ n ].buildHashTable();   // build hash table for the model
     
                 // print the built hash table
 //                cout << "Model " << n + 1 << " parameters:\n";

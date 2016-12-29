@@ -13,8 +13,9 @@ class FCM
 {
 public:
     FCM ();                                     // constructor
-                                                
-    void buildTableOrHashTable ();              // build table or hash table
+    
+    void buildTable ();                         // build table
+    void buildHashTable ();                     // build hash table
     void printHashTable () const;               // print hash table
                                                 
     char getTargetOrReference () const;         // getter of target or reference
