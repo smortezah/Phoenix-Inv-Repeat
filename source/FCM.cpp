@@ -89,7 +89,7 @@ void FCM::buildTable ()
         //////////////////////////////////
         totalNumberOfSymbols += datasetLine.size();    /// number of symbols in each line of dataset
         //////////////////////////////////
-
+        
         /// fill hash table by number of occurrences of symbols A, C, N, G, T
         for (string::iterator lineIter = datasetLine.begin(); lineIter != datasetLine.end(); ++lineIter)
         {
@@ -118,7 +118,7 @@ void FCM::buildTable ()
                 invRepContextInt = iRCtxCurrSymDiv.quot;
                 
                 /// update table considering inverted repeats
-                ++table[ invRepContextInt * ALPHABET_SIZE + iRCtxCurrSymDiv.rem ];
+                ++table[ invRepContextInt*ALPHABET_SIZE + iRCtxCurrSymDiv.rem ];
             }
             
             //////////////////////////////////
