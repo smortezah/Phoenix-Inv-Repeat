@@ -257,6 +257,8 @@ uint16_t FCM::getAlphaDenom () const            { return alphaDenom;            
 void FCM::setAlphaDenom (uint16_t alphaDen)     { FCM::alphaDenom = alphaDen;    }
 bool FCM::getInvertedRepeat () const            { return invertedRepeat;         }
 void FCM::setInvertedRepeat (bool invRep)       { FCM::invertedRepeat = invRep;  }
+uint64_t *FCM::getTable () const                { return table;                  }
+void FCM::setTable (uint64_t *tbl)              { FCM::table = tbl;              }
 const htable_t &FCM::getHashTable () const      { return hashTable;              }
 void FCM::setHashTable (const htable_t &hT)     { FCM::hashTable = hT;           }
 const string &FCM::getTarFileAddress () const   { return tarFileAddress;         }
