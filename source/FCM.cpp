@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <iomanip>      // setw, setprecision
 #include <cstring>      // memset, memcpy
+#include <stdlib.h>
 
 #include "FCM.h"
 #include "functions.h"
@@ -33,11 +34,11 @@ FCM::FCM () {}
 ************************************************************/
 void FCM::buildTable ()
 {
-    const uint8_t contextDepth = getContextDepth();    // get context depth
-    const uint16_t alphaDen = getAlphaDenom();      // get alpha denominator
+    const uint8_t contextDepth  = getContextDepth();    // get context depth
+    const uint16_t alphaDen     = getAlphaDenom();      // get alpha denominator
     const bool isInvertedRepeat = getInvertedRepeat();  // get inverted repeat
     // TODO: supprt for both target and reference file addresses
-    string fileName = getTarFileAddress();  // get target file address
+    string fileName = getTarFileAddress();              // get target file address
     
 
 //    const char* filename= fileName.c_str();;
@@ -67,6 +68,7 @@ void FCM::buildTable ()
     uint64_t *table = new uint64_t[tableNumOfRows * ALPHABET_SIZE];
     
     uint32_t contextInt = 0;                    // context, that slides in the dataset
+    uint32_t invRepContextInt = (uint32_t) tableNumOfRows - 1;  // inverted repeat context
     
     // initialize table with 0'z
     memset(table, 0, sizeof(table[ 0 ]) * tableNumOfRows * ALPHABET_SIZE);
@@ -99,10 +101,9 @@ void FCM::buildTable ()
                                        (c == 'G') ? (uint8_t) 3 :
                                        (c == 'T') ? (uint8_t) 4 : (uint8_t) 2;
 //            const uint8_t currSymInt = c % 5;
-            
+    
             // update table
             nSym = table[ contextInt*ALPHABET_SIZE + currSymInt ]++;
-
 
 ////            uint64_t m = 0;
 ////            for (int i = 0; i != contextDepth; ++i)
@@ -114,18 +115,15 @@ void FCM::buildTable ()
             // considering inverted repeats to update hash table
             if (isInvertedRepeat)
             {
-                // save inverted repeat context
-                string invRepeatContext = to_string(4 - currSymInt);
-                // convert a number from char into integer format. '0'->0. '4'->4 by
-                // 4 - (context[ i ] - 48) = 52 - context[ i ]. 48 is ASCII code of '0'
-//                for (string::iterator it = context.end() - 1; it != context.begin(); --it)
-//                    invRepeatContext += to_string(52 - *it);
+                uint32_t iRCtxCurrSym = (4 - currSymInt) * tableNumOfRows + invRepContextInt;
+                div_t iRCtxCurrSymDiv;
+                iRCtxCurrSymDiv = div(iRCtxCurrSym, ALPHABET_SIZE);
+                invRepContextInt = iRCtxCurrSymDiv.quot;
+    
                 // update table considering inverted repeats
-//                ++hTable[ invRepeatContext ][ 52 - context[ 0 ]];
-
-                cout<<invRepeatContext<<' ';
+                ++table[ invRepContextInt * ALPHABET_SIZE + iRCtxCurrSymDiv.rem ];
             }
-
+            
             //////////////////////////////////
             // sum(n_a)
             uint64_t *pointerToTable = table;
@@ -160,6 +158,7 @@ void FCM::buildTable ()
     
 //    for (int j = 0; j < tableNumOfRows; ++j)
 //    {
+//        cout << j << ":\t";
 //        for (int i = 0; i < 5; ++i)
 //            cout << table[ j * ALPHABET_SIZE + i ] << ' ';
 //        cout << '\n';
@@ -170,18 +169,18 @@ void FCM::buildTable ()
     // H_N = -1/N sum( log_2 P(s|c^t) )
     averageEntropy = (-1) * sumOfEntropies / totalNumberOfSymbols;
 
-//    cout
-////            << sumOfEntropies << '\n'
-////            << totalNumberOfSymbols << '\n'
-//            << "  "
-//            << getInvertedRepeat() << '\t'
-//            << (float) 1/alphaDen << '\t'
-//            << (int) contextDepth << '\t'
-//            << averageEntropy
-////            << '\t'
-////            << hTable.size()
-////            << '\n'
-//            ;
+    cout
+//            << sumOfEntropies << '\n'
+//            << totalNumberOfSymbols << '\n'
+            << "  "
+            << getInvertedRepeat() << '\t'
+            << (float) 1/alphaDen << '\t'
+            << (int) contextDepth << '\t'
+            << averageEntropy
+//            << '\t'
+//            << hTable.size()
+//            << '\n'
+            ;
     ////////////////////////////////
     
 }
