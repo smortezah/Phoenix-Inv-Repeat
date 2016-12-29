@@ -63,10 +63,10 @@ void FCM::buildTable ()
         return;                                 // exit this function
     }
     
-    // create table
+    /// create table
     size_t tableNumOfRows = (size_t) pow(5, contextDepth);
     uint64_t *table = new uint64_t[tableNumOfRows * ALPHABET_SIZE];
-    // initialize table with 0'z
+    /// initialize table with 0'z
     memset(table, 0, sizeof(table[ 0 ]) * tableNumOfRows * ALPHABET_SIZE);
     
     uint32_t contextInt = 0;                    // context (integer), that slides in the dataset
@@ -103,29 +103,27 @@ void FCM::buildTable ()
     
             // update table
             nSym = table[ contextInt*ALPHABET_SIZE + currSymInt ]++;
-
-////            uint64_t m = 0;
-////            for (int i = 0; i != contextDepth; ++i)
-////                m += (context[ i ] - 48) * pow(5, contextDepth - i - 1);
-////            cout << m;
-////            cout << '\n';
-
             
             // considering inverted repeats to update hash table
             if (isInvertedRepeat)
             {
+                /// concatenation of inverted repeat context and current symbol
                 uint32_t iRCtxCurrSym = (4 - currSymInt) * tableNumOfRows + invRepContextInt;
+                
+                /// to save quotient and reminder of a division
                 div_t iRCtxCurrSymDiv;
                 iRCtxCurrSymDiv = div(iRCtxCurrSym, ALPHABET_SIZE);
+                
+                /// update inverted repeat context (integer)
                 invRepContextInt = iRCtxCurrSymDiv.quot;
-    
-                // update table considering inverted repeats
+                
+                /// update table considering inverted repeats
                 ++table[ invRepContextInt * ALPHABET_SIZE + iRCtxCurrSymDiv.rem ];
             }
             
             //////////////////////////////////
             // sum(n_a)
-            uint64_t *pointerToTable = table;
+            uint64_t *pointerToTable = table;   /// pointer to the beginning of table
             sumNSyms = 0;
             for (uint8_t i = 0; i < ALPHABET_SIZE; ++i)
                     sumNSyms += *(pointerToTable + contextInt*ALPHABET_SIZE + i);
