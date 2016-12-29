@@ -111,20 +111,20 @@ void FCM::buildTable ()
 ////            cout << '\n';
 
             
-//            // considering inverted repeats to update hash table
-//            if (isInvertedRepeat)
-//            {
-//                // save inverted repeat context
-//                string invRepeatContext = to_string(4 - currSymInt);
-//                // convert a number from char into integer format. '0'->0. '4'->4 by
-//                // 4 - (context[ i ] - 48) = 52 - context[ i ]. 48 is ASCII code of '0'
+            // considering inverted repeats to update hash table
+            if (isInvertedRepeat)
+            {
+                // save inverted repeat context
+                string invRepeatContext = to_string(4 - currSymInt);
+                // convert a number from char into integer format. '0'->0. '4'->4 by
+                // 4 - (context[ i ] - 48) = 52 - context[ i ]. 48 is ASCII code of '0'
 //                for (string::iterator it = context.end() - 1; it != context.begin(); --it)
 //                    invRepeatContext += to_string(52 - *it);
-//                // update table considering inverted repeats
+                // update table considering inverted repeats
 //                ++hTable[ invRepeatContext ][ 52 - context[ 0 ]];
-//
-//                cout<<invRepeatContext;
-//            }
+
+                cout<<invRepeatContext<<' ';
+            }
 
             //////////////////////////////////
             // sum(n_a)
@@ -144,7 +144,7 @@ void FCM::buildTable ()
             // update context
             contextInt = (uint32_t) (contextInt*5 + currSymInt) % tableNumOfRows;
             
-            cout<<contextInt<<' ';
+            
 ////            *context.end() = currSymInt;
 
 //////            memcpy(context, context + 1, contextDepth - 1);
