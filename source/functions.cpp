@@ -206,14 +206,14 @@ void Functions::commandLineParser (int argc, char **argv)
                 /// set the context depth of the model
                 uint8_t ctxDepth = (uint8_t) stoi(vecParameters[ vecParamIndex++ ]);
                 models[ n ].setContextDepth(ctxDepth);
-                /// build table or hash table for the model
-                (ctxDepth > TABLE_MAX_CONTEXT) ? models[ n ].buildHashTable()
-                                               : models[ n ].buildTable();
                 /// set the alpha denominator of the model
                 models[ n ].setAlphaDenom((uint16_t) stoi(vecParameters[ vecParamIndex++ ]));
+                /// build table or hash table for the model
                 /// set the inverted repeat condition of the model
                 !stoi(vecParameters[ vecParamIndex++ ]) ? models[ n ].setInvertedRepeat(false)
                                                         : models[ n ].setInvertedRepeat(true);
+                (ctxDepth > TABLE_MAX_CONTEXT) ? models[ n ].buildHashTable()
+                                               : models[ n ].buildTable();
                 
                 /// print the built hash table
 //                cout << "Model " << n + 1 << " parameters:\n";
