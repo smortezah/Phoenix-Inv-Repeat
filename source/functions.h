@@ -11,10 +11,10 @@ using std::ifstream;
 class Functions
 {
 public:
-    Functions ();                               // constructor
+    Functions ();                               /// constructor
     
-    void commandLineParser (int, char**);       // parse command line
-//    static bool isFileCorrect (ifstream&);      // check if file opened correctly
+    void commandLineParser (int, char**);       /// parse command line
+//    static bool isFileCorrect (ifstream&);      /// check if file opened correctly
 };
 
 
