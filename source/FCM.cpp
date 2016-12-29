@@ -40,7 +40,7 @@ void FCM::buildTable ()
     /// TODO: supprt for both target and reference file addresses
     string fileName = getTarFileAddress();              /// get target file address
     
-
+    
 //    const char* filename= fileName.c_str();;
 //    std::FILE *fp = std::fopen(filename, "rb");
 //    if (fp)
