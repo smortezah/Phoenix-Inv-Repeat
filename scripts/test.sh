@@ -31,7 +31,7 @@ chromosomes="$HUMAN_CHR_PREFIX$CHR$CURR_CHR"
 datasets="$HUMAN_CHR$CURR_CHR"
 #datasets="tmp"
 
-INV_REPEATS="1"     # list of inverted repeats      "0 1"
+INV_REPEATS="0"     # list of inverted repeats      "0 1"
 ALPHA_DENS="1"     # list of alpha denominators    "1 20 100"
 MIN_CTX=2         # min context size
 MAX_CTX=3          # max context size   ->  real: -=1

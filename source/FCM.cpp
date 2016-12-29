@@ -167,16 +167,16 @@ void FCM::buildTable ()
     averageEntropy = (-1) * sumOfEntropies / totalNumberOfSymbols;
 
     cout
-//            << sumOfEntropies << '\n'
-//            << totalNumberOfSymbols << '\n'
-            << "  "
-            << getInvertedRepeat() << '\t'
+////            << sumOfEntropies << '\n'
+////            << totalNumberOfSymbols << '\n'
+//            << "  "
+//            << getInvertedRepeat() << '\t'
             << (float) 1/alphaDen << '\t'
-            << (int) contextDepth << '\t'
-            << averageEntropy
-//            << '\t'
-//            << hTable.size()
-//            << '\n'
+//            << (int) contextDepth << '\t'
+//            << averageEntropy
+////            << '\t'
+////            << hTable.size()
+////            << '\n'
             ;
     ////////////////////////////////
     
