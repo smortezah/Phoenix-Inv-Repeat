@@ -249,19 +249,17 @@ void FCM::printHashTable () const
 /***********************************************************
     getters and setters
 ************************************************************/
-char FCM::getTargetOrReference () const         { return targetOrReference; }
+char FCM::getTargetOrReference () const         { return targetOrReference;      }
 void FCM::setTargetOrReference (char tOrR)      { FCM::targetOrReference = tOrR; }
-uint8_t FCM::getContextDepth () const           { return contextDepth; }
-void FCM::setContextDepth (uint8_t ctxDp)       { FCM::contextDepth = ctxDp; }
-//char FCM::getMode () const                      { return mode; }
-//void FCM::setMode (char mode)                   { FCM::mode = mode; }
-uint16_t FCM::getAlphaDenom () const            { return alphaDenom; }
-void FCM::setAlphaDenom (uint16_t alphaDen)     { FCM::alphaDenom = alphaDen; }
-bool FCM::getInvertedRepeat () const            { return invertedRepeat; }
-void FCM::setInvertedRepeat (bool invRep)       { FCM::invertedRepeat = invRep; }
-const htable_t &FCM::getHashTable () const      { return hashTable; }
-void FCM::setHashTable (const htable_t &hT)     { FCM::hashTable = hT; }
-const string &FCM::getTarFileAddress () const   { return tarFileAddress; }
-void FCM::setTarFileAddress (const string &tFA) { FCM::tarFileAddress = tFA; }
-const string &FCM::getRefFileAddress () const   { return refFileAddress; }
-void FCM::setRefFileAddress (const string &rFA) { FCM::refFileAddress = rFA; }
+uint8_t FCM::getContextDepth () const           { return contextDepth;           }
+void FCM::setContextDepth (uint8_t ctxDp)       { FCM::contextDepth = ctxDp;     }
+uint16_t FCM::getAlphaDenom () const            { return alphaDenom;             }
+void FCM::setAlphaDenom (uint16_t alphaDen)     { FCM::alphaDenom = alphaDen;    }
+bool FCM::getInvertedRepeat () const            { return invertedRepeat;         }
+void FCM::setInvertedRepeat (bool invRep)       { FCM::invertedRepeat = invRep;  }
+const htable_t &FCM::getHashTable () const      { return hashTable;              }
+void FCM::setHashTable (const htable_t &hT)     { FCM::hashTable = hT;           }
+const string &FCM::getTarFileAddress () const   { return tarFileAddress;         }
+void FCM::setTarFileAddress (const string &tFA) { FCM::tarFileAddress = tFA;     }
+const string &FCM::getRefFileAddress () const   { return refFileAddress;         }
+void FCM::setRefFileAddress (const string &rFA) { FCM::refFileAddress = rFA;     }
