@@ -22,7 +22,7 @@ using std::array;
 #define ALPHABET_SIZE       5   /// alphabet {A, C, N, G, T}
 #define ALPH_SUM_SIZE       6   /// size of alphabet plus sum
 /// max context depth for building table. 12 = possible but not cost effective
-#define TABLE_MAX_CONTEXT   11
+#define TABLE_MAX_CONTEXT   1
 
 
 /***********************************************************
@@ -31,7 +31,8 @@ using std::array;
 /// TODO: vaghti bishtar az 65,535 (uint16_t max) shod, hameye adad ha nesf mishan.
 // ye variable ro ham tanzim kon ke maloom she chand bar nesf kardim
 //typedef unordered_map< string, array< uint64_t, ALPH_SUM_SIZE > > htable_t;
-typedef unordered_map< string, array< uint64_t, ALPHABET_SIZE > > htable_t;
+//typedef unordered_map< string, array< uint64_t, ALPHABET_SIZE > > htable_t;
+typedef unordered_map< uint32_t , array< uint64_t, ALPHABET_SIZE > > htable_t;
 
 
 #endif //PHOENIX_DEF_H

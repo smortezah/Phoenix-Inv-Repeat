@@ -15,6 +15,7 @@ public:
     FCM ();                                     /// constructor
     
     void buildTable ();                         /// build table
+    void buildHashTable2 ();                     /// build hash table
     void buildHashTable ();                     /// build hash table
     void printHashTable () const;               /// print hash table
                                                 
