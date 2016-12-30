@@ -259,18 +259,20 @@ void FCM::buildHashTable2 ()
             if (isInvertedRepeat)
             {
                 /// concatenation of inverted repeat context and current symbol
-                uint32_t iRCtxCurrSym = (4 - currSymInt) * tableNumOfRows + invRepContext;
+                uint32_t iRCtxCurrSym = (4 - currSymInt)*tableNumOfRows + invRepContext;
 
                 /// to save quotient and reminder of a division
-                div_t iRCtxCurrSymDiv;
-                iRCtxCurrSymDiv = div(iRCtxCurrSym, ALPHABET_SIZE);
+//                div_t iRCtxCurrSymDiv;
+//                iRCtxCurrSymDiv = div(iRCtxCurrSym, ALPHABET_SIZE);
 
                 /// update inverted repeat context (integer)
 //                invRepContext = (uint32_t) iRCtxCurrSymDiv.quot;
-                invRepContext =  iRCtxCurrSymDiv.quot;
-
+//                invRepContext =  iRCtxCurrSymDiv.quot;
+                invRepContext=iRCtxCurrSym/ALPHABET_SIZE;
                 /// update table considering inverted repeats
+                ++hTable[ invRepContext ][ iRCtxCurrSym%ALPHABET_SIZE];
 //                ++hTable[ invRepContext ][ iRCtxCurrSymDiv.rem];
+    
             }
 
             //////////////////////////////////
