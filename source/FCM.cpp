@@ -266,10 +266,11 @@ void FCM::buildHashTable2 ()
                 iRCtxCurrSymDiv = div(iRCtxCurrSym, ALPHABET_SIZE);
 
                 /// update inverted repeat context (integer)
-                invRepContext = (uint32_t) iRCtxCurrSymDiv.quot;
+//                invRepContext = (uint32_t) iRCtxCurrSymDiv.quot;
+                invRepContext =  iRCtxCurrSymDiv.quot;
 
                 /// update table considering inverted repeats
-                ++hTable[ invRepContext ][ iRCtxCurrSymDiv.rem];
+//                ++hTable[ invRepContext ][ iRCtxCurrSymDiv.rem];
             }
 
             //////////////////////////////////
