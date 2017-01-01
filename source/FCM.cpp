@@ -219,7 +219,7 @@ void FCM::buildHashTable2 ()
 
     uint64_t context = 0;          /// context, that slides in the dataset
     uint32_t tableNumOfRows = (uint32_t) pow(ALPHABET_SIZE, contextDepth);
-    uint32_t invRepContext = (uint32_t) tableNumOfRows - 1;  /// inverted repeat context
+    uint64_t invRepContext = (uint64_t) tableNumOfRows - 1;  /// inverted repeat context
     htable_t2 hTable;                            /// create hash table
     hTable.insert({context, {0, 0, 0, 0, 0}});  /// initialize hash table with 0'z
 
@@ -259,7 +259,7 @@ void FCM::buildHashTable2 ()
             if (isInvertedRepeat)
             {
                 /// concatenation of inverted repeat context and current symbol
-                uint32_t iRCtxCurrSym = (4 - currSymInt)*tableNumOfRows + invRepContext;
+                uint64_t iRCtxCurrSym = (4 - currSymInt)*tableNumOfRows + invRepContext;
 
                 /// to save quotient and reminder of a division
 //                div_t iRCtxCurrSymDiv;
@@ -268,9 +268,9 @@ void FCM::buildHashTable2 ()
                 /// update inverted repeat context (integer)
 //                invRepContext = (uint32_t) iRCtxCurrSymDiv.quot;
 //                invRepContext =  iRCtxCurrSymDiv.quot;
-                invRepContext=iRCtxCurrSym/ALPHABET_SIZE;
+                invRepContext=(uint64_t) iRCtxCurrSym/ALPHABET_SIZE;
                 /// update table considering inverted repeats
-                ++hTable[ invRepContext ][ iRCtxCurrSym%ALPHABET_SIZE];
+                ++hTable[ invRepContext ][ (uint64_t) iRCtxCurrSym%ALPHABET_SIZE];
 //                ++hTable[ invRepContext ][ iRCtxCurrSymDiv.rem];
             }
 

@@ -214,7 +214,7 @@ void Functions::commandLineParser (int argc, char **argv)
                                                         : models[ n ].setInvertedRepeat(true);
 //                (ctxDepth > TABLE_MAX_CONTEXT) ? models[ n ].buildHashTable()
 //                                               : models[ n ].buildTable();
-                models[ n ].buildHashTable();
+//                models[ n ].buildHashTable();
                 models[ n ].buildHashTable2();
 //                models[ n ].buildTable();
     
