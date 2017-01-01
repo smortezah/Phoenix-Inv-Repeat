@@ -217,7 +217,7 @@ void FCM::buildHashTable2 ()
         return;                                 /// exit this function
     }
 
-    uint32_t context = 0;          /// context, that slides in the dataset
+    uint64_t context = 0;          /// context, that slides in the dataset
     uint32_t tableNumOfRows = (uint32_t) pow(ALPHABET_SIZE, contextDepth);
     uint32_t invRepContext = (uint32_t) tableNumOfRows - 1;  /// inverted repeat context
     htable_t2 hTable;                            /// create hash table
@@ -288,7 +288,7 @@ void FCM::buildHashTable2 ()
             /////////////////////////////////
 
             /// update context
-            context = (uint32_t) (context*ALPHABET_SIZE + currSymInt) % tableNumOfRows;
+            context = (uint64_t) (context*ALPHABET_SIZE + currSymInt) % tableNumOfRows;
 //            context = context.substr(1, (unsigned) contextDepth - 1) + to_string(currSymInt);
 
 
