@@ -33,8 +33,8 @@ datasets="$HUMAN_CHR$CURR_CHR"
 
 INV_REPEATS="0"     # list of inverted repeats      "0 1"
 ALPHA_DENS="1"    # list of alpha denominators    "1 20 100"
-MIN_CTX=16         # min context size
-MAX_CTX=17          # max context size   ->  real: -=1
+MIN_CTX=14         # min context size
+MAX_CTX=15          # max context size   ->  real: -=1
 
 PIX_FORMAT=png      # output format: png, svg
 #rm -f *.$PIX_FORMAT# remove FORMAT pictures, if they exist
@@ -131,7 +131,7 @@ for ir in $INV_REPEATS; do
             echo -e "# ir\talpha\tctx\tbpb\ttime(s)" >> $IR_NAME$ir-$a_NAME$alphaDen-${dataset}_$mut.dat
                 for((ctx=$MIN_CTX; ctx<$MAX_CTX; ctx+=1)); do
 #                for ctx in {2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20}; do
-                ./phoenix -m t,$ctx,$alphaDen,$ir -t datasets/${dataset}_$mut #>> $IR_NAME$ir-$a_NAME$alphaDen-${dataset}_$mut.dat
+                ./phoenix -m t,$ctx,$alphaDen,$ir -t datasets/${dataset}_$mut >> $IR_NAME$ir-$a_NAME$alphaDen-${dataset}_q$mut.dat
                 done
                 # save "min bpb" and "min ctx" for each dataset
                 minBpbCtx=$(awk 'NR==1 || $4 < minBpb {minBpb=$4; minCtx=$3}; \

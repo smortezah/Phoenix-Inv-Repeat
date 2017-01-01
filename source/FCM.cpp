@@ -285,6 +285,8 @@ void FCM::buildHashTable2 ()
 
             /// sum( log_2 P(s|c^t) )
             sumOfEntropies += log2(probability);
+            
+            cout<<log2(probability)<<'\n';
             /////////////////////////////////
 
             /// update context
@@ -308,18 +310,18 @@ void FCM::buildHashTable2 ()
     /// H_N = -1/N sum( log_2 P(s|c^t) )
     averageEntropy = (-1) * sumOfEntropies / totalNumberOfSymbols;
 
-    cout
+//    cout
 //            << sumOfEntropies << '\n'
-//            << totalNumberOfSymbols << '\n'
-            << "  "
-            << getInvertedRepeat() << '\t'
-            << (float) 1/alphaDen << '\t'
-            << (int) contextDepth << '\t'
-            << averageEntropy
-//            << '\t'
-//            << hTable.size()
-//            << '\n'
-            ;
+////            << totalNumberOfSymbols << '\n'
+//            << "  "
+//            << getInvertedRepeat() << '\t'
+////            << (float) 1/alphaDen << '\t'
+//            << (int) contextDepth << '\t'
+//            << averageEntropy
+////            << '\t'
+////            << hTable.size()
+////            << '\n'
+//            ;
     ////////////////////////////////
 
 }
@@ -420,6 +422,8 @@ void FCM::buildHashTable ()
 
             /// sum( log_2 P(s|c^t) )
             sumOfEntropies += log2(probability);
+    
+            cout<<log2(probability)<<'\n';
             /////////////////////////////////
 
             /// update context
@@ -442,18 +446,18 @@ void FCM::buildHashTable ()
     /// H_N = -1/N sum( log_2 P(s|c^t) )
     averageEntropy = (-1) * sumOfEntropies / totalNumberOfSymbols;
 
-    cout
-//            << sumOfEntropies << '\n'
-//            << totalNumberOfSymbols << '\n'
-            << "  "
-            << getInvertedRepeat() << '\t'
-            << (float) 1/alphaDen << '\t'
-            << (int) contextDepth << '\t'
-            << averageEntropy
-//            << '\t'
-//            << hTable.size()
-//            << '\n'
-            ;
+//    cout
+////            << sumOfEntropies << '\n'
+////            << totalNumberOfSymbols << '\n'
+//            << "  "
+//            << getInvertedRepeat() << '\t'
+//            << (float) 1/alphaDen << '\t'
+//            << (int) contextDepth << '\t'
+//            << averageEntropy
+////            << '\t'
+////            << hTable.size()
+////            << '\n'
+//            ;
     ////////////////////////////////
 
 }
