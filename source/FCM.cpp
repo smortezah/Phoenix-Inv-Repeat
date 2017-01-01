@@ -286,7 +286,7 @@ void FCM::buildHashTable2 ()
             /// sum( log_2 P(s|c^t) )
             sumOfEntropies += log2(probability);
             
-            cout<<log2(probability)<<'\n';
+//            cout<<log2(probability)<<'\n';
             /////////////////////////////////
 
             /// update context
@@ -423,7 +423,7 @@ void FCM::buildHashTable ()
             /// sum( log_2 P(s|c^t) )
             sumOfEntropies += log2(probability);
     
-            cout<<log2(probability)<<'\n';
+//            cout<<log2(probability)<<'\n';
             /////////////////////////////////
 
             /// update context
