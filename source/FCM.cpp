@@ -218,7 +218,7 @@ void FCM::buildHashTable2 ()
     }
 
     uint64_t context = 0;          /// context, that slides in the dataset
-    uint32_t tableNumOfRows = (uint32_t) pow(ALPHABET_SIZE, contextDepth);
+    uint64_t tableNumOfRows = (uint64_t) pow(ALPHABET_SIZE, contextDepth);
     uint64_t invRepContext = (uint64_t) tableNumOfRows - 1;  /// inverted repeat context
     htable_t2 hTable;                            /// create hash table
     hTable.insert({context, {0, 0, 0, 0, 0}});  /// initialize hash table with 0'z
