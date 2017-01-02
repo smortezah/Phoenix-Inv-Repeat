@@ -193,13 +193,13 @@ set ylabel "bpb"                        # set label of y axis
 set xtics add ("1" 1)
 set key right                           # legend position
 set term $PIX_FORMAT                    # set terminal for output picture format
-set output "$dataset-bpb.$PIX_FORMAT"       # set output name
+set output "$IR_NAME$ir-$a_NAME$alphaDen-$dataset-bpb.$PIX_FORMAT"       # set output name
 plot "dat/$IR_NAME$ir-$a_NAME$alphaDen-${dataset}.dat" using 1:2  with linespoints ls 7 title "$IR_NAME=$ir, $a_NAME=1/$alphaDen, $CHR$CURR_CHR"
 
 set xlabel "ctx"
 set ylabel "context-order size"         # set label of y axis
 set ytics 2,1,20                        # set steps for y axis
-set output "$dataset-ctx.$PIX_FORMAT"    # set output name
+set output "$IR_NAME$ir-$a_NAME$alphaDen-$dataset-ctx.$PIX_FORMAT"    # set output name
 plot "dat/$IR_NAME$ir-$a_NAME$alphaDen-${dataset}.dat" using 1:3  with linespoints ls 7 title "$IR_NAME=$ir, $a_NAME=1/$alphaDen, $CHR$CURR_CHR"
 
 # the following line (EOF) MUST be left as it is; i.e. no space, etc
