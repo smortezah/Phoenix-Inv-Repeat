@@ -67,7 +67,7 @@ void FCM::buildTable ()
     /// 5^TABLE_MAX_CONTEXT < 2^32 => uint32_t is used, otherwise uint64_t
     uint32_t tableNumOfRows = (uint32_t) pow(ALPHABET_SIZE, contextDepth);
     uint64_t *table = new uint64_t[tableNumOfRows * ALPHABET_SIZE];
-    /// initialize table with 0'z
+    /// initialize table with 0's
     memset(table, 0, sizeof(table[ 0 ]) * tableNumOfRows * ALPHABET_SIZE);
     
     uint32_t contextInt = 0;                    /// context (integer), that slides in the dataset
@@ -220,7 +220,8 @@ void FCM::buildHashTable2 ()
 
     uint64_t context = 0;          /// context, that slides in the dataset
     uint64_t tableNumOfRows = (uint64_t) pow(ALPHABET_SIZE, contextDepth);
-    uint64_t invRepContext = (uint64_t) tableNumOfRows - 1;  /// inverted repeat context
+    uint64_t invRepContext = tableNumOfRows - 1;  /// inverted repeat context
+    
     htable_t2 hTable;                            /// create hash table
     hTable.insert({context, {0, 0, 0, 0, 0}});  /// initialize hash table with 0'z
 
