@@ -284,14 +284,14 @@ void FCM::buildHashTable ()
 
     fileIn.close();             /// close file
 
-//    FCM::setHashTable(hTable);  /// save the built hash table
+    FCM::setHashTable(hTable);  /// save the built hash table
 
     ////////////////////////////////
     /// H_N = -1/N sum( log_2 P(s|c^t) )
     averageEntropy = (-1) * sumOfEntropies / totalNumberOfSymbols;
 
     cout
-            << sumOfEntropies << '\n'
+//            << sumOfEntropies << '\n'
 //            << totalNumberOfSymbols << '\n'
             << "  "
             << getInvertedRepeat() << '\t'
@@ -333,7 +333,7 @@ void FCM::buildHashTable_str ()
 
 
     ifstream fileIn(fileName, ios::in);         /// open file located in fileName
-
+                                                
     if (!fileIn)                                /// error occurred while opening file
     {
         cerr << "The file '" << fileName << "' cannot be opened, or it is empty.\n";
@@ -343,7 +343,7 @@ void FCM::buildHashTable_str ()
 
     string context(contextDepth, '0');          /// context, that slides in the dataset
 
-    htable_str_t hTable;                            /// create hash table
+    htable_str_t hTable;                        /// create hash table
     hTable.insert({context, {0, 0, 0, 0, 0}});  /// initialize hash table with 0'z
 
     ////////////////////////////////
@@ -368,11 +368,11 @@ void FCM::buildHashTable_str ()
         for (string::iterator lineIter = datasetLine.begin(); lineIter != datasetLine.end(); ++lineIter)
         {
             /// htable includes an array of uint64_t numbers
-            const char c = *lineIter;
-            const uint8_t currSymInt = (c == 'A') ? (uint8_t) 0 :
-                                       (c == 'C') ? (uint8_t) 1 :
-                                       (c == 'G') ? (uint8_t) 3 :
-                                       (c == 'T') ? (uint8_t) 4 : (uint8_t) 2;
+            char c = *lineIter;
+            uint8_t currSymInt = (c == 'A') ? (uint8_t) 0 :
+                                 (c == 'C') ? (uint8_t) 1 :
+                                 (c == 'G') ? (uint8_t) 3 :
+                                 (c == 'T') ? (uint8_t) 4 : (uint8_t) 2;
 //            const uint8_t currSymInt = c % 5;
 
             /// update hash table
@@ -398,36 +398,34 @@ void FCM::buildHashTable_str ()
 
             /// P(s|c^t)
 //            probability = (nSym + (double) 1/alphaDen) / (sumNSyms + (double) ALPHABET_SIZE/alphaDen);
-            probability = (double) (alphaDen*nSym + 1) / (alphaDen*sumNSyms + ALPHABET_SIZE);
+            probability = (double) (alphaDen * nSym + 1) / (alphaDen * sumNSyms + ALPHABET_SIZE);
 
             /// sum( log_2 P(s|c^t) )
             sumOfEntropies += log2(probability);
-    
-//            cout<<log2(probability)<<'\n';
             /////////////////////////////////
 
             /// update context
             context = context.substr(1, (unsigned) contextDepth - 1) + to_string(currSymInt);
-
-
+            
 ////            *context.end() = currSymInt;
 
 //////            memcpy(context, context + 1, contextDepth - 1);
 //////            context[ contextDepth-1 ] = currSymInt;
 //////              *(context+contextDepth-1) = currSymInt;
+            
         }   /// end of for
     }   /// end of while
 
-    fileIn.close();             /// close file
+    fileIn.close();                 /// close file
 
-//    FCM::setHashTable(hTable);  /// save the built hash table
+    FCM::setHashTable_str(hTable);  /// save the built hash table
 
     ////////////////////////////////
     /// H_N = -1/N sum( log_2 P(s|c^t) )
     averageEntropy = (-1) * sumOfEntropies / totalNumberOfSymbols;
 
     cout
-            << sumOfEntropies << '\n'
+//            << sumOfEntropies << '\n'
 //            << totalNumberOfSymbols << '\n'
             << "  "
             << getInvertedRepeat() << '\t'
@@ -448,7 +446,7 @@ void FCM::buildHashTable_str ()
 ************************************************************/
 void FCM::printHashTable () const
 {
-    htable_str_t hTable = this->getHashTable();
+    htable_t hTable = this->getHashTable();
     
     string tar_or_ref = (this->getTargetOrReference() == 't' ? "target" : "reference");
     string Tar_or_Ref = (this->getTargetOrReference() == 't' ? "Target" : "Reference");
@@ -473,7 +471,7 @@ void FCM::printHashTable () const
          //              << "------------------------------------------"
          << '\n';
 
-    for (htable_str_t::iterator it = hTable.begin(); it != hTable.end(); ++it)
+    for (htable_t::iterator it = hTable.begin(); it != hTable.end(); ++it)
     {
         cout << it->first;
         cout << "\t";
