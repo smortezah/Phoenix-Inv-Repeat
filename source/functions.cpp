@@ -212,11 +212,8 @@ void Functions::commandLineParser (int argc, char **argv)
                 /// set the inverted repeat condition of the model
                 !stoi(vecParameters[ vecParamIndex++ ]) ? models[ n ].setInvertedRepeat(false)
                                                         : models[ n ].setInvertedRepeat(true);
-//                (ctxDepth > TABLE_MAX_CONTEXT) ? models[ n ].buildHashTable()
-//                                               : models[ n ].buildTable();
-                models[ n ].buildHashTable();
-//                models[ n ].buildHashTable2();
-//                models[ n ].buildTable();
+                (ctxDepth > TABLE_MAX_CONTEXT) ? models[ n ].buildHashTable()
+                                               : models[ n ].buildTable();
     
                 /// print the built hash table
 //                cout << "Model " << n + 1 << " parameters:\n";
