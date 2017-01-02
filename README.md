@@ -1,5 +1,5 @@
 <h2>ISSUES</h2>
-For any issue let me know at <a href="https://github.com/smortezah/Phoenix/issues">issues</a>.
+Please let me know if there is any issues, at <a href="https://github.com/smortezah/Phoenix/issues">issues</a>.
 
 <h2>LICENSE</h2>
 GPL v3.
