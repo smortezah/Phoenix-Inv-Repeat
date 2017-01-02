@@ -307,9 +307,12 @@ void FCM::buildHashTable ()
 }
 
 
-/***********************************************************
-    build hash table
-************************************************************/
+
+///***********************************************************
+//    build hash table (string key)
+//************************************************************/
+/* COMMENT
+
 void FCM::buildHashTable_str ()
 {
     const uint8_t contextDepth  = getContextDepth();    /// get context depth
@@ -333,7 +336,7 @@ void FCM::buildHashTable_str ()
 
 
     ifstream fileIn(fileName, ios::in);         /// open file located in fileName
-                                                
+
     if (!fileIn)                                /// error occurred while opening file
     {
         cerr << "The file '" << fileName << "' cannot be opened, or it is empty.\n";
@@ -406,13 +409,13 @@ void FCM::buildHashTable_str ()
 
             /// update context
             context = context.substr(1, (unsigned) contextDepth - 1) + to_string(currSymInt);
-            
+
 ////            *context.end() = currSymInt;
 
 //////            memcpy(context, context + 1, contextDepth - 1);
 //////            context[ contextDepth-1 ] = currSymInt;
 //////              *(context+contextDepth-1) = currSymInt;
-            
+
         }   /// end of for
     }   /// end of while
 
@@ -439,6 +442,8 @@ void FCM::buildHashTable_str ()
     ////////////////////////////////
 
 }
+
+*/ // end of COMMENT
 
 
 /***********************************************************
@@ -497,8 +502,8 @@ uint64_t *FCM::getTable () const                      { return table;           
 void FCM::setTable (uint64_t *tbl)                    { FCM::table = tbl;              }
 const htable_t &FCM::getHashTable () const            { return hashTable;              }
 void FCM::setHashTable (const htable_t &hT)           { FCM::hashTable = hT;           }
-const htable_str_t &FCM::getHashTable_str () const    { return hashTable_str;          }
-void FCM::setHashTable_str (const htable_str_t &hT_s) { FCM::hashTable_str = hT_s;     }
+//const htable_str_t &FCM::getHashTable_str () const    { return hashTable_str;          }
+//void FCM::setHashTable_str (const htable_str_t &hT_s) { FCM::hashTable_str = hT_s;     }
 const string &FCM::getTarFileAddress () const         { return tarFileAddress;         }
 void FCM::setTarFileAddress (const string &tFA)       { FCM::tarFileAddress = tFA;     }
 const string &FCM::getRefFileAddress () const         { return refFileAddress;         }
