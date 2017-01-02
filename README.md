@@ -1,7 +1,7 @@
-<h1>ISSUES</h1>
+<h2>ISSUES</h2>
 For any issue let me know at <a href="https://github.com/smortezah/Phoenix/issues">issues</a>.
 
-<h1>LICENSE</h1>
+<h2>LICENSE</h2>
 GPL v3.
 
 For more information:
