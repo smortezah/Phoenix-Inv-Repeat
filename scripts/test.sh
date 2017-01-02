@@ -9,16 +9,17 @@ cd ..
 #***********************************************************
 #   parameters to install and run needed programs
 #***********************************************************
-INSTALL_XS=0    # to install "XS" from Github
-INSTALL_goose=0 # to install "goose" from Github
-GEN_DATASETS=0  # generate datasets using "XS"
-GEN_MUTATIONS=0 # generate mutations using "goose"
-RUN=1           # run the program
-PLOT_RESULTS=0  # plot results using "gnuplot"
+DOWNLOAD_CHROMOSOME=0   # download choromosomes
+INSTALL_XS=0            # install "XS" from Github
+INSTALL_goose=0         # install "goose" from Github
+GEN_DATASETS=0          # generate datasets using "XS"
+GEN_MUTATIONS=0         # generate mutations using "goose"
+RUN=1                   # run the program
+PLOT_RESULTS=1          # plot results using "gnuplot"
 
 # mutations list:   `seq -s' ' 1 10`
-#MUT_LIST="1 2 3 4 5 6 7 8 9 10 12 14 16 18 20 25 30 35 40 45 50"
-MUT_LIST="1"
+MUT_LIST="1 2 3 4 5 6 7 8 9 10 12 14 16 18 20 25 30 35 40 45 50"
+#MUT_LIST="1"
 
 ## datasets: human chromosomes full list
 #for i in chr{1..22} chr{X,Y,MT} alts unlocalized unplaced
@@ -26,21 +27,44 @@ MUT_LIST="1"
 HUMAN_CHR_PREFIX="hs_ref_GRCh38.p7_"
 CHR="chr"
 HUMAN_CHR="HS"
-CURR_CHR="1"
+CURR_CHR="19"
 chromosomes="$HUMAN_CHR_PREFIX$CHR$CURR_CHR"
 datasets="$HUMAN_CHR$CURR_CHR"
 #datasets="tmp"
 
-INV_REPEATS="0"     # list of inverted repeats      "0 1"
+INV_REPEATS="0 1"     # list of inverted repeats      "0 1"
 ALPHA_DENS="1"    # list of alpha denominators    "1 20 100"
 MIN_CTX=2         # min context size
-MAX_CTX=3          # max context size   ->  real: -=1
+MAX_CTX=21          # max context size   ->  real: -=1
 
 PIX_FORMAT=png      # output format: png, svg
 #rm -f *.$PIX_FORMAT# remove FORMAT pictures, if they exist
 
 IR_NAME=i           # inverted repeat name
 a_NAME=a           # alpha denominator name
+
+
+#***********************************************************
+#   download choromosomes
+#***********************************************************
+if [[ $DOWNLOAD_CHROMOSOME == 1 ]]; then
+
+for((x=19;x!=20;++x));
+do wget ftp://ftp.ncbi.nlm.nih.gov/genomes/H_sapiens/Assembled_chromosomes/seq/hs_ref_GRCh38.p7_chr$x.fa.gz ; done
+##wget ftp://ftp.ncbi.nlm.nih.gov/genomes/H_sapiens/Assembled_chromosomes/seq/hs_ref_GRCh38.p7_chrX.fa.gz
+##wget ftp://ftp.ncbi.nlm.nih.gov/genomes/H_sapiens/Assembled_chromosomes/seq/hs_ref_GRCh38.p7_chrY.fa.gz
+for((x=19;x!=20;++x));  do
+zcat hs_ref_GRCh38.p7_chr$x.fa.gz | grep -v ">" | tr -d -c "ACGTN" > hs_ref_GRCh38.p7_chr$x.fa;
+mv hs_ref_GRCh38.p7_chr$x.fa chromosomes/
+done
+
+##zcat hs_ref_GRCh38_chrX.fa.gz | grep -v ">" | tr -d -c "ACGTN" > HSC23 ;
+##zcat hs_ref_GRCh38_chrY.fa.gz | grep -v ">" | tr -d -c "ACGTN" > HSC24 ;
+#cat HSC* > HS.acgt;
+#rm -f *.fa.gz ;
+##rm -f GRC*
+
+fi  # end of download choromosomes
 
 
 #***********************************************************
@@ -163,20 +187,20 @@ for ir in $INV_REPEATS; do
             for mut in $MUT_LIST; do
 
 gnuplot <<- EOF
-#set xlabel "% mutation"                # set label of x axis
-set xlabel "ctx"
+set xlabel "% mutation"                # set label of x axis
 set ylabel "bpb"                        # set label of y axis
 #set xtics 0,5,100                      # set steps for x axis
 set xtics add ("1" 1)
 set key right                           # legend position
 set term $PIX_FORMAT                    # set terminal for output picture format
-set output "$dataset.$PIX_FORMAT"       # set output name
-plot "dat/$IR_NAME$ir-$a_NAME$alphaDen-${dataset}_$mut.dat" using 3:4  with linespoints ls 7 title "$IR_NAME=$ir, $a_NAME=1/$ALPHA_DENS, $CHR$CURR_CHR"
+set output "$dataset-bpb.$PIX_FORMAT"       # set output name
+plot "dat/$IR_NAME$ir-$a_NAME$alphaDen-${dataset}.dat" using 1:2  with linespoints ls 7 title "$IR_NAME=$ir, $a_NAME=1/$alphaDen, $CHR$CURR_CHR"
 
-#set ylabel "context-order size"         # set label of y axis
-#set ytics 2,1,20                        # set steps for y axis
-#set output "$dataset-ctx.$PIX_FORMAT"    # set output name
-#plot "dat/$IR_NAME$ir-$a_NAME$ALPHA_DENS-$dataset.dat" using 1:3  with linespoints ls 7 title "$IR_NAME=$ir, $a_NAME=1/$ALPHA_DENS, $CHR$CURR_CHR"
+set xlabel "ctx"
+set ylabel "context-order size"         # set label of y axis
+set ytics 2,1,20                        # set steps for y axis
+set output "$dataset-ctx.$PIX_FORMAT"    # set output name
+plot "dat/$IR_NAME$ir-$a_NAME$alphaDen-${dataset}.dat" using 1:3  with linespoints ls 7 title "$IR_NAME=$ir, $a_NAME=1/$alphaDen, $CHR$CURR_CHR"
 
 # the following line (EOF) MUST be left as it is; i.e. no space, etc
 EOF
