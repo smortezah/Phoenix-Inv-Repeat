@@ -1,4 +1,4 @@
-GPL v3.
+<h3>GPL v3.</h3>
 
 For more information:
 
