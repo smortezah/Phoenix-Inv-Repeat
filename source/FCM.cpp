@@ -64,6 +64,7 @@ void FCM::buildTable ()
     }
     
     /// create table
+    /// 5^TABLE_MAX_CONTEXT < 2^32 => uint32_t is used, otherwise uint64_t
     uint32_t tableNumOfRows = (uint32_t) pow(ALPHABET_SIZE, contextDepth);
     uint64_t *table = new uint64_t[tableNumOfRows * ALPHABET_SIZE];
     /// initialize table with 0'z
