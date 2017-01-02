@@ -215,7 +215,7 @@ void Functions::commandLineParser (int argc, char **argv)
 //                (ctxDepth > TABLE_MAX_CONTEXT) ? models[ n ].buildHashTable()
 //                                               : models[ n ].buildTable();
                 models[ n ].buildHashTable();
-                models[ n ].buildHashTable2();
+//                models[ n ].buildHashTable2();
 //                models[ n ].buildTable();
     
                 /// print the built hash table
