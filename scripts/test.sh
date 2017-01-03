@@ -9,17 +9,17 @@ cd ..
 #***********************************************************
 #   parameters to install and run needed programs
 #***********************************************************
-DOWNLOAD_CHROMOSOME=0   # download choromosomes
+DOWNLOAD_CHROMOSOMES=0   # download choromosomes
 INSTALL_XS=0            # install "XS" from Github
 INSTALL_goose=0         # install "goose" from Github
 GEN_DATASETS=0          # generate datasets using "XS"
 GEN_MUTATIONS=0         # generate mutations using "goose"
 RUN=1                   # run the program
-PLOT_RESULTS=1          # plot results using "gnuplot"
+PLOT_RESULTS=0          # plot results using "gnuplot"
 
 # mutations list:   `seq -s' ' 1 10`
-MUT_LIST="1 2 3 4 5 6 7 8 9 10 12 14 16 18 20 25 30 35 40 45 50"
-#MUT_LIST="1"
+#MUT_LIST="1 2 3 4 5 6 7 8 9 10 12 14 16 18 20 25 30 35 40 45 50"
+MUT_LIST="1"
 
 ## datasets: human chromosomes full list
 #for i in chr{1..22} chr{X,Y,MT} alts unlocalized unplaced
@@ -32,10 +32,10 @@ chromosomes="$HUMAN_CHR_PREFIX$CHR$CURR_CHR"
 datasets="$HUMAN_CHR$CURR_CHR"
 #datasets="tmp"
 
-INV_REPEATS="0 1"     # list of inverted repeats      "0 1"
+INV_REPEATS="0"     # list of inverted repeats      "0 1"
 ALPHA_DENS="1"    # list of alpha denominators    "1 20 100"
-MIN_CTX=2         # min context size
-MAX_CTX=21          # max context size   ->  real: -=1
+MIN_CTX=13         # min context size
+MAX_CTX=14          # max context size   ->  real: -=1
 
 PIX_FORMAT=png      # output format: png, svg
 #rm -f *.$PIX_FORMAT# remove FORMAT pictures, if they exist
@@ -47,15 +47,15 @@ a_NAME=a           # alpha denominator name
 #***********************************************************
 #   download choromosomes
 #***********************************************************
-if [[ $DOWNLOAD_CHROMOSOME == 1 ]]; then
+if [[ $DOWNLOAD_CHROMOSOMES == 1 ]]; then
 
 for((x=19;x!=20;++x));
 do wget ftp://ftp.ncbi.nlm.nih.gov/genomes/H_sapiens/Assembled_chromosomes/seq/hs_ref_GRCh38.p7_chr$x.fa.gz ; done
 ##wget ftp://ftp.ncbi.nlm.nih.gov/genomes/H_sapiens/Assembled_chromosomes/seq/hs_ref_GRCh38.p7_chrX.fa.gz
 ##wget ftp://ftp.ncbi.nlm.nih.gov/genomes/H_sapiens/Assembled_chromosomes/seq/hs_ref_GRCh38.p7_chrY.fa.gz
 for((x=19;x!=20;++x));  do
-zcat hs_ref_GRCh38.p7_chr$x.fa.gz | grep -v ">" | tr -d -c "ACGTN" > hs_ref_GRCh38.p7_chr$x.fa;
-mv hs_ref_GRCh38.p7_chr$x.fa chromosomes/
+gunzip < hs_ref_GRCh38.p7_chr$x.fa.gz > chromosomes/hs_ref_GRCh38.p7_chr$x.fa;
+rm hs_ref_GRCh38.p7_chr$x.fa.gz
 done
 
 ##zcat hs_ref_GRCh38_chrX.fa.gz | grep -v ">" | tr -d -c "ACGTN" > HSC23 ;
