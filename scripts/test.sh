@@ -14,8 +14,8 @@ INSTALL_XS=0            # install "XS" from Github
 INSTALL_goose=0         # install "goose" from Github
 GEN_DATASETS=0          # generate datasets using "XS"
 GEN_MUTATIONS=0         # generate mutations using "goose"
-RUN=0                   # run the program
-PLOT_RESULTS=0          # plot results using "gnuplot"
+RUN=1                   # run the program
+PLOT_RESULTS=1          # plot results using "gnuplot"
 ARCHIVE_DATA=0
 
 # mutations list:   `seq -s' ' 1 10`
@@ -33,10 +33,10 @@ chromosomes="$HUMAN_CHR_PREFIX$CHR$CURR_CHR"
 datasets="$HUMAN_CHR$CURR_CHR"
 #datasets="tmp"
 
-INV_REPEATS="0"     # list of inverted repeats      "0 1"
+INV_REPEATS="0 1"     # list of inverted repeats      "0 1"
 ALPHA_DENS="1"    # list of alpha denominators    "1 20 100"
-MIN_CTX=13         # min context size
-MAX_CTX=14          # max context size   ->  real: -=1
+MIN_CTX=2         # min context size
+MAX_CTX=3          # max context size   ->  real: -=1
 
 PIX_FORMAT=png      # output format: png, svg
 #rm -f *.$PIX_FORMAT# remove FORMAT pictures, if they exist
