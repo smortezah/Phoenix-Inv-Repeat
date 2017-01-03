@@ -295,7 +295,7 @@ void FCM::buildHashTable ()
 //            << totalNumberOfSymbols << '\n'
             << "  "
             << getInvertedRepeat() << '\t'
-//            << (float) 1/alphaDen << '\t'
+            << (float) 1/alphaDen << '\t'
             << (int) contextDepth << '\t'
             << averageEntropy
 //            << '\t'
