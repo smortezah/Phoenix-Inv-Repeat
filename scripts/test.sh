@@ -28,15 +28,18 @@ MUT_LIST="1"
 HUMAN_CHR_PREFIX="hs_ref_GRCh38.p7_"
 CHR="chr"
 HUMAN_CHR="HS"
-CURR_CHR="22"
+CURR_CHR="3"
 chromosomes="$HUMAN_CHR_PREFIX$CHR$CURR_CHR"
+#chromosomes=""
+#for i in {1..22} {X,Y}
+#do  chromosomes+=$HUMAN_CHR_PREFIX$CHR${i}" ";   done
 datasets="$HUMAN_CHR$CURR_CHR"
 #datasets="tmp"
 
-INV_REPEATS="0 1"     # list of inverted repeats      "0 1"
+INV_REPEATS="0"     # list of inverted repeats      "0 1"
 ALPHA_DENS="1"    # list of alpha denominators    "1 20 100"
-MIN_CTX=6         # min context size
-MAX_CTX=13          # max context size   ->  real: -=1
+MIN_CTX=7         # min context size
+MAX_CTX=8          # max context size   ->  real: -=1
 
 PIX_FORMAT=png      # output format: png, svg
 #rm -f *.$PIX_FORMAT# remove FORMAT pictures, if they exist
