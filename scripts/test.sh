@@ -9,7 +9,7 @@ cd ..
 #***********************************************************
 #   parameters to install and run needed programs
 #***********************************************************
-DOWNLOAD_CHROMOSOMES=0  # download choromosomes
+DL_CHROMOSOMES=0        # download choromosomes
 INSTALL_XS=0            # install "XS" from Github
 INSTALL_goose=0         # install "goose" from Github
 GEN_DATASETS=0          # generate datasets using "XS"
@@ -33,13 +33,11 @@ chromosomes="$HUMAN_CHR_PREFIX$CHR$CURR_CHR"
 #chromosomes=""
 #for i in {1..22} X Y
 #do  chromosomes+=$HUMAN_CHR_PREFIX$CHR${i}" ";   done
-#datasets="$HUMAN_CHR$CURR_CHR"
-datasets=""
-#for i in {4..22} X Y
-for i in 6 7
-do  datasets+=$HUMAN_CHR${i}" ";    done
-
+datasets="$HUMAN_CHR$CURR_CHR"
 #datasets="tmp"
+#datasets=""
+#for i in {4..22} X Y
+#do  datasets+=$HUMAN_CHR${i}" ";    done
 
 
 INV_REPEATS="0 1"     # list of inverted repeats      "0 1"
@@ -57,7 +55,7 @@ a_NAME=a           # alpha denominator name
 #***********************************************************
 #   download choromosomes
 #***********************************************************
-if [[ $DOWNLOAD_CHROMOSOMES == 1 ]]; then
+if [[ $DL_CHROMOSOMES == 1 ]]; then
 
 for((x=1;x!=23;++x));
 do wget ftp://ftp.ncbi.nlm.nih.gov/genomes/H_sapiens/Assembled_chromosomes/seq/hs_ref_GRCh38.p7_chr$x.fa.gz ; done
