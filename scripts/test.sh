@@ -13,14 +13,14 @@ DOWNLOAD_CHROMOSOMES=0   # download choromosomes
 INSTALL_XS=0            # install "XS" from Github
 INSTALL_goose=0         # install "goose" from Github
 GEN_DATASETS=0          # generate datasets using "XS"
-GEN_MUTATIONS=0         # generate mutations using "goose"
+GEN_MUTATIONS=1         # generate mutations using "goose"
 RUN=0                   # run the program
 PLOT_RESULTS=0          # plot results using "gnuplot"
-ARCHIVE_DATA=1
+ARCHIVE_DATA=0
 
 # mutations list:   `seq -s' ' 1 10`
-#MUT_LIST="1 2 3 4 5 6 7 8 9 10 12 14 16 18 20 25 30 35 40 45 50"
-MUT_LIST="1"
+MUT_LIST="1 2 3 4 5 6 7 8 9 10 12 14 16 18 20 25 30 35 40 45 50"
+#MUT_LIST="1"
 
 ## datasets: human chromosomes full list
 #for i in chr{1..22} chr{X,Y,MT} alts unlocalized unplaced
@@ -28,7 +28,7 @@ MUT_LIST="1"
 HUMAN_CHR_PREFIX="hs_ref_GRCh38.p7_"
 CHR="chr"
 HUMAN_CHR="HS"
-CURR_CHR="19"
+CURR_CHR="2"
 chromosomes="$HUMAN_CHR_PREFIX$CHR$CURR_CHR"
 datasets="$HUMAN_CHR$CURR_CHR"
 #datasets="tmp"
@@ -131,7 +131,7 @@ rm -f temp*    # remove temporary files
 #-----------------------------------
 #   move all generated mutations files to "datasets" folder
 #-----------------------------------
-#rm -fr datasets
+##rm -fr datasets
 #mkdir -p datasets
 mv ${HUMAN_CHR}* datasets
 
@@ -172,7 +172,7 @@ done
 #-----------------------------------
 #   create "dat" folder and save the results
 #-----------------------------------
-#rm -fr dat              # remove "dat" folder, if it already exists
+##rm -fr dat              # remove "dat" folder, if it already exists
 #mkdir -p dat            # make "dat" folder
 mv ${IR_NAME}*.dat dat  # move all created dat files to the "dat" folder
 
@@ -221,7 +221,7 @@ fi  #end of plot output using "gnuplot"
 #***********************************************************
 if [[ $ARCHIVE_DATA == 1 ]]; then
 
-mkdir archive
+mkdir -p archive
 mv dat/*.dat archive/
 
 fi
