@@ -35,8 +35,9 @@ chromosomes="$HUMAN_CHR_PREFIX$CHR$CURR_CHR"
 #do  chromosomes+=$HUMAN_CHR_PREFIX$CHR${i}" ";   done
 #datasets="$HUMAN_CHR$CURR_CHR"
 datasets=""
-for i in {4..22} X Y
-do  datasets+=$HUMAN_CHR${i}" ";   done
+#for i in {4..22} X Y
+for i in 6 7
+do  datasets+=$HUMAN_CHR${i}" ";    done
 
 #datasets="tmp"
 
