@@ -14,7 +14,7 @@ INSTALL_XS=0            # install "XS" from Github
 INSTALL_goose=0         # install "goose" from Github
 GEN_DATASETS=0          # generate datasets using "XS"
 GEN_MUTATIONS=0         # generate mutations using "goose"
-RUN=1                   # run the program
+RUN=0                   # run the program
 PLOT_RESULTS=1          # plot results using "gnuplot"
 ARCHIVE_DATA=0          # archive data
 
@@ -188,34 +188,41 @@ fi  # end of running the program
 #***********************************************************
 if [[ $PLOT_RESULTS == 1 ]]; then
 
-for ir in $INV_REPEATS; do
-    for alphaDen in $ALPHA_DENS; do
-        for dataset in $datasets; do
-            for mut in $MUT_LIST; do
+#for ir in $INV_REPEATS; do
+for alphaDen in $ALPHA_DENS; do
+    for dataset in $datasets; do
+        for mut in $MUT_LIST; do
 
 gnuplot <<- EOF
-set xlabel "% mutation"                # set label of x axis
+set xlabel "% mutation"                 # set label of x axis
 set ylabel "bpb"                        # set label of y axis
 #set xtics 0,5,100                      # set steps for x axis
 set xtics add ("1" 1)
-set key right                           # legend position
+set key bottom right                    # legend position
 set term $PIX_FORMAT                    # set terminal for output picture format
-set output "$IR_NAME$ir-$a_NAME$alphaDen-$dataset-bpb.$PIX_FORMAT"       # set output name
-plot "dat/$IR_NAME$ir-$a_NAME$alphaDen-${dataset}.dat" using 1:2  with linespoints ls 7 title "$IR_NAME=$ir, $a_NAME=1/$alphaDen, $CHR$CURR_CHR"
+#set output "$IR_NAME$ir-$a_NAME$alphaDen-$dataset-bpb.$PIX_FORMAT"       # set output name
+#plot "dat/$IR_NAME$ir-$a_NAME$alphaDen-${dataset}.dat" using 1:2  with linespoints ls 7 title "$IR_NAME=$ir, $a_NAME=1/$alphaDen, $CHR$CURR_CHR"
+set output "$a_NAME$alphaDen-$dataset-bpb.$PIX_FORMAT"       # set output name
+plot "dat/${IR_NAME}0-$a_NAME$alphaDen-${dataset}.dat" using 1:2  with linespoints ls 6 title "$IR_NAME=0, $a_NAME=1/$alphaDen, $CHR$CURR_CHR", \
+     "dat/${IR_NAME}1-$a_NAME$alphaDen-${dataset}.dat" using 1:2  with linespoints ls 7 title "$IR_NAME=1, $a_NAME=1/$alphaDen, $CHR$CURR_CHR"
 
-set xlabel "ctx"
+#set xlabel "ctx"
 set ylabel "context-order size"         # set label of y axis
 set ytics 2,1,20                        # set steps for y axis
-set output "$IR_NAME$ir-$a_NAME$alphaDen-$dataset-ctx.$PIX_FORMAT"    # set output name
-plot "dat/$IR_NAME$ir-$a_NAME$alphaDen-${dataset}.dat" using 1:3  with linespoints ls 7 title "$IR_NAME=$ir, $a_NAME=1/$alphaDen, $CHR$CURR_CHR"
+set key top right                       # legend position
+#set output "$IR_NAME$ir-$a_NAME$alphaDen-$dataset-ctx.$PIX_FORMAT"    # set output name
+#plot "dat/$IR_NAME$ir-$a_NAME$alphaDen-${dataset}.dat" using 1:3  with linespoints ls 7 title "$IR_NAME=$ir, $a_NAME=1/$alphaDen, $CHR$CURR_CHR"
+set output "$a_NAME$alphaDen-$dataset-ctx.$PIX_FORMAT"       # set output name
+plot "dat/${IR_NAME}0-$a_NAME$alphaDen-${dataset}.dat" using 1:3  with linespoints ls 6 title "$IR_NAME=0, $a_NAME=1/$alphaDen, $CHR$CURR_CHR", \
+     "dat/${IR_NAME}1-$a_NAME$alphaDen-${dataset}.dat" using 1:3  with linespoints ls 7 title "$IR_NAME=1, $a_NAME=1/$alphaDen, $CHR$CURR_CHR"
 
 # the following line (EOF) MUST be left as it is; i.e. no space, etc
 EOF
 
-            done
         done
     done
 done
+#done
 
 fi  #end of plot output using "gnuplot"
 
