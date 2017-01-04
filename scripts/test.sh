@@ -31,10 +31,15 @@ HUMAN_CHR="HS"
 CURR_CHR="3"
 chromosomes="$HUMAN_CHR_PREFIX$CHR$CURR_CHR"
 #chromosomes=""
-#for i in {1..22} {X,Y}
+#for i in {1..22} X Y
 #do  chromosomes+=$HUMAN_CHR_PREFIX$CHR${i}" ";   done
-datasets="$HUMAN_CHR$CURR_CHR"
+#datasets="$HUMAN_CHR$CURR_CHR"
+datasets=""
+for i in {21..22} 20
+do  datasets+=$HUMAN_CHR${i}" ";   done
+
 #datasets="tmp"
+
 
 INV_REPEATS="0"     # list of inverted repeats      "0 1"
 ALPHA_DENS="1"    # list of alpha denominators    "1 20 100"
