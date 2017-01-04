@@ -202,19 +202,22 @@ set key bottom right                    # legend position
 set term $PIX_FORMAT                    # set terminal for output picture format
 #set output "$IR_NAME$ir-$a_NAME$alphaDen-$dataset-bpb.$PIX_FORMAT"       # set output name
 #plot "dat/$IR_NAME$ir-$a_NAME$alphaDen-${dataset}.dat" using 1:2  with linespoints ls 7 title "$IR_NAME=$ir, $a_NAME=1/$alphaDen, $CHR$CURR_CHR"
-set output "$a_NAME$alphaDen-$dataset-bpb.$PIX_FORMAT"       # set output name
-plot "dat/${IR_NAME}0-$a_NAME$alphaDen-${dataset}.dat" using 1:2  with linespoints ls 6 title "$IR_NAME=0, $a_NAME=1/$alphaDen, $CHR$CURR_CHR", \
-     "dat/${IR_NAME}1-$a_NAME$alphaDen-${dataset}.dat" using 1:2  with linespoints ls 7 title "$IR_NAME=1, $a_NAME=1/$alphaDen, $CHR$CURR_CHR"
+#set output "$a_NAME$alphaDen-$dataset-bpb.$PIX_FORMAT"       # set output name
+#plot "dat/${IR_NAME}0-$a_NAME$alphaDen-${dataset}.dat" using 1:2  with linespoints ls 6 title "$IR_NAME=0, $a_NAME=1/$alphaDen, $CHR$CURR_CHR", \
+#     "dat/${IR_NAME}1-$a_NAME$alphaDen-${dataset}.dat" using 1:2  with linespoints ls 7 title "$IR_NAME=1, $a_NAME=1/$alphaDen, $CHR$CURR_CHR"
+set output "$a_NAME$alphaDen-HS19-22-bpb.$PIX_FORMAT"       # set output name
+plot "archive/${IR_NAME}0-$a_NAME$alphaDen-HS19.dat" using 1:2  with linespoints ls 6 title "$IR_NAME=0, $a_NAME=1/$alphaDen, ${CHR}19", \
+     "archive/${IR_NAME}0-$a_NAME$alphaDen-HS22.dat" using 1:2  with linespoints ls 7 title "$IR_NAME=0, $a_NAME=1/$alphaDen, ${CHR}22"
 
-#set xlabel "ctx"
-set ylabel "context-order size"         # set label of y axis
-set ytics 2,1,20                        # set steps for y axis
-set key top right                       # legend position
-#set output "$IR_NAME$ir-$a_NAME$alphaDen-$dataset-ctx.$PIX_FORMAT"    # set output name
-#plot "dat/$IR_NAME$ir-$a_NAME$alphaDen-${dataset}.dat" using 1:3  with linespoints ls 7 title "$IR_NAME=$ir, $a_NAME=1/$alphaDen, $CHR$CURR_CHR"
-set output "$a_NAME$alphaDen-$dataset-ctx.$PIX_FORMAT"       # set output name
-plot "dat/${IR_NAME}0-$a_NAME$alphaDen-${dataset}.dat" using 1:3  with linespoints ls 6 title "$IR_NAME=0, $a_NAME=1/$alphaDen, $CHR$CURR_CHR", \
-     "dat/${IR_NAME}1-$a_NAME$alphaDen-${dataset}.dat" using 1:3  with linespoints ls 7 title "$IR_NAME=1, $a_NAME=1/$alphaDen, $CHR$CURR_CHR"
+##set xlabel "ctx"
+#set ylabel "context-order size"         # set label of y axis
+#set ytics 2,1,20                        # set steps for y axis
+#set key top right                       # legend position
+##set output "$IR_NAME$ir-$a_NAME$alphaDen-$dataset-ctx.$PIX_FORMAT"    # set output name
+##plot "dat/$IR_NAME$ir-$a_NAME$alphaDen-${dataset}.dat" using 1:3  with linespoints ls 7 title "$IR_NAME=$ir, $a_NAME=1/$alphaDen, $CHR$CURR_CHR"
+#set output "$a_NAME$alphaDen-$dataset-ctx.$PIX_FORMAT"       # set output name
+#plot "dat/${IR_NAME}0-$a_NAME$alphaDen-${dataset}.dat" using 1:3  with linespoints ls 6 title "$IR_NAME=0, $a_NAME=1/$alphaDen, $CHR$CURR_CHR", \
+#     "dat/${IR_NAME}1-$a_NAME$alphaDen-${dataset}.dat" using 1:3  with linespoints ls 7 title "$IR_NAME=1, $a_NAME=1/$alphaDen, $CHR$CURR_CHR"
 
 # the following line (EOF) MUST be left as it is; i.e. no space, etc
 EOF
