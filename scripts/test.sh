@@ -15,7 +15,7 @@ INSTALL_goose=0         # install "goose" from Github
 GEN_DATASETS=0          # generate datasets using "XS"
 GEN_MUTATIONS=0         # generate mutations using "goose"
 RUN=0                   # run the program
-PLOT_RESULTS=1          # plot results using "gnuplot"
+PLOT_RESULTS=0          # plot results using "gnuplot"
 ARCHIVE_DATA=0          # archive data
 
 # mutations list:   `seq -s' ' 1 10`
