@@ -19,8 +19,8 @@ PLOT_RESULTS=1          # plot results using "gnuplot"
 ARCHIVE_DATA=0          # archive data
 
 # mutations list:   `seq -s' ' 1 10`
-#MUT_LIST="1 2 3 4 5 6 7 8 9 10 12 14 16 18 20 25 30 35 40 45 50"
-MUT_LIST="1"
+MUT_LIST="1 2 3 4 5 6 7 8 9 10 12 14 16 18 20 25 30 35 40 45 50"
+#MUT_LIST="1 2"
 
 HUMAN_CHR_PREFIX="hs_ref_GRCh38.p7_"
 CHR="chr"
