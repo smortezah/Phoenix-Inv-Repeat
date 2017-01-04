@@ -14,7 +14,7 @@ INSTALL_XS=0            # install "XS" from Github
 INSTALL_goose=0         # install "goose" from Github
 GEN_DATASETS=0          # generate datasets using "XS"
 GEN_MUTATIONS=0         # generate mutations using "goose"
-RUN=0                   # run the program
+RUN=1                   # run the program
 PLOT_RESULTS=0          # plot results using "gnuplot"
 ARCHIVE_DATA=0          # archive data
 
@@ -30,11 +30,12 @@ chromosomes="$HUMAN_CHR_PREFIX$CHR$CURR_CHR"
 #chromosomes=""
 #for i in {1..22} X Y
 #do  chromosomes+=$HUMAN_CHR_PREFIX$CHR${i}" ";   done
-datasets="$HUMAN_CHR$CURR_CHR"
+#datasets="$HUMAN_CHR$CURR_CHR"
 #datasets="tmp"
-#datasets=""
+datasets=""
 #for i in {4..22} X Y #alts unlocalized unplaced
-#do  datasets+=$HUMAN_CHR${i}" ";    done
+for i in {1..18} 20 X Y
+do  datasets+=$HUMAN_CHR${i}" ";    done
 
 
 INV_REPEATS="0 1"     # list of inverted repeats      "0 1"
