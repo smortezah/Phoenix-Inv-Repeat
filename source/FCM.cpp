@@ -234,12 +234,12 @@ void FCM::buildHashTable ()
         for (string::iterator lineIter = datasetLine.begin(); lineIter != datasetLine.end(); ++lineIter)
         {
             /// htable includes an array of uint64_t numbers
-            const char c = *lineIter;
-            const uint8_t currSymInt = (c == 'A') ? (uint8_t) 0 :
-                                       (c == 'C') ? (uint8_t) 1 :
-                                       (c == 'G') ? (uint8_t) 3 :
-                                       (c == 'T') ? (uint8_t) 4 : (uint8_t) 2;
-//            const uint8_t currSymInt = c % 5;
+            char c = *lineIter;
+            uint8_t currSymInt = (c == 'A') ? (uint8_t) 0 :
+                                 (c == 'C') ? (uint8_t) 1 :
+                                 (c == 'G') ? (uint8_t) 3 :
+                                 (c == 'T') ? (uint8_t) 4 : (uint8_t) 2;
+//            uint8_t currSymInt = c % 5;
 
             /// update hash table
             nSym = hTable[ context ][ currSymInt ]++;
@@ -277,7 +277,7 @@ void FCM::buildHashTable ()
             /////////////////////////////////
 
             /// update context
-            context = (uint64_t) (context*ALPHABET_SIZE + currSymInt) % maxPlaceValue;
+            context = (uint64_t) (context * ALPHABET_SIZE + currSymInt) % maxPlaceValue;
             
         }   /// end of for
     }   /// end of while
