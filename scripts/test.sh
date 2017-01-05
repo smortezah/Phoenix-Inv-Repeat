@@ -220,6 +220,7 @@ plot "$ARCH_DAT/${IR_NAME}0-$a_NAME$alphaDen-HS1.dat" using 1:2  with linespoint
      "$ARCH_DAT/${IR_NAME}0-$a_NAME$alphaDen-HS7.dat" using 1:2  with linespoints ls 1 title "${CHR} 7", \
      "$ARCH_DAT/${IR_NAME}0-$a_NAME$alphaDen-HS8.dat" using 1:2  with linespoints ls 2 title "${CHR} 8", \
      "$ARCH_DAT/${IR_NAME}0-$a_NAME$alphaDen-HS9.dat" using 1:2  with linespoints ls 3 title "${CHR} 9", \
+     "$ARCH_DAT/${IR_NAME}0-$a_NAME$alphaDen-HS10.dat" using 1:2  with linespoints ls 4 title "${CHR} 10", \
      "$ARCH_DAT/${IR_NAME}0-$a_NAME$alphaDen-HS19.dat" using 1:2  with linespoints ls 7 title "${CHR} 19", \
      "$ARCH_DAT/${IR_NAME}0-$a_NAME$alphaDen-HS21.dat" using 1:2  with linespoints ls 2 title "${CHR} 21", \
      "$ARCH_DAT/${IR_NAME}0-$a_NAME$alphaDen-HS22.dat" using 1:2  with linespoints ls 3 title "${CHR} 22", \
