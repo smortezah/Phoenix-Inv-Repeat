@@ -193,9 +193,9 @@ fi  # end of running the program
 if [[ $PLOT_RESULTS == 1 ]]; then
 
 #for ir in $INV_REPEATS; do
-for alphaDen in $ALPHA_DENS; do
-    for dataset in $datasets; do
-        for mut in $MUT_LIST; do
+    for alphaDen in $ALPHA_DENS; do
+    #    for dataset in $datasets; do
+    #        for mut in $MUT_LIST; do
 
 gnuplot <<- EOF
 set xlabel "% mutation"                 # set label of x axis
@@ -235,9 +235,9 @@ plot "$ARCH_DAT/${IR_NAME}0-$a_NAME$alphaDen-HS1.dat" using 1:2  with linespoint
 # the following line (EOF) MUST be left as it is; i.e. no space, etc
 EOF
 
-        done
+    #        done
+    #    done
     done
-done
 #done
 
 fi  #end of plot output using "gnuplot"
