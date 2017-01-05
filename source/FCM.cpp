@@ -211,8 +211,8 @@ void FCM::buildHashTable ()
     
     htable_t hTable;                            /// create hash table
     hTable.insert({context, {0, 0, 0, 0, 0}});  /// initialize hash table with 0's
-
-    ////////////////////////////////
+    
+    //////////////////////////////////
     uint64_t nSym;                     /// number of symbols (n_s). To calculate probability
     uint64_t sumNSyms;                 /// sum of number of symbols (sum n_a). To calculate probability
     double   probability = 0;          /// probability of a symbol, based on an identified context
