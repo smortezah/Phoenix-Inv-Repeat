@@ -214,14 +214,14 @@ set title "IR=0,   Alpha=$alphaDen"
 plot "$ARCH_DAT/${IR_NAME}0-$a_NAME$alphaDen-HS1.dat" using 1:2  with linespoints ls 1 title "${CHR} 1", \
      "$ARCH_DAT/${IR_NAME}0-$a_NAME$alphaDen-HS2.dat" using 1:2  with linespoints ls 2 title "${CHR} 2", \
      "$ARCH_DAT/${IR_NAME}0-$a_NAME$alphaDen-HS3.dat" using 1:2  with linespoints ls 3 title "${CHR} 3", \
-     "$ARCH_DAT/${IR_NAME}0-$a_NAME$alphaDen-HS4.dat" using 1:2  with linespoints ls 4 title "${CHR} 4", \
-     "$ARCH_DAT/${IR_NAME}0-$a_NAME$alphaDen-HS5.dat" using 1:2  with linespoints ls 5 title "${CHR} 5", \
-     "$ARCH_DAT/${IR_NAME}0-$a_NAME$alphaDen-HS6.dat" using 1:2  with linespoints ls 6 title "${CHR} 6", \
-     "$ARCH_DAT/${IR_NAME}0-$a_NAME$alphaDen-HS7.dat" using 1:2  with linespoints ls 1 title "${CHR} 7", \
-     "$ARCH_DAT/${IR_NAME}0-$a_NAME$alphaDen-HS8.dat" using 1:2  with linespoints ls 2 title "${CHR} 8", \
      "$ARCH_DAT/${IR_NAME}0-$a_NAME$alphaDen-HS19.dat" using 1:2  with linespoints ls 7 title "${CHR} 19", \
      "$ARCH_DAT/${IR_NAME}0-$a_NAME$alphaDen-HS21.dat" using 1:2  with linespoints ls 2 title "${CHR} 21", \
-     "$ARCH_DAT/${IR_NAME}0-$a_NAME$alphaDen-HS22.dat" using 1:2  with linespoints ls 3 title "${CHR} 22"
+     "$ARCH_DAT/${IR_NAME}0-$a_NAME$alphaDen-HS22.dat" using 1:2  with linespoints ls 3 title "${CHR} 22", \
+#     "$ARCH_DAT/${IR_NAME}0-$a_NAME$alphaDen-HS4.dat" using 1:2  with linespoints ls 4 title "${CHR} 4", \
+#     "$ARCH_DAT/${IR_NAME}0-$a_NAME$alphaDen-HS5.dat" using 1:2  with linespoints ls 5 title "${CHR} 5", \
+#     "$ARCH_DAT/${IR_NAME}0-$a_NAME$alphaDen-HS6.dat" using 1:2  with linespoints ls 6 title "${CHR} 6", \
+#     "$ARCH_DAT/${IR_NAME}0-$a_NAME$alphaDen-HS7.dat" using 1:2  with linespoints ls 1 title "${CHR} 7", \
+#     "$ARCH_DAT/${IR_NAME}0-$a_NAME$alphaDen-HS8.dat" using 1:2  with linespoints ls 2 title "${CHR} 8", \
 
 ##set xlabel "ctx"
 #set ylabel "context-order size"         # set label of y axis
