@@ -206,8 +206,8 @@ set term $PIX_FORMAT                    # set terminal for output picture format
 #set output "$a_NAME$alphaDen-$dataset-bpb.$PIX_FORMAT"       # set output name
 #plot "dat/${IR_NAME}0-$a_NAME$alphaDen-${dataset}.dat" using 1:2  with linespoints ls 6 title "$IR_NAME=0, $a_NAME=1/$alphaDen, $CHR$CURR_CHR", \
 #     "dat/${IR_NAME}1-$a_NAME$alphaDen-${dataset}.dat" using 1:2  with linespoints ls 7 title "$IR_NAME=1, $a_NAME=1/$alphaDen, $CHR$CURR_CHR"
-set output "$a_NAME$alphaDen-HS1-2-3-4-5-6-19-21-22-bpb.$PIX_FORMAT"       # set output name
-set title "ir=0,   alpha=$alphaDen"
+set output "$a_NAME$alphaDen-HS1..6-19-21-22-bpb.$PIX_FORMAT"       # set output name
+set title "IR=0,   Alpha=$alphaDen"
 plot "archive/${IR_NAME}0-$a_NAME$alphaDen-HS1.dat" using 1:2  with linespoints ls 1 title "${CHR} 1", \
      "archive/${IR_NAME}0-$a_NAME$alphaDen-HS2.dat" using 1:2  with linespoints ls 2 title "${CHR} 2", \
      "archive/${IR_NAME}0-$a_NAME$alphaDen-HS3.dat" using 1:2  with linespoints ls 3 title "${CHR} 3", \
@@ -217,7 +217,6 @@ plot "archive/${IR_NAME}0-$a_NAME$alphaDen-HS1.dat" using 1:2  with linespoints 
      "archive/${IR_NAME}0-$a_NAME$alphaDen-HS19.dat" using 1:2  with linespoints ls 7 title "${CHR} 19", \
      "archive/${IR_NAME}0-$a_NAME$alphaDen-HS21.dat" using 1:2  with linespoints ls 8 title "${CHR} 21", \
      "archive/${IR_NAME}0-$a_NAME$alphaDen-HS22.dat" using 1:2  with linespoints ls 9 title "${CHR} 22"
-
 
 ##set xlabel "ctx"
 #set ylabel "context-order size"         # set label of y axis
