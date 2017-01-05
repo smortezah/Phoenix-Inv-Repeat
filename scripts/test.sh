@@ -209,7 +209,7 @@ set term $PIX_FORMAT                    # set terminal for output picture format
 #set output "$a_NAME$alphaDen-$dataset-bpb.$PIX_FORMAT"       # set output name
 #plot "dat/${IR_NAME}0-$a_NAME$alphaDen-${dataset}.dat" using 1:2  with linespoints ls 6 title "$IR_NAME=0, $a_NAME=1/$alphaDen, $CHR$CURR_CHR", \
 #     "dat/${IR_NAME}1-$a_NAME$alphaDen-${dataset}.dat" using 1:2  with linespoints ls 7 title "$IR_NAME=1, $a_NAME=1/$alphaDen, $CHR$CURR_CHR"
-set output "$a_NAME$alphaDen-HS1..7-19-21-22-bpb.$PIX_FORMAT"       # set output name
+set output "$a_NAME$alphaDen-HS1..8-19-21-22-bpb.$PIX_FORMAT"       # set output name
 set title "IR=0,   Alpha=$alphaDen"
 plot "$ARCH_DAT/${IR_NAME}0-$a_NAME$alphaDen-HS1.dat" using 1:2  with linespoints ls 1 title "${CHR} 1", \
      "$ARCH_DAT/${IR_NAME}0-$a_NAME$alphaDen-HS2.dat" using 1:2  with linespoints ls 2 title "${CHR} 2", \
@@ -218,6 +218,7 @@ plot "$ARCH_DAT/${IR_NAME}0-$a_NAME$alphaDen-HS1.dat" using 1:2  with linespoint
      "$ARCH_DAT/${IR_NAME}0-$a_NAME$alphaDen-HS5.dat" using 1:2  with linespoints ls 5 title "${CHR} 5", \
      "$ARCH_DAT/${IR_NAME}0-$a_NAME$alphaDen-HS6.dat" using 1:2  with linespoints ls 6 title "${CHR} 6", \
      "$ARCH_DAT/${IR_NAME}0-$a_NAME$alphaDen-HS7.dat" using 1:2  with linespoints ls 1 title "${CHR} 7", \
+     "$ARCH_DAT/${IR_NAME}0-$a_NAME$alphaDen-HS8.dat" using 1:2  with linespoints ls 2 title "${CHR} 8", \
      "$ARCH_DAT/${IR_NAME}0-$a_NAME$alphaDen-HS19.dat" using 1:2  with linespoints ls 7 title "${CHR} 19", \
      "$ARCH_DAT/${IR_NAME}0-$a_NAME$alphaDen-HS21.dat" using 1:2  with linespoints ls 2 title "${CHR} 21", \
      "$ARCH_DAT/${IR_NAME}0-$a_NAME$alphaDen-HS22.dat" using 1:2  with linespoints ls 3 title "${CHR} 22"
