@@ -14,8 +14,8 @@ INSTALL_XS=0            # install "XS" from Github
 INSTALL_goose=0         # install "goose" from Github
 GEN_DATASETS=0          # generate datasets using "XS"
 GEN_MUTATIONS=0         # generate mutations using "goose"
-RUN=1                   # run the program
-PLOT_RESULTS=0          # plot results using "gnuplot"
+RUN=0                   # run the program
+PLOT_RESULTS=1          # plot results using "gnuplot"
 ARCHIVE_DATA=0          # archive data
 
 # mutations list:   `seq -s' ' 1 10`
@@ -34,7 +34,7 @@ chromosomes="$HUMAN_CHR_PREFIX$CHR$CURR_CHR"
 #datasets="tmp"
 datasets=""
 #for i in {4..22} X Y #alts unlocalized unplaced
-for i in {1..18} 20 X Y
+for i in {1..22} X Y
 do  datasets+=$HUMAN_CHR${i}" ";    done
 
 
@@ -206,9 +206,18 @@ set term $PIX_FORMAT                    # set terminal for output picture format
 #set output "$a_NAME$alphaDen-$dataset-bpb.$PIX_FORMAT"       # set output name
 #plot "dat/${IR_NAME}0-$a_NAME$alphaDen-${dataset}.dat" using 1:2  with linespoints ls 6 title "$IR_NAME=0, $a_NAME=1/$alphaDen, $CHR$CURR_CHR", \
 #     "dat/${IR_NAME}1-$a_NAME$alphaDen-${dataset}.dat" using 1:2  with linespoints ls 7 title "$IR_NAME=1, $a_NAME=1/$alphaDen, $CHR$CURR_CHR"
-set output "$a_NAME$alphaDen-HS19-22-bpb.$PIX_FORMAT"       # set output name
-plot "archive/${IR_NAME}0-$a_NAME$alphaDen-HS19.dat" using 1:2  with linespoints ls 6 title "$IR_NAME=0, $a_NAME=1/$alphaDen, ${CHR}19", \
-     "archive/${IR_NAME}0-$a_NAME$alphaDen-HS22.dat" using 1:2  with linespoints ls 7 title "$IR_NAME=0, $a_NAME=1/$alphaDen, ${CHR}22"
+set output "$a_NAME$alphaDen-HS1-2-3-4-5-6-19-21-22-bpb.$PIX_FORMAT"       # set output name
+set title "ir=0,   alpha=$alphaDen"
+plot "archive/${IR_NAME}0-$a_NAME$alphaDen-HS1.dat" using 1:2  with linespoints ls 1 title "${CHR} 1", \
+     "archive/${IR_NAME}0-$a_NAME$alphaDen-HS2.dat" using 1:2  with linespoints ls 2 title "${CHR} 2", \
+     "archive/${IR_NAME}0-$a_NAME$alphaDen-HS3.dat" using 1:2  with linespoints ls 3 title "${CHR} 3", \
+     "archive/${IR_NAME}0-$a_NAME$alphaDen-HS4.dat" using 1:2  with linespoints ls 4 title "${CHR} 4", \
+     "archive/${IR_NAME}0-$a_NAME$alphaDen-HS5.dat" using 1:2  with linespoints ls 5 title "${CHR} 5", \
+     "archive/${IR_NAME}0-$a_NAME$alphaDen-HS6.dat" using 1:2  with linespoints ls 6 title "${CHR} 6", \
+     "archive/${IR_NAME}0-$a_NAME$alphaDen-HS19.dat" using 1:2  with linespoints ls 7 title "${CHR} 19", \
+     "archive/${IR_NAME}0-$a_NAME$alphaDen-HS21.dat" using 1:2  with linespoints ls 8 title "${CHR} 21", \
+     "archive/${IR_NAME}0-$a_NAME$alphaDen-HS22.dat" using 1:2  with linespoints ls 9 title "${CHR} 22"
+
 
 ##set xlabel "ctx"
 #set ylabel "context-order size"         # set label of y axis
