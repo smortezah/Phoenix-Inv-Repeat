@@ -66,12 +66,11 @@ void FCM::buildTable ()
     /// create table
     /// 5^TABLE_MAX_CONTEXT < 2^32 => uint32_t is used, otherwise uint64_t
     uint32_t maxPlaceValue = (uint32_t) pow(ALPHABET_SIZE, contextDepth);
-    uint64_t *table = new uint64_t[maxPlaceValue * ALPHABET_SIZE];
-//    uint64_t *table = new uint64_t[maxPlaceValue * (ALPHABET_SIZE+1)];
+    uint64_t tableSize = maxPlaceValue * ALPHABET_SIZE;
+    uint64_t *table = new uint64_t[ tableSize ];
     
     /// initialize table with 0's
-    memset(table, 0, sizeof(table[ 0 ]) * maxPlaceValue * ALPHABET_SIZE);
-//    memset(table, 0, sizeof(table[ 0 ]) * maxPlaceValue * (ALPHABET_SIZE+1));
+    memset(table, 0, sizeof(table[ 0 ]) * tableSize);
     
     uint32_t context = 0;                       /// context (integer), that slides in the dataset
     uint32_t invRepContext = maxPlaceValue - 1; /// inverted repeat context (integer)
@@ -211,11 +210,12 @@ void FCM::buildTable2 ()
     /// create table
     /// 5^TABLE_MAX_CONTEXT < 2^32 => uint32_t is used, otherwise uint64_t
     uint32_t maxPlaceValue = (uint32_t) pow(ALPHABET_SIZE, contextDepth);
-    uint64_t tableSize = maxPlaceValue * ALPHABET_SIZE;
-    std::vector< uint64_t > table (tableSize, 0);
-//    uint64_t *table = new uint64_t[maxPlaceValue * ALPHABET_SIZE];
+//    uint64_t tableSize = maxPlaceValue * ALPHABET_SIZE;
+    uint64_t tableSize = maxPlaceValue * (ALPHABET_SIZE + 1);
+//    std::vector< uint64_t > table (tableSize, 0);
+    uint64_t *table = new uint64_t[tableSize];
     /// initialize table with 0's
-//    memset(table, 0, sizeof(table[ 0 ]) * maxPlaceValue * ALPHABET_SIZE);
+    memset(table, 0, sizeof(table[ 0 ]) * tableSize);
 
     uint32_t context = 0;                       /// context (integer), that slides in the dataset
     uint32_t invRepContext = maxPlaceValue - 1; /// inverted repeat context (integer)
@@ -241,79 +241,84 @@ void FCM::buildTable2 ()
         /// fill hash table by number of occurrences of symbols A, C, N, G, T
         for (string::iterator lineIter = datasetLine.begin(); lineIter != datasetLine.end(); ++lineIter)
         {
-//            /// htable includes an array of uint64_t numbers
-//            char c = *lineIter;
-//            uint8_t currSymInt = (c == 'A') ? (uint8_t) 0 :
-//                                 (c == 'C') ? (uint8_t) 1 :
-//                                 (c == 'G') ? (uint8_t) 3 :
-//                                 (c == 'T') ? (uint8_t) 4 : (uint8_t) 2;
-////            const uint8_t currSymInt = c % ALPHABET_SIZE;
-//
-//            /// update table
+            /// htable includes an array of uint64_t numbers
+            char c = *lineIter;
+            uint8_t currSymInt = (c == 'A') ? (uint8_t) 0 :
+                                 (c == 'C') ? (uint8_t) 1 :
+                                 (c == 'G') ? (uint8_t) 3 :
+                                 (c == 'T') ? (uint8_t) 4 : (uint8_t) 2;
+//            const uint8_t currSymInt = c % ALPHABET_SIZE;
+
+            /// update table
 //            nSym = table[ context * ALPHABET_SIZE + currSymInt ]++;
-//
-//            /// considering inverted repeats to update hash table
-//            if (isInvertedRepeat)
-//            {
-//                /// concatenation of inverted repeat context and current symbol
-//                uint32_t iRCtxCurrSym = (4 - currSymInt) * maxPlaceValue + invRepContext;
-//
-////                /// to save quotient and reminder of a division
-////                div_t iRCtxCurrSymDiv;
-////                iRCtxCurrSymDiv = div(iRCtxCurrSym, ALPHABET_SIZE);
-//
-//                /// update inverted repeat context (integer)
-////                invRepContext = (uint32_t) iRCtxCurrSymDiv.quot;
-//                invRepContext = (uint32_t) iRCtxCurrSym / ALPHABET_SIZE;
-//
-//                /// update table considering inverted repeats
-////                ++table[ invRepContext*ALPHABET_SIZE + iRCtxCurrSymDiv.rem ];
+            nSym = table[ context * (ALPHABET_SIZE+1) + currSymInt ]++;
+
+            /// considering inverted repeats to update hash table
+            if (isInvertedRepeat)
+            {
+                /// concatenation of inverted repeat context and current symbol
+                uint32_t iRCtxCurrSym = (4 - currSymInt) * maxPlaceValue + invRepContext;
+
+//                /// to save quotient and reminder of a division
+//                div_t iRCtxCurrSymDiv;
+//                iRCtxCurrSymDiv = div(iRCtxCurrSym, ALPHABET_SIZE);
+
+                /// update inverted repeat context (integer)
+//                invRepContext = (uint32_t) iRCtxCurrSymDiv.quot;
+                invRepContext = (uint32_t) iRCtxCurrSym / ALPHABET_SIZE;
+
+                /// update table considering inverted repeats
+//                ++table[ invRepContext*ALPHABET_SIZE + iRCtxCurrSymDiv.rem ];
 //                ++table[ invRepContext * ALPHABET_SIZE + iRCtxCurrSym % ALPHABET_SIZE ];
-//            }
-//
-//            //////////////////////////////////
-//            /// sum(n_a)
+                ++table[ invRepContext * (ALPHABET_SIZE+1) + iRCtxCurrSym % (ALPHABET_SIZE) ];
+                ++table[ invRepContext * (ALPHABET_SIZE+1) + ALPHABET_SIZE ];
+            }
+
+            //////////////////////////////////
+            /// sum(n_a)
 //            uint64_t *pointerToTable = table;   /// pointer to the beginning of table
 //            sumNSyms = 0;
 //            for (uint8_t i = 0; i < ALPHABET_SIZE; ++i)
 //                sumNSyms += *(pointerToTable + context*ALPHABET_SIZE + i);
-//
-//            /// P(s|c^t)
-////            probability = (nSym + (double) 1/alphaDen) / (sumNSyms + (double) ALPHABET_SIZE/alphaDen);
-//            probability = (double) (alphaDen * nSym + 1) / (alphaDen * sumNSyms + ALPHABET_SIZE);
-//
-//            /// sum( log_2 P(s|c^t) )
-//            sumOfEntropies += log2(probability);
-//            /////////////////////////////////
-//
-//            /// update context
-//            context = (uint32_t) (context * ALPHABET_SIZE + currSymInt) % maxPlaceValue;
+            sumNSyms = ++table[ context * (ALPHABET_SIZE+1 ) + ALPHABET_SIZE ];
+            
+            /// P(s|c^t)
+//            probability = (nSym + (double) 1/alphaDen) / (sumNSyms + (double) ALPHABET_SIZE/alphaDen);
+            probability = (double) (alphaDen * nSym + 1) / (alphaDen * sumNSyms + ALPHABET_SIZE);
 
+            /// sum( log_2 P(s|c^t) )
+            sumOfEntropies += log2(probability);
+            /////////////////////////////////
+
+            /// update context
+            context = (uint32_t) (context * ALPHABET_SIZE + currSymInt) % maxPlaceValue;
+    
+    
         }   /// end of for
     }   /// end of while
 
     fileIn.close();             /// close file
 
-//    FCM::setTable(table);       /// save the built table
-//
-//
-//    ////////////////////////////////
-//    /// H_N = -1/N sum( log_2 P(s|c^t) )
-//    averageEntropy = (-1) * sumOfEntropies / totalNumberOfSymbols;
-//
-//    cout
-////            << sumOfEntropies << '\n'
-////            << totalNumberOfSymbols << '\n'
-//            << "  "
-//            << getInvertedRepeat() << '\t'
-//            << (float) 1/alphaDen << '\t'
-//            << (int) contextDepth << '\t'
-//            << averageEntropy
-////            << '\t'
-////            << hTable.size()
-////            << '\n'
-//            ;
-//    ////////////////////////////////
+    FCM::setTable(table);       /// save the built table
+
+
+    ////////////////////////////////
+    /// H_N = -1/N sum( log_2 P(s|c^t) )
+    averageEntropy = (-1) * sumOfEntropies / totalNumberOfSymbols;
+
+    cout
+//            << sumOfEntropies << '\n'
+//            << totalNumberOfSymbols << '\n'
+            << "  "
+            << getInvertedRepeat() << '\t'
+            << (float) 1/alphaDen << '\t'
+            << (int) contextDepth << '\t'
+            << averageEntropy
+//            << '\t'
+//            << hTable.size()
+//            << '\n'
+            ;
+    ////////////////////////////////
     
 }
 
