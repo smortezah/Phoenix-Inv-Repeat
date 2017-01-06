@@ -32,20 +32,6 @@ using std::array;
 // ye variable ro ham tanzim kon ke maloom she chand bar nesf kardim
 //typedef unordered_map< string, array< uint64_t, ALPHABET_SIZE > > htable_str_t;
 typedef unordered_map< uint64_t , array< uint64_t, ALPHABET_SIZE > > htable_t;
-//typedef unordered_map< uint64_t , array< uint64_t, ALPHABET_SIZE >,name_hash > htable_t;
-
-namespace std
-{
-    template <>
-    struct hash<uint64_t >
-    {
-        size_t operator()(uint64_t x) const
-        {
-            return (x * 786433 + 196613) % 68719476735;
-        }
-    };
-}
-
 //typedef unordered_map< uint64_t, array< uint64_t, ALPH_SUM_SIZE > > htable_t;
 
 
