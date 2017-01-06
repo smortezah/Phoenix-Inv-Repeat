@@ -66,12 +66,12 @@ void FCM::buildTable ()
     /// create table
     /// 5^TABLE_MAX_CONTEXT < 2^32 => uint32_t is used, otherwise uint64_t
     uint32_t maxPlaceValue = (uint32_t) pow(ALPHABET_SIZE, contextDepth);
-//    uint64_t *table = new uint64_t[maxPlaceValue * ALPHABET_SIZE];
-    uint64_t *table = new uint64_t[maxPlaceValue * (ALPHABET_SIZE+1)];
+    uint64_t *table = new uint64_t[maxPlaceValue * ALPHABET_SIZE];
+//    uint64_t *table = new uint64_t[maxPlaceValue * (ALPHABET_SIZE+1)];
     
     /// initialize table with 0's
-//    memset(table, 0, sizeof(table[ 0 ]) * maxPlaceValue * ALPHABET_SIZE);
-    memset(table, 0, sizeof(table[ 0 ]) * maxPlaceValue * (ALPHABET_SIZE+1));
+    memset(table, 0, sizeof(table[ 0 ]) * maxPlaceValue * ALPHABET_SIZE);
+//    memset(table, 0, sizeof(table[ 0 ]) * maxPlaceValue * (ALPHABET_SIZE+1));
     
     uint32_t context = 0;                       /// context (integer), that slides in the dataset
     uint32_t invRepContext = maxPlaceValue - 1; /// inverted repeat context (integer)
@@ -104,7 +104,7 @@ void FCM::buildTable ()
                                  (c == 'G') ? (uint8_t) 3 :
                                  (c == 'T') ? (uint8_t) 4 : (uint8_t) 2;
 //            uint8_t currSymInt = c % ALPHABET_SIZE;
-            
+    
             /// update table
             nSym = table[ context * ALPHABET_SIZE + currSymInt ]++;
             
