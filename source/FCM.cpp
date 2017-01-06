@@ -104,7 +104,7 @@ void FCM::buildTable ()
                                  (c == 'G') ? (uint8_t) 3 :
                                  (c == 'T') ? (uint8_t) 4 : (uint8_t) 2;
 //            uint8_t currSymInt = c % ALPHABET_SIZE;
-    
+            
             /// update table
             nSym = table[ context * ALPHABET_SIZE + currSymInt ]++;
             
