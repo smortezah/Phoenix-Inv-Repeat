@@ -32,9 +32,8 @@ int32_t main (int argc, char *argv[])
 //    function.commandLineParser(argc, argv); /// parse the command line
     
     
-    std::hash<string> hash_i;
-    cout<< hash_i("hi");
-    
+//    std::hash<string> hash_i;
+//    cout<< hash_i("hi");
     
     
     

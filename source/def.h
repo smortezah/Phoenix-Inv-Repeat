@@ -8,11 +8,7 @@ using std::string;
 using std::unordered_map;
 using std::array;
 
-//std::size_t name_hash( uint64_t y )
-//{
-////    return std::hash<string>()(name.first) ^ hash<string>()(name.second);
-//    return std::hash<int>()(y * 786491 + 216617) % 66719476787;
-//}
+
 /***********************************************************
     About PHOENIX
 ************************************************************/
@@ -37,6 +33,18 @@ using std::array;
 //typedef unordered_map< string, array< uint64_t, ALPHABET_SIZE > > htable_str_t;
 typedef unordered_map< uint64_t , array< uint64_t, ALPHABET_SIZE > > htable_t;
 //typedef unordered_map< uint64_t , array< uint64_t, ALPHABET_SIZE >,name_hash > htable_t;
+
+namespace std
+{
+    template <>
+    struct hash<uint64_t >
+    {
+        size_t operator()(uint64_t x) const
+        {
+            return (x * 786433 + 196613) % 68719476735;
+        }
+    };
+}
 
 //typedef unordered_map< uint64_t, array< uint64_t, ALPH_SUM_SIZE > > htable_t;
 
