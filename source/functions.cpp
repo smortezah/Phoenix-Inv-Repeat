@@ -213,11 +213,11 @@ void Functions::commandLineParser (int argc, char **argv)
                 !stoi(vecParameters[ vecParamIndex++ ]) ? models[ n ].setInvertedRepeat(false)
                                                         : models[ n ].setInvertedRepeat(true);
                 
-//                (ctxDepth > TABLE_MAX_CONTEXT) ? models[ n ].buildHashTable()
-//                                               : models[ n ].buildTable();
-    
                 (ctxDepth > TABLE_MAX_CONTEXT) ? models[ n ].buildHashTable()
-                                               : models[ n ].buildTable2();
+                                               : models[ n ].buildTable();
+    
+//                (ctxDepth > TABLE_MAX_CONTEXT) ? models[ n ].buildHashTable()
+//                                               : models[ n ].buildTable2();
     
                 /// print the built hash table
 //                cout << "Model " << n + 1 << " parameters:\n";
