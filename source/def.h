@@ -41,6 +41,4 @@ typedef unordered_map< uint64_t , array< uint64_t, ALPHABET_SIZE > > htable_t;
 //typedef unordered_map< uint64_t, array< uint64_t, ALPH_SUM_SIZE > > htable_t;
 
 
-
-
 #endif //PHOENIX_DEF_H
