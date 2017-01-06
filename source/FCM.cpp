@@ -210,10 +210,10 @@ void FCM::buildTable2 ()
     /// create table
     /// 5^TABLE_MAX_CONTEXT < 2^32 => uint32_t is used, otherwise uint64_t
     uint32_t maxPlaceValue = (uint32_t) pow(ALPHABET_SIZE, contextDepth);
-//    uint64_t tableSize = maxPlaceValue * ALPHABET_SIZE;
-    uint64_t tableSize = maxPlaceValue * (ALPHABET_SIZE + 1);
+    uint64_t tableSize = maxPlaceValue * ALPH_SUM_SIZE;
 //    std::vector< uint64_t > table (tableSize, 0);
-    uint64_t *table = new uint64_t[tableSize];
+    uint64_t *table = new uint64_t[ tableSize ];
+    
     /// initialize table with 0's
     memset(table, 0, sizeof(table[ 0 ]) * tableSize);
 
@@ -250,8 +250,7 @@ void FCM::buildTable2 ()
 //            const uint8_t currSymInt = c % ALPHABET_SIZE;
 
             /// update table
-//            nSym = table[ context * ALPHABET_SIZE + currSymInt ]++;
-            nSym = table[ context * (ALPHABET_SIZE+1) + currSymInt ]++;
+            nSym = table[ context * ALPH_SUM_SIZE + currSymInt ]++;
 
             /// considering inverted repeats to update hash table
             if (isInvertedRepeat)
@@ -270,8 +269,8 @@ void FCM::buildTable2 ()
                 /// update table considering inverted repeats
 //                ++table[ invRepContext*ALPHABET_SIZE + iRCtxCurrSymDiv.rem ];
 //                ++table[ invRepContext * ALPHABET_SIZE + iRCtxCurrSym % ALPHABET_SIZE ];
-                ++table[ invRepContext * (ALPHABET_SIZE+1) + iRCtxCurrSym % (ALPHABET_SIZE) ];
-                ++table[ invRepContext * (ALPHABET_SIZE+1) + ALPHABET_SIZE ];
+                ++table[ invRepContext * ALPH_SUM_SIZE + iRCtxCurrSym % ALPHABET_SIZE ];
+                ++table[ invRepContext * ALPH_SUM_SIZE + ALPHABET_SIZE ];
             }
 
             //////////////////////////////////
@@ -280,7 +279,7 @@ void FCM::buildTable2 ()
 //            sumNSyms = 0;
 //            for (uint8_t i = 0; i < ALPHABET_SIZE; ++i)
 //                sumNSyms += *(pointerToTable + context*ALPHABET_SIZE + i);
-            sumNSyms = ++table[ context * (ALPHABET_SIZE+1 ) + ALPHABET_SIZE ];
+            sumNSyms = ++table[ context * ALPH_SUM_SIZE + ALPHABET_SIZE ];
             
             /// P(s|c^t)
 //            probability = (nSym + (double) 1/alphaDen) / (sumNSyms + (double) ALPHABET_SIZE/alphaDen);
