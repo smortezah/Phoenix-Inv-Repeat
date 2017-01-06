@@ -15,8 +15,9 @@ public:
     FCM ();                                         /// constructor
                                                     
     void buildTable ();                             /// build table
+    void buildTable2 ();                             /// build table
     void buildHashTable ();                         /// build hash table (int key)
-//    void buildHashTable_str ();                     /// build hash table (string key)
+    //    void buildHashTable_str ();                     /// build hash table (string key)
     void printHashTable () const;                   /// print hash table
                                                     
     char getTargetOrReference () const;             /// getter of target or reference
