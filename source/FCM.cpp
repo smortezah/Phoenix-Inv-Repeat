@@ -107,9 +107,7 @@ void FCM::buildTable ()
 //                                 (ch == 'C') ? (uint8_t) 1 :
 //                                 (ch == 'G') ? (uint8_t) 3 :
 //                                 (ch == 'T') ? (uint8_t) 4 : (uint8_t) 2;
-            
 //            uint8_t currSymInt = ch % ALPHABET_SIZE;
-//
 //            uint8_t currSymInt = (ch == 'C') ? (uint8_t) 3 :
 //                                 (ch == 'N') ? (uint8_t) 2 :
 //                                 (uint8_t) (ch % ALPHABET_SIZE);
