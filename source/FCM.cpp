@@ -210,6 +210,7 @@ void FCM::buildTable2 ()
     /// create table
     /// 5^TABLE_MAX_CONTEXT < 2^32 => uint32_t is used, otherwise uint64_t
     uint32_t maxPlaceValue = (uint32_t) pow(ALPHABET_SIZE, contextDepth);
+    
     uint64_t tableSize = maxPlaceValue * ALPH_SUM_SIZE;
 //    std::vector< uint64_t > table (tableSize, 0);
     uint64_t *table = new uint64_t[ tableSize ];
@@ -230,14 +231,14 @@ void FCM::buildTable2 ()
     //////////////////////////////////
 
     string datasetLine;                 /// keep each line of the file
-
+    
     while (getline(fileIn, datasetLine))
     {
-
+        
         //////////////////////////////////
         totalNumberOfSymbols += datasetLine.size();    /// number of symbols in each line of dataset
         //////////////////////////////////
-
+        
         /// fill hash table by number of occurrences of symbols A, C, N, G, T
         for (string::iterator lineIter = datasetLine.begin(); lineIter != datasetLine.end(); ++lineIter)
         {
@@ -247,7 +248,7 @@ void FCM::buildTable2 ()
                                  (c == 'C') ? (uint8_t) 1 :
                                  (c == 'G') ? (uint8_t) 3 :
                                  (c == 'T') ? (uint8_t) 4 : (uint8_t) 2;
-//            const uint8_t currSymInt = c % ALPHABET_SIZE;
+//            uint8_t currSymInt = c % ALPHABET_SIZE;
 
             /// update table
             nSym = table[ context * ALPH_SUM_SIZE + currSymInt ]++;
@@ -455,7 +456,6 @@ void FCM::buildHashTable ()
     ////////////////////////////////
 
 }
-
 
 
 ///***********************************************************

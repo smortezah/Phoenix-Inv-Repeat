@@ -13,7 +13,7 @@ class FCM
 {
 public:
     FCM ();                                         /// constructor
-                                                    
+    
     void buildTable ();                             /// build table
     void buildTable2 ();                             /// build table
     void buildHashTable ();                         /// build hash table (int key)
