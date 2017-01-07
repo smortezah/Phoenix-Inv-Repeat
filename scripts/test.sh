@@ -41,7 +41,7 @@ datasets="$HUMAN_CHR$CURR_CHR"
 #do  datasets+=$HUMAN_CHR${i}" ";    done
 
 
-INV_REPEATS="1"     # list of inverted repeats      "0 1"
+INV_REPEATS="0"     # list of inverted repeats      "0 1"
 ALPHA_DENS="1"    # list of alpha denominators    "1 20 100"
 MIN_CTX=7         # min context size
 MAX_CTX=8         # max context size   ->  real: -=1
