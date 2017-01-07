@@ -415,6 +415,7 @@ void FCM::buildHashTable ()
             }
 
             //////////////////////////////////
+            /// the idea of adding 'sum' column, makes hash table slower
             /// sum(n_a)
             sumNSyms = 0;
             for (uint64_t u : hTable[ context ])    sumNSyms += u;
