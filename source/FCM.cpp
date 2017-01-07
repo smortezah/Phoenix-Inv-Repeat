@@ -157,7 +157,6 @@ void FCM::buildTable ()
             /// update context
             context = (uint32_t) (context * ALPHABET_SIZE + currSymInt) % maxPlaceValue;
             
-            
         }   /// end of for
     }   /// end of while
     
