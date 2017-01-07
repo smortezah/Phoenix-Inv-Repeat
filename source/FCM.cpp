@@ -70,7 +70,7 @@ void FCM::buildTable ()
     uint64_t *table = new uint64_t[ tableSize ];
     
     /// initialize table with 0's
-    memset(table, 0, sizeof(table[ 0 ]) * tableSize);
+    memset(table, 0, sizeof(table[0]) * tableSize);
     
     uint32_t context = 0;                       /// context (integer), that slides in the dataset
     uint32_t invRepContext = maxPlaceValue - 1; /// inverted repeat context (integer)
