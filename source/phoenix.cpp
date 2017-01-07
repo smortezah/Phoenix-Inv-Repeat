@@ -21,7 +21,7 @@ using std::chrono::high_resolution_clock;
 ///////////////////////////////////////////////////////////
 /////////                 M A I N                 /////////
 ///////////////////////////////////////////////////////////
-#include <vector>
+
 int32_t main (int argc, char *argv[])
 {
     /// Record start time
@@ -32,7 +32,8 @@ int32_t main (int argc, char *argv[])
     function.commandLineParser(argc, argv); /// parse the command line
     
     
-    
+
+
 //    char arr[5] = {'A', 'T', 'C', 'G', 'N'};
 //
 //    for (int i = 1; i <= 4; ++i)
