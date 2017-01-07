@@ -28,7 +28,7 @@ MUT_LIST="1"
 HUMAN_CHR_PREFIX="hs_ref_GRCh38.p7_"
 CHR="chr"
 HUMAN_CHR="HS"
-CURR_CHR="1"
+CURR_CHR="21"
 chromosomes="$HUMAN_CHR_PREFIX$CHR$CURR_CHR"
 #chromosomes=""
 #for i in {1..22} X Y
