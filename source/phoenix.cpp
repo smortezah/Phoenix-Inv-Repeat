@@ -26,22 +26,24 @@ int32_t main (int argc, char *argv[])
 {
     /// Record start time
     high_resolution_clock::time_point exeStartTime = high_resolution_clock::now();
-
+    
     /// for access to Functions (object 'function' on memory stack)
     Functions function;
     function.commandLineParser(argc, argv); /// parse the command line
     
     
     
-//    char arr[5] = {'A', 'G', 'N', 'C', 'T'};
+//    char arr[5] = {'A', 'T', 'C', 'G', 'N'};
 //
 //    for (int i = 1; i <= 4; ++i)
 //    {
 ////        if (i % 5 != 0)
 ////        {
-//            for (char c:arr)
-//                cout << (i*(c-1))%5 << '\t';
-//            cout << '\n';
+//        for (char c : arr)
+//        {
+//            cout << ((84 - c)*i) % 5<< '\t';
+//        }
+//        cout << '\n';
 ////        }
 //    }
     
