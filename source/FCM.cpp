@@ -143,11 +143,11 @@ void FCM::buildTable ()
 //            for (uint8_t i = 0; i < ALPHABET_SIZE; ++i)
 //                sumNSyms += *(pointerToTable + context*ALPHABET_SIZE + i);
             sumNSyms = ++table[ context * ALPH_SUM_SIZE + ALPHABET_SIZE ];
-            
+
             /// P(s|c^t)
 //            probability = (nSym + (double) 1/alphaDen) / (sumNSyms + (double) ALPHABET_SIZE/alphaDen);
             probability = (double) (alphaDen * nSym + 1) / (alphaDen * sumNSyms + ALPHABET_SIZE);
-            
+
             /// sum( log_2 P(s|c^t) )
             sumOfEntropies += log2(probability);
             /////////////////////////////////
@@ -166,7 +166,7 @@ void FCM::buildTable ()
     ////////////////////////////////
     /// H_N = -1/N sum( log_2 P(s|c^t) )
     averageEntropy = (-1) * sumOfEntropies / totalNumberOfSymbols;
-    
+
     cout
 //            << sumOfEntropies << '\n'
 //            << totalNumberOfSymbols << '\n'
