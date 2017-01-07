@@ -215,11 +215,11 @@ void FCM::buildTable2 ()
     /// 5^TABLE_MAX_CONTEXT < 2^32 => uint32_t is used, otherwise uint64_t
     uint32_t maxPlaceValue = (uint32_t) pow(ALPHABET_SIZE, contextDepth);
     uint64_t tableSize = maxPlaceValue * ALPH_SUM_SIZE;
-//    std::vector< uint64_t > table (tableSize, 0);
-    uint64_t *table = new uint64_t[ tableSize ];
-
-    /// initialize table with 0's
-    memset(table, 0, sizeof(table[ 0 ]) * tableSize);
+    std::vector< uint64_t > table (tableSize, 0);
+//    uint64_t *table = new uint64_t[ tableSize ];
+//
+//    /// initialize table with 0's
+//    memset(table, 0, sizeof(table[ 0 ]) * tableSize);
 
     uint32_t context = 0;                       /// context (integer), that slides in the dataset
     uint32_t invRepContext = maxPlaceValue - 1; /// inverted repeat context (integer)
