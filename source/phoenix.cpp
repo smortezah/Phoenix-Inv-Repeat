@@ -32,6 +32,7 @@ int32_t main (int argc, char *argv[])
     function.commandLineParser(argc, argv); /// parse the command line
     
     
+    
 
 
 //    char arr[5] = {'A', 'T', 'C', 'G', 'N'};
