@@ -29,7 +29,24 @@ int32_t main (int argc, char *argv[])
 
     /// for access to Functions (object 'function' on memory stack)
     Functions function;
-    function.commandLineParser(argc, argv); /// parse the command line
+//    function.commandLineParser(argc, argv); /// parse the command line
+    
+    
+    
+    char arr[5] = {'A', 'G', 'C', 'N', 'T'};
+    
+    for (int i = 1; i < 66; ++i)
+    {
+        if (i % 5 != 0)
+        {
+            for (char c:arr)
+                cout << (c % i)%5 << '\t';
+            cout << '\n';
+        }
+    }
+    
+    
+    
     
     
     
