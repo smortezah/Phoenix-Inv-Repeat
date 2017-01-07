@@ -97,12 +97,22 @@ void FCM::buildTable ()
         for (string::iterator lineIter = datasetLine.begin(); lineIter != datasetLine.end(); ++lineIter)
         {
             /// htable includes an array of uint64_t numbers
-            char c = *lineIter;
-            uint8_t currSymInt = (c == 'A') ? (uint8_t) 0 :
-                                 (c == 'C') ? (uint8_t) 1 :
-                                 (c == 'G') ? (uint8_t) 3 :
-                                 (c == 'T') ? (uint8_t) 4 : (uint8_t) 2;
-//            uint8_t currSymInt = c % ALPHABET_SIZE;
+            char ch = *lineIter;
+            uint8_t currSymInt = (uint8_t) ((ch == 'A') ? 0 :
+                                            (ch == 'C') ? 1 :
+                                            (ch == 'G') ? 3 :
+                                            (ch == 'T') ? 4 : 2);
+            
+//            uint8_t currSymInt = (ch == 'A') ? (uint8_t) 0 :
+//                                 (ch == 'C') ? (uint8_t) 1 :
+//                                 (ch == 'G') ? (uint8_t) 3 :
+//                                 (ch == 'T') ? (uint8_t) 4 : (uint8_t) 2;
+            
+//            uint8_t currSymInt = ch % ALPHABET_SIZE;
+//
+//            uint8_t currSymInt = (ch == 'C') ? (uint8_t) 3 :
+//                                 (ch == 'N') ? (uint8_t) 2 :
+//                                 (uint8_t) (ch % ALPHABET_SIZE);
             
             /// update table
             nSym = table[ context * ALPH_SUM_SIZE + currSymInt ]++;
@@ -116,11 +126,11 @@ void FCM::buildTable ()
 //                /// to save quotient and reminder of a division
 //                div_t iRCtxCurrSymDiv;
 //                iRCtxCurrSymDiv = div(iRCtxCurrSym, ALPHABET_SIZE);
-                
+
                 /// update inverted repeat context (integer)
 //                invRepContext = (uint32_t) iRCtxCurrSymDiv.quot;
                 invRepContext = (uint32_t) iRCtxCurrSym / ALPHABET_SIZE;
-                
+
                 /// update table considering inverted repeats
 //                ++table[ invRepContext*ALPHABET_SIZE + iRCtxCurrSymDiv.rem ];
 //                ++table[ invRepContext * ALPHABET_SIZE + iRCtxCurrSym % ALPHABET_SIZE ];
