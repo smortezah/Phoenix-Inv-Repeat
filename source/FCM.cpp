@@ -217,7 +217,7 @@ void FCM::buildTable2 ()
     uint64_t tableSize = maxPlaceValue * ALPH_SUM_SIZE;
 //    std::vector< uint64_t > table (tableSize, 0);
     uint64_t *table = new uint64_t[ tableSize ];
-    
+
     /// initialize table with 0's
     memset(table, 0, sizeof(table[ 0 ]) * tableSize);
 
@@ -276,7 +276,7 @@ void FCM::buildTable2 ()
                 ++table[ invRepContext * ALPH_SUM_SIZE + iRCtxCurrSym % ALPHABET_SIZE ];
                 ++table[ invRepContext * ALPH_SUM_SIZE + ALPHABET_SIZE ];
             }
-
+            
             //////////////////////////////////
             /// sum(n_a)
 //            uint64_t *pointerToTable = table;   /// pointer to the beginning of table
@@ -302,7 +302,7 @@ void FCM::buildTable2 ()
 
     fileIn.close();             /// close file
 
-    FCM::setTable(table);       /// save the built table
+//    FCM::setTable(table);       /// save the built table
 
 
     ////////////////////////////////
