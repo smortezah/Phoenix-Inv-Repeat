@@ -114,7 +114,7 @@ void Functions::commandLineParser (int argc, char **argv)
             case 'n':   /// needs an integer argument
                 try
                 {
-                    messageObj.number(stoi((string) optarg));    /// TODO for test
+                    messageObj.number( stoi((string) optarg) );    /// TODO for test
                 }
                 catch (const invalid_argument &ia)
                 {
@@ -125,7 +125,7 @@ void Functions::commandLineParser (int argc, char **argv)
             case 'd':   /// needs a float argument
                 try
                 {
-                    messageObj.fnumber(stof((string) optarg));   /// TODO for test
+                    messageObj.fnumber( stof((string) optarg) );   /// TODO for test
                 }
                 catch (const invalid_argument &ia)
                 {
