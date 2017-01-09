@@ -213,8 +213,8 @@ set term $PIX_FORMAT                    # set terminal for output picture format
 set output "$IR_NAME$ir-$a_NAME$alphaDen-bpb.$PIX_FORMAT"       # set output name
 set title "IR=$ir,   Alpha=$alphaDen"
 plot for [i=1:22] "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
-     "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HSX.dat" using 1:2  with linespoints ls 6 title "${CHR} X", \
-     "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HSY.dat" using 1:2  with linespoints ls 7 title "${CHR} Y", \
+#     "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HSX.dat" using 1:2  with linespoints ls 6 title "${CHR} X", \
+#     "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HSY.dat" using 1:2  with linespoints ls 7 title "${CHR} Y", \
 
 ##set xlabel "ctx"
 #set ylabel "context-order size"         # set label of y axis
