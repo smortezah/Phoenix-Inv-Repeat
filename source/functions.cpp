@@ -1,5 +1,5 @@
 #include <iostream>
-#include <getopt.h>     /// for command line parsing
+#include <getopt.h>     /// parsing command line
 #include <fstream>
 #include <vector>
 
