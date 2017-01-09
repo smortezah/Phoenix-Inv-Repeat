@@ -53,7 +53,7 @@ void Messages::help () const
          << "         target file address"                                      << '\n'
                                                                                 << '\n'
          << "    -r [REFERENCE],  --reference [REFERENCE]"                      << '\n'
-         << "         reference file"                                           << '\n'
+         << "         reference file address"                                   << '\n'
                                                                                 << '\n';
 }
 
