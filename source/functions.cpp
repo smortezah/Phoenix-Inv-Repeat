@@ -61,7 +61,7 @@ void Functions::commandLineParser (int argc, char **argv)
                     {"fnumber",   required_argument, 0,       'd'},         /// number (float)
                     {"target",    required_argument, 0,       't'},         /// target file
                     {"reference", required_argument, 0,       'r'},         /// reference file
-                    {0, 0,                           0,       0}
+                    {0,           0,                 0,       0}
             };
     
     while (1)
