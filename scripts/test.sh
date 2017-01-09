@@ -220,22 +220,47 @@ plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS1.dat" using 1:2  with linespoint
      "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS6.dat" using 1:2  with linespoints ls 6 title "${CHR} 6", \
      "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS7.dat" using 1:2  with linespoints ls 1 title "${CHR} 7", \
      "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS8.dat" using 1:2  with linespoints ls 2 title "${CHR} 8", \
-     "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS9.dat" using 1:2  with linespoints ls 3 title "${CHR} 9", \
-     "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS10.dat" using 1:2  with linespoints ls 4 title "${CHR} 10", \
-     "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS11.dat" using 1:2  with linespoints ls 5 title "${CHR} 11", \
-     "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS12.dat" using 1:2  with linespoints ls 6 title "${CHR} 12", \
-     "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS13.dat" using 1:2  with linespoints ls 1 title "${CHR} 13", \
-     "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS14.dat" using 1:2  with linespoints ls 2 title "${CHR} 14", \
-     "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS15.dat" using 1:2  with linespoints ls 3 title "${CHR} 15", \
-     "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS16.dat" using 1:2  with linespoints ls 4 title "${CHR} 16", \
-     "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS17.dat" using 1:2  with linespoints ls 5 title "${CHR} 17", \
-     "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS18.dat" using 1:2  with linespoints ls 6 title "${CHR} 18", \
-     "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS19.dat" using 1:2  with linespoints ls 7 title "${CHR} 19", \
-     "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS20.dat" using 1:2  with linespoints ls 1 title "${CHR} 20", \
-     "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS21.dat" using 1:2  with linespoints ls 2 title "${CHR} 21", \
-     "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS22.dat" using 1:2  with linespoints ls 3 title "${CHR} 22", \
-     "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HSX.dat" using 1:2  with linespoints ls 4 title "${CHR} X", \
      "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HSY.dat" using 1:2  with linespoints ls 5 title "${CHR} Y", \
+#     "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS9.dat" using 1:2  with linespoints ls 3 title "${CHR} 9", \
+#     "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS10.dat" using 1:2  with linespoints ls 4 title "${CHR} 10", \
+#     "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS11.dat" using 1:2  with linespoints ls 5 title "${CHR} 11", \
+#     "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS12.dat" using 1:2  with linespoints ls 6 title "${CHR} 12", \
+#     "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS13.dat" using 1:2  with linespoints ls 1 title "${CHR} 13", \
+#     "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS14.dat" using 1:2  with linespoints ls 2 title "${CHR} 14", \
+#     "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS15.dat" using 1:2  with linespoints ls 3 title "${CHR} 15", \
+#     "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS16.dat" using 1:2  with linespoints ls 4 title "${CHR} 16", \
+#     "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS17.dat" using 1:2  with linespoints ls 5 title "${CHR} 17", \
+#     "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS18.dat" using 1:2  with linespoints ls 6 title "${CHR} 18", \
+#     "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS19.dat" using 1:2  with linespoints ls 7 title "${CHR} 19", \
+#     "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS20.dat" using 1:2  with linespoints ls 1 title "${CHR} 20", \
+#     "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS21.dat" using 1:2  with linespoints ls 2 title "${CHR} 21", \
+#     "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS22.dat" using 1:2  with linespoints ls 3 title "${CHR} 22", \
+#     "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HSX.dat" using 1:2  with linespoints ls 4 title "${CHR} X", \
+
+#plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS1.dat" using 1:2  with linespoints ls 1 title "${CHR} 1", \
+#     "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS2.dat" using 1:2  with linespoints ls 2 title "${CHR} 2", \
+#     "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS3.dat" using 1:2  with linespoints ls 3 title "${CHR} 3", \
+#     "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS4.dat" using 1:2  with linespoints ls 4 title "${CHR} 4", \
+#     "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS5.dat" using 1:2  with linespoints ls 5 title "${CHR} 5", \
+#     "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS6.dat" using 1:2  with linespoints ls 6 title "${CHR} 6", \
+#     "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS7.dat" using 1:2  with linespoints ls 1 title "${CHR} 7", \
+#     "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS8.dat" using 1:2  with linespoints ls 2 title "${CHR} 8", \
+#     "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS9.dat" using 1:2  with linespoints ls 3 title "${CHR} 9", \
+#     "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS10.dat" using 1:2  with linespoints ls 4 title "${CHR} 10", \
+#     "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS11.dat" using 1:2  with linespoints ls 5 title "${CHR} 11", \
+#     "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS12.dat" using 1:2  with linespoints ls 6 title "${CHR} 12", \
+#     "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS13.dat" using 1:2  with linespoints ls 1 title "${CHR} 13", \
+#     "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS14.dat" using 1:2  with linespoints ls 2 title "${CHR} 14", \
+#     "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS15.dat" using 1:2  with linespoints ls 3 title "${CHR} 15", \
+#     "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS16.dat" using 1:2  with linespoints ls 4 title "${CHR} 16", \
+#     "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS17.dat" using 1:2  with linespoints ls 5 title "${CHR} 17", \
+#     "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS18.dat" using 1:2  with linespoints ls 6 title "${CHR} 18", \
+#     "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS19.dat" using 1:2  with linespoints ls 7 title "${CHR} 19", \
+#     "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS20.dat" using 1:2  with linespoints ls 1 title "${CHR} 20", \
+#     "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS21.dat" using 1:2  with linespoints ls 2 title "${CHR} 21", \
+#     "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS22.dat" using 1:2  with linespoints ls 3 title "${CHR} 22", \
+#     "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HSX.dat" using 1:2  with linespoints ls 4 title "${CHR} X", \
+#     "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HSY.dat" using 1:2  with linespoints ls 5 title "${CHR} Y", \
 
 
 ##set xlabel "ctx"
