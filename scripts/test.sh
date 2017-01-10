@@ -166,7 +166,8 @@ for ir in $INV_REPEATS; do
             echo -e "# ir\talpha\tctx\tbpb\ttime(s)" >> $IR_NAME$ir-$a_NAME$alphaDen-${dataset}_$mut.dat
                 for((ctx=$MIN_CTX; ctx<$MAX_CTX; ctx+=1)); do
 #                for ctx in {2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20}; do
-                ./phoenix -m t,$ctx,$alphaDen,$ir -t archive_datasetscd/${dataset}_$mut #>> $IR_NAME$ir-$a_NAME$alphaDen-${dataset}_$mut.dat
+                ./phoenix -m t,$ctx,$alphaDen,$ir -t archive_datasets/${dataset}_$mut -r archive_datasets/${dataset}_$mut \
+                        #>> $IR_NAME$ir-$a_NAME$alphaDen-${dataset}_$mut.dat
                 done
 ##                # save "min bpb" and "min ctx" for each dataset
 #                minBpbCtx=$(awk 'NR==1 || $4 < minBpb {minBpb=$4; minCtx=$3}; \
