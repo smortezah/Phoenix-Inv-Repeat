@@ -163,21 +163,14 @@ void Functions::commandLineParser (int argc, char **argv)
         {
             /// seperate and save the models in a vector of strings. each model in one string
             vector< string > strModels;
-//            size_t mIndex = 0;  /// index for the first character of models string
+            size_t mIndex = 0;  /// index for the first character of models string
             /// save all models except the last model
 //            for (size_t i = 0; i != modelsParameters.size(); ++i)
 //                if (modelsParameters[ i ] == ':')
-////            for (char i : modelsParameters)
-////                if (i == ':')
-//                {
-//                    strModels.push_back(modelsParameters.substr(mIndex, i - mIndex));
-//                    mIndex = i + 1;
-//                }
-            int mIndex=0;
-            for(string::iterator i=modelsParameters.begin();i!=modelsParameters.end();++i)
-                if(*i==':')
+            for (char &i : modelsParameters)
+                if (i == ':')
                 {
-                    strModels.push_back(modelsParameters.substr(mIndex, *i - mIndex));
+                    strModels.push_back(modelsParameters.substr(mIndex, i - mIndex));
                     mIndex = i + 1;
                 }
 
