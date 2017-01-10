@@ -171,14 +171,14 @@ void Functions::commandLineParser (int argc, char **argv)
                     strModels.push_back(modelsParameters.substr(mIndex, i - mIndex));
                     mIndex = i + 1;
                 }
-
+            
             /// save last model in multi-model input, and the only model in single-model input
             strModels.push_back( modelsParameters.substr(mIndex, modelsParameters.size() - mIndex) );
             
             /// create an array of models and set their parameters
-            size_t n_models = strModels.size(); /// number of models
-            FCM *models = new FCM[n_models];    /// array of models
-            vector< string > vecParameters;     /// to save models parameters
+            uint8_t n_models = (uint8_t) strModels.size();  /// number of models
+            FCM *models = new FCM[n_models];                /// array of models
+            vector< string > vecParameters;                 /// to save models parameters
             size_t vecParamIndex = 0;
             
             /// save models parameters and process the models
