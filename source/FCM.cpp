@@ -93,26 +93,26 @@ void FCM::buildTable ()
     uint32_t context = 0;                       /// context (integer), that slides in the dataset
     uint32_t invRepContext = maxPlaceValue - 1; /// inverted repeat context (integer)
     
-    ////////////////////////////////
-    uint64_t nSym;                      /// number of symbols (n_s). To calculate probability
-    uint64_t sumNSyms;                  /// sum of number of symbols (sum n_a). To calculate probability
-    double   probability = 0;           /// probability of a symbol, based on an identified context
-    double   sumOfEntropies = 0;        /// sum of entropies for different symbols
-    uint64_t totalNumberOfSymbols = 0;  /// number of all symbols in the sequence
-    double   averageEntropy = 0;        /// average entropy (H)
-    //////////////////////////////////
+//    ////////////////////////////////
+//    uint64_t nSym;                      /// number of symbols (n_s). To calculate probability
+//    uint64_t sumNSyms;                  /// sum of number of symbols (sum n_a). To calculate probability
+//    double   probability = 0;           /// probability of a symbol, based on an identified context
+//    double   sumOfEntropies = 0;        /// sum of entropies for different symbols
+//    uint64_t totalNumberOfSymbols = 0;  /// number of all symbols in the sequence
+//    double   averageEntropy = 0;        /// average entropy (H)
+//    //////////////////////////////////
     
-    string datasetLine;                 /// keep each line of the file
+    string refLine;                 /// keep each line of the file
     
-    while (getline(refFileIn, datasetLine))
+    while (getline(refFileIn, refLine))
     {
         
-        //////////////////////////////////
-        totalNumberOfSymbols += datasetLine.size();    /// number of symbols in each line of dataset
-        //////////////////////////////////
+//        //////////////////////////////////
+//        totalNumberOfSymbols += refLine.size();    /// number of symbols in each line of dataset
+//        //////////////////////////////////
         
         /// fill hash table by number of occurrences of symbols A, C, N, G, T
-        for (string::iterator lineIter = datasetLine.begin(); lineIter != datasetLine.end(); ++lineIter)
+        for (string::iterator lineIter = refLine.begin(); lineIter != refLine.end(); ++lineIter)
         {
             /// htable includes an array of uint64_t numbers
             char ch = *lineIter;
@@ -131,7 +131,8 @@ void FCM::buildTable ()
 //                                 (uint8_t) (ch % ALPHABET_SIZE);
             
             /// update table
-            nSym = table[ context * ALPH_SUM_SIZE + currSymInt ]++;
+            ++table[ context * ALPH_SUM_SIZE + currSymInt ];
+//            nSym = table[ context * ALPH_SUM_SIZE + currSymInt ]++;
             
             /// considering inverted repeats to update hash table
             if (isInvertedRepeat)
@@ -160,15 +161,16 @@ void FCM::buildTable ()
 //            sumNSyms = 0;
 //            for (uint8_t i = 0; i < ALPHABET_SIZE; ++i)
 //                sumNSyms += *(pointerToTable + context*ALPHABET_SIZE + i);
-            sumNSyms = ++table[ context * ALPH_SUM_SIZE + ALPHABET_SIZE ];
-
-            /// P(s|c^t)
-//            probability = (nSym + (double) 1/alphaDen) / (sumNSyms + (double) ALPHABET_SIZE/alphaDen);
-            probability = (double) (alphaDen * nSym + 1) / (alphaDen * sumNSyms + ALPHABET_SIZE);
-
-            /// sum( log_2 P(s|c^t) )
-            sumOfEntropies += log2(probability);
-            /////////////////////////////////
+            ++table[ context * ALPH_SUM_SIZE + ALPHABET_SIZE ];
+//            sumNSyms = ++table[ context * ALPH_SUM_SIZE + ALPHABET_SIZE ];
+//
+//            /// P(s|c^t)
+////            probability = (nSym + (double) 1/alphaDen) / (sumNSyms + (double) ALPHABET_SIZE/alphaDen);
+//            probability = (double) (alphaDen * nSym + 1) / (alphaDen * sumNSyms + ALPHABET_SIZE);
+//
+//            /// sum( log_2 P(s|c^t) )
+//            sumOfEntropies += log2(probability);
+//            /////////////////////////////////
             
             /// update context
             context = (uint32_t) (context * ALPHABET_SIZE + currSymInt) % maxPlaceValue;
@@ -183,14 +185,107 @@ void FCM::buildTable ()
     
     
     
+    ///************************************************
     
+    
+    /// create table
+    /// 5^TABLE_MAX_CONTEXT < 2^32 => uint32_t is used, otherwise uint64_t
+//    uint32_t maxPlaceValue = (uint32_t) pow(ALPHABET_SIZE, contextDepth);
+//    uint64_t tableSize = maxPlaceValue * ALPH_SUM_SIZE;
+//    uint64_t *table = new uint64_t[ tableSize ];
+//
+//    /// initialize table with 0's
+//    memset(table, 0, sizeof(table[0]) * tableSize);
+    
+    uint32_t tarContext = 0;                       /// context (integer), that slides in the dataset
+//    uint32_t tarInvRepContext = maxPlaceValue - 1; /// inverted repeat context (integer)
+    
+    ////////////////////////////////
+    uint64_t tarNSym;                      /// number of symbols (n_s). To calculate probability
+    uint64_t tarSumNSyms;                  /// sum of number of symbols (sum n_a). To calculate probability
+    double   tarProbability = 0;           /// probability of a symbol, based on an identified context
+    double   tarSumOfEntropies = 0;        /// sum of entropies for different symbols
+    uint64_t tarTotalNOfSyms = 0;  /// number of all symbols in the sequence
+    double   tarAverageEntropy = 0;        /// average entropy (H)
+    //////////////////////////////////
+    
+    string tarLine;                 /// keep each line of the file
+    
+    while (getline(tarFileIn, tarLine))
+    {
+        
+        //////////////////////////////////
+        tarTotalNOfSyms += tarLine.size();    /// number of symbols in each line of dataset
+        //////////////////////////////////
+        
+        /// fill hash table by number of occurrences of symbols A, C, N, G, T
+        for (string::iterator lineIter = tarLine.begin(); lineIter != tarLine.end(); ++lineIter)
+        {
+            /// htable includes an array of uint64_t numbers
+            char ch = *lineIter;
+            uint8_t currSymInt = (uint8_t) ((ch == 'A') ? 0 :
+                                            (ch == 'C') ? 1 :
+                                            (ch == 'G') ? 3 :
+                                            (ch == 'T') ? 4 : 2);
+            
+            //////////////////////////////////
+            /// number of symbols
+            tarNSym = table[ tarContext * ALPH_SUM_SIZE + currSymInt ];
+            //////////////////////////////////
+            
+//            /// considering inverted repeats to update hash table
+//            if (isInvertedRepeat)
+//            {
+//                /// concatenation of inverted repeat context and current symbol
+//                uint32_t iRCtxCurrSym = (4 - currSymInt) * maxPlaceValue + invRepContext;
+//
+////                /// to save quotient and reminder of a division
+////                div_t iRCtxCurrSymDiv;
+////                iRCtxCurrSymDiv = div(iRCtxCurrSym, ALPHABET_SIZE);
+//
+//                /// update inverted repeat context (integer)
+////                invRepContext = (uint32_t) iRCtxCurrSymDiv.quot;
+//                invRepContext = (uint32_t) iRCtxCurrSym / ALPHABET_SIZE;
+//
+//                /// update table considering inverted repeats
+////                ++table[ invRepContext*ALPHABET_SIZE + iRCtxCurrSymDiv.rem ];
+////                ++table[ invRepContext * ALPHABET_SIZE + iRCtxCurrSym % ALPHABET_SIZE ];
+//                ++table[ invRepContext * ALPH_SUM_SIZE + iRCtxCurrSym % ALPHABET_SIZE ];
+//                ++table[ invRepContext * ALPH_SUM_SIZE + ALPHABET_SIZE ];
+//            }
+            
+            //////////////////////////////////
+            /// sum(n_a)
+//            uint64_t *pointerToTable = table;   /// pointer to the beginning of table
+//            sumNSyms = 0;
+//            for (uint8_t i = 0; i < ALPHABET_SIZE; ++i)
+//                sumNSyms += *(pointerToTable + context*ALPHABET_SIZE + i);
+            tarSumNSyms = table[ tarContext * ALPH_SUM_SIZE + ALPHABET_SIZE ];
+            
+            /// P(s|c^t)
+//            probability = (nSym + (double) 1/alphaDen) / (sumNSyms + (double) ALPHABET_SIZE/alphaDen);
+            tarProbability = (double) (alphaDen * tarNSym + 1) / (alphaDen * tarSumNSyms + ALPHABET_SIZE);
+            
+            /// sum( log_2 P(s|c^t) )
+            tarSumOfEntropies += log2(tarProbability);
+            /////////////////////////////////
+            
+            /// update context
+            tarContext = (uint32_t) (tarContext * ALPHABET_SIZE + currSymInt) % maxPlaceValue;
+            
+        }   /// end of for
+    }   /// end of while
+    
+    tarFileIn.close();          /// close file
+    
+//    FCM::setTable(table);       /// save the built table
     
     
     
     
     ////////////////////////////////
     /// H_N = -1/N sum( log_2 P(s|c^t) )
-    averageEntropy = (-1) * sumOfEntropies / totalNumberOfSymbols;
+    tarAverageEntropy = (-1) * tarSumOfEntropies / tarTotalNOfSyms;
 
     cout
 //            << sumOfEntropies << '\n'
