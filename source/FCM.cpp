@@ -228,14 +228,14 @@ void FCM::buildHashTable ()
         return;                                 /// exit this function
     }
     
-    ifstream fileIn(fileName, ios::in);         /// open file located in fileName
-    
-    if (!fileIn)                                /// error occurred while opening file
-    {
-        cerr << "The file '" << fileName << "' cannot be opened, or it is empty.\n";
-        fileIn.close();                         /// close file
-        return;                                 /// exit this function
-    }
+//    ifstream fileIn(fileName, ios::in);         /// open file located in fileName
+//
+//    if (!fileIn)                                /// error occurred while opening file
+//    {
+//        cerr << "The file '" << fileName << "' cannot be opened, or it is empty.\n";
+//        fileIn.close();                         /// close file
+//        return;                                 /// exit this function
+//    }
 
     uint64_t context = 0;                       /// context, that slides in the dataset
     uint64_t maxPlaceValue = (uint64_t) pow(ALPHABET_SIZE, contextDepth);
@@ -255,7 +255,7 @@ void FCM::buildHashTable ()
 
     string datasetLine;                /// keep each line of the file
 
-    while (getline(fileIn, datasetLine))
+    while (getline(refFileIn, datasetLine))
     {
 
         //////////////////////////////////
@@ -322,8 +322,8 @@ void FCM::buildHashTable ()
             
         }   /// end of for
     }   /// end of while
-
-    fileIn.close();             /// close file
+    
+    refFileIn.close();             /// close file
 
     FCM::setHashTable(hTable);  /// save the built hash table
 
