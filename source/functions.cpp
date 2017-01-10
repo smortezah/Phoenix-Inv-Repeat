@@ -207,10 +207,6 @@ void Functions::commandLineParser (int argc, char **argv)
 //                                      : models[ n ].setRefFileAddress(referenceFileName);
                 models[ n ].setTarFileAddress(targetFileName);
                 models[ n ].setRefFileAddress(referenceFileName);
-                
-//                cout<<models[n].getTarFileAddress()<<'\n'<<models[n].getRefFileAddress()<<'\n';
-                
-                
                 /// set the context depth of the model
                 uint8_t ctxDepth = (uint8_t) stoi(vecParameters[ vecParamIndex++ ]);
                 models[ n ].setContextDepth(ctxDepth);
