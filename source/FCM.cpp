@@ -194,6 +194,7 @@ void FCM::buildHashTable ()
     const bool isInvertedRepeat = getInvertedRepeat();  /// get inverted repeat
     /// TODO: supprt for both target and reference file addresses
     string fileName = getTarFileAddress();              /// get target file address
+    string tarFileName = getTarFileAddress();           /// get target file address
     string refFileName = getRefFileAddress();           /// get reference file address
 
 
@@ -209,10 +210,26 @@ void FCM::buildHashTable ()
 //        std::fread(&contents[ 0 ], 1, contents.size(), fp);
 //        std::fclose(fp);
 //    }
+    
+    
+    ifstream tarFileIn(tarFileName, ios::in);   /// open target file located in fileName
+    ifstream refFileIn(refFileName, ios::in);   /// open reference file located in fileName
 
-
+    if (!tarFileIn)                             /// error occurred while opening file
+    {
+        cerr << "The file '" << tarFileName << "' cannot be opened, or it is empty.\n";
+        refFileIn.close();                      /// close file
+        return;                                 /// exit this function
+    }
+    else if (!refFileIn)                        /// error occurred while opening file
+    {
+        cerr << "The file '" << refFileName << "' cannot be opened, or it is empty.\n";
+        refFileIn.close();                      /// close file
+        return;                                 /// exit this function
+    }
+    
     ifstream fileIn(fileName, ios::in);         /// open file located in fileName
-
+    
     if (!fileIn)                                /// error occurred while opening file
     {
         cerr << "The file '" << fileName << "' cannot be opened, or it is empty.\n";
