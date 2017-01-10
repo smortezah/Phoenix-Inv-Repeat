@@ -38,7 +38,9 @@ void FCM::buildTable ()
     const uint16_t alphaDen     = getAlphaDenom();      /// get alpha denominator
     const bool isInvertedRepeat = getInvertedRepeat();  /// get inverted repeat
     /// TODO: supprt for both target and reference file addresses
-    string fileName = getTarFileAddress();              /// get target file address
+//    string fileName = getTarFileAddress();              /// get target file address
+    string tarFileName = getTarFileAddress();           /// get target file address
+    string refFileName = getRefFileAddress();           /// get reference file address
 
 
 //    const char* filename= fileName.c_str();;
@@ -54,14 +56,30 @@ void FCM::buildTable ()
 //    }
     
     
-    ifstream fileIn(fileName, ios::in); /// open file located in fileName
+    ifstream tarFileIn(tarFileName, ios::in);   /// open target file located in fileName
+    ifstream refFileIn(refFileName, ios::in);   /// open reference file located in fileName
     
-    if (!fileIn)                        /// error occurred while opening file
+    if (!tarFileIn)                             /// error occurred while opening file
     {
-        cerr << "The file '" << fileName << "' cannot be opened, or it is empty.\n";
-        fileIn.close();                 /// close file
-        return;                         /// exit this function
+        cerr << "The file '" << tarFileName << "' cannot be opened, or it is empty.\n";
+        refFileIn.close();                      /// close file
+        return;                                 /// exit this function
     }
+    else if (!refFileIn)                        /// error occurred while opening file
+    {
+        cerr << "The file '" << refFileName << "' cannot be opened, or it is empty.\n";
+        refFileIn.close();                      /// close file
+        return;                                 /// exit this function
+    }
+
+//    ifstream fileIn(fileName, ios::in);         /// open file located in fileName
+//
+//    if (!fileIn)                                /// error occurred while opening file
+//    {
+//        cerr << "The file '" << fileName << "' cannot be opened, or it is empty.\n";
+//        fileIn.close();                         /// close file
+//        return;                                 /// exit this function
+//    }
     
     /// create table
     /// 5^TABLE_MAX_CONTEXT < 2^32 => uint32_t is used, otherwise uint64_t
@@ -86,7 +104,7 @@ void FCM::buildTable ()
     
     string datasetLine;                 /// keep each line of the file
     
-    while (getline(fileIn, datasetLine))
+    while (getline(refFileIn, datasetLine))
     {
         
         //////////////////////////////////
@@ -193,11 +211,10 @@ void FCM::buildHashTable ()
     const uint16_t alphaDen     = getAlphaDenom();      /// get alpha denominator
     const bool isInvertedRepeat = getInvertedRepeat();  /// get inverted repeat
     /// TODO: supprt for both target and reference file addresses
-    string fileName = getTarFileAddress();              /// get target file address
+//    string fileName = getTarFileAddress();              /// get target file address
     string tarFileName = getTarFileAddress();           /// get target file address
     string refFileName = getRefFileAddress();           /// get reference file address
-
-
+    
 
 //    const char* filename= fileName.c_str();;
 //    std::FILE *fp = std::fopen(filename, "rb");
