@@ -194,6 +194,8 @@ void FCM::buildHashTable ()
     const bool isInvertedRepeat = getInvertedRepeat();  /// get inverted repeat
     /// TODO: supprt for both target and reference file addresses
     string fileName = getTarFileAddress();              /// get target file address
+    string refFileName = getRefFileAddress();           /// get reference file address
+
 
 
 //    const char* filename= fileName.c_str();;
