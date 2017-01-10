@@ -176,7 +176,7 @@ void FCM::buildTable ()
         }   /// end of for
     }   /// end of while
     
-    fileIn.close();             /// close file
+    refFileIn.close();          /// close file
     
     FCM::setTable(table);       /// save the built table
     
