@@ -179,20 +179,20 @@ void Functions::commandLineParser (int argc, char **argv)
             uint8_t n_models = (uint8_t) strModels.size();  /// number of models
             FCM *models = new FCM[n_models];                /// array of models
             vector< string > vecParameters;                 /// to save models parameters
-            size_t vecParamIndex = 0;
+            uint8_t vecParamIndex = 0;
             
             /// save models parameters and process the models
-            for (size_t n = 0; n != n_models; ++n)
+            for (uint8_t n = 0; n != n_models; ++n)
             {
-                size_t index = 0;
-                /// save all models except the last model
-                for (size_t i = 0; i != strModels[ n ].size(); ++i)
+                uint8_t index = 0;
+                /// save all models parameters except the last model
+                for (uint8_t i = 0; i != strModels[ n ].size(); ++i)
                     if (strModels[ n ][ i ] == ',')
                     {
                         vecParameters.push_back(strModels[ n ].substr(index, i - index));
                         index = i + 1;
                     }
-                /// save last model in multi-model input, and the only model in single model input
+                /// save last model parameters in multi-model input, and the only model in single model input
                 vecParameters.push_back(strModels[ n ].substr(index, strModels[ n ].size() - index));
                 
                 /// chack if the model is built from target or reference
