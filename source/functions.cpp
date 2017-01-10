@@ -61,7 +61,7 @@ void Functions::commandLineParser (int argc, char **argv)
                     {"fnumber",   required_argument, 0,       'd'},         /// number (float)
                     {"target",    required_argument, 0,       't'},         /// target file
                     {"reference", required_argument, 0,       'r'},         /// reference file
-                    {0,           0,                 0,       0}
+                    {0, 0,                           0,       0}
             };
     
     while (1)
@@ -72,16 +72,19 @@ void Functions::commandLineParser (int argc, char **argv)
         c = getopt_long(argc, argv, ":hAvm:n:d:t:r:", long_options, &option_index);
         
         /// Detect the end of the options.
-        if (c == -1)    break;
+        if (c == -1)
+            break;
         
         switch (c)
         {
             case 0:
                 /// If this option set a flag, do nothing else now.
-                if (long_options[ option_index ].flag != 0) break;
+                if (long_options[ option_index ].flag != 0)
+                    break;
                 
                 cout << "option '" << long_options[ option_index ].name << "'\n";
-                if (optarg)     cout << " with arg " << optarg << '\n';
+                if (optarg)
+                    cout << " with arg " << optarg << '\n';
                 break;
             
             case 'h':   /// show usage guide
@@ -114,7 +117,7 @@ void Functions::commandLineParser (int argc, char **argv)
             case 'n':   /// needs an integer argument
                 try
                 {
-                    messageObj.number( stoi((string) optarg) );    /// TODO for test
+                    messageObj.number(stoi((string) optarg));    /// TODO for test
                 }
                 catch (const invalid_argument &ia)
                 {
@@ -125,7 +128,7 @@ void Functions::commandLineParser (int argc, char **argv)
             case 'd':   /// needs a float argument
                 try
                 {
-                    messageObj.fnumber( stof((string) optarg) );   /// TODO for test
+                    messageObj.fnumber(stof((string) optarg));   /// TODO for test
                 }
                 catch (const invalid_argument &ia)
                 {
@@ -158,7 +161,8 @@ void Functions::commandLineParser (int argc, char **argv)
     if (m_flag)
     {
         /// check if target or reference file addresses are entered
-        if (!t_flag && !r_flag)     cerr << "Input file address is needed.";
+        if (!t_flag && !r_flag)
+            cerr << "Input file address is needed.";
         else
         {
             /// seperate and save the models in a vector of strings. each model in one string
@@ -173,7 +177,7 @@ void Functions::commandLineParser (int argc, char **argv)
                 }
             
             /// save last model in multi-model input, and the only model in single-model input
-            strModels.push_back( modelsParameters.substr(mIndex, modelsParameters.size() - mIndex) );
+            strModels.push_back(modelsParameters.substr(mIndex, modelsParameters.size() - mIndex));
             
             /// create an array of models and set their parameters
             uint8_t n_models = (uint8_t) strModels.size();  /// number of models
@@ -199,8 +203,12 @@ void Functions::commandLineParser (int argc, char **argv)
                 char tarOrRefChar = vecParameters[ vecParamIndex++ ][ 0 ];
                 models[ n ].setTargetOrReference(tarOrRefChar);
                 /// set target or reference file address
-                (tarOrRefChar == 't') ? models[ n ].setTarFileAddress(targetFileName)
-                                      : models[ n ].setRefFileAddress(referenceFileName);
+//                (tarOrRefChar == 't') ? models[ n ].setTarFileAddress(targetFileName)
+//                                      : models[ n ].setRefFileAddress(referenceFileName);
+                models[ n ].setTarFileAddress(targetFileName);
+                models[ n ].setRefFileAddress(referenceFileName);
+                
+                cout<<models[n].getTarFileAddress()<<'\n'<<models[n].getRefFileAddress()<<'\n';
                 /// set the context depth of the model
                 uint8_t ctxDepth = (uint8_t) stoi(vecParameters[ vecParamIndex++ ]);
                 models[ n ].setContextDepth(ctxDepth);
@@ -210,9 +218,9 @@ void Functions::commandLineParser (int argc, char **argv)
                 !stoi(vecParameters[ vecParamIndex++ ]) ? models[ n ].setInvertedRepeat(false)
                                                         : models[ n ].setInvertedRepeat(true);
                 /// build table or hash table for the model
-                (ctxDepth > TABLE_MAX_CONTEXT) ? models[ n ].buildHashTable()
-                                               : models[ n ].buildTable();
-    
+//                (ctxDepth > TABLE_MAX_CONTEXT) ? models[ n ].buildHashTable()
+//                                               : models[ n ].buildTable();
+                
                 /// print the built hash table
 //                cout << "Model " << n + 1 << " parameters:\n";
 //                models[ n ].printHashTable();
@@ -223,15 +231,18 @@ void Functions::commandLineParser (int argc, char **argv)
     }   ///  end - if '-m' (model) is entered
     else    /// if '-m' (model) is entered but '-t' or '-r' (file addresses) are not entered
     {
-        if (t_flag)         cerr << "Model(s) parameters are missing.";
-        else if (r_flag)    cerr << "Model(s) parameters are missing.";
+        if (t_flag)
+            cerr << "Model(s) parameters are missing.";
+        else if (r_flag)
+            cerr << "Model(s) parameters are missing.";
     }
     
     /// Print any remaining command line arguments (not options).
     if (optind < argc)
     {
         cerr << "non-option ARGV-element(s): ";
-        while (optind < argc)   cerr << argv[ optind++ ] << " ";
+        while (optind < argc)
+            cerr << argv[ optind++ ] << " ";
         cerr << '\n';
     }
 }
