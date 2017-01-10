@@ -39,7 +39,7 @@ public:
     void setRefFileAddress (const string&);         /// setter of reference file address
 
 private:
-    char     targetOrReference;                     /// model based on target or reference
+    char     targetOrReference;                     /// model built based on target or reference
     uint8_t  contextDepth;                          /// context depth (SIZE <= 255)
     uint16_t alphaDenom;                            /// alpha denominator
     bool     invertedRepeat;                        /// inverted repeat
