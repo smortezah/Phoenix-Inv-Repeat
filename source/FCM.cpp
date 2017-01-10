@@ -196,9 +196,9 @@ void FCM::buildTable ()
 
             //////////////////////////////////
             /// number of symbols
-            nSym     = table[ tarContext * ALPH_SUM_SIZE + currSymInt ] -1;
+            nSym     = table[ tarContext * ALPH_SUM_SIZE + currSymInt ];
             /// sum of number of symbols
-            sumNSyms = table[ tarContext * ALPH_SUM_SIZE + ALPHABET_SIZE ] +1;
+            sumNSyms = table[ tarContext * ALPH_SUM_SIZE + ALPHABET_SIZE ] ;
 
             /// P(s|c^t)
             probability = (double) (alphaDen * nSym + 1) / (alphaDen * sumNSyms + ALPHABET_SIZE);
@@ -220,7 +220,7 @@ void FCM::buildTable ()
     averageEntropy = (-1) * sumOfEntropies / totalNOfSyms;
 
     cout
-            << sumOfEntropies << '\n'
+//            << sumOfEntropies << '\n'
 //            << totalNOfSyms << '\n'
             << "  "
             << getInvertedRepeat() << '\t'
