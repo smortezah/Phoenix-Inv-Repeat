@@ -30,7 +30,7 @@ CHR="chr"
 HUMAN_CHR="HS"
 CURR_CHR="21"
 chromosomes="$HUMAN_CHR_PREFIX$CHR$CURR_CHR"
-#chromosomes=""
+chromosomes=""
 #for i in {1..22} X Y
 #do  chromosomes+=$HUMAN_CHR_PREFIX$CHR${i}" ";   done
 datasets="$HUMAN_CHR$CURR_CHR"
@@ -46,7 +46,7 @@ ALPHA_DENS="1"    # list of alpha denominators    "1 20 100"
 MIN_CTX=2         # min context size
 MAX_CTX=3         # max context size   ->  real: -=1
 
-PIX_FORMAT=eps      # output format: png, svg
+PIX_FORMAT=svg      # output format: png, svg
 #rm -f *.$PIX_FORMAT# remove FORMAT pictures, if they exist
 
 IR_NAME=i           # inverted repeat name
@@ -213,15 +213,23 @@ set term $PIX_FORMAT                    # set terminal for output picture format
 #     "dat/${IR_NAME}1-$a_NAME$alphaDen-${dataset}.dat" using 1:2  with linespoints ls 7 title "$IR_NAME=1, $a_NAME=1/$alphaDen, $CHR$CURR_CHR"
 set output "$IR_NAME$ir-$a_NAME$alphaDen-bpb.$PIX_FORMAT"       # set output name
 set title "IR=$ir,   Alpha=$alphaDen"
-plot for [i=1:22] "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
-     "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HSX.dat" using 1:2  with linespoints ls 23 title "${CHR} X", \
-     "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HSY.dat" using 1:2  with linespoints ls 24 title "${CHR} Y", \
-
-#plot \
-#     for [i=1:18] "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
-#     for [i=19:19] "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
+#plot for [i=1:22] "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
 #     "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HSX.dat" using 1:2  with linespoints ls 23 title "${CHR} X", \
-##     "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HSY.dat" using 1:2  with linespoints ls 24 title "${CHR} Y", \
+#     "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HSY.dat" using 1:2  with linespoints ls 24 title "${CHR} Y", \
+
+plot \
+     for [i=1:8]    "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
+     for [i=10:12]  "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
+     for [i=18:18]  "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
+                    "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HSX.dat" using 1:2  with linespoints ls 23 title "${CHR} X", \
+     for [i=19:19]  "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
+#     for [i=17:17]  "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
+#     for [i=16:16]  "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
+#     for [i=13:15]  "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
+#     for [i=9:9]    "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
+#     for [i=21:21]  "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
+#     for [i=22:22]  "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
+#     "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HSY.dat" using 1:2  with linespoints ls 24 title "${CHR} Y", \
 
 
 ##set xlabel "ctx"
