@@ -172,7 +172,7 @@ void Functions::commandLineParser (int argc, char **argv)
                     mIndex = i + 1;
                 }
 
-            /// save last model in multi-model input, and the only model in single model input
+            /// save last model in multi-model input, and the only model in single-model input
             strModels.push_back( modelsParameters.substr(mIndex, modelsParameters.size() - mIndex) );
             
             /// create an array of models and set their parameters
