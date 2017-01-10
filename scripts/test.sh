@@ -17,8 +17,8 @@ INSTALL_XS=0            # install "XS" from Github
 INSTALL_goose=0         # install "goose" from Github
 GEN_DATASETS=0          # generate datasets using "XS"
 GEN_MUTATIONS=0         # generate mutations using "goose"
-RUN=1                   # run the program
-PLOT_RESULTS=0          # plot results using "gnuplot"
+RUN=0                   # run the program
+PLOT_RESULTS=1          # plot results using "gnuplot"
 ARCHIVE_DATA=0          # archive data
 
 # mutations list:   `seq -s' ' 1 10`
@@ -194,7 +194,7 @@ fi  # end of running the program
 if [[ $PLOT_RESULTS == 1 ]]; then
 
 #for ir in $INV_REPEATS; do
-for ir in 0 1; do
+for ir in 0; do
     for alphaDen in $ALPHA_DENS; do
     #    for dataset in $datasets; do
     #        for mut in $MUT_LIST; do
@@ -214,8 +214,8 @@ set term $PIX_FORMAT                    # set terminal for output picture format
 set output "$IR_NAME$ir-$a_NAME$alphaDen-bpb.$PIX_FORMAT"       # set output name
 set title "IR=$ir,   Alpha=$alphaDen"
 plot for [i=1:22] "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
-#     "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HSX.dat" using 1:2  with linespoints ls 6 title "${CHR} X", \
-#     "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HSY.dat" using 1:2  with linespoints ls 7 title "${CHR} Y", \
+     "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HSX.dat" using 1:2  with linespoints ls 23 title "${CHR} X", \
+     "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HSY.dat" using 1:2  with linespoints ls 24 title "${CHR} Y", \
 
 ##set xlabel "ctx"
 #set ylabel "context-order size"         # set label of y axis
