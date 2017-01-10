@@ -161,7 +161,7 @@ void Functions::commandLineParser (int argc, char **argv)
     if (m_flag)
     {
         /// check if target or reference file addresses are entered
-        if (!t_flag && !r_flag)
+        if (!t_flag || !r_flag)
             cerr << "Input file address is needed.";
         else
         {
