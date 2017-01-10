@@ -181,6 +181,13 @@ void FCM::buildTable ()
     FCM::setTable(table);       /// save the built table
     
     
+    
+    
+    
+    
+    
+    
+    
     ////////////////////////////////
     /// H_N = -1/N sum( log_2 P(s|c^t) )
     averageEntropy = (-1) * sumOfEntropies / totalNumberOfSymbols;
