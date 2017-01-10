@@ -294,7 +294,7 @@ void FCM::buildTable ()
             << getInvertedRepeat() << '\t'
             << (float) 1/alphaDen << '\t'
             << (int) contextDepth << '\t'
-            << averageEntropy
+            << tarAverageEntropy
 //            << '\t'
 //            << hTable.size()
 //            << '\n'
