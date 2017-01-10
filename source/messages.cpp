@@ -22,6 +22,13 @@ void Messages::help () const
          << "Synopsis:"                                                         << '\n'
          << "    phoenix [OPTION]... -m [MODEL(s)] -t [TARGET] -r [REFERENCE]"  << '\n'
                                                                                 << '\n'
+         << "Mandatory arguments:"                                              << '\n'
+         << "    -t [TARGET],  --target [TARGET]"                               << '\n'
+         << "         target file address"                                      << '\n'
+                                                                                << '\n'
+         << "    -r [REFERENCE],  --reference [REFERENCE]"                      << '\n'
+         << "         reference file address"                                   << '\n'
+                                                                                << '\n'
          << "Options:"                                                          << '\n'
          << "    -h,  --help"                                                   << '\n'
          << "         usage guide"                                              << '\n'
@@ -48,12 +55,6 @@ void Messages::help () const
          << "    -d [NUMBER],  --fnumber [NUMBER]"                              << '\n'
          << "         number of something."                                     << '\n'
          << "         requires a float number (NUMBER)"                         << '\n'
-                                                                                << '\n'
-         << "    -t [TARGET],  --target [TARGET]"                               << '\n'
-         << "         target file address"                                      << '\n'
-                                                                                << '\n'
-         << "    -r [REFERENCE],  --reference [REFERENCE]"                      << '\n'
-         << "         reference file address"                                   << '\n'
                                                                                 << '\n';
 }
 
