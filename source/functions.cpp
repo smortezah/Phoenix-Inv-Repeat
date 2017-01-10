@@ -202,13 +202,15 @@ void Functions::commandLineParser (int argc, char **argv)
                 /// chack if the model is built from target or reference
                 char tarOrRefChar = vecParameters[ vecParamIndex++ ][ 0 ];
                 models[ n ].setTargetOrReference(tarOrRefChar);
-                /// set target or reference file address
+                /// set target and/or reference file address
 //                (tarOrRefChar == 't') ? models[ n ].setTarFileAddress(targetFileName)
 //                                      : models[ n ].setRefFileAddress(referenceFileName);
                 models[ n ].setTarFileAddress(targetFileName);
                 models[ n ].setRefFileAddress(referenceFileName);
                 
-                cout<<models[n].getTarFileAddress()<<'\n'<<models[n].getRefFileAddress()<<'\n';
+//                cout<<models[n].getTarFileAddress()<<'\n'<<models[n].getRefFileAddress()<<'\n';
+                
+                
                 /// set the context depth of the model
                 uint8_t ctxDepth = (uint8_t) stoi(vecParameters[ vecParamIndex++ ]);
                 models[ n ].setContextDepth(ctxDepth);
@@ -218,8 +220,8 @@ void Functions::commandLineParser (int argc, char **argv)
                 !stoi(vecParameters[ vecParamIndex++ ]) ? models[ n ].setInvertedRepeat(false)
                                                         : models[ n ].setInvertedRepeat(true);
                 /// build table or hash table for the model
-//                (ctxDepth > TABLE_MAX_CONTEXT) ? models[ n ].buildHashTable()
-//                                               : models[ n ].buildTable();
+                (ctxDepth > TABLE_MAX_CONTEXT) ? models[ n ].buildHashTable()
+                                               : models[ n ].buildTable();
                 
                 /// print the built hash table
 //                cout << "Model " << n + 1 << " parameters:\n";
