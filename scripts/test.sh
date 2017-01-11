@@ -235,15 +235,53 @@ set term $PIX_FORMAT                    # set terminal for output picture format
 
 
 ##########################    ctx    ##########################
-#set xlabel "ctx"
-set ylabel "context-order size"         # set label of y axis
+##set xlabel "ctx"
+#set ylabel "context-order size"         # set label of y axis
+#set ytics 2,1,20                        # set steps for y axis
+#set key top right                       # legend position
+##set output "$IR_NAME$ir-$a_NAME$alphaDen-$dataset-ctx.$PIX_FORMAT"    # set output name
+##plot "dat/$IR_NAME$ir-$a_NAME$alphaDen-${dataset}.dat" using 1:3  with linespoints ls 7 title "$IR_NAME=$ir, $a_NAME=1/$alphaDen, $CHR$CURR_CHR"
+#set output "$IR_NAME$ir-$a_NAME$alphaDen-ctx.$PIX_FORMAT"       # set output name
+#plot \
+#     for [i=1:2]  "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:3  with linespoints ls "".i."" title "${CHR} ".i."", \
+
+
+set terminal pngcairo size 600, 900
+set output 'stacking.png'
+
+set lmargin at screen 0.15
+set rmargin at screen 0.95
+
+TOP=0.98
+DY = 0.29
+
+set multiplot
+set offset 0,0,graph 0.05, graph 0.05
+
+set xlabel 'time'
+#set ylabel "chr 1" offset 1
 set ytics 2,1,20                        # set steps for y axis
-set key top right                       # legend position
-#set output "$IR_NAME$ir-$a_NAME$alphaDen-$dataset-ctx.$PIX_FORMAT"    # set output name
-#plot "dat/$IR_NAME$ir-$a_NAME$alphaDen-${dataset}.dat" using 1:3  with linespoints ls 7 title "$IR_NAME=$ir, $a_NAME=1/$alphaDen, $CHR$CURR_CHR"
-set output "$IR_NAME$ir-$a_NAME$alphaDen-ctx.$PIX_FORMAT"       # set output name
-plot \
-     for [i=1:2]  "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:3  with linespoints ls "".i."" title "${CHR} ".i."", \
+set tmargin at screen TOP-2*DY
+set bmargin at screen TOP-3*DY
+set ytics -1000,500,1000
+plot for [i=1:1] "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:3  with linespoints ls "".i."" title ''
+
+
+set xtics format ''
+unset xlabel
+set ylabel 'ylabel 2' offset 0
+set tmargin at screen TOP-DY
+set bmargin at screen TOP-2*DY
+set ytics -100,50,100
+plot 101*sin(x) title ''
+
+set ylabel 'ylabel 3' offset -1
+set tmargin at screen TOP
+set bmargin at screen TOP-DY
+set ytics -8,4,8
+plot 10*sin(2*x) title ''
+
+unset multiplot; set output
 
 
 # the following line (EOF) MUST be left as it is; i.e. no space, etc
