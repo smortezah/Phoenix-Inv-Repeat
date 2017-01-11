@@ -194,7 +194,7 @@ fi  # end of running the program
 if [[ $PLOT_RESULTS == 1 ]]; then
 
 #for ir in $INV_REPEATS; do
-for ir in 0; do
+for ir in 0 1; do
     for alphaDen in $ALPHA_DENS; do
     #    for dataset in $datasets; do
     #        for mut in $MUT_LIST; do
