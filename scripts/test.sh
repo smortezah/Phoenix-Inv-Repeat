@@ -264,7 +264,7 @@ rhsR=LEFT+XSTEP+MIDDLE+XSTEP    # right hand side - right
 LS=1    # line style
 
 set multiplot
-set offset 0,0,graph 0.15, graph 0.15
+set offset 0,0,graph 0.1, graph 0.1
 
 set grid
 set label 1 '%mutation' at screen 0.45,0.015
@@ -279,7 +279,7 @@ set rmargin at screen rhsR
 set tmargin at screen TOP-11*YSTEP
 set bmargin at screen TOP-12*YSTEP
 #set xtics 1,2,50                        # set steps for x axis
-plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HSY.dat" using 1:3 with lines title 'Y'
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HSY.dat" using 1:3 with lines linetype 7 linewidth 2.0 title 'Y'
 
 
 #### left hand side figures  ####
@@ -296,7 +296,7 @@ plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS12.dat" using 1:3 with lines titl
 set xtics format ''
 set tmargin at screen TOP-0*YSTEP
 set bmargin at screen TOP-1*YSTEP
-plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS1.dat" using 1:3 with lines title '1'
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS1.dat" using 1:3 with lines linetype 7 linewidth 2.0 title '1'
 
 #set ylabel "chr 1" offset 0
 set tmargin at screen TOP-1*YSTEP
