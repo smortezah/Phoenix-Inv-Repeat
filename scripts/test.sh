@@ -270,33 +270,32 @@ LS=1    # line style
 set grid
 set label 1 '%mutation' at screen 0.47,0.015
 set label 2 'context-order size' at screen 0.02,0.47 rotate by 90
-#set ytics 3,1,10 scale 0.6 offset 0.4,0 font ",10"      # set steps for y axis
-#set xtics 5,5,50 scale 0.5 offset 0,0.4 font ",10"      # set steps for x axis
-#set xtics add ("1" 1)
-#set yrange [ 3 : 10 ]
-#set ytics add ("3" 3)
+set xtics 5,5,50 scale 0.5      # set steps for x axis
+set ytics 3,1,10 scale 0.6 offset 0.4,0 font ",10"      # set steps for y axis
+set yrange [ 3 : 10 ]
 
 ###   first column   ###
 do for [i=1:11] {
-set xtics 5,5,50 # scale 0.5 offset 0,0.4 font ",10"      # set steps for x axis
 set xtics format ''
-set ytics 3,1,10 scale 0.6 offset 0.4,0 font ",10"      # set steps for y axis
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:3 with lines linetype 7 linewidth 2.0 title "".i.""
+}
+
+set xtics add ("1" 1, "5" 5, "10" 10, "15" 15, "20" 20, "25" 25, "30" 30, "35" 35, "40" 40, "45" 45, "50" 50) \
+    scale 0.5 offset 0,0.4 font ",10"
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS12.dat" using 1:3 with lines linetype 7 linewidth 2.0 title "12"
+
+###   second column   ###
+do for [i=13:22] {
+set xtics 5,5,50 scale 0.5      # set steps for x axis
+set xtics format ''
+set ytics format ''      # set steps for y axis
 set yrange [ 3 : 10 ]
 plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:3 with lines linetype 7 linewidth 2.0 title "".i.""
 }
 
-set xtics 5,5,50 scale 0.5 offset 0,0.4 font ",10"      # set steps for x axis
-#set xtics add ("1" 1, "low" 0, "" 10, "high" 50)
+set xtics add ("1" 1, "5" 5, "10" 10, "15" 15, "20" 20, "25" 25, "30" 30, "35" 35, "40" 40, "45" 45, "50" 50) \
+    scale 0.5 offset 0,0.4 font ",10"
 plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS12.dat" using 1:3 with lines linetype 7 linewidth 2.0 title "12"
-
-###   second column   ###
-do for [i=13:16] {
-#set xtics format ''
-set xtics 5,5,50 scale 0.5 offset 0,0.4 font ",10"      # set steps for x axis
-set ytics 3,1,10 scale 0.6 offset 0.4,0 font ",10"      # set steps for y axis
-set yrange [ 5 : 10 ]
-plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:3 with lines linetype 7 linewidth 2.0 title "".i.""
-}
 
 
 
