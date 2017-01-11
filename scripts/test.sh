@@ -250,7 +250,7 @@ set term $PIX_FORMAT                    # set terminal for output picture format
 set terminal $PIX_FORMAT size 600, 850
 set output "$IR_NAME$ir-$a_NAME$alphaDen-ctx.$PIX_FORMAT"       # set output name
 #set multiplot
-set multiplot layout 2,2 columnsfirst margins 0.08,0.98,0.1,0.98 spacing 0.0,0.0
+set multiplot layout 12,2 columnsfirst margins 0.08,0.98,0.1,0.98 spacing 0.0,0.0
 set offset 0,0,graph 0.1, graph 0.1
 set key top right samplen 2 spacing 1.5 font ",11"
 
@@ -270,14 +270,34 @@ LS=1    # line style
 set grid
 set label 1 '%mutation' at screen 0.47,0.015
 set label 2 'context-order size' at screen 0.02,0.47 rotate by 90
-set ytics 3,2,11 scale 0.6 offset 0.4,0 font ",10"      # set steps for y axis
+#set ytics 3,1,10 scale 0.6 offset 0.4,0 font ",10"      # set steps for y axis
 #set xtics 5,5,50 scale 0.5 offset 0,0.4 font ",10"      # set steps for x axis
 #set xtics add ("1" 1)
+#set yrange [ 3 : 10 ]
+#set ytics add ("3" 3)
 
-do for [i=1:4] {
-#set xtics format ''
+###   first column   ###
+do for [i=1:11] {
+set xtics 5,5,50 # scale 0.5 offset 0,0.4 font ",10"      # set steps for x axis
+set xtics format ''
+set ytics 3,1,10 scale 0.6 offset 0.4,0 font ",10"      # set steps for y axis
+set yrange [ 3 : 10 ]
 plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:3 with lines linetype 7 linewidth 2.0 title "".i.""
 }
+
+set xtics 5,5,50 scale 0.5 offset 0,0.4 font ",10"      # set steps for x axis
+#set xtics add ("1" 1, "low" 0, "" 10, "high" 50)
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS12.dat" using 1:3 with lines linetype 7 linewidth 2.0 title "12"
+
+###   second column   ###
+do for [i=13:16] {
+#set xtics format ''
+set xtics 5,5,50 scale 0.5 offset 0,0.4 font ",10"      # set steps for x axis
+set ytics 3,1,10 scale 0.6 offset 0.4,0 font ",10"      # set steps for y axis
+set yrange [ 5 : 10 ]
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:3 with lines linetype 7 linewidth 2.0 title "".i.""
+}
+
 
 
 ##### chromosome Y  ####
