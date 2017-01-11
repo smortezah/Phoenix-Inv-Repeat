@@ -254,7 +254,7 @@ TOP=0.99
 YSTEP=0.078
 LEFT=0.07
 XSTEP=0.43
-MIDDLE=0.0
+MIDDLE=0.05
 
 lhsL=LEFT                       # left hand side - left
 lhsR=LEFT+XSTEP                 # left hand side - right
@@ -264,11 +264,11 @@ rhsR=LEFT+XSTEP+MIDDLE+XSTEP    # right hand side - right
 LS=7    # line style
 
 set multiplot
-set offset 0,0,graph 0.05, graph 0.05
+set offset 0,0,graph 0.15, graph 0.15
 
 set grid
-set xlabel 'time'
-set ytics 1,2,11                        # set steps for y axis
+#set xlabel 'time'
+set ytics 3,2,11                        # set steps for y axis
 
 #### left hand side figures  ####
 set lmargin at screen lhsL
@@ -345,7 +345,7 @@ plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS12.dat" using 1:3  with linespoin
 set lmargin at screen rhsL
 set rmargin at screen rhsR
 
-set ytics format ''
+#set ytics format ''
 
 #set ylabel "chr 1" offset 1
 set xlabel ''
@@ -412,6 +412,7 @@ set tmargin at screen TOP-11*YSTEP
 set bmargin at screen TOP-12*YSTEP
 #set xtics 1,2,50                        # set steps for x axis
 plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HSY.dat" using 1:3  with linespoints ls LS title 'Y'
+
 
 unset multiplot; set output
 
