@@ -276,6 +276,9 @@ set ytics 3,2,11 scale 0.6 offset 0.4,0 font ",10"      # set steps for y axis
 set xtics 5,5,50 scale 0.5 offset 0,0.4 font ",10"      # set steps for x axis
 set xtics add ("1" 1)
 
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS1.dat" using 1:3 with lines linetype 7 linewidth 2.0 title '1'
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS2.dat" using 1:3 with lines linetype 7 linewidth 2.0 title '2'
+
 
 ##### chromosome Y  ####
 #set lmargin at screen rhsL
@@ -291,7 +294,7 @@ set xtics add ("1" 1)
 
 #set tmargin at screen TOP-11*YSTEP
 #set bmargin at screen TOP-12*YSTEP
-plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS12.dat" using 1:3 with lines title '12'
+#plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS12.dat" using 1:3 with lines title '12'
 
 ##set ylabel "chr 1" offset 1
 ##set xlabel ''
@@ -300,12 +303,12 @@ plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS12.dat" using 1:3 with lines titl
 
 #set tmargin at screen TOP-0*YSTEP
 #set bmargin at screen TOP-1*YSTEP
-plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS1.dat" using 1:3 with lines linetype 7 linewidth 2.0 title '1'
+#plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS1.dat" using 1:3 with lines linetype 7 linewidth 2.0 title '1'
 #
 ##set ylabel "chr 1" offset 0
 #set tmargin at screen TOP-1*YSTEP
 #set bmargin at screen TOP-2*YSTEP
-plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS2.dat" using 1:3 with lines title '2'
+#plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS2.dat" using 1:3 with lines title '2'
 #
 ##set ylabel "chr 1" offset -1
 #set tmargin at screen TOP-2*YSTEP
