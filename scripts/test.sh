@@ -255,7 +255,14 @@ set output 'stacking.png'
 TOP=0.99
 YSTEP=0.078
 LEFT=0.07
-XSTEP=0.45
+XSTEP=0.40
+MIDDLE=0.05
+lhsL=LEFT                       # left hand side - left
+lhsR=LEFT+XSTEP                 # left hand side - right
+rhsL=LEFT+XSTEP+MIDDLE          # right hand side - left
+rhsR=LEFT+XSTEP+MIDDLE+XSTEP    # right hand side - right
+
+LS=1    # line style
 
 set multiplot
 set offset 0,0,graph 0.05, graph 0.05
@@ -264,95 +271,165 @@ set grid
 set xlabel 'time'
 set ytics 1,2,11                        # set steps for y axis
 
+#### left hand side figures  ####
+set lmargin at screen lhsL
+set rmargin at screen lhsR
+
 #set ylabel "chr 1" offset 1
 set xlabel ''
 set xtics format ''
 set tmargin at screen TOP-0*YSTEP
 set bmargin at screen TOP-1*YSTEP
-set lmargin at screen LEFT+0*XSTEP
-set rmargin at screen LEFT+1*XSTEP
-plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS1.dat" using 1:3  with linespoints ls 7 title 'HS1'
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS1.dat" using 1:3  with linespoints ls LS title 'HS1'
 
 #set ylabel "chr 1" offset 0
 set xlabel ''
 set xtics format ''
 set tmargin at screen TOP-1*YSTEP
 set bmargin at screen TOP-2*YSTEP
-set lmargin at screen LEFT+0*XSTEP
-set rmargin at screen LEFT+1*XSTEP
-plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS2.dat" using 1:3  with linespoints ls 7 title 'HS2'
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS2.dat" using 1:3  with linespoints ls LS title 'HS2'
 
 #set ylabel "chr 1" offset -1
 set xlabel ''
 set tmargin at screen TOP-2*YSTEP
 set bmargin at screen TOP-3*YSTEP
-set lmargin at screen LEFT+0*XSTEP
-set rmargin at screen LEFT+1*XSTEP
-plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS3.dat" using 1:3  with linespoints ls 7 title 'HS3'
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS3.dat" using 1:3  with linespoints ls LS title 'HS3'
 
 set xlabel ''
 set tmargin at screen TOP-3*YSTEP
 set bmargin at screen TOP-4*YSTEP
-set lmargin at screen LEFT+0*XSTEP
-set rmargin at screen LEFT+1*XSTEP
-plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS4.dat" using 1:3  with linespoints ls 7 title 'HS4'
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS4.dat" using 1:3  with linespoints ls LS title 'HS4'
 
 set xlabel ''
 set tmargin at screen TOP-4*YSTEP
 set bmargin at screen TOP-5*YSTEP
-set lmargin at screen LEFT+0*XSTEP
-set rmargin at screen LEFT+1*XSTEP
-plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS5.dat" using 1:3  with linespoints ls 7 title 'HS5'
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS5.dat" using 1:3  with linespoints ls LS title 'HS5'
 
 set xlabel ''
 set tmargin at screen TOP-5*YSTEP
 set bmargin at screen TOP-6*YSTEP
-set lmargin at screen LEFT+0*XSTEP
-set rmargin at screen LEFT+1*XSTEP
-plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS6.dat" using 1:3  with linespoints ls 7 title 'HS6'
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS6.dat" using 1:3  with linespoints ls LS title 'HS6'
 
 set xlabel ''
 set tmargin at screen TOP-6*YSTEP
 set bmargin at screen TOP-7*YSTEP
-set lmargin at screen LEFT+0*XSTEP
-set rmargin at screen LEFT+1*XSTEP
-plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS7.dat" using 1:3  with linespoints ls 7 title 'HS7'
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS7.dat" using 1:3  with linespoints ls LS title 'HS7'
 
 set xlabel ''
 set tmargin at screen TOP-7*YSTEP
 set bmargin at screen TOP-8*YSTEP
-set lmargin at screen LEFT+0*XSTEP
-set rmargin at screen LEFT+1*XSTEP
-plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS8.dat" using 1:3  with linespoints ls 7 title 'HS8'
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS8.dat" using 1:3  with linespoints ls LS title 'HS8'
 
 set xlabel ''
 set tmargin at screen TOP-8*YSTEP
 set bmargin at screen TOP-9*YSTEP
-set lmargin at screen LEFT+0*XSTEP
-set rmargin at screen LEFT+1*XSTEP
-plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS9.dat" using 1:3  with linespoints ls 7 title 'HS9'
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS9.dat" using 1:3  with linespoints ls LS title 'HS9'
 
 set xlabel ''
 set tmargin at screen TOP-9*YSTEP
 set bmargin at screen TOP-10*YSTEP
-set lmargin at screen LEFT+0*XSTEP
-set rmargin at screen LEFT+1*XSTEP
-plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS10.dat" using 1:3  with linespoints ls 7 title 'HS10'
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS10.dat" using 1:3  with linespoints ls LS title 'HS10'
 
 set xlabel ''
 set tmargin at screen TOP-10*YSTEP
 set bmargin at screen TOP-11*YSTEP
-set lmargin at screen LEFT+0*XSTEP
-set rmargin at screen LEFT+1*XSTEP
-plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS11.dat" using 1:3  with linespoints ls 7 title 'HS11'
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS11.dat" using 1:3  with linespoints ls LS title 'HS11'
 
 set xlabel '%mutation'
 set tmargin at screen TOP-11*YSTEP
 set bmargin at screen TOP-12*YSTEP
-set lmargin at screen LEFT+0*XSTEP
-set rmargin at screen LEFT+1*XSTEP
 #set xtics 1,2,50                        # set steps for x axis
-plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS12.dat" using 1:3  with linespoints ls 7 title 'HS12'
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS12.dat" using 1:3  with linespoints ls LS title 'HS12'
+
+
+#### right hand side figures  ####
+set lmargin at screen rhsL
+set rmargin at screen rhsR
+
+#set ylabel "chr 1" offset 1
+set xlabel ''
+set xtics format ''
+set tmargin at screen TOP-0*YSTEP
+set bmargin at screen TOP-1*YSTEP
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS1.dat" using 1:3  with linespoints ls LS title 'HS1'
+
+#set ylabel "chr 1" offset 0
+set xlabel ''
+set xtics format ''
+set tmargin at screen TOP-1*YSTEP
+set bmargin at screen TOP-2*YSTEP
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS2.dat" using 1:3  with linespoints ls LS title 'HS2'
+
+#set ylabel "chr 1" offset -1
+set xlabel ''
+set tmargin at screen TOP-2*YSTEP
+set bmargin at screen TOP-3*YSTEP
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS3.dat" using 1:3  with linespoints ls LS title 'HS3'
+
+set xlabel ''
+set tmargin at screen TOP-3*YSTEP
+set bmargin at screen TOP-4*YSTEP
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS4.dat" using 1:3  with linespoints ls LS title 'HS4'
+
+set xlabel ''
+set tmargin at screen TOP-4*YSTEP
+set bmargin at screen TOP-5*YSTEP
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS5.dat" using 1:3  with linespoints ls LS title 'HS5'
+
+set xlabel ''
+set tmargin at screen TOP-5*YSTEP
+set bmargin at screen TOP-6*YSTEP
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS6.dat" using 1:3  with linespoints ls LS title 'HS6'
+
+set xlabel ''
+set tmargin at screen TOP-6*YSTEP
+set bmargin at screen TOP-7*YSTEP
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS7.dat" using 1:3  with linespoints ls LS title 'HS7'
+
+set xlabel ''
+set tmargin at screen TOP-7*YSTEP
+set bmargin at screen TOP-8*YSTEP
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS8.dat" using 1:3  with linespoints ls LS title 'HS8'
+
+set xlabel ''
+set tmargin at screen TOP-8*YSTEP
+set bmargin at screen TOP-9*YSTEP
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS9.dat" using 1:3  with linespoints ls LS title 'HS9'
+
+set xlabel ''
+set tmargin at screen TOP-9*YSTEP
+set bmargin at screen TOP-10*YSTEP
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS10.dat" using 1:3  with linespoints ls LS title 'HS10'
+
+set xlabel ''
+set tmargin at screen TOP-10*YSTEP
+set bmargin at screen TOP-11*YSTEP
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS11.dat" using 1:3  with linespoints ls LS title 'HS11'
+
+set xlabel '%mutation'
+set tmargin at screen TOP-11*YSTEP
+set bmargin at screen TOP-12*YSTEP
+#set xtics 1,2,50                        # set steps for x axis
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS12.dat" using 1:3  with linespoints ls LS title 'HS12'
+
+
+
+
+
+
+
+
+
+
+
+
+#set xlabel '%mutation'
+set tmargin at screen TOP-0*YSTEP
+set bmargin at screen TOP-1*YSTEP
+set lmargin at screen LEFT+MIDDLE+1*XSTEP
+set rmargin at screen LEFT+MIDDLE+2*XSTEP
+#set xtics 1,2,50                        # set steps for x axis
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS13.dat" using 1:3  with linespoints ls LS title 'HS13'
 
 unset multiplot; set output
 
