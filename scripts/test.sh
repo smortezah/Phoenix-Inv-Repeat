@@ -276,8 +276,9 @@ set ytics 3,2,11 scale 0.6 offset 0.4,0 font ",10"      # set steps for y axis
 set xtics 5,5,50 scale 0.5 offset 0,0.4 font ",10"      # set steps for x axis
 set xtics add ("1" 1)
 
-#plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS1.dat" using 1:3 with lines linetype 7 linewidth 2.0 title '1'
-#plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS2.dat" using 1:3 with lines linetype 7 linewidth 2.0 title '2'
+do for [i=1:4] {
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:3 with lines linetype 7 linewidth 2.0 title "".i.""
+}
 
 
 ##### chromosome Y  ####
