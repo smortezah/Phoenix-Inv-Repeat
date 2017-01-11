@@ -250,20 +250,9 @@ set term $PIX_FORMAT                    # set terminal for output picture format
 set terminal $PIX_FORMAT size 600, 850
 set output "$IR_NAME$ir-$a_NAME$alphaDen-ctx.$PIX_FORMAT"       # set output name
 #set multiplot
-set multiplot layout 12,2 columnsfirst margins 0.08,0.98,0.1,0.98 spacing 0.01,0.0
+set multiplot layout 12,2 columnsfirst margins 0.08,0.98,0.06,0.98 spacing 0.013,0.0
 set offset 0,0,graph 0.1, graph 0.1
 set key top right samplen 2 spacing 1.5 font ",11"
-
-TOP=0.99
-YSTEP=0.078
-LEFT=0.067
-XSTEP=0.43
-MIDDLE=0.053
-
-lhsL=LEFT                       # left hand side - left
-lhsR=LEFT+XSTEP                 # left hand side - right
-rhsL=LEFT+XSTEP+MIDDLE          # right hand side - left
-rhsR=LEFT+XSTEP+MIDDLE+XSTEP    # right hand side - right
 
 LS=1    # line style
 
@@ -271,7 +260,7 @@ set grid
 set label 1 '%mutation' at screen 0.47,0.015
 set label 2 'context-order size' at screen 0.02,0.47 rotate by 90
 set xtics 5,5,50 scale 0.5      # set steps for x axis
-set ytics 3,1,10 scale 0.6 offset 0.4,0 font ",10"      # set steps for y axis
+set ytics 3,2,10 scale 0.6 offset 0.4,0 font ",10"      # set steps for y axis
 set yrange [ 3 : 10 ]
 
 ###   first column   ###
@@ -280,151 +269,23 @@ set xtics format ''
 plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:3 with lines linetype 7 linewidth 2.0 title "".i.""
 }
 ###   chromosome 12   ###
-set xtics add ("1" 1, "5" 5, "10" 10, "15" 15, "20" 20, "25" 25, "30" 30, "35" 35, "40" 40, "45" 45, "50" 50) \
+set xtics add ("1" 1, "5" 5, "10" 10, "15" 15, "20" 20, "25" 25, "30" 30, "35" 35, "40" 40, "45" 45, "50  " 50) \
     scale 0.5 offset 0.25,0.4 font ",10"
 plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS12.dat" using 1:3 with lines linetype 7 linewidth 2.0 title "12"
 
-####   second column   ###
-#do for [i=13:22] {
-#set xtics 5,5,50 scale 0.5      # set steps for x axis
-#set xtics format ''
-#set ytics format ''      # set steps for y axis
-#plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:3 with lines linetype 7 linewidth 2.0 title "".i.""
-#}
-####   chromosome X   ###
-#plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HSX.dat" using 1:3 with lines linetype 7 linewidth 2.0 title "X"
-####   chromosome Y   ###
-#set xtics add ("1" 1, "5" 5, "10" 10, "15" 15, "20" 20, "25" 25, "30" 30, "35" 35, "40" 40, "45" 45, "50" 50) \
-#    scale 0.5 offset 0,0.4 font ",10"
-#plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HSY.dat" using 1:3 with lines linetype 7 linewidth 2.0 title "Y"
-
-
-
-##### chromosome Y  ####
-#set lmargin at screen rhsL
-#set rmargin at screen rhsR
-#set tmargin at screen TOP-11*YSTEP
-#set bmargin at screen TOP-12*YSTEP
-#plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HSY.dat" using 1:3 with lines linetype 7 linewidth 2.0 title 'Y'
-
-
-##### left hand side figures  ####
-#set lmargin at screen lhsL
-#set rmargin at screen lhsR
-
-#set tmargin at screen TOP-11*YSTEP
-#set bmargin at screen TOP-12*YSTEP
-#plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS12.dat" using 1:3 with lines title '12'
-
-##set ylabel "chr 1" offset 1
-##set xlabel ''
-#set xtics 5,5,50
-#set xtics format ''
-
-#set tmargin at screen TOP-0*YSTEP
-#set bmargin at screen TOP-1*YSTEP
-#plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS1.dat" using 1:3 with lines linetype 7 linewidth 2.0 title '1'
-#
-##set ylabel "chr 1" offset 0
-#set tmargin at screen TOP-1*YSTEP
-#set bmargin at screen TOP-2*YSTEP
-#plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS2.dat" using 1:3 with lines title '2'
-#
-##set ylabel "chr 1" offset -1
-#set tmargin at screen TOP-2*YSTEP
-#set bmargin at screen TOP-3*YSTEP
-#plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS3.dat" using 1:3 with lines title '3'
-#
-#set tmargin at screen TOP-3*YSTEP
-#set bmargin at screen TOP-4*YSTEP
-#plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS4.dat" using 1:3 with lines title '4'
-#
-#set tmargin at screen TOP-4*YSTEP
-#set bmargin at screen TOP-5*YSTEP
-#plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS5.dat" using 1:3 with lines title '5'
-#
-#set tmargin at screen TOP-5*YSTEP
-#set bmargin at screen TOP-6*YSTEP
-#plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS6.dat" using 1:3 with lines title '6'
-#
-#set tmargin at screen TOP-6*YSTEP
-#set bmargin at screen TOP-7*YSTEP
-#plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS7.dat" using 1:3 with lines title '7'
-#
-#set tmargin at screen TOP-7*YSTEP
-#set bmargin at screen TOP-8*YSTEP
-#plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS8.dat" using 1:3 with lines title '8'
-#
-#set tmargin at screen TOP-8*YSTEP
-#set bmargin at screen TOP-9*YSTEP
-#plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS9.dat" using 1:3 with lines title '9'
-#
-#set tmargin at screen TOP-9*YSTEP
-#set bmargin at screen TOP-10*YSTEP
-#plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS10.dat" using 1:3 with lines title '10'
-#
-#set tmargin at screen TOP-10*YSTEP
-#set bmargin at screen TOP-11*YSTEP
-#plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS11.dat" using 1:3 with lines title '11'
-#
-
-##### right hand side figures  ####
-#set lmargin at screen rhsL
-#set rmargin at screen rhsR
-#
-#set tmargin at screen TOP-11*YSTEP
-#set bmargin at screen TOP-12*YSTEP
-##set xtics 1,2,50                        # set steps for x axis
-#plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HSY.dat" using 1:3 with lines title 'Y'
-#
-##set ylabel "chr 1" offset 1
-##set xlabel ''
-#set xtics format ''
-#set tmargin at screen TOP-0*YSTEP
-#set bmargin at screen TOP-1*YSTEP
-#plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS13.dat" using 1:3 with lines title '13'
-#
-##set ylabel "chr 1" offset 0
-#set tmargin at screen TOP-1*YSTEP
-#set bmargin at screen TOP-2*YSTEP
-#plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS14.dat" using 1:3 with lines title '14'
-#
-##set ylabel "chr 1" offset -1
-#set tmargin at screen TOP-2*YSTEP
-#set bmargin at screen TOP-3*YSTEP
-#plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS15.dat" using 1:3 with lines title '15'
-#
-#set tmargin at screen TOP-3*YSTEP
-#set bmargin at screen TOP-4*YSTEP
-#plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS16.dat" using 1:3 with lines title '16'
-#
-#set tmargin at screen TOP-4*YSTEP
-#set bmargin at screen TOP-5*YSTEP
-#plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS17.dat" using 1:3 with lines title '17'
-#
-#set tmargin at screen TOP-5*YSTEP
-#set bmargin at screen TOP-6*YSTEP
-#plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS18.dat" using 1:3 with lines title '18'
-#
-#set tmargin at screen TOP-6*YSTEP
-#set bmargin at screen TOP-7*YSTEP
-#plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS19.dat" using 1:3 with lines title '19'
-#
-#set tmargin at screen TOP-7*YSTEP
-#set bmargin at screen TOP-8*YSTEP
-#plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS20.dat" using 1:3 with lines title '20'
-#
-#set tmargin at screen TOP-8*YSTEP
-#set bmargin at screen TOP-9*YSTEP
-#plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS21.dat" using 1:3 with lines title '21'
-#
-#set tmargin at screen TOP-9*YSTEP
-#set bmargin at screen TOP-10*YSTEP
-#plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS22.dat" using 1:3 with lines title '22'
-#
-#set tmargin at screen TOP-10*YSTEP
-#set bmargin at screen TOP-11*YSTEP
-#plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HSX.dat" using 1:3 with lines title 'X'
+###   second column   ###
+do for [i=13:22] {
+set xtics 5,5,50 scale 0.5      # set steps for x axis
+set xtics format ''
+set ytics format ''      # set steps for y axis
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:3 with lines linetype 7 linewidth 2.0 title "".i.""
+}
+###   chromosome X   ###
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HSX.dat" using 1:3 with lines linetype 7 linewidth 2.0 title "X"
+###   chromosome Y   ###
+set xtics add ("  1" 1, "5" 5, "10" 10, "15" 15, "20" 20, "25" 25, "30" 30, "35" 35, "40" 40, "45" 45, "50" 50) \
+    scale 0.5 offset 0.25,0.4 font ",10"
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HSY.dat" using 1:3 with lines linetype 7 linewidth 2.0 title "Y"
 
 
 unset multiplot; set output
