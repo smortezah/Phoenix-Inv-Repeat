@@ -46,7 +46,7 @@ ALPHA_DENS="1"    # list of alpha denominators    "1 20 100"
 MIN_CTX=2         # min context size
 MAX_CTX=3         # max context size   ->  real: -=1
 
-PIX_FORMAT=png      # output format: png, svg, eps, epslatex (set output x.y)
+PIX_FORMAT=svg      # output format: png, svg, eps, epslatex (set output x.y)
 #rm -f *.$PIX_FORMAT# remove FORMAT pictures, if they exist
 
 IR_NAME=i           # inverted repeat name
@@ -246,29 +246,30 @@ set term $PIX_FORMAT                    # set terminal for output picture format
 #     for [i=1:2]  "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:3  with linespoints ls "".i."" title "${CHR} ".i."", \
 
 
-set terminal pngcairo size 600, 850
+#set terminal pngcairo size 600, 850
+set terminal $PIX_FORMAT size 600, 850
 set output "$IR_NAME$ir-$a_NAME$alphaDen-ctx.$PIX_FORMAT"       # set output name
 
 TOP=0.99
 YSTEP=0.078
-LEFT=0.065
+LEFT=0.067
 XSTEP=0.43
-MIDDLE=0.055
+MIDDLE=0.053
 
 lhsL=LEFT                       # left hand side - left
 lhsR=LEFT+XSTEP                 # left hand side - right
 rhsL=LEFT+XSTEP+MIDDLE          # right hand side - left
 rhsR=LEFT+XSTEP+MIDDLE+XSTEP    # right hand side - right
 
-LS=7    # line style
+LS=1    # line style
 
 set multiplot
 set offset 0,0,graph 0.15, graph 0.15
 
 set grid
 set label 1 '%mutation' at screen 0.45,0.015
-set label 2 'context-order size' at screen 0.01,0.4 rotate 90
-set ytics 3,2,11 scale 0.7 offset 0.4,0 font ",10"                  # set steps for y axis
+set label 2 'context-order size' at screen 0.015,0.4 rotate by 90
+set ytics 3,2,11 scale 0.6 offset 0.4,0 font ",10"                  # set steps for y axis
 set xtics scale 0.5 offset 0,0.4 font ",10"                         # set steps for x axis
 
 
