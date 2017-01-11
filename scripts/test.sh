@@ -251,9 +251,9 @@ set output "$IR_NAME$ir-$a_NAME$alphaDen-ctx.$PIX_FORMAT"       # set output nam
 
 TOP=0.99
 YSTEP=0.078
-LEFT=0.07
+LEFT=0.05
 XSTEP=0.43
-MIDDLE=0.05
+MIDDLE=0.065
 
 lhsL=LEFT                       # left hand side - left
 lhsR=LEFT+XSTEP                 # left hand side - right
