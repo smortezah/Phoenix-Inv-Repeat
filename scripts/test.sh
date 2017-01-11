@@ -249,56 +249,72 @@ set term $PIX_FORMAT                    # set terminal for output picture format
 set terminal pngcairo size 600, 900
 set output 'stacking.png'
 
-set lmargin at screen 0.15
-set rmargin at screen 0.95
+#set lmargin at screen 0.15
+#set rmargin at screen 0.95
 
 TOP=0.98
-DY = 0.15
+YSTEP=0.15
+LEFT=0.05
+XSTEP=0.2
 
 set multiplot
 set offset 0,0,graph 0.05, graph 0.05
 
 set grid
 set xlabel 'time'
+set ytics 2,1,20                        # set steps for y axis
 
 #set ylabel "chr 1" offset 1
 #set xtics format ''
-set ytics 2,1,20                        # set steps for y axis
-set tmargin at screen TOP-2*DY
-set bmargin at screen TOP-3*DY
+#set tmargin at screen TOP-0*YSTEP
+#set bmargin at screen TOP-1*YSTEP
+#set lmargin at screen LEFT+0*XTEP
+#set rmargin at screen LEFT+1*XTEP
+set tmargin at screen 0
+set bmargin at screen 0
+set lmargin at screen 0
+set rmargin at screen 0
 plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS1.dat" using 1:3  with linespoints ls 7 title 'HS1'
 
-#set ylabel "chr 1" offset 0
-set xlabel ''
-set xtics format ''
-#set ytics 2,1,20                        # set steps for y axis
-set tmargin at screen TOP-1*DY
-set bmargin at screen TOP-2*DY
-plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS2.dat" using 1:3  with linespoints ls 7 title 'HS2'
-
-#set ylabel "chr 1" offset -1
-set xlabel ''
+##set ylabel "chr 1" offset 0
+#set xlabel ''
 #set xtics format ''
-#set ytics 2,1,20                        # set steps for y axis
-set tmargin at screen TOP-0*DY
-set bmargin at screen TOP-1*DY
-plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS3.dat" using 1:3  with linespoints ls 7 title 'HS3'
-
-#set ylabel "chr 1" offset -1
-set xlabel ''
+##set ytics 2,1,20                        # set steps for y axis
+#set tmargin at screen TOP-4*DY
+#set bmargin at screen TOP-5*DY
+#plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS2.dat" using 1:3  with linespoints ls 7 title 'HS2'
+#
+##set ylabel "chr 1" offset 0
+#set xlabel ''
 #set xtics format ''
-#set ytics 2,1,20                        # set steps for y axis
-set tmargin at screen TOP+1*DY
-set bmargin at screen TOP-0*DY
-plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS4.dat" using 1:3  with linespoints ls 7 title 'HS4'
-
-#set ylabel "chr 1" offset -1
-set xlabel ''
-#set xtics format ''
-#set ytics 2,1,20                        # set steps for y axis
-set tmargin at screen TOP+2*DY
-set bmargin at screen TOP+1*DY
-plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS5.dat" using 1:3  with linespoints ls 7 title 'HS5'
+##set ytics 2,1,20                        # set steps for y axis
+#set tmargin at screen TOP-3*DY
+#set bmargin at screen TOP-4*DY
+#plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS3.dat" using 1:3  with linespoints ls 7 title 'HS3'
+#
+##set ylabel "chr 1" offset -1
+#set xlabel ''
+##set xtics format ''
+##set ytics 2,1,20                        # set steps for y axis
+#set tmargin at screen TOP-2*DY
+#set bmargin at screen TOP-3*DY
+#plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS4.dat" using 1:3  with linespoints ls 7 title 'HS4'
+#
+##set ylabel "chr 1" offset -1
+#set xlabel ''
+##set xtics format ''
+##set ytics 2,1,20                        # set steps for y axis
+#set tmargin at screen TOP-1*DY
+#set bmargin at screen TOP-2*DY
+#plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS5.dat" using 1:3  with linespoints ls 7 title 'HS5'
+#
+##set ylabel "chr 1" offset -1
+#set xlabel ''
+##set xtics format ''
+##set ytics 2,1,20                        # set steps for y axis
+#set tmargin at screen TOP-0*DY
+#set bmargin at screen TOP-1*DY
+#plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS6.dat" using 1:3  with linespoints ls 7 title 'HS6'
 
 unset multiplot; set output
 
