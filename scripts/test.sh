@@ -251,9 +251,9 @@ set output "$IR_NAME$ir-$a_NAME$alphaDen-ctx.$PIX_FORMAT"       # set output nam
 
 TOP=0.99
 YSTEP=0.078
-LEFT=0.05
+LEFT=0.065
 XSTEP=0.43
-MIDDLE=0.065
+MIDDLE=0.055
 
 lhsL=LEFT                       # left hand side - left
 lhsR=LEFT+XSTEP                 # left hand side - right
@@ -266,9 +266,10 @@ set multiplot
 set offset 0,0,graph 0.15, graph 0.15
 
 set grid
-set label 1 'min context-order sizes per %mutation' at screen 0.25,0.012
-set ytics 3,2,11 scale 0.7 font ",10"                  # set steps for y axis
-set xtics scale 0.5 font ",10"                         # set steps for x axis
+set label 1 '%mutation' at screen 0.45,0.015
+set label 2 'context-order size' at screen 0.01,0.4 rotate 90
+set ytics 3,2,11 scale 0.7 offset 0.4,0 font ",10"                  # set steps for y axis
+set xtics scale 0.5 offset 0,0.4 font ",10"                         # set steps for x axis
 
 
 #### chromosome Y  ####
