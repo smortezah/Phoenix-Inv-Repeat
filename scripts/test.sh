@@ -279,8 +279,6 @@ set lmargin at screen rhsL
 set rmargin at screen rhsR
 set tmargin at screen TOP-11*YSTEP
 set bmargin at screen TOP-12*YSTEP
-#set xtics 1,2,50                        # set steps for x axis
-#set xtics add ("1" 1)
 plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HSY.dat" using 1:3 with lines linetype 7 linewidth 2.0 title 'Y'
 
 
