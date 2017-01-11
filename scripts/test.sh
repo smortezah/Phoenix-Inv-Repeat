@@ -46,7 +46,7 @@ ALPHA_DENS="1"    # list of alpha denominators    "1 20 100"
 MIN_CTX=2         # min context size
 MAX_CTX=3         # max context size   ->  real: -=1
 
-PIX_FORMAT=png    # output format: png, svg, eps, epslatex (set output x.y)
+PIX_FORMAT=svg    # output format: png, svg, eps, epslatex (set output x.y)
 #rm -f *.$PIX_FORMAT# remove FORMAT pictures, if they exist
 
 IR_NAME=i         # inverted repeat name
@@ -258,7 +258,7 @@ LS=1    # line style
 
 set grid
 set label 1 '%mutation' at screen 0.47,0.015
-set label 2 'context-order size' at screen 0.025,0.47 rotate by 90
+set label 2 'context-order size' at screen 0.02,0.47 rotate by 90
 set xtics 5,5,50 scale 0.35      # set steps for x axis
 set ytics 2,2,10 scale 0.5 offset 0.4,0 font ",10"      # set steps for y axis
 set yrange [ 2 : 10 ]
