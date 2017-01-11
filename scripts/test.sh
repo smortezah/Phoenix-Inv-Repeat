@@ -46,7 +46,7 @@ ALPHA_DENS="1"    # list of alpha denominators    "1 20 100"
 MIN_CTX=2         # min context size
 MAX_CTX=3         # max context size   ->  real: -=1
 
-PIX_FORMAT=svg    # output format: png, svg, eps, epslatex (set output x.y)
+PIX_FORMAT=png    # output format: png, svg, eps, epslatex (set output x.y)
 #rm -f *.$PIX_FORMAT# remove FORMAT pictures, if they exist
 
 IR_NAME=i         # inverted repeat name
@@ -249,6 +249,9 @@ set term $PIX_FORMAT                    # set terminal for output picture format
 #set terminal pngcairo size 600, 850
 set terminal $PIX_FORMAT size 600, 850
 set output "$IR_NAME$ir-$a_NAME$alphaDen-ctx.$PIX_FORMAT"       # set output name
+set multiplot
+set offset 0,0,graph 0.1, graph 0.1
+set key top right samplen 2 spacing 1.5 font ",11"
 
 TOP=0.99
 YSTEP=0.078
@@ -262,9 +265,6 @@ rhsL=LEFT+XSTEP+MIDDLE          # right hand side - left
 rhsR=LEFT+XSTEP+MIDDLE+XSTEP    # right hand side - right
 
 LS=1    # line style
-
-set multiplot
-set offset 0,0,graph 0.1, graph 0.1
 
 set grid
 set label 1 '%mutation' at screen 0.45,0.015
