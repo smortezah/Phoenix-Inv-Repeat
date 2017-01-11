@@ -46,7 +46,7 @@ ALPHA_DENS="1"    # list of alpha denominators    "1 20 100"
 MIN_CTX=2         # min context size
 MAX_CTX=3         # max context size   ->  real: -=1
 
-PIX_FORMAT=svg      # output format: png, svg, eps, epslatex (set output x.y)
+PIX_FORMAT=png      # output format: png, svg, eps, epslatex (set output x.y)
 #rm -f *.$PIX_FORMAT# remove FORMAT pictures, if they exist
 
 IR_NAME=i           # inverted repeat name
@@ -279,7 +279,7 @@ set rmargin at screen rhsR
 set tmargin at screen TOP-11*YSTEP
 set bmargin at screen TOP-12*YSTEP
 #set xtics 1,2,50                        # set steps for x axis
-plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HSY.dat" using 1:3  with linespoints ls LS title 'Y'
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HSY.dat" using 1:3 title 'Y'
 
 
 #### left hand side figures  ####
