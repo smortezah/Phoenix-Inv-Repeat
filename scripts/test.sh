@@ -258,10 +258,10 @@ LS=1    # line style
 
 set grid
 set label 1 '%mutation' at screen 0.47,0.015
-set label 2 'context-order size' at screen 0.02,0.47 rotate by 90
-set xtics 5,5,50 scale 0.5      # set steps for x axis
-set ytics 3,2,10 scale 0.6 offset 0.4,0 font ",10"      # set steps for y axis
-set yrange [ 3 : 10 ]
+set label 2 'context-order size' at screen 0.025,0.47 rotate by 90
+set xtics 5,5,50 scale 0.35      # set steps for x axis
+set ytics 2,2,10 scale 0.5 offset 0.4,0 font ",10"      # set steps for y axis
+set yrange [ 2 : 10 ]
 
 ###   first column   ###
 do for [i=1:11] {
@@ -270,12 +270,12 @@ plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:3 with lines l
 }
 ###   chromosome 12   ###
 set xtics add ("1" 1, "5" 5, "10" 10, "15" 15, "20" 20, "25" 25, "30" 30, "35" 35, "40" 40, "45" 45, "50  " 50) \
-    scale 0.5 offset 0.25,0.4 font ",10"
+    scale 0.35 offset 0.25,0.4 font ",10"
 plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS12.dat" using 1:3 with lines linetype 7 linewidth 2.0 title "12"
 
 ###   second column   ###
 do for [i=13:22] {
-set xtics 5,5,50 scale 0.5      # set steps for x axis
+set xtics 5,5,50 scale 0.35      # set steps for x axis
 set xtics format ''
 set ytics format ''      # set steps for y axis
 plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:3 with lines linetype 7 linewidth 2.0 title "".i.""
@@ -284,9 +284,8 @@ plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:3 with lines l
 plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HSX.dat" using 1:3 with lines linetype 7 linewidth 2.0 title "X"
 ###   chromosome Y   ###
 set xtics add ("  1" 1, "5" 5, "10" 10, "15" 15, "20" 20, "25" 25, "30" 30, "35" 35, "40" 40, "45" 45, "50" 50) \
-    scale 0.5 offset 0.25,0.4 font ",10"
+    scale 0.35 offset 0.25,0.4 font ",10"
 plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HSY.dat" using 1:3 with lines linetype 7 linewidth 2.0 title "Y"
-
 
 unset multiplot; set output
 
