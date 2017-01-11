@@ -247,10 +247,8 @@ set term $PIX_FORMAT                    # set terminal for output picture format
 
 
 set terminal pngcairo size 600, 850
-set output 'stacking.png'
-
-#set lmargin at screen 0.15
-#set rmargin at screen 0.95
+#set output 'stacking.png'
+set output "$IR_NAME$ir-$a_NAME$alphaDen-ctx.$PIX_FORMAT"       # set output name
 
 TOP=0.99
 YSTEP=0.078
