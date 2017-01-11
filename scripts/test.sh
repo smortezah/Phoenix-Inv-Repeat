@@ -294,6 +294,7 @@ plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS12.dat" using 1:3 with lines titl
 #set xlabel ''
 set xtics 5,5,50
 set xtics format ''
+
 set tmargin at screen TOP-0*YSTEP
 set bmargin at screen TOP-1*YSTEP
 plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS1.dat" using 1:3 with lines linetype 7 linewidth 2.0 title '1'
@@ -339,11 +340,6 @@ plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS10.dat" using 1:3 with lines titl
 set tmargin at screen TOP-10*YSTEP
 set bmargin at screen TOP-11*YSTEP
 plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS11.dat" using 1:3 with lines title '11'
-#
-#set tmargin at screen TOP-11*YSTEP
-#set bmargin at screen TOP-12*YSTEP
-##set xtics 1,2,50                        # set steps for x axis
-#plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS12.dat" using 1:3  with linespoints ls LS title '12'
 
 
 #### right hand side figures  ####
@@ -403,11 +399,6 @@ plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS22.dat" using 1:3 with lines titl
 set tmargin at screen TOP-10*YSTEP
 set bmargin at screen TOP-11*YSTEP
 plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HSX.dat" using 1:3 with lines title 'X'
-#
-#set tmargin at screen TOP-11*YSTEP
-#set bmargin at screen TOP-12*YSTEP
-##set xtics 1,2,50                        # set steps for x axis
-#plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HSY.dat" using 1:3  with linespoints ls LS title 'Y'
 
 
 unset multiplot; set output
