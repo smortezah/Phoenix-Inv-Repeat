@@ -267,7 +267,8 @@ set offset 0,0,graph 0.15, graph 0.15
 
 set grid
 set label 1 'min context-order sizes per %mutation' at screen 0.25,0.012
-set ytics 3,2,11                        # set steps for y axis
+set ytics 3,2,11 scale 0.7 font ",10"                       # set steps for y axis
+set xtics scale 0.5 font ",10"                         # set steps for y axis
 
 
 #### chromosome Y  ####
