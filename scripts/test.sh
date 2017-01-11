@@ -258,31 +258,30 @@ DY = 0.29
 set multiplot
 set offset 0,0,graph 0.05, graph 0.05
 
+set grid
 set xlabel 'time'
+
 #set ylabel "chr 1" offset 1
+set xtics format ''
+set ytics 2,1,20                        # set steps for y axis
+set tmargin at screen TOP-0*DY
+set bmargin at screen TOP-1*DY
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS1.dat" using 1:3  with linespoints ls 7 title 'HS1'
+
+#set ylabel "chr 1" offset 0
+set ytics 2,1,20                        # set steps for y axis
+set tmargin at screen TOP-1*DY
+set bmargin at screen TOP-2*DY
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS2.dat" using 1:3  with linespoints ls 7 title 'HS2'
+
+#set ylabel "chr 1" offset -1
+set xtics format ''
 set ytics 2,1,20                        # set steps for y axis
 set tmargin at screen TOP-2*DY
 set bmargin at screen TOP-3*DY
-set ytics -1000,500,1000
-plot for [i=1:1] "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:3  with linespoints ls "".i."" title ''
-
-
-set xtics format ''
-unset xlabel
-set ylabel 'ylabel 2' offset 0
-set tmargin at screen TOP-DY
-set bmargin at screen TOP-2*DY
-set ytics -100,50,100
-plot 101*sin(x) title ''
-
-set ylabel 'ylabel 3' offset -1
-set tmargin at screen TOP
-set bmargin at screen TOP-DY
-set ytics -8,4,8
-plot 10*sin(2*x) title ''
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS3.dat" using 1:3  with linespoints ls 7 title 'HS3'
 
 unset multiplot; set output
-
 
 # the following line (EOF) MUST be left as it is; i.e. no space, etc
 EOF
