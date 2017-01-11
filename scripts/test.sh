@@ -250,7 +250,7 @@ set term $PIX_FORMAT                    # set terminal for output picture format
 set terminal $PIX_FORMAT size 600, 850
 set output "$IR_NAME$ir-$a_NAME$alphaDen-ctx.$PIX_FORMAT"       # set output name
 #set multiplot
-set multiplot layout 12,2 columnsfirst margins 0.08,0.98,0.1,0.98 spacing 0.0,0.0
+set multiplot layout 12,2 columnsfirst margins 0.08,0.98,0.1,0.98 spacing 0.01,0.0
 set offset 0,0,graph 0.1, graph 0.1
 set key top right samplen 2 spacing 1.5 font ",11"
 
@@ -279,23 +279,24 @@ do for [i=1:11] {
 set xtics format ''
 plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:3 with lines linetype 7 linewidth 2.0 title "".i.""
 }
-
+###   chromosome 12   ###
 set xtics add ("1" 1, "5" 5, "10" 10, "15" 15, "20" 20, "25" 25, "30" 30, "35" 35, "40" 40, "45" 45, "50" 50) \
-    scale 0.5 offset 0,0.4 font ",10"
+    scale 0.5 offset 0.25,0.4 font ",10"
 plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS12.dat" using 1:3 with lines linetype 7 linewidth 2.0 title "12"
 
-###   second column   ###
-do for [i=13:22] {
-set xtics 5,5,50 scale 0.5      # set steps for x axis
-set xtics format ''
-set ytics format ''      # set steps for y axis
-set yrange [ 3 : 10 ]
-plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:3 with lines linetype 7 linewidth 2.0 title "".i.""
-}
-
-set xtics add ("1" 1, "5" 5, "10" 10, "15" 15, "20" 20, "25" 25, "30" 30, "35" 35, "40" 40, "45" 45, "50" 50) \
-    scale 0.5 offset 0,0.4 font ",10"
-plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS12.dat" using 1:3 with lines linetype 7 linewidth 2.0 title "12"
+####   second column   ###
+#do for [i=13:22] {
+#set xtics 5,5,50 scale 0.5      # set steps for x axis
+#set xtics format ''
+#set ytics format ''      # set steps for y axis
+#plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:3 with lines linetype 7 linewidth 2.0 title "".i.""
+#}
+####   chromosome X   ###
+#plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HSX.dat" using 1:3 with lines linetype 7 linewidth 2.0 title "X"
+####   chromosome Y   ###
+#set xtics add ("1" 1, "5" 5, "10" 10, "15" 15, "20" 20, "25" 25, "30" 30, "35" 35, "40" 40, "45" 45, "50" 50) \
+#    scale 0.5 offset 0,0.4 font ",10"
+#plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HSY.dat" using 1:3 with lines linetype 7 linewidth 2.0 title "Y"
 
 
 
