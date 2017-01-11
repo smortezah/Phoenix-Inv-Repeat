@@ -270,8 +270,8 @@ LS=1    # line style
 set grid
 set label 1 '%mutation' at screen 0.45,0.015
 set label 2 'context-order size' at screen 0.015,0.4 rotate by 90
-set ytics 3,2,11 scale 0.6 offset 0.4,0 font ",10"                  # set steps for y axis
-set xtics 5,5,50 scale 0.5 offset 0,0.4 font ",10"                         # set steps for x axis
+set ytics 3,2,11 scale 0.6 offset 0.4,0 font ",10"      # set steps for y axis
+set xtics 5,5,50 scale 0.5 offset 0,0.4 font ",10"      # set steps for x axis
 set xtics add ("1" 1)
 
 
