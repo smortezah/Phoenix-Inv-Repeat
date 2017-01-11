@@ -250,7 +250,7 @@ set term $PIX_FORMAT                    # set terminal for output picture format
 set terminal $PIX_FORMAT size 600, 850
 set output "$IR_NAME$ir-$a_NAME$alphaDen-ctx.$PIX_FORMAT"       # set output name
 #set multiplot
-set multiplot layout 4,2\
+set multiplot layout 2,2\
               margins 0.1,0.98,0.1,0.98 \
               spacing 0.0,0.0
 set offset 0,0,graph 0.1, graph 0.1
@@ -276,7 +276,8 @@ set ytics 3,2,11 scale 0.6 offset 0.4,0 font ",10"      # set steps for y axis
 set xtics 5,5,50 scale 0.5 offset 0,0.4 font ",10"      # set steps for x axis
 set xtics add ("1" 1)
 
-do for [i=1:8] {
+do for [i=1:4] {
+set xtics format ''
 plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:3 with lines linetype 7 linewidth 2.0 title "".i.""
 }
 
