@@ -194,7 +194,7 @@ fi  # end of running the program
 if [[ $PLOT_RESULTS == 1 ]]; then
 
 #for ir in $INV_REPEATS; do
-for ir in 0 1; do
+for ir in 0; do
     for alphaDen in $ALPHA_DENS; do
     #    for dataset in $datasets; do
     #        for mut in $MUT_LIST; do
@@ -243,7 +243,8 @@ set key top right                       # legend position
 #plot "dat/$IR_NAME$ir-$a_NAME$alphaDen-${dataset}.dat" using 1:3  with linespoints ls 7 title "$IR_NAME=$ir, $a_NAME=1/$alphaDen, $CHR$CURR_CHR"
 set output "$IR_NAME$ir-$a_NAME$alphaDen-ctx.$PIX_FORMAT"       # set output name
 plot \
-     for [i=1:1]  "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:3  with linespoints ls "".i."" title "${CHR} ".i."", \
+     for [i=1:2]  "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:3  with linespoints ls "".i."" title "${CHR} ".i."", \
+
 
 # the following line (EOF) MUST be left as it is; i.e. no space, etc
 EOF
