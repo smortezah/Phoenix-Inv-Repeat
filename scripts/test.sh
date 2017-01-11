@@ -265,8 +265,9 @@ LS=7    # line style
 set multiplot
 set offset 0,0,graph 0.15, graph 0.15
 
+
 set grid
-#set xlabel 'time'
+set label 1 'min context-order sizes per %mutation' at screen 0.25,0.025
 set ytics 3,2,11                        # set steps for y axis
 
 #### left hand side figures  ####
@@ -323,7 +324,6 @@ set tmargin at screen TOP-10*YSTEP
 set bmargin at screen TOP-11*YSTEP
 plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS11.dat" using 1:3  with linespoints ls LS title '11'
 
-set xlabel 'min context-order sizes per %mutation'
 set tmargin at screen TOP-11*YSTEP
 set bmargin at screen TOP-12*YSTEP
 #set xtics 1,2,50                        # set steps for x axis
