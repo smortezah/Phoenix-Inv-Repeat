@@ -279,7 +279,7 @@ set rmargin at screen rhsR
 set tmargin at screen TOP-11*YSTEP
 set bmargin at screen TOP-12*YSTEP
 #set xtics 1,2,50                        # set steps for x axis
-plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HSY.dat" using 1:3 title 'Y'
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HSY.dat" using 1:3 with lines title 'Y'
 
 
 #### left hand side figures  ####
@@ -289,56 +289,56 @@ set rmargin at screen lhsR
 set tmargin at screen TOP-11*YSTEP
 set bmargin at screen TOP-12*YSTEP
 #set xtics 1,2,50                        # set steps for x axis
-plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS12.dat" using 1:3  with linespoints ls LS title '12'
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS12.dat" using 1:3 with lines title '12'
 
 #set ylabel "chr 1" offset 1
 #set xlabel ''
 set xtics format ''
 set tmargin at screen TOP-0*YSTEP
 set bmargin at screen TOP-1*YSTEP
-plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS1.dat" using 1:3  with linespoints ls LS title '1'
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS1.dat" using 1:3 with lines title '1'
 
 #set ylabel "chr 1" offset 0
 set tmargin at screen TOP-1*YSTEP
 set bmargin at screen TOP-2*YSTEP
-plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS2.dat" using 1:3  with linespoints ls LS title '2'
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS2.dat" using 1:3 with lines title '2'
 
 #set ylabel "chr 1" offset -1
 set tmargin at screen TOP-2*YSTEP
 set bmargin at screen TOP-3*YSTEP
-plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS3.dat" using 1:3  with linespoints ls LS title '3'
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS3.dat" using 1:3 with lines title '3'
 
 set tmargin at screen TOP-3*YSTEP
 set bmargin at screen TOP-4*YSTEP
-plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS4.dat" using 1:3  with linespoints ls LS title '4'
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS4.dat" using 1:3 with lines title '4'
 
 set tmargin at screen TOP-4*YSTEP
 set bmargin at screen TOP-5*YSTEP
-plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS5.dat" using 1:3  with linespoints ls LS title '5'
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS5.dat" using 1:3 with lines title '5'
 
 set tmargin at screen TOP-5*YSTEP
 set bmargin at screen TOP-6*YSTEP
-plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS6.dat" using 1:3  with linespoints ls LS title '6'
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS6.dat" using 1:3 with lines title '6'
 
 set tmargin at screen TOP-6*YSTEP
 set bmargin at screen TOP-7*YSTEP
-plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS7.dat" using 1:3  with linespoints ls LS title '7'
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS7.dat" using 1:3 with lines title '7'
 
 set tmargin at screen TOP-7*YSTEP
 set bmargin at screen TOP-8*YSTEP
-plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS8.dat" using 1:3  with linespoints ls LS title '8'
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS8.dat" using 1:3 with lines title '8'
 
 set tmargin at screen TOP-8*YSTEP
 set bmargin at screen TOP-9*YSTEP
-plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS9.dat" using 1:3  with linespoints ls LS title '9'
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS9.dat" using 1:3 with lines title '9'
 
 set tmargin at screen TOP-9*YSTEP
 set bmargin at screen TOP-10*YSTEP
-plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS10.dat" using 1:3  with linespoints ls LS title '10'
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS10.dat" using 1:3 with lines title '10'
 
 set tmargin at screen TOP-10*YSTEP
 set bmargin at screen TOP-11*YSTEP
-plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS11.dat" using 1:3  with linespoints ls LS title '11'
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS11.dat" using 1:3 with lines title '11'
 #
 #set tmargin at screen TOP-11*YSTEP
 #set bmargin at screen TOP-12*YSTEP
@@ -353,56 +353,56 @@ set rmargin at screen rhsR
 set tmargin at screen TOP-11*YSTEP
 set bmargin at screen TOP-12*YSTEP
 #set xtics 1,2,50                        # set steps for x axis
-plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HSY.dat" using 1:3  with linespoints ls LS title 'Y'
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HSY.dat" using 1:3 with lines title 'Y'
 
 #set ylabel "chr 1" offset 1
 #set xlabel ''
 set xtics format ''
 set tmargin at screen TOP-0*YSTEP
 set bmargin at screen TOP-1*YSTEP
-plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS13.dat" using 1:3  with linespoints ls LS title '13'
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS13.dat" using 1:3 with lines title '13'
 
 #set ylabel "chr 1" offset 0
 set tmargin at screen TOP-1*YSTEP
 set bmargin at screen TOP-2*YSTEP
-plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS14.dat" using 1:3  with linespoints ls LS title '14'
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS14.dat" using 1:3 with lines title '14'
 
 #set ylabel "chr 1" offset -1
 set tmargin at screen TOP-2*YSTEP
 set bmargin at screen TOP-3*YSTEP
-plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS15.dat" using 1:3  with linespoints ls LS title '15'
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS15.dat" using 1:3 with lines title '15'
 
 set tmargin at screen TOP-3*YSTEP
 set bmargin at screen TOP-4*YSTEP
-plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS16.dat" using 1:3  with linespoints ls LS title '16'
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS16.dat" using 1:3 with lines title '16'
 
 set tmargin at screen TOP-4*YSTEP
 set bmargin at screen TOP-5*YSTEP
-plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS17.dat" using 1:3  with linespoints ls LS title '17'
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS17.dat" using 1:3 with lines title '17'
 
 set tmargin at screen TOP-5*YSTEP
 set bmargin at screen TOP-6*YSTEP
-plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS18.dat" using 1:3  with linespoints ls LS title '18'
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS18.dat" using 1:3 with lines title '18'
 
 set tmargin at screen TOP-6*YSTEP
 set bmargin at screen TOP-7*YSTEP
-plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS19.dat" using 1:3  with linespoints ls LS title '19'
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS19.dat" using 1:3 with lines title '19'
 
 set tmargin at screen TOP-7*YSTEP
 set bmargin at screen TOP-8*YSTEP
-plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS20.dat" using 1:3  with linespoints ls LS title '20'
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS20.dat" using 1:3 with lines title '20'
 
 set tmargin at screen TOP-8*YSTEP
 set bmargin at screen TOP-9*YSTEP
-plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS21.dat" using 1:3  with linespoints ls LS title '21'
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS21.dat" using 1:3 with lines title '21'
 
 set tmargin at screen TOP-9*YSTEP
 set bmargin at screen TOP-10*YSTEP
-plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS22.dat" using 1:3  with linespoints ls LS title '22'
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS22.dat" using 1:3 with lines title '22'
 
 set tmargin at screen TOP-10*YSTEP
 set bmargin at screen TOP-11*YSTEP
-plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HSX.dat" using 1:3  with linespoints ls LS title 'X'
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HSX.dat" using 1:3 with lines title 'X'
 #
 #set tmargin at screen TOP-11*YSTEP
 #set bmargin at screen TOP-12*YSTEP
