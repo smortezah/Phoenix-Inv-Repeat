@@ -265,14 +265,28 @@ LS=7    # line style
 set multiplot
 set offset 0,0,graph 0.15, graph 0.15
 
-
 set grid
-set label 1 'min context-order sizes per %mutation' at screen 0.25,0.025
+set label 1 'min context-order sizes per %mutation' at screen 0.25,0.012
 set ytics 3,2,11                        # set steps for y axis
+
+
+#### chromosome Y  ####
+set lmargin at screen rhsL
+set rmargin at screen rhsR
+set tmargin at screen TOP-11*YSTEP
+set bmargin at screen TOP-12*YSTEP
+#set xtics 1,2,50                        # set steps for x axis
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HSY.dat" using 1:3  with linespoints ls LS title 'Y'
+
 
 #### left hand side figures  ####
 set lmargin at screen lhsL
 set rmargin at screen lhsR
+
+set tmargin at screen TOP-11*YSTEP
+set bmargin at screen TOP-12*YSTEP
+#set xtics 1,2,50                        # set steps for x axis
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS12.dat" using 1:3  with linespoints ls LS title '12'
 
 #set ylabel "chr 1" offset 1
 #set xlabel ''
@@ -282,7 +296,6 @@ set bmargin at screen TOP-1*YSTEP
 plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS1.dat" using 1:3  with linespoints ls LS title '1'
 
 #set ylabel "chr 1" offset 0
-set xtics format ''
 set tmargin at screen TOP-1*YSTEP
 set bmargin at screen TOP-2*YSTEP
 plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS2.dat" using 1:3  with linespoints ls LS title '2'
@@ -323,28 +336,30 @@ plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS10.dat" using 1:3  with linespoin
 set tmargin at screen TOP-10*YSTEP
 set bmargin at screen TOP-11*YSTEP
 plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS11.dat" using 1:3  with linespoints ls LS title '11'
-
-set tmargin at screen TOP-11*YSTEP
-set bmargin at screen TOP-12*YSTEP
-#set xtics 1,2,50                        # set steps for x axis
-plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS12.dat" using 1:3  with linespoints ls LS title '12'
+#
+#set tmargin at screen TOP-11*YSTEP
+#set bmargin at screen TOP-12*YSTEP
+##set xtics 1,2,50                        # set steps for x axis
+#plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS12.dat" using 1:3  with linespoints ls LS title '12'
 
 
 #### right hand side figures  ####
 set lmargin at screen rhsL
 set rmargin at screen rhsR
 
-#set ytics format ''
+set tmargin at screen TOP-11*YSTEP
+set bmargin at screen TOP-12*YSTEP
+#set xtics 1,2,50                        # set steps for x axis
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HSY.dat" using 1:3  with linespoints ls LS title 'Y'
 
 #set ylabel "chr 1" offset 1
-set xlabel ''
+#set xlabel ''
 set xtics format ''
 set tmargin at screen TOP-0*YSTEP
 set bmargin at screen TOP-1*YSTEP
 plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS13.dat" using 1:3  with linespoints ls LS title '13'
 
 #set ylabel "chr 1" offset 0
-set xtics format ''
 set tmargin at screen TOP-1*YSTEP
 set bmargin at screen TOP-2*YSTEP
 plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS14.dat" using 1:3  with linespoints ls LS title '14'
@@ -385,11 +400,11 @@ plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS22.dat" using 1:3  with linespoin
 set tmargin at screen TOP-10*YSTEP
 set bmargin at screen TOP-11*YSTEP
 plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HSX.dat" using 1:3  with linespoints ls LS title 'X'
-
-set tmargin at screen TOP-11*YSTEP
-set bmargin at screen TOP-12*YSTEP
-#set xtics 1,2,50                        # set steps for x axis
-plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HSY.dat" using 1:3  with linespoints ls LS title 'Y'
+#
+#set tmargin at screen TOP-11*YSTEP
+#set bmargin at screen TOP-12*YSTEP
+##set xtics 1,2,50                        # set steps for x axis
+#plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HSY.dat" using 1:3  with linespoints ls LS title 'Y'
 
 
 unset multiplot; set output
