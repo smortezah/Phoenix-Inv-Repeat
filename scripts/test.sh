@@ -59,11 +59,11 @@ a_NAME=a          # alpha denominator name
 if [[ $DL_CHROMOSOMES == 1 ]]; then
 
 for((x=1;x!=23;++x));
-do wget ftp://ftp.ncbi.nlm.nih.gov/genomes/H_sapiens/Assembled_chromosomes/seq/hs_ref_GRCh38.p7_chr$x.fa.gz ; done
+ do wget ftp://ftp.ncbi.nlm.nih.gov/genomes/H_sapiens/Assembled_chromosomes/seq/hs_ref_GRCh38.p7_chr$x.fa.gz ; done
 wget ftp://ftp.ncbi.nlm.nih.gov/genomes/H_sapiens/Assembled_chromosomes/seq/hs_ref_GRCh38.p7_chrX.fa.gz
 wget ftp://ftp.ncbi.nlm.nih.gov/genomes/H_sapiens/Assembled_chromosomes/seq/hs_ref_GRCh38.p7_chrY.fa.gz
 for((x=1;x!=23;++x));
-do gunzip < hs_ref_GRCh38.p7_chr$x.fa.gz > chromosomes/hs_ref_GRCh38.p7_chr$x.fa; done
+ do gunzip < hs_ref_GRCh38.p7_chr$x.fa.gz > chromosomes/hs_ref_GRCh38.p7_chr$x.fa; done
 gunzip < hs_ref_GRCh38.p7_chrX.fa.gz > chromosomes/hs_ref_GRCh38.p7_chr23.fa;
 gunzip < hs_ref_GRCh38.p7_chrY.fa.gz > chromosomes/hs_ref_GRCh38.p7_chr24.fa;
 rm *.fa.gz
@@ -127,11 +127,11 @@ if [[ $GEN_MUTATIONS == 1 ]]; then
 #NUM_MUTATIONS=1     # number of mutations to be generated:     real: -=1
 
 for c in $chromosomes; do
-    for x in $MUT_LIST; do      #((x=1; x<$NUM_MUTATIONS; x+=1));
-    MRATE=`echo "scale=3;$x/100" | bc -l`;      # handle transition 0.09 -> 0.10
-    goose/src/goose-mutatefasta -s $x -a5 -mr $MRATE " " < chromosomes/${c}.fa > temp;
-    cat temp | grep -v ">" > $HUMAN_CHR${CURR_CHR}_$x      # remove the header line
-    done
+ for x in $MUT_LIST; do      #((x=1; x<$NUM_MUTATIONS; x+=1));
+ MRATE=`echo "scale=3;$x/100" | bc -l`;      # handle transition 0.09 -> 0.10
+ goose/src/goose-mutatefasta -s $x -a5 -mr $MRATE " " < chromosomes/${c}.fa > temp;
+ cat temp | grep -v ">" > $HUMAN_CHR${CURR_CHR}_$x      # remove the header line
+ done
 done
 rm -f temp*    # remove temporary files
 
