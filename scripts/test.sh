@@ -19,7 +19,7 @@ FLD_datasets="datasets"
 DL_HUMAN=0              # download Human choromosomes
 DL_CHIMP=0              # download Chimpanzee choromosomes
 FASTA2SEQ_HUMAN=0       # FASTA to sequence for Human
-FASTA2SEQ_CHIMP=0       # FASTA to sequence for Chimpanzee
+FASTA2SEQ_CHIMP=1       # FASTA to sequence for Chimpanzee
 INSTALL_XS=0            # install "XS" from Github
 INSTALL_goose=0         # install "goose" from Github
 GEN_DATASETS=0          # generate datasets using "XS"
@@ -176,13 +176,28 @@ fi  # end of download Chimpanzee choromosomes
 
 
 #***********************************************************
-#   FASTA to SEQ
+#   FASTA to SEQ for Human
 #***********************************************************
 if [[ $FASTA2SEQ_HUMAN == 1 ]]; then
 
-for i in {1..24}; do grep -v ">" $FLD_chromosomes/$HUMAN_CHR$i.fa > $FLD_datasets/$HUMAN_CHR$i; done
+for i in {1..24}; do
+ grep -v ">" $FLD_chromosomes/$HUMAN_CHR$i.fa > $FLD_datasets/$HUMAN_CHR$i;
+done
 
 fi  # end of FASTA to SEQ
+
+
+#***********************************************************
+#   FASTA to SEQ for Chimpanzee
+#***********************************************************
+if [[ $FASTA2SEQ_CHIMP == 1 ]]; then
+
+for i in 1 2A 2B {3..27}; do
+ grep -v ">" $FLD_chromosomes/$CHIMP_CHR$i.fa > $FLD_datasets/$CHIMP_CHR$i;
+done
+
+fi  # end of FASTA to SEQ
+
 
 
 #***********************************************************
