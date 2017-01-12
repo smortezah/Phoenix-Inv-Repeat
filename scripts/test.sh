@@ -46,7 +46,7 @@ ALPHA_DENS="1"    # list of alpha denominators    "1 20 100"
 MIN_CTX=2         # min context size
 MAX_CTX=3         # max context size   ->  real: -=1
 
-PIX_FORMAT=svg    # output format: png, svg, eps, epslatex (set output x.y)
+PIX_FORMAT=png    # output format: png, svg, eps, epslatex (set output x.y)
 #rm -f *.$PIX_FORMAT# remove FORMAT pictures, if they exist
 
 IR_NAME=i         # inverted repeat name
@@ -193,13 +193,13 @@ fi  # end of running the program
 if [[ $PLOT_RESULTS == 1 ]]; then
 
 #for ir in $INV_REPEATS; do
-for ir in 0 1; do
+for ir in 0; do
     for alphaDen in $ALPHA_DENS; do
     #    for dataset in $datasets; do
     #        for mut in $MUT_LIST; do
 
 gnuplot <<- EOF
-set term $PIX_FORMAT                    # set terminal for output picture format
+set term $PIX_FORMAT        # set terminal for output picture format
 
 ##########################    bpb    ##########################
 #set xlabel "% mutation"                 # set label of x axis
@@ -234,57 +234,47 @@ set term $PIX_FORMAT                    # set terminal for output picture format
 
 
 ##########################    ctx    ##########################
-##set xlabel "ctx"
-#set ylabel "context-order size"         # set label of y axis
-#set ytics 2,1,20                        # set steps for y axis
-#set key top right                       # legend position
-##set output "$IR_NAME$ir-$a_NAME$alphaDen-$dataset-ctx.$PIX_FORMAT"    # set output name
-##plot "dat/$IR_NAME$ir-$a_NAME$alphaDen-${dataset}.dat" using 1:3  with linespoints ls 7 title "$IR_NAME=$ir, $a_NAME=1/$alphaDen, $CHR$CURR_CHR"
-#set output "$IR_NAME$ir-$a_NAME$alphaDen-ctx.$PIX_FORMAT"       # set output name
-#plot \
-#     for [i=1:2]  "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:3  with linespoints ls "".i."" title "${CHR} ".i."", \
-
-
+#set ylabel "context-order size"                                 # set label of y axis
 #set terminal pngcairo size 600, 850
 set terminal $PIX_FORMAT size 600, 850
-set output "$IR_NAME$ir-$a_NAME$alphaDen-ctx.$PIX_FORMAT"       # set output name
-#set multiplot
+set output "$IR_NAME$ir-$a_NAME$alphaDen-ctx.$PIX_FORMAT"
 set multiplot layout 12,2 columnsfirst margins 0.08,0.98,0.06,0.98 spacing 0.013,0.0
 set offset 0,0,graph 0.1, graph 0.1
 set key top right samplen 2 spacing 1.5 font ",11"
 
-LS=1    # line style
+LT=7    # linetype
 
 set grid
 set label 1 '%mutation' at screen 0.47,0.015
 set label 2 'context-order size' at screen 0.02,0.47 rotate by 90
 set xtics 5,5,50 scale 0.35      # set steps for x axis
 set ytics 2,2,10 scale 0.5 offset 0.4,0 font ",10"      # set steps for y axis
-set yrange [ 2 : 10 ]
+set yrange [2:10]
 
-###   first column   ###
+#####   first column   #####
 do for [i=1:11] {
 set xtics format ''
-plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:3 with lines linetype 7 linewidth 2.0 title "".i.""
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:3 \
+     with lines linetype LT linewidth 2.0 title "".i.""
 }
 ###   chromosome 12   ###
 set xtics add ("1" 1, "5" 5, "10" 10, "15" 15, "20" 20, "25" 25, "30" 30, "35" 35, "40" 40, "45" 45, "50  " 50) \
     scale 0.35 offset 0.25,0.4 font ",10"
-plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS12.dat" using 1:3 with lines linetype 7 linewidth 2.0 title "12"
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS12.dat" using 1:3 with lines linetype LT linewidth 2.0 title "12"
 
 ###   second column   ###
 do for [i=13:22] {
 set xtics 5,5,50 scale 0.35      # set steps for x axis
 set xtics format ''
 set ytics format ''      # set steps for y axis
-plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:3 with lines linetype 7 linewidth 2.0 title "".i.""
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:3 with lines linetype LT linewidth 2.0 title "".i.""
 }
 ###   chromosome X   ###
-plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HSX.dat" using 1:3 with lines linetype 7 linewidth 2.0 title "X"
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HSX.dat" using 1:3 with lines linetype LT linewidth 2.0 title "X"
 ###   chromosome Y   ###
 set xtics add ("  1" 1, "5" 5, "10" 10, "15" 15, "20" 20, "25" 25, "30" 30, "35" 35, "40" 40, "45" 45, "50" 50) \
     scale 0.35 offset 0.25,0.4 font ",10"
-plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HSY.dat" using 1:3 with lines linetype 7 linewidth 2.0 title "Y"
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HSY.dat" using 1:3 with lines linetype LT linewidth 2.0 title "Y"
 
 unset multiplot; set output
 
