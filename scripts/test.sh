@@ -289,7 +289,7 @@ for ir in $INV_REPEATS; do
 #    touch $IR_LBL$ir-$a_LBL$alphaDen-${dataset}_$mut.$INF_FILE_TYPE
 #    touch $IR_LBL$ir-$a_LBL$alphaDen-$dataset.$INF_FILE_TYPE
 #    echo -e "# ir\talpha\tctx\tbpb\ttime(s)" >> $IR_LBL$ir-$a_LBL$alphaDen-${dataset}_$mut.$INF_FILE_TYPE
-    echo -e "# ir\talpha\tctx\tbpb\ttime(s)" #>> $IR_LBL$ir-$a_LBL$alphaDen-$refDataset.$INF_FILE_TYPE
+    echo -e "# ref\ttar\tir\talpha\tctx\tbpb\ttime(s)" #>> $IR_LBL$ir-$a_LBL$alphaDen-$refDataset.$INF_FILE_TYPE
      for((ctx=$MIN_CTX; ctx<$MAX_CTX; ctx+=1)); do
 #     for ctx in {2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20}; do
 #     ./phoenix -m t,$ctx,$alphaDen,$ir -t $FLD_archive_datasets/${dataset}_$mut -r $FLD_archive_datasets/${dataset}_$mut \

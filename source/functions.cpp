@@ -217,9 +217,12 @@ void Functions::commandLineParser (int argc, char **argv)
                                                         : models[ n ].setInvertedRepeat(true);
     
                 /// write reference and target file names in the output file
+                size_t lastSlash_Ref = models[ n ].getRefFileAddress().find_last_of("/");
+                size_t lastSlash_Tar = models[ n ].getTarFileAddress().find_last_of("/");
+                
                 cout << "  "
-                     << models[ n ].getRefFileAddress() << '\t'
-                     << models[ n ].getTarFileAddress() << '\t';
+                     << models[ n ].getRefFileAddress().substr(lastSlash_Ref + 1) << '\t'
+                     << models[ n ].getTarFileAddress().substr(lastSlash_Tar + 1) << '\t';
                         
                 /// build table or hash table for the model
                 (ctxDepth > TABLE_MAX_CONTEXT) ? models[ n ].buildHashTable()
