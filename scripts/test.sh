@@ -13,6 +13,7 @@ cd ..
 FLD_archive_dat="archive_dat"
 FLD_archive_datasets="archive_datasets"
 FLD_chromosomes="chromosomes"
+FLD_dat="dat"
 FLD_datasets="datasets"
 
 
@@ -201,9 +202,9 @@ done
 #-----------------------------------
 #   create "dat" folder and save the results
 #-----------------------------------
-###rm -fr dat              # remove "dat" folder, if it already exists
-##mkdir -p dat            # make "dat" folder
-#mv ${IR_NAME}*.dat dat  # move all created dat files to the "dat" folder
+###rm -fr $FLD_dat              # remove "dat" folder, if it already exists
+##mkdir -p $FLD_dat             # make "dat" folder
+#mv ${IR_NAME}*.dat $FLD_dat    # move all created dat files to the "dat" folder
 
 fi  # end of running the program
 
@@ -229,10 +230,10 @@ set term $PIX_FORMAT        # set terminal for output picture format
 #set xtics add ("1" 1)
 #set key bottom right                    # legend position
 ##set output "$IR_NAME$ir-$a_NAME$alphaDen-$dataset-bpb.$PIX_FORMAT"       # set output name
-##plot "dat/$IR_NAME$ir-$a_NAME$alphaDen-${dataset}.dat" using 1:2  with linespoints ls 7 title "$IR_NAME=$ir, $a_NAME=1/$alphaDen, $CHR$CURR_CHR"
+##plot "$FLD_dat/$IR_NAME$ir-$a_NAME$alphaDen-${dataset}.dat" using 1:2  with linespoints ls 7 title "$IR_NAME=$ir, $a_NAME=1/$alphaDen, $CHR$CURR_CHR"
 ##set output "$a_NAME$alphaDen-$dataset-bpb.$PIX_FORMAT"       # set output name
-##plot "dat/${IR_NAME}0-$a_NAME$alphaDen-${dataset}.dat" using 1:2  with linespoints ls 6 title "$IR_NAME=0, $a_NAME=1/$alphaDen, $CHR$CURR_CHR", \
-##     "dat/${IR_NAME}1-$a_NAME$alphaDen-${dataset}.dat" using 1:2  with linespoints ls 7 title "$IR_NAME=1, $a_NAME=1/$alphaDen, $CHR$CURR_CHR"
+##plot "$FLD_dat/${IR_NAME}0-$a_NAME$alphaDen-${dataset}.dat" using 1:2  with linespoints ls 6 title "$IR_NAME=0, $a_NAME=1/$alphaDen, $CHR$CURR_CHR", \
+##     "$FLD_dat/${IR_NAME}1-$a_NAME$alphaDen-${dataset}.dat" using 1:2  with linespoints ls 7 title "$IR_NAME=1, $a_NAME=1/$alphaDen, $CHR$CURR_CHR"
 #set output "$IR_NAME$ir-$a_NAME$alphaDen-bpb.$PIX_FORMAT"       # set output name
 #set title "IR=$ir,   Alpha=$alphaDen"
 ##plot for [i=1:22] "$FLD_archive_dat/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
@@ -322,7 +323,7 @@ fi  #end of plot output using "gnuplot"
 if [[ $ARCHIVE_DATA == 1 ]]; then
 
 mkdir -p archive
-mv dat/*.dat archive/
+mv $FLD_dat/*.dat archive/
 
 fi
 
