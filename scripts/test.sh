@@ -19,7 +19,7 @@ FLD_datasets="datasets"
 DL_HUMAN=0              # download Human choromosomes
 DL_CHIMP=0              # download Chimpanzee choromosomes
 FASTA2SEQ_HUMAN=0       # FASTA to sequence for Human
-FASTA2SEQ_CHIMP=1       # FASTA to sequence for Chimpanzee
+FASTA2SEQ_CHIMP=0       # FASTA to sequence for Chimpanzee
 INSTALL_XS=0            # install "XS" from Github
 INSTALL_goose=0         # install "goose" from Github
 GEN_DATASETS=0          # generate datasets using "XS"
@@ -54,16 +54,17 @@ datasets="$HUMAN_CHR$CURR_CHR"
 #do  datasets+=$HUMAN_CHR${i}" ";    done
 
 FILE_TYPE="fa"
+COMP_FILE_TYPE="gz"     # compressed file type
 
 PIX_FORMAT=png          # output format: png, svg, eps, epslatex (set output x.y)
 #rm -f *.$PIX_FORMAT    # remove FORMAT pictures, if they exist
-IR_LBL=i          # label for inverted repeat
-a_LBL=a           # label for alpha denominator
+IR_LBL=i                # label for inverted repeat
+a_LBL=a                 # label for alpha denominator
 
-INV_REPEATS="1"   # list of inverted repeats      "0 1"
-ALPHA_DENS="100"  # list of alpha denominators    "1 20 100"
-MIN_CTX=16        # min context size
-MAX_CTX=17        # max context size   ->  real: -=1
+INV_REPEATS="1"         # list of inverted repeats      "0 1"
+ALPHA_DENS="100"        # list of alpha denominators    "1 20 100"
+MIN_CTX=16              # min context size
+MAX_CTX=17              # max context size   ->  real: -=1
 
 
 #***********************************************************
@@ -72,12 +73,12 @@ MAX_CTX=17        # max context size   ->  real: -=1
 if [[ $DL_HUMAN == 1 ]]; then
 
 for i in {1..22} X Y; do
- wget ftp://ftp.ncbi.nlm.nih.gov/genomes/H_sapiens/Assembled_chromosomes/seq/$HUMAN_CHROMOSOME$i.fa.gz;
- gunzip < $HUMAN_CHROMOSOME$i.fa.gz > $FLD_chromosomes/$HUMAN_CHR$i.fa;
- rm $HUMAN_CHROMOSOME$i.fa.gz
+ wget ftp://ftp.ncbi.nlm.nih.gov/genomes/H_sapiens/Assembled_chromosomes/seq/$HUMAN_CHROMOSOME$i.$FILE_TYPE.$COMP_FILE_TYPE;
+ gunzip < $HUMAN_CHROMOSOME$i.$FILE_TYPE.$COMP_FILE_TYPE > $FLD_chromosomes/$HUMAN_CHR$i.$FILE_TYPE;
+ rm $HUMAN_CHROMOSOME$i.$FILE_TYPE.$COMP_FILE_TYPE
 done
-mv ${HUMAN_CHR}X.fa ${HUMAN_CHR}23.fa     # rename chrX to chr23
-mv ${HUMAN_CHR}Y.fa ${HUMAN_CHR}24.fa     # rename chrY to chr24
+mv ${HUMAN_CHR}X.$FILE_TYPE ${HUMAN_CHR}23.$FILE_TYPE     # rename chrX to chr23
+mv ${HUMAN_CHR}Y.$FILE_TYPE ${HUMAN_CHR}24.$FILE_TYPE     # rename chrY to chr24
 
 fi  # end of download Human choromosomes
 
@@ -94,7 +95,7 @@ INITALS="PT";
 MAX=22;
 WGETOP=" --trust-server-names -q ";
 ONWAY="ftp://ftp.ncbi.nlm.nih.gov/genomes/Pan_troglodytes/Assembled_chromosomes/seq/ptr_ref_Pan_tro_3.0_chr"
-#-----------------------------------------------------------------------------
+#--------------------------------------------------
 function downloadEach
   {
   PATTERN="unexpected";
@@ -119,33 +120,33 @@ for((x=1 ; x <= $MAX ; ++x));
   do
   if [ $x -ne "2" ];
     then
-    ZPATH="$ONWAY$x.fa.gz";
+    ZPATH="$ONWAY$x.$FILE_TYPE.$COMP_FILE_TYPE";
     downloadEach "$WGETOP" "$ZPATH" "$x" "$INITALS";
     zcat $INITALS-X$x > $INITALS$x.$FILE_TYPE;
     echo "$INITALS C$x filtered!";
   fi
   done
 
-ZPATH=$ONWAY"2A.fa.gz";
+ZPATH=$ONWAY"2A.$FILE_TYPE.$COMP_FILE_TYPE";
 downloadEach "$WGETOP" "$ZPATH" "2A" "$INITALS";
 zcat $INITALS-X2A > $INITALS"2A".$FILE_TYPE;
 echo "$INITALS C2A filtered";
 
-ZPATH=$ONWAY"2B.fa.gz";
+ZPATH=$ONWAY"2B.$FILE_TYPE.$COMP_FILE_TYPE";
 downloadEach "$WGETOP" "$ZPATH" "2B" "$INITALS";
 zcat $INITALS-X2B > $INITALS"2B".$FILE_TYPE;
 echo "$INITALS C2B filtered";
 
 CHR=23;
 FIELD="X";
-ZPATH="$ONWAY$FIELD.fa.gz";
+ZPATH="$ONWAY$FIELD.$FILE_TYPE.$COMP_FILE_TYPE";
 downloadEach "$WGETOP" "$ZPATH" "$CHR" "$INITALS";
 zcat $INITALS-X$CHR > $INITALS$CHR.$FILE_TYPE;
 echo "$INITALS CX filtered";
 
 CHR=24;
 FIELD="Y";
-ZPATH="$ONWAY$FIELD.fa.gz";
+ZPATH="$ONWAY$FIELD.$FILE_TYPE.$COMP_FILE_TYPE";
 downloadEach "$WGETOP" "$ZPATH" "$CHR" "$INITALS";
 zcat $INITALS-X$CHR > $INITALS$CHR.$FILE_TYPE;
 echo "$INITALS CY filtered";
@@ -168,7 +169,7 @@ echo "$INITALS MITOCONDRIA filtered";
 rm -f *PT-* $INITALS-X2A $INITALS-X2B;
 ##cat PT* > PT
 echo "Done!"
-#=============================================================================
+#==================================================
 
 mv ${CHIMP_CHR}* $FLD_chromosomes/
 
@@ -181,7 +182,7 @@ fi  # end of download Chimpanzee choromosomes
 if [[ $FASTA2SEQ_HUMAN == 1 ]]; then
 
 for i in {1..24}; do
- grep -v ">" $FLD_chromosomes/$HUMAN_CHR$i.fa > $FLD_datasets/$HUMAN_CHR$i;
+ grep -v ">" $FLD_chromosomes/$HUMAN_CHR$i.$FILE_TYPE > $FLD_datasets/$HUMAN_CHR$i;
 done
 
 fi  # end of FASTA to SEQ
@@ -193,7 +194,7 @@ fi  # end of FASTA to SEQ
 if [[ $FASTA2SEQ_CHIMP == 1 ]]; then
 
 for i in 1 2A 2B {3..27}; do
- grep -v ">" $FLD_chromosomes/$CHIMP_CHR$i.fa > $FLD_datasets/$CHIMP_CHR$i;
+ grep -v ">" $FLD_chromosomes/$CHIMP_CHR$i.$FILE_TYPE > $FLD_datasets/$CHIMP_CHR$i;
 done
 
 fi  # end of FASTA to SEQ
@@ -248,7 +249,7 @@ if [[ $GEN_MUTATIONS == 1 ]]; then
 for c in $chromosomes; do
  for x in $MUT_LIST; do      #((x=1; x<$NUM_MUTATIONS; x+=1));
  MRATE=`echo "scale=3;$x/100" | bc -l`;      # handle transition 0.09 -> 0.10
- goose/src/goose-mutatefasta -s $x -a5 -mr $MRATE " " < $FLD_chromosomes/$c.fa > temp;
+ goose/src/goose-mutatefasta -s $x -a5 -mr $MRATE " " < $FLD_chromosomes/$c.$FILE_TYPE > temp;
  cat temp | grep -v ">" > $HUMAN_CHR${CURR_CHR}_$x      # remove the header line
  done
 done
