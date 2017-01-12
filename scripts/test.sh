@@ -94,7 +94,7 @@ if [[ $FASTA2SEQ == 1 ]]; then
 
 for i in {1..24}; do grep -v ">" $FLD_chromosomes/$HUMAN_CHR$i.fa > $FLD_datasets/$HUMAN_CHR$i; done
 
-fi  # end of
+fi  # end of FASTA to SEQ
 
 
 #***********************************************************
