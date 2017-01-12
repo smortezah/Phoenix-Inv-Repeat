@@ -17,13 +17,13 @@ FLD_dat="dat"
 FLD_datasets="datasets"
 
 DL_HUMAN=0              # download Human choromosomes
-DL_CHIMP=0              # download Chimpanzee choromosomes
+DL_CHIMP=1              # download Chimpanzee choromosomes
 FASTA2SEQ=0             # FASTA to sequence
 INSTALL_XS=0            # install "XS" from Github
 INSTALL_goose=0         # install "goose" from Github
 GEN_DATASETS=0          # generate datasets using "XS"
 GEN_MUTATIONS=0         # generate mutations using "goose"
-RUN=1                   # run the program
+RUN=0                   # run the program
 PLOT_RESULTS=0          # plot results using "gnuplot"
 ARCHIVE_DATA=0          # archive data
 
