@@ -420,7 +420,7 @@ void FCM::buildHashTable ()
     averageEntropy = (-1) * sumOfEntropies / totalNOfSyms;
 
     cout
-            << sumOfEntropies << '\n'
+//            << sumOfEntropies << '\n'
 //            << totalNOfSyms << '\n'
             << "  "
             << getInvertedRepeat() << '\t'
