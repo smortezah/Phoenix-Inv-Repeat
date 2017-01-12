@@ -63,13 +63,13 @@ a_NAME=a          # alpha denominator name
 #***********************************************************
 if [[ $DL_HUMAN == 1 ]]; then
 
-for i in {21..21} Y; do
+for i in {1..22} X Y; do
  wget ftp://ftp.ncbi.nlm.nih.gov/genomes/H_sapiens/Assembled_chromosomes/seq/$HUMAN_CHROMOSOME$i.fa.gz;
- gunzip < $HUMAN_CHROMOSOME$i.fa.gz > chromosomes/$HUMAN_CHROMOSOME$i.fa;
+ gunzip < $HUMAN_CHROMOSOME$i.fa.gz > chromosomes/$HUMAN_CHR$i.fa;
  rm $HUMAN_CHROMOSOME$i.fa.gz
 done
-mv ${HUMAN_CHROMOSOME}X.fa ${HUMAN_CHROMOSOME}23.fa     # rename chrX to chr23
-mv ${HUMAN_CHROMOSOME}Y.fa ${HUMAN_CHROMOSOME}24.fa     # rename chrY to chr24
+mv ${HUMAN_CHR}X.fa ${HUMAN_CHR}23.fa     # rename chrX to chr23
+mv ${HUMAN_CHR}Y.fa ${HUMAN_CHR}24.fa     # rename chrY to chr24
 
 fi  # end of download Human choromosomes
 
