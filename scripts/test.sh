@@ -64,8 +64,8 @@ wget ftp://ftp.ncbi.nlm.nih.gov/genomes/H_sapiens/Assembled_chromosomes/seq/hs_r
 wget ftp://ftp.ncbi.nlm.nih.gov/genomes/H_sapiens/Assembled_chromosomes/seq/hs_ref_GRCh38.p7_chrY.fa.gz
 for((x=1;x!=23;++x));
 do gunzip < hs_ref_GRCh38.p7_chr$x.fa.gz > chromosomes/hs_ref_GRCh38.p7_chr$x.fa; done
-gunzip < hs_ref_GRCh38.p7_chrX.fa.gz > chromosomes/hs_ref_GRCh38.p7_chrX.fa;
-gunzip < hs_ref_GRCh38.p7_chrY.fa.gz > chromosomes/hs_ref_GRCh38.p7_chrY.fa;
+gunzip < hs_ref_GRCh38.p7_chrX.fa.gz > chromosomes/hs_ref_GRCh38.p7_chr23.fa;
+gunzip < hs_ref_GRCh38.p7_chrY.fa.gz > chromosomes/hs_ref_GRCh38.p7_chr24.fa;
 rm *.fa.gz
 
 
