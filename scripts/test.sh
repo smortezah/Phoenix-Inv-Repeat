@@ -17,7 +17,7 @@ FLD_dat="dat"
 FLD_datasets="datasets"
 
 DL_HUMAN=0              # download Human choromosomes
-DL_CHIMP=1              # download Chimpanzee choromosomes
+DL_CHIMP=0              # download Chimpanzee choromosomes
 FASTA2SEQ=0             # FASTA to sequence
 INSTALL_XS=0            # install "XS" from Github
 INSTALL_goose=0         # install "goose" from Github
@@ -51,6 +51,8 @@ datasets="$HUMAN_CHR$CURR_CHR"
 ##for i in {1..22} X Y #alts unlocalized unplaced
 #for i in {1..24}
 #do  datasets+=$HUMAN_CHR${i}" ";    done
+
+FILE_TYPE="fa"
 
 PIX_FORMAT=png          # output format: png, svg, eps, epslatex (set output x.y)
 #rm -f *.$PIX_FORMAT    # remove FORMAT pictures, if they exist
@@ -111,63 +113,63 @@ function downloadEach
     done
   }
 
-#echo "Downloading and filtering $INITALS sequences ..."
-#for((x=1 ; x <= $MAX ; ++x));
-#  do
-#  if [ $x -ne "2" ];
-#    then
-#    ZPATH="$ONWAY$x.fa.gz";
-#    downloadEach "$WGETOP" "$ZPATH" "$x" "$INITALS";
-#    zcat $INITALS-X$x > $INITALS$x;
-#    echo "$INITALS C$x filtered!";
-#  fi
-#  done
-#
-#ZPATH=$ONWAY"2A.fa.gz";
-#downloadEach "$WGETOP" "$ZPATH" "2A" "$INITALS";
-#zcat $INITALS-X2A > $INITALS"2A";
-#echo "$INITALS C2A filtered";
-#
-#ZPATH=$ONWAY"2B.fa.gz";
-#downloadEach "$WGETOP" "$ZPATH" "2B" "$INITALS";
-#zcat $INITALS-X2B > $INITALS"2B";
-#echo "$INITALS C2B filtered";
-#
-#CHR=23;
-#FIELD="X";
-#ZPATH="$ONWAY$FIELD.fa.gz";
-#downloadEach "$WGETOP" "$ZPATH" "$CHR" "$INITALS";
-#zcat $INITALS-X$CHR > $INITALS$CHR;
-#echo "$INITALS CX filtered";
-#
+echo "Downloading and filtering $INITALS sequences ..."
+for((x=1 ; x <= $MAX ; ++x));
+  do
+  if [ $x -ne "2" ];
+    then
+    ZPATH="$ONWAY$x.fa.gz";
+    downloadEach "$WGETOP" "$ZPATH" "$x" "$INITALS";
+    zcat $INITALS-X$x > $INITALS$x.$FILE_TYPE;
+    echo "$INITALS C$x filtered!";
+  fi
+  done
+
+ZPATH=$ONWAY"2A.fa.gz";
+downloadEach "$WGETOP" "$ZPATH" "2A" "$INITALS";
+zcat $INITALS-X2A > $INITALS"2A".$FILE_TYPE;
+echo "$INITALS C2A filtered";
+
+ZPATH=$ONWAY"2B.fa.gz";
+downloadEach "$WGETOP" "$ZPATH" "2B" "$INITALS";
+zcat $INITALS-X2B > $INITALS"2B".$FILE_TYPE;
+echo "$INITALS C2B filtered";
+
+CHR=23;
+FIELD="X";
+ZPATH="$ONWAY$FIELD.fa.gz";
+downloadEach "$WGETOP" "$ZPATH" "$CHR" "$INITALS";
+zcat $INITALS-X$CHR > $INITALS$CHR.$FILE_TYPE;
+echo "$INITALS CX filtered";
+
 CHR=24;
 FIELD="Y";
 ZPATH="$ONWAY$FIELD.fa.gz";
 downloadEach "$WGETOP" "$ZPATH" "$CHR" "$INITALS";
-zcat $INITALS-X$CHR > $INITALS$CHR.fa;
+zcat $INITALS-X$CHR > $INITALS$CHR.$FILE_TYPE;
 echo "$INITALS CY filtered";
 
-#CHR=25;
-#downloadEach "$WGETOP" "ftp://ftp.ncbi.nlm.nih.gov/genomes/Pan_troglodytes/Assembled_chromosomes/seq/ptr_ref_Pan_tro_3.0_unlocalized.fa.gz" "$CHR" "$INITALS";
-#zcat $INITALS-X$CHR > $INITALS$CHR;
-#echo "$INITALS UNLOCALIZED filtered";
-#
-#CHR=26;
-#downloadEach "$WGETOP" "ftp://ftp.ncbi.nlm.nih.gov/genomes/Pan_troglodytes/Assembled_chromosomes/seq/ptr_ref_Pan_tro_3.0_unplaced.fa.gz" "$CHR" "$INITALS";
-#zcat $INITALS-X$CHR > $INITALS$CHR;
-#echo "$INITALS UNPLACED filtered";
-#
-#CHR=27;
-#downloadEach "$WGETOP" "ftp://ftp.ncbi.nlm.nih.gov/genomes/Pan_troglodytes/Assembled_chromosomes/seq/ptr_ref_Pan_tro_3.0_chrMT.fa.gz" "$CHR" "$INITALS";
-#zcat $INITALS-X$CHR > $INITALS$CHR;
-#echo "$INITALS MITOCONDRIA filtered";
-#
+CHR=25;
+downloadEach "$WGETOP" "ftp://ftp.ncbi.nlm.nih.gov/genomes/Pan_troglodytes/Assembled_chromosomes/seq/ptr_ref_Pan_tro_3.0_unlocalized.fa.gz" "$CHR" "$INITALS";
+zcat $INITALS-X$CHR > $INITALS$CHR.$FILE_TYPE;
+echo "$INITALS UNLOCALIZED filtered";
+
+CHR=26;
+downloadEach "$WGETOP" "ftp://ftp.ncbi.nlm.nih.gov/genomes/Pan_troglodytes/Assembled_chromosomes/seq/ptr_ref_Pan_tro_3.0_unplaced.fa.gz" "$CHR" "$INITALS";
+zcat $INITALS-X$CHR > $INITALS$CHR.$FILE_TYPE;
+echo "$INITALS UNPLACED filtered";
+
+CHR=27;
+downloadEach "$WGETOP" "ftp://ftp.ncbi.nlm.nih.gov/genomes/Pan_troglodytes/Assembled_chromosomes/seq/ptr_ref_Pan_tro_3.0_chrMT.fa.gz" "$CHR" "$INITALS";
+zcat $INITALS-X$CHR > $INITALS$CHR.$FILE_TYPE;
+echo "$INITALS MITOCONDRIA filtered";
+
 rm -f *PT-* $INITALS-X2A $INITALS-X2B;
 ##cat PT* > PT
 echo "Done!"
 #=============================================================================
 
-mv ${CHIMP_CHR}* > $FLD_chromosomes/
+mv ${CHIMP_CHR}* $FLD_chromosomes/
 
 fi  # end of download Chimpanzee choromosomes
 
