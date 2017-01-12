@@ -12,7 +12,8 @@ cd ..
 ARCH_DAT="archive_dat"
 
 
-DL_HUMAN=0              # download choromosomes
+DL_HUMAN=0              # download Human choromosomes
+DL_CHIMP=0              # download Chimpanzee choromosomes
 INSTALL_XS=0            # install "XS" from Github
 INSTALL_goose=0         # install "goose" from Github
 GEN_DATASETS=0          # generate datasets using "XS"
@@ -54,28 +55,31 @@ a_NAME=a          # alpha denominator name
 
 
 #***********************************************************
-#   download choromosomes
+#   download Human choromosomes
 #***********************************************************
 if [[ $DL_HUMAN == 1 ]]; then
 
-#for((x=1;x!=23;++x));
-# do wget ftp://ftp.ncbi.nlm.nih.gov/genomes/H_sapiens/Assembled_chromosomes/seq/hs_ref_GRCh38.p7_chr$x.fa.gz ; done
-#wget ftp://ftp.ncbi.nlm.nih.gov/genomes/H_sapiens/Assembled_chromosomes/seq/hs_ref_GRCh38.p7_chrX.fa.gz
+for((i=1;i!=23;++i));
+ do wget ftp://ftp.ncbi.nlm.nih.gov/genomes/H_sapiens/Assembled_chromosomes/seq/hs_ref_GRCh38.p7_chr$i.fa.gz ; done
+wget ftp://ftp.ncbi.nlm.nih.gov/genomes/H_sapiens/Assembled_chromosomes/seq/hs_ref_GRCh38.p7_chrX.fa.gz
 wget ftp://ftp.ncbi.nlm.nih.gov/genomes/H_sapiens/Assembled_chromosomes/seq/hs_ref_GRCh38.p7_chrY.fa.gz
-#for((x=1;x!=23;++x));
-# do gunzip < hs_ref_GRCh38.p7_chr$x.fa.gz > chromosomes/hs_ref_GRCh38.p7_chr$x.fa; done
-#gunzip < hs_ref_GRCh38.p7_chrX.fa.gz > chromosomes/hs_ref_GRCh38.p7_chr23.fa;
-#gunzip < hs_ref_GRCh38.p7_chrY.fa.gz > chromosomes/hs_ref_GRCh38.p7_chr24.fa;
-#rm *.fa.gz
+for((i=1;i!=23;++i));
+ do gunzip < hs_ref_GRCh38.p7_chr$x.fa.gz > chromosomes/hs_ref_GRCh38.p7_chr$i.fa; done
+gunzip < hs_ref_GRCh38.p7_chrX.fa.gz > chromosomes/hs_ref_GRCh38.p7_chr23.fa;
+gunzip < hs_ref_GRCh38.p7_chrY.fa.gz > chromosomes/hs_ref_GRCh38.p7_chr24.fa;
+rm *.fa.gz
+
+fi  # end of download Human choromosomes
 
 
-##zcat hs_ref_GRCh38_chrX.fa.gz | grep -v ">" | tr -d -c "ACGTN" > HSC23 ;
-##zcat hs_ref_GRCh38_chrY.fa.gz | grep -v ">" | tr -d -c "ACGTN" > HSC24 ;
-#cat HSC* > HS.acgt;
-#rm -f *.fa.gz ;
-##rm -f GRC*
+#***********************************************************
+#   download Chimpanzee choromosomes
+#***********************************************************
+if [[ $DL_CHIMP == 1 ]]; then
 
-fi  # end of download choromosomes
+
+
+fi  # end of download Chimpanzee choromosomes
 
 
 #***********************************************************
