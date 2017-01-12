@@ -106,8 +106,8 @@ void FCM::buildTable ()
 //                                 (uint8_t) (ch % ALPHABET_SIZE);
 
             /// update table
-            ++table[ context * ALPH_SUM_SIZE + currSymInt ];
-//            nSym = table[ context * ALPH_SUM_SIZE + currSymInt ]++;
+//            ++table[ context * ALPH_SUM_SIZE + currSymInt ];
+////            nSym = table[ context * ALPH_SUM_SIZE + currSymInt ]++;
 
             /// considering inverted repeats to update hash table
             if (isInvertedRepeat)
@@ -308,8 +308,8 @@ void FCM::buildHashTable ()
 //                                 (uint8_t) (ch % ALPHABET_SIZE);
 
             /// update hash table
-            ++hTable[ context ][ currSymInt ];
-//            nSym = hTable[ context ][ currSymInt ]++;
+//            ++hTable[ context ][ currSymInt ];
+////            nSym = hTable[ context ][ currSymInt ]++;
 
             /// considering inverted repeats to update hash table
             if (isInvertedRepeat)

@@ -54,7 +54,7 @@ datasets="$HUMAN_CHR$CURR_CHR"
 #do  datasets+=$HUMAN_CHR${i}" ";    done
 
 REF_DATASET="";  for i in {21..21}; do REF_DATASET+=$HUMAN_CHR${i}" "; done # reference dataset
-TAR_DATASET="";  for i in {21..21}; do TAR_DATASET+=$CHIMP_CHR${i}" "; done # target dataset
+TAR_DATASET="";  for i in {24..24}; do TAR_DATASET+=$CHIMP_CHR${i}" "; done # target dataset
 
 FILE_TYPE="fa"
 COMP_FILE_TYPE="gz"     # compressed file type
@@ -66,8 +66,8 @@ a_LBL=a                 # label for alpha denominator
 
 INV_REPEATS="1"         # list of inverted repeats      "0 1"
 ALPHA_DENS="100"        # list of alpha denominators    "1 20 100"
-MIN_CTX=16              # min context size
-MAX_CTX=17              # max context size   ->  real: -=1
+MIN_CTX=2              # min context size
+MAX_CTX=3              # max context size   ->  real: -=1
 
 
 #***********************************************************
@@ -278,22 +278,24 @@ if [[ $RUN == 1 ]]; then
 
 for ir in $INV_REPEATS; do
  for alphaDen in $ALPHA_DENS; do
-  for dataset in $datasets; do
-##  rm -f $IR_LBL$ir-$a_LBL$alphaDen-${dataset}.dat
-#  touch $IR_LBL$ir-$a_LBL$alphaDen-$dataset.dat
-#  echo -e "# mut\tmin_bpb\tmin_ctx" >> $IR_LBL$ir-$a_LBL$alphaDen-$dataset.dat
-#   for mut in $MUT_LIST; do
-#   rm -f $IR_LBL$ir-$a_LBL$alphaDen-${dataset}_$mut.dat
-#   touch $IR_LBL$ir-$a_LBL$alphaDen-${dataset}_$mut.dat
+  for refDataset in $REF_DATASET; do
+   for tarDataset in $TAR_DATASET; do
+##   rm -f $IR_LBL$ir-$a_LBL$alphaDen-${dataset}.dat
 #   touch $IR_LBL$ir-$a_LBL$alphaDen-$dataset.dat
-#   echo -e "# ir\talpha\tctx\tbpb\ttime(s)" >> $IR_LBL$ir-$a_LBL$alphaDen-${dataset}_$mut.dat
-   echo -e "# ir\talpha\tctx\tbpb\ttime(s)" >> $IR_LBL$ir-$a_LBL$alphaDen-$dataset.dat
-    for((ctx=$MIN_CTX; ctx<$MAX_CTX; ctx+=1)); do
-#    for ctx in {2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20}; do
-#    ./phoenix -m t,$ctx,$alphaDen,$ir -t $FLD_archive_datasets/${dataset}_$mut -r $FLD_archive_datasets/${dataset}_$mut \
-    ./phoenix -m r,$ctx,$alphaDen,$ir -t $FLD_datasets/$dataset -r $FLD_datasets/$dataset \
-              >> $IR_LBL$ir-$a_LBL$alphaDen-$dataset.dat
-#              >> $IR_LBL$ir-$a_LBL$alphaDen-${dataset}_$mut.dat
+#   echo -e "# mut\tmin_bpb\tmin_ctx" >> $IR_LBL$ir-$a_LBL$alphaDen-$dataset.dat
+#    for mut in $MUT_LIST; do
+#    rm -f $IR_LBL$ir-$a_LBL$alphaDen-${dataset}_$mut.dat
+#    touch $IR_LBL$ir-$a_LBL$alphaDen-${dataset}_$mut.dat
+#    touch $IR_LBL$ir-$a_LBL$alphaDen-$dataset.dat
+#    echo -e "# ir\talpha\tctx\tbpb\ttime(s)" >> $IR_LBL$ir-$a_LBL$alphaDen-${dataset}_$mut.dat
+    echo -e "# ir\talpha\tctx\tbpb\ttime(s)" >> $IR_LBL$ir-$a_LBL$alphaDen-$refDataset.dat
+     for((ctx=$MIN_CTX; ctx<$MAX_CTX; ctx+=1)); do
+#     for ctx in {2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20}; do
+#     ./phoenix -m t,$ctx,$alphaDen,$ir -t $FLD_archive_datasets/${dataset}_$mut -r $FLD_archive_datasets/${dataset}_$mut \
+     ./phoenix -m r,$ctx,$alphaDen,$ir -t $FLD_datasets/$dataset -r $FLD_datasets/$dataset \
+               >> $IR_LBL$ir-$a_LBL$alphaDen-$dataset.dat
+#               >> $IR_LBL$ir-$a_LBL$alphaDen-${dataset}_$mut.dat
+     done
     done
 ##    # save "min bpb" and "min ctx" for each dataset
 #    minBpbCtx=$(awk 'NR==1 || $4 < minBpb {minBpb=$4; minCtx=$3}; \
