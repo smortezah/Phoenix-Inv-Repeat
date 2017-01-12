@@ -12,7 +12,7 @@ cd ..
 ARCH_DAT="archive_dat"
 
 
-DL_CHROMOSOMES=0        # download choromosomes
+DL_HUMAN=0              # download choromosomes
 INSTALL_XS=0            # install "XS" from Github
 INSTALL_goose=0         # install "goose" from Github
 GEN_DATASETS=0          # generate datasets using "XS"
@@ -56,17 +56,17 @@ a_NAME=a          # alpha denominator name
 #***********************************************************
 #   download choromosomes
 #***********************************************************
-if [[ $DL_CHROMOSOMES == 1 ]]; then
+if [[ $DL_HUMAN == 1 ]]; then
 
-for((x=1;x!=23;++x));
- do wget ftp://ftp.ncbi.nlm.nih.gov/genomes/H_sapiens/Assembled_chromosomes/seq/hs_ref_GRCh38.p7_chr$x.fa.gz ; done
-wget ftp://ftp.ncbi.nlm.nih.gov/genomes/H_sapiens/Assembled_chromosomes/seq/hs_ref_GRCh38.p7_chrX.fa.gz
+#for((x=1;x!=23;++x));
+# do wget ftp://ftp.ncbi.nlm.nih.gov/genomes/H_sapiens/Assembled_chromosomes/seq/hs_ref_GRCh38.p7_chr$x.fa.gz ; done
+#wget ftp://ftp.ncbi.nlm.nih.gov/genomes/H_sapiens/Assembled_chromosomes/seq/hs_ref_GRCh38.p7_chrX.fa.gz
 wget ftp://ftp.ncbi.nlm.nih.gov/genomes/H_sapiens/Assembled_chromosomes/seq/hs_ref_GRCh38.p7_chrY.fa.gz
-for((x=1;x!=23;++x));
- do gunzip < hs_ref_GRCh38.p7_chr$x.fa.gz > chromosomes/hs_ref_GRCh38.p7_chr$x.fa; done
-gunzip < hs_ref_GRCh38.p7_chrX.fa.gz > chromosomes/hs_ref_GRCh38.p7_chr23.fa;
-gunzip < hs_ref_GRCh38.p7_chrY.fa.gz > chromosomes/hs_ref_GRCh38.p7_chr24.fa;
-rm *.fa.gz
+#for((x=1;x!=23;++x));
+# do gunzip < hs_ref_GRCh38.p7_chr$x.fa.gz > chromosomes/hs_ref_GRCh38.p7_chr$x.fa; done
+#gunzip < hs_ref_GRCh38.p7_chrX.fa.gz > chromosomes/hs_ref_GRCh38.p7_chr23.fa;
+#gunzip < hs_ref_GRCh38.p7_chrY.fa.gz > chromosomes/hs_ref_GRCh38.p7_chr24.fa;
+#rm *.fa.gz
 
 
 ##zcat hs_ref_GRCh38_chrX.fa.gz | grep -v ">" | tr -d -c "ACGTN" > HSC23 ;
