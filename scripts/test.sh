@@ -154,27 +154,27 @@ make
 if [[ $RUN == 1 ]]; then
 
 for ir in $INV_REPEATS; do
-    for alphaDen in $ALPHA_DENS; do
-        for dataset in $datasets; do
-##        rm -f $IR_NAME$ir-$a_NAME$alphaDen-${dataset}.dat
-#        touch $IR_NAME$ir-$a_NAME$alphaDen-$dataset.dat
-#        echo -e "# mut\tmin_bpb\tmin_ctx" >> $IR_NAME$ir-$a_NAME$alphaDen-$dataset.dat
-            for mut in $MUT_LIST; do
-#            rm -f $IR_NAME$ir-$a_NAME$alphaDen-${dataset}_$mut.dat
-            touch $IR_NAME$ir-$a_NAME$alphaDen-${dataset}_$mut.dat
-            echo -e "# ir\talpha\tctx\tbpb\ttime(s)" >> $IR_NAME$ir-$a_NAME$alphaDen-${dataset}_$mut.dat
-                for((ctx=$MIN_CTX; ctx<$MAX_CTX; ctx+=1)); do
-#                for ctx in {2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20}; do
-                ./phoenix -m t,$ctx,$alphaDen,$ir -t archive_datasets/${dataset}_$mut -r archive_datasets/${dataset}_$mut \
-                        #>> $IR_NAME$ir-$a_NAME$alphaDen-${dataset}_$mut.dat
-                done
-##                # save "min bpb" and "min ctx" for each dataset
-#                minBpbCtx=$(awk 'NR==1 || $4 < minBpb {minBpb=$4; minCtx=$3}; \
-#                            END {print minBpb"\t"minCtx}' $IR_NAME$ir-$a_NAME$alphaDen-${dataset}_$mut.dat)
-#                echo -e "  $mut\t$minBpbCtx" >> $IR_NAME$ir-$a_NAME$alphaDen-$dataset.dat
-            done
-        done
+ for alphaDen in $ALPHA_DENS; do
+  for dataset in $datasets; do
+##  rm -f $IR_NAME$ir-$a_NAME$alphaDen-${dataset}.dat
+#  touch $IR_NAME$ir-$a_NAME$alphaDen-$dataset.dat
+#  echo -e "# mut\tmin_bpb\tmin_ctx" >> $IR_NAME$ir-$a_NAME$alphaDen-$dataset.dat
+   for mut in $MUT_LIST; do
+#   rm -f $IR_NAME$ir-$a_NAME$alphaDen-${dataset}_$mut.dat
+   touch $IR_NAME$ir-$a_NAME$alphaDen-${dataset}_$mut.dat
+   echo -e "# ir\talpha\tctx\tbpb\ttime(s)" >> $IR_NAME$ir-$a_NAME$alphaDen-${dataset}_$mut.dat
+    for((ctx=$MIN_CTX; ctx<$MAX_CTX; ctx+=1)); do
+#    for ctx in {2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20}; do
+    ./phoenix -m t,$ctx,$alphaDen,$ir -t archive_datasets/${dataset}_$mut -r archive_datasets/${dataset}_$mut \
+            #>> $IR_NAME$ir-$a_NAME$alphaDen-${dataset}_$mut.dat
     done
+##    # save "min bpb" and "min ctx" for each dataset
+#    minBpbCtx=$(awk 'NR==1 || $4 < minBpb {minBpb=$4; minCtx=$3}; \
+#                END {print minBpb"\t"minCtx}' $IR_NAME$ir-$a_NAME$alphaDen-${dataset}_$mut.dat)
+#    echo -e "  $mut\t$minBpbCtx" >> $IR_NAME$ir-$a_NAME$alphaDen-$dataset.dat
+   done
+  done
+ done
 done
 
 #-----------------------------------
@@ -194,9 +194,9 @@ if [[ $PLOT_RESULTS == 1 ]]; then
 
 #for ir in $INV_REPEATS; do
 for ir in 0; do
-    for alphaDen in $ALPHA_DENS; do
-    #    for dataset in $datasets; do
-    #        for mut in $MUT_LIST; do
+ for alphaDen in $ALPHA_DENS; do
+#  for dataset in $datasets; do
+#   for mut in $MUT_LIST; do
 
 gnuplot <<- EOF
 set term $PIX_FORMAT        # set terminal for output picture format
@@ -219,18 +219,18 @@ set term $PIX_FORMAT        # set terminal for output picture format
 ##     "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HSY.dat" using 1:2  with linespoints ls 24 title "${CHR} Y", \
 #
 #plot \
-#     for [i=1:8]    "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
-#     for [i=10:12]  "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
-#     for [i=18:18]  "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
-#                    "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HSX.dat" using 1:2  with linespoints ls 23 title "${CHR} X", \
-#     for [i=9:9]    "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
-#     for [i=16:16]  "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
-#     for [i=19:19]  "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
-##     for [i=17:17]  "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
-##     for [i=21:21]  "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
-##     for [i=22:22]  "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
-##     "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HSY.dat" using 1:2  with linespoints ls 24 title "${CHR} Y", \
-##     for [i=13:15]  "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
+# for [i=1:8]    "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
+# for [i=10:12]  "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
+# for [i=18:18]  "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
+#                "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HSX.dat" using 1:2  with linespoints ls 23 title "${CHR} X", \
+# for [i=9:9]    "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
+# for [i=16:16]  "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
+# for [i=19:19]  "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
+## for [i=17:17]  "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
+## for [i=21:21]  "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
+## for [i=22:22]  "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
+## "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HSY.dat" using 1:2  with linespoints ls 24 title "${CHR} Y", \
+## for [i=13:15]  "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
 
 
 ##########################    ctx    ##########################
@@ -262,14 +262,16 @@ plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:3 \
 ###   chromosome 12   ###
 set xtics add ("1" 1, "5" 5, "10" 10, "15" 15, "20" 20, "25" 25, "30" 30, "35" 35, "40" 40, "45" 45, "50  " 50) \
     scale AxisNumScale offset 0.25,0.4 font ",10"
-plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS12.dat" using 1:3 with lines linetype LT linewidth LW title "12"
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS12.dat" using 1:3 \
+     with lines linetype LT linewidth LW title "12"
 
 #####   second column   #####
 do for [i=13:22] {
 set xtics 5,5,50 scale AxisNumScale
 set xtics format ''
 set ytics format ''
-plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:3 with lines linetype LT linewidth LW title "".i.""
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:3 \
+     with lines linetype LT linewidth LW title "".i.""
 }
 ###   chromosome X   ###
 plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS23.dat" using 1:3 \
@@ -285,9 +287,9 @@ unset multiplot; set output
 # the following line (EOF) MUST be left as it is; i.e. no space, etc
 EOF
 
-    #        done
-    #    done
-    done
+#   done
+#  done
+ done
 done
 
 fi  #end of plot output using "gnuplot"
