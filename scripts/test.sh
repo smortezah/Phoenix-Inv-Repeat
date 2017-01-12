@@ -243,6 +243,7 @@ set offset 0,0,graph 0.1, graph 0.1
 set key top right samplen 2 spacing 1.5 font ",11"
 
 LT=7    # linetype
+LW=2.0  # linewidth
 
 set grid
 set label 1 '%mutation' at screen 0.47,0.015
@@ -255,26 +256,26 @@ set yrange [2:10]
 do for [i=1:11] {
 set xtics format ''
 plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:3 \
-     with lines linetype LT linewidth 2.0 title "".i.""
+     with lines linetype LT linewidth LW title "".i.""
 }
 ###   chromosome 12   ###
 set xtics add ("1" 1, "5" 5, "10" 10, "15" 15, "20" 20, "25" 25, "30" 30, "35" 35, "40" 40, "45" 45, "50  " 50) \
     scale 0.35 offset 0.25,0.4 font ",10"
-plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS12.dat" using 1:3 with lines linetype LT linewidth 2.0 title "12"
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS12.dat" using 1:3 with lines linetype LT linewidth LW title "12"
 
 ###   second column   ###
 do for [i=13:22] {
 set xtics 5,5,50 scale 0.35      # set steps for x axis
 set xtics format ''
 set ytics format ''      # set steps for y axis
-plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:3 with lines linetype LT linewidth 2.0 title "".i.""
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:3 with lines linetype LT linewidth LW title "".i.""
 }
 ###   chromosome X   ###
-plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HSX.dat" using 1:3 with lines linetype LT linewidth 2.0 title "X"
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HSX.dat" using 1:3 with lines linetype LT linewidth LW title "X"
 ###   chromosome Y   ###
 set xtics add ("  1" 1, "5" 5, "10" 10, "15" 15, "20" 20, "25" 25, "30" 30, "35" 35, "40" 40, "45" 45, "50" 50) \
     scale 0.35 offset 0.25,0.4 font ",10"
-plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HSY.dat" using 1:3 with lines linetype LT linewidth 2.0 title "Y"
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HSY.dat" using 1:3 with lines linetype LT linewidth LW title "Y"
 
 unset multiplot; set output
 
