@@ -32,7 +32,6 @@ using std::array;
 /// ye variable ro ham tanzim kon ke maloom she chand bar nesf kardim
 //typedef unordered_map< string, array< uint64_t, ALPHABET_SIZE > > htable_str_t;
 typedef unordered_map< uint64_t , array< uint64_t, ALPHABET_SIZE > > htable_t;
-//typedef unordered_map< uint64_t, array< uint64_t, ALPH_SUM_SIZE > > htable_t;
 
 
 #endif //PHOENIX_DEF_H
