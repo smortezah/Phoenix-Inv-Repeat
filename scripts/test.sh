@@ -68,8 +68,8 @@ for i in {21..21} Y; do
  gunzip < $HUMAN_CHROMOSOME$i.fa.gz > chromosomes/$HUMAN_CHROMOSOME$i.fa;
  rm $HUMAN_CHROMOSOME$i.fa.gz
 done
-mv ${HUMAN_CHROMOSOME}X.fa ${HUMAN_CHROMOSOME}23.fa
-mv ${HUMAN_CHROMOSOME}Y.fa ${HUMAN_CHROMOSOME}24.fa
+mv ${HUMAN_CHROMOSOME}X.fa ${HUMAN_CHROMOSOME}23.fa     # rename chrX to chr23
+mv ${HUMAN_CHROMOSOME}Y.fa ${HUMAN_CHROMOSOME}24.fa     # rename chrY to chr24
 
 fi  # end of download Human choromosomes
 
