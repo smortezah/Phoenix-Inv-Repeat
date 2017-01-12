@@ -56,9 +56,9 @@ IR_LBL=i          # label for inverted repeat
 a_LBL=a           # label for alpha denominator
 
 INV_REPEATS="1"   # list of inverted repeats      "0 1"
-ALPHA_DENS="100"    # list of alpha denominators    "1 20 100"
-MIN_CTX=20         # min context size
-MAX_CTX=21         # max context size   ->  real: -=1
+ALPHA_DENS="100"  # list of alpha denominators    "1 20 100"
+MIN_CTX=16        # min context size
+MAX_CTX=17        # max context size   ->  real: -=1
 
 
 #***********************************************************
