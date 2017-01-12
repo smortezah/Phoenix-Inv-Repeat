@@ -23,13 +23,13 @@ INSTALL_XS=0            # install "XS" from Github
 INSTALL_goose=0         # install "goose" from Github
 GEN_DATASETS=0          # generate datasets using "XS"
 GEN_MUTATIONS=0         # generate mutations using "goose"
-RUN=0                   # run the program
+RUN=1                   # run the program
 PLOT_RESULTS=0          # plot results using "gnuplot"
 ARCHIVE_DATA=0          # archive data
 
 # mutations list:   `seq -s' ' 1 10`
 #MUT_LIST="1 2 3 4 5 6 7 8 9 10 12 14 16 18 20 25 30 35 40 45 50"
-MUT_LIST="1"
+#MUT_LIST="1"
 
 HUMAN_CHR_PREFIX="hs_ref_GRCh38.p7_"
 CHR="chr"
@@ -55,10 +55,10 @@ PIX_FORMAT=png          # output format: png, svg, eps, epslatex (set output x.y
 IR_LBL=i          # label for inverted repeat
 a_LBL=a           # label for alpha denominator
 
-INV_REPEATS="0"   # list of inverted repeats      "0 1"
-ALPHA_DENS="1"    # list of alpha denominators    "1 20 100"
-MIN_CTX=2         # min context size
-MAX_CTX=3         # max context size   ->  real: -=1
+INV_REPEATS="1"   # list of inverted repeats      "0 1"
+ALPHA_DENS="100"    # list of alpha denominators    "1 20 100"
+MIN_CTX=20         # min context size
+MAX_CTX=21         # max context size   ->  real: -=1
 
 
 #***********************************************************
@@ -176,22 +176,24 @@ for ir in $INV_REPEATS; do
 ##  rm -f $IR_LBL$ir-$a_LBL$alphaDen-${dataset}.dat
 #  touch $IR_LBL$ir-$a_LBL$alphaDen-$dataset.dat
 #  echo -e "# mut\tmin_bpb\tmin_ctx" >> $IR_LBL$ir-$a_LBL$alphaDen-$dataset.dat
-   for mut in $MUT_LIST; do
+#   for mut in $MUT_LIST; do
 #   rm -f $IR_LBL$ir-$a_LBL$alphaDen-${dataset}_$mut.dat
 #   touch $IR_LBL$ir-$a_LBL$alphaDen-${dataset}_$mut.dat
 #   touch $IR_LBL$ir-$a_LBL$alphaDen-$dataset.dat
-   echo -e "# ir\talpha\tctx\tbpb\ttime(s)" >> $IR_LBL$ir-$a_LBL$alphaDen-${dataset}_$mut.dat
+#   echo -e "# ir\talpha\tctx\tbpb\ttime(s)" >> $IR_LBL$ir-$a_LBL$alphaDen-${dataset}_$mut.dat
+   echo -e "# ir\talpha\tctx\tbpb\ttime(s)" >> $IR_LBL$ir-$a_LBL$alphaDen-$dataset.dat
     for((ctx=$MIN_CTX; ctx<$MAX_CTX; ctx+=1)); do
 #    for ctx in {2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20}; do
 #    ./phoenix -m t,$ctx,$alphaDen,$ir -t $FLD_archive_datasets/${dataset}_$mut -r $FLD_archive_datasets/${dataset}_$mut \
-    ./phoenix -m t,$ctx,$alphaDen,$ir -t $FLD_archive_datasets/$dataset -r $FLD_archive_datasets/$dataset \
-            #>> $IR_LBL$ir-$a_LBL$alphaDen-${dataset}_$mut.dat
+    ./phoenix -m r,$ctx,$alphaDen,$ir -t $FLD_datasets/$dataset -r $FLD_datasets/$dataset \
+              >> $IR_LBL$ir-$a_LBL$alphaDen-$dataset.dat
+#              >> $IR_LBL$ir-$a_LBL$alphaDen-${dataset}_$mut.dat
     done
 ##    # save "min bpb" and "min ctx" for each dataset
 #    minBpbCtx=$(awk 'NR==1 || $4 < minBpb {minBpb=$4; minCtx=$3}; \
 #                END {print minBpb"\t"minCtx}' $IR_LBL$ir-$a_LBL$alphaDen-${dataset}_$mut.dat)
 #    echo -e "  $mut\t$minBpbCtx" >> $IR_LBL$ir-$a_LBL$alphaDen-$dataset.dat
-   done
+#   done
   done
  done
 done
