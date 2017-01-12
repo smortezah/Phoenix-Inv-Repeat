@@ -215,6 +215,12 @@ void Functions::commandLineParser (int argc, char **argv)
                 /// set the inverted repeat condition of the model
                 !stoi(vecParameters[ vecParamIndex++ ]) ? models[ n ].setInvertedRepeat(false)
                                                         : models[ n ].setInvertedRepeat(true);
+    
+                /// write reference and target file names in the output file
+                cout << "  "
+                     << models[ n ].getRefFileAddress() << '\t'
+                     << models[ n ].getTarFileAddress() << '\t';
+                        
                 /// build table or hash table for the model
                 (ctxDepth > TABLE_MAX_CONTEXT) ? models[ n ].buildHashTable()
                                                : models[ n ].buildTable();
