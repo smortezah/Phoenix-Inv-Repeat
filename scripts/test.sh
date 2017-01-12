@@ -234,7 +234,7 @@ set term $PIX_FORMAT        # set terminal for output picture format
 
 
 ##########################    ctx    ##########################
-#set ylabel "context-order size"                                 # set label of y axis
+#set ylabel "context-order size"
 #set terminal pngcairo size 600, 850
 set terminal $PIX_FORMAT size 600, 850
 set output "$IR_NAME$ir-$a_NAME$alphaDen-ctx.$PIX_FORMAT"
@@ -242,13 +242,14 @@ set multiplot layout 12,2 columnsfirst margins 0.08,0.98,0.06,0.98 spacing 0.013
 set offset 0,0,graph 0.1, graph 0.1
 set key top right samplen 2 spacing 1.5 font ",11"
 
-LT=7    # linetype
-LW=2.0  # linewidth
+LT=7                # linetype
+LW=2.0              # linewidth
+AxisNumScale=0.35   # axis numbers scale
 
 set grid
 set label 1 '%mutation' at screen 0.47,0.015
 set label 2 'context-order size' at screen 0.02,0.47 rotate by 90
-set xtics 5,5,50 scale 0.35      # set steps for x axis
+set xtics 5,5,50 scale 0.35                             # set steps for x axis
 set ytics 2,2,10 scale 0.5 offset 0.4,0 font ",10"      # set steps for y axis
 set yrange [2:10]
 
@@ -260,22 +261,24 @@ plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:3 \
 }
 ###   chromosome 12   ###
 set xtics add ("1" 1, "5" 5, "10" 10, "15" 15, "20" 20, "25" 25, "30" 30, "35" 35, "40" 40, "45" 45, "50  " 50) \
-    scale 0.35 offset 0.25,0.4 font ",10"
+    scale AxisNumScale offset 0.25,0.4 font ",10"
 plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS12.dat" using 1:3 with lines linetype LT linewidth LW title "12"
 
-###   second column   ###
+#####   second column   #####
 do for [i=13:22] {
-set xtics 5,5,50 scale 0.35      # set steps for x axis
+set xtics 5,5,50 scale AxisNumScale
 set xtics format ''
-set ytics format ''      # set steps for y axis
+set ytics format ''
 plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:3 with lines linetype LT linewidth LW title "".i.""
 }
 ###   chromosome X   ###
-plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HSX.dat" using 1:3 with lines linetype LT linewidth LW title "X"
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS23.dat" using 1:3 \
+     with lines linetype LT linewidth LW title "X"
 ###   chromosome Y   ###
 set xtics add ("  1" 1, "5" 5, "10" 10, "15" 15, "20" 20, "25" 25, "30" 30, "35" 35, "40" 40, "45" 45, "50" 50) \
-    scale 0.35 offset 0.25,0.4 font ",10"
-plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HSY.dat" using 1:3 with lines linetype LT linewidth LW title "Y"
+    scale AxisNumScale offset 0.25,0.4 font ",10"
+plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS24.dat" using 1:3 \
+     with lines linetype LT linewidth LW title "Y"
 
 unset multiplot; set output
 
