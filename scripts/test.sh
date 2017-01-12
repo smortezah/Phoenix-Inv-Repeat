@@ -90,8 +90,9 @@ fi  # end of download Human choromosomes
 #***********************************************************
 if [[ $FASTA2SEQ == 1 ]]; then
 
-cp chromosomes/$HUMAN_CHR$21.fa > temp
-cat temp | grep -v ">" > ${HUMAN_CHR}21
+for i in {1..24}; do
+ grep -v ">" chromosomes/$HUMAN_CHR$i.fa > datasets/$HUMAN_CHR$i
+done
 
 fi  # end of
 
