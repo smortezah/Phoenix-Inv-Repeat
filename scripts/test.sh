@@ -87,30 +87,30 @@ if [[ $DL_CHIMP == 1 ]]; then
 #===============================
 ###     BY: Diogo Pratas     ###
 #===============================
-#INITALS="PT";
-#MAX=22;
-#WGETOP=" --trust-server-names -q ";
-#ONWAY="ftp://ftp.ncbi.nlm.nih.gov/genomes/Pan_troglodytes/Assembled_chromosomes/seq/ptr_ref_Pan_tro_3.0_chr"
-##-----------------------------------------------------------------------------
-#function downloadEach
-#  {
-#  PATTERN="unexpected";
-#  for((;;));
-#    do
-#    sleep 2;
-#    xtmp="`wget $1 $2 -O $4-X$3`"
-#    if [[ "$xtmp" == *"$PATTERN"* ]];
-#      then
-#      echo "Unexpected EOF found, re-downloading C$3 ...";
-#      continue;
-#    else
-#      echo "wget stderr:$xtmp";
-#      echo "Downloaded $4 C$3 with success!";
-#      break;
-#    fi
-#    done
-#  }
-#
+INITALS="PT";
+MAX=22;
+WGETOP=" --trust-server-names -q ";
+ONWAY="ftp://ftp.ncbi.nlm.nih.gov/genomes/Pan_troglodytes/Assembled_chromosomes/seq/ptr_ref_Pan_tro_3.0_chr"
+#-----------------------------------------------------------------------------
+function downloadEach
+  {
+  PATTERN="unexpected";
+  for((;;));
+    do
+    sleep 2;
+    xtmp="`wget $1 $2 -O $4-X$3`"
+    if [[ "$xtmp" == *"$PATTERN"* ]];
+      then
+      echo "Unexpected EOF found, re-downloading C$3 ...";
+      continue;
+    else
+      echo "wget stderr:$xtmp";
+      echo "Downloaded $4 C$3 with success!";
+      break;
+    fi
+    done
+  }
+
 #echo "Downloading and filtering $INITALS sequences ..."
 #for((x=1 ; x <= $MAX ; ++x));
 #  do
@@ -140,13 +140,13 @@ if [[ $DL_CHIMP == 1 ]]; then
 #zcat $INITALS-X$CHR > $INITALS$CHR;
 #echo "$INITALS CX filtered";
 #
-#CHR=24;
-#FIELD="Y";
-#ZPATH="$ONWAY$FIELD.fa.gz";
-#downloadEach "$WGETOP" "$ZPATH" "$CHR" "$INITALS";
-#zcat $INITALS-X$CHR > $INITALS$CHR;
-#echo "$INITALS CY filtered";
-#
+CHR=24;
+FIELD="Y";
+ZPATH="$ONWAY$FIELD.fa.gz";
+downloadEach "$WGETOP" "$ZPATH" "$CHR" "$INITALS";
+zcat $INITALS-X$CHR > $INITALS$CHR.fa;
+echo "$INITALS CY filtered";
+
 #CHR=25;
 #downloadEach "$WGETOP" "ftp://ftp.ncbi.nlm.nih.gov/genomes/Pan_troglodytes/Assembled_chromosomes/seq/ptr_ref_Pan_tro_3.0_unlocalized.fa.gz" "$CHR" "$INITALS";
 #zcat $INITALS-X$CHR > $INITALS$CHR;
@@ -162,9 +162,9 @@ if [[ $DL_CHIMP == 1 ]]; then
 #zcat $INITALS-X$CHR > $INITALS$CHR;
 #echo "$INITALS MITOCONDRIA filtered";
 #
-#rm -f *PT-* $INITALS-X2A $INITALS-X2B;
-###cat PT* > PT
-#echo "Done!"
+rm -f *PT-* $INITALS-X2A $INITALS-X2B;
+##cat PT* > PT
+echo "Done!"
 #=============================================================================
 
 mv ${CHIMP_CHR}* > $FLD_chromosomes/
