@@ -52,8 +52,8 @@ datasets="$HUMAN_CHR$CURR_CHR"
 
 PIX_FORMAT=png          # output format: png, svg, eps, epslatex (set output x.y)
 #rm -f *.$PIX_FORMAT    # remove FORMAT pictures, if they exist
-IR_LBL=i         # inverted repeat name
-a_LBL=a          # alpha denominator name
+IR_LBL=i          # label for inverted repeat
+a_LBL=a           # label for alpha denominator
 
 INV_REPEATS="0"   # list of inverted repeats      "0 1"
 ALPHA_DENS="1"    # list of alpha denominators    "1 20 100"
