@@ -422,7 +422,7 @@ void FCM::buildHashTable ()
     cout
 //            << sumOfEntropies << '\n'
 //            << totalNOfSyms << '\n'
-            << "  "
+//            << "  "
             << getInvertedRepeat() << '\t'
             << (float) 1/alphaDen << '\t'
             << (int) contextDepth << '\t'
