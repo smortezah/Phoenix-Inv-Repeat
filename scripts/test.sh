@@ -9,12 +9,16 @@ cd ..
 #***********************************************************
 #   parameters to install and run needed programs
 #***********************************************************
-ARCH_DAT="archive_dat"
+### names of folders be used
+FLD_archive_dat="archive_dat"
+FLD_archive_datasets="archive_datasets"
+FLD_chromosomes="chromosomes"
+FLD_datasets="datasets"
 
 
 DL_HUMAN=0              # download Human choromosomes
 DL_CHIMP=0              # download Chimpanzee choromosomes
-FASTA2SEQ=1             # FASTA to sequence
+FASTA2SEQ=0             # FASTA to sequence
 INSTALL_XS=0            # install "XS" from Github
 INSTALL_goose=0         # install "goose" from Github
 GEN_DATASETS=0          # generate datasets using "XS"
@@ -66,7 +70,7 @@ if [[ $DL_HUMAN == 1 ]]; then
 
 for i in {1..22} X Y; do
  wget ftp://ftp.ncbi.nlm.nih.gov/genomes/H_sapiens/Assembled_chromosomes/seq/$HUMAN_CHROMOSOME$i.fa.gz;
- gunzip < $HUMAN_CHROMOSOME$i.fa.gz > chromosomes/$HUMAN_CHR$i.fa;
+ gunzip < $HUMAN_CHROMOSOME$i.fa.gz > $FLD_chromosomes/$HUMAN_CHR$i.fa;
  rm $HUMAN_CHROMOSOME$i.fa.gz
 done
 mv ${HUMAN_CHR}X.fa ${HUMAN_CHR}23.fa     # rename chrX to chr23
@@ -90,9 +94,7 @@ fi  # end of download Human choromosomes
 #***********************************************************
 if [[ $FASTA2SEQ == 1 ]]; then
 
-for i in {1..24}; do
- grep -v ">" chromosomes/$HUMAN_CHR$i.fa > datasets/$HUMAN_CHR$i
-done
+for i in {1..24}; do grep -v ">" $FLD_chromosomes/$HUMAN_CHR$i.fa > $FLD_datasets/$HUMAN_CHR$i; done
 
 fi  # end of
 
@@ -148,7 +150,7 @@ if [[ $GEN_MUTATIONS == 1 ]]; then
 for c in $chromosomes; do
  for x in $MUT_LIST; do      #((x=1; x<$NUM_MUTATIONS; x+=1));
  MRATE=`echo "scale=3;$x/100" | bc -l`;      # handle transition 0.09 -> 0.10
- goose/src/goose-mutatefasta -s $x -a5 -mr $MRATE " " < chromosomes/${c}.fa > temp;
+ goose/src/goose-mutatefasta -s $x -a5 -mr $MRATE " " < $FLD_chromosomes/${c}.fa > temp;
  cat temp | grep -v ">" > $HUMAN_CHR${CURR_CHR}_$x      # remove the header line
  done
 done
@@ -157,9 +159,9 @@ rm -f temp*    # remove temporary files
 #-----------------------------------
 #   move all generated mutations files to "datasets" folder
 #-----------------------------------
-##rm -fr datasets
-#mkdir -p datasets
-mv ${HUMAN_CHR}* datasets
+##rm -fr $FLD_datasets
+#mkdir -p $FLD_datasets
+mv ${HUMAN_CHR}* $FLD_datasets
 
 fi  # end of generating mutations using "goose"
 
@@ -184,7 +186,7 @@ for ir in $INV_REPEATS; do
    echo -e "# ir\talpha\tctx\tbpb\ttime(s)" >> $IR_NAME$ir-$a_NAME$alphaDen-${dataset}_$mut.dat
     for((ctx=$MIN_CTX; ctx<$MAX_CTX; ctx+=1)); do
 #    for ctx in {2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20}; do
-    ./phoenix -m t,$ctx,$alphaDen,$ir -t archive_datasets/${dataset}_$mut -r archive_datasets/${dataset}_$mut \
+    ./phoenix -m t,$ctx,$alphaDen,$ir -t $FLD_archive_datasets/${dataset}_$mut -r $FLD_archive_datasets/${dataset}_$mut \
             #>> $IR_NAME$ir-$a_NAME$alphaDen-${dataset}_$mut.dat
     done
 ##    # save "min bpb" and "min ctx" for each dataset
@@ -233,23 +235,23 @@ set term $PIX_FORMAT        # set terminal for output picture format
 ##     "dat/${IR_NAME}1-$a_NAME$alphaDen-${dataset}.dat" using 1:2  with linespoints ls 7 title "$IR_NAME=1, $a_NAME=1/$alphaDen, $CHR$CURR_CHR"
 #set output "$IR_NAME$ir-$a_NAME$alphaDen-bpb.$PIX_FORMAT"       # set output name
 #set title "IR=$ir,   Alpha=$alphaDen"
-##plot for [i=1:22] "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
-##     "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HSX.dat" using 1:2  with linespoints ls 23 title "${CHR} X", \
-##     "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HSY.dat" using 1:2  with linespoints ls 24 title "${CHR} Y", \
+##plot for [i=1:22] "$FLD_archive_dat/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
+##     "$FLD_archive_dat/$IR_NAME$ir-$a_NAME$alphaDen-HSX.dat" using 1:2  with linespoints ls 23 title "${CHR} X", \
+##     "$FLD_archive_dat/$IR_NAME$ir-$a_NAME$alphaDen-HSY.dat" using 1:2  with linespoints ls 24 title "${CHR} Y", \
 #
 #plot \
-# for [i=1:8]    "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
-# for [i=10:12]  "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
-# for [i=18:18]  "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
-#                "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HSX.dat" using 1:2  with linespoints ls 23 title "${CHR} X", \
-# for [i=9:9]    "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
-# for [i=16:16]  "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
-# for [i=19:19]  "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
-## for [i=17:17]  "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
-## for [i=21:21]  "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
-## for [i=22:22]  "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
-## "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HSY.dat" using 1:2  with linespoints ls 24 title "${CHR} Y", \
-## for [i=13:15]  "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
+# for [i=1:8]    "$FLD_archive_dat/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
+# for [i=10:12]  "$FLD_archive_dat/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
+# for [i=18:18]  "$FLD_archive_dat/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
+#                "$FLD_archive_dat/$IR_NAME$ir-$a_NAME$alphaDen-HSX.dat" using 1:2  with linespoints ls 23 title "${CHR} X", \
+# for [i=9:9]    "$FLD_archive_dat/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
+# for [i=16:16]  "$FLD_archive_dat/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
+# for [i=19:19]  "$FLD_archive_dat/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
+## for [i=17:17]  "$FLD_archive_dat/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
+## for [i=21:21]  "$FLD_archive_dat/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
+## for [i=22:22]  "$FLD_archive_dat/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
+## "$FLD_archive_dat/$IR_NAME$ir-$a_NAME$alphaDen-HSY.dat" using 1:2  with linespoints ls 24 title "${CHR} Y", \
+## for [i=13:15]  "$FLD_archive_dat/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
 
 
 ##########################    ctx    ##########################
@@ -275,13 +277,13 @@ set yrange [2:10]
 #####   first column   #####
 do for [i=1:11] {
 set xtics format ''
-plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:3 \
+plot "$FLD_archive_dat/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:3 \
      with lines linetype LT linewidth LW title "".i.""
 }
 ###   chromosome 12   ###
 set xtics add ("1" 1, "5" 5, "10" 10, "15" 15, "20" 20, "25" 25, "30" 30, "35" 35, "40" 40, "45" 45, "50  " 50) \
     scale AxisNumScale offset 0.25,0.4 font ",10"
-plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS12.dat" using 1:3 \
+plot "$FLD_archive_dat/$IR_NAME$ir-$a_NAME$alphaDen-HS12.dat" using 1:3 \
      with lines linetype LT linewidth LW title "12"
 
 #####   second column   #####
@@ -289,16 +291,16 @@ do for [i=13:22] {
 set xtics 5,5,50 scale AxisNumScale
 set xtics format ''
 set ytics format ''
-plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:3 \
+plot "$FLD_archive_dat/$IR_NAME$ir-$a_NAME$alphaDen-HS".i.".dat" using 1:3 \
      with lines linetype LT linewidth LW title "".i.""
 }
 ###   chromosome X   ###
-plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS23.dat" using 1:3 \
+plot "$FLD_archive_dat/$IR_NAME$ir-$a_NAME$alphaDen-HS23.dat" using 1:3 \
      with lines linetype LT linewidth LW title "X"
 ###   chromosome Y   ###
 set xtics add ("  1" 1, "5" 5, "10" 10, "15" 15, "20" 20, "25" 25, "30" 30, "35" 35, "40" 40, "45" 45, "50" 50) \
     scale AxisNumScale offset 0.25,0.4 font ",10"
-plot "$ARCH_DAT/$IR_NAME$ir-$a_NAME$alphaDen-HS24.dat" using 1:3 \
+plot "$FLD_archive_dat/$IR_NAME$ir-$a_NAME$alphaDen-HS24.dat" using 1:3 \
      with lines linetype LT linewidth LW title "Y"
 
 unset multiplot; set output
