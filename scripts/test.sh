@@ -18,7 +18,8 @@ FLD_datasets="datasets"
 
 DL_HUMAN=0              # download Human choromosomes
 DL_CHIMP=0              # download Chimpanzee choromosomes
-FASTA2SEQ=0             # FASTA to sequence
+FASTA2SEQ_HUMAN=0       # FASTA to sequence for Human
+FASTA2SEQ_CHIMP=0       # FASTA to sequence for Chimpanzee
 INSTALL_XS=0            # install "XS" from Github
 INSTALL_goose=0         # install "goose" from Github
 GEN_DATASETS=0          # generate datasets using "XS"
@@ -177,7 +178,7 @@ fi  # end of download Chimpanzee choromosomes
 #***********************************************************
 #   FASTA to SEQ
 #***********************************************************
-if [[ $FASTA2SEQ == 1 ]]; then
+if [[ $FASTA2SEQ_HUMAN == 1 ]]; then
 
 for i in {1..24}; do grep -v ">" $FLD_chromosomes/$HUMAN_CHR$i.fa > $FLD_datasets/$HUMAN_CHR$i; done
 
