@@ -319,8 +319,8 @@ fi  #end of plot output using "gnuplot"
 #***********************************************************
 if [[ $ARCHIVE_DATA == 1 ]]; then
 
-mkdir -p archive
-mv $FLD_dat/*.dat archive/
+#mkdir -p archive
+mv $FLD_dat/* $FLD_archive_dat/
 
 fi
 
