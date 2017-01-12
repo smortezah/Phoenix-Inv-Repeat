@@ -178,10 +178,12 @@ for ir in $INV_REPEATS; do
 #  echo -e "# mut\tmin_bpb\tmin_ctx" >> $IR_LBL$ir-$a_LBL$alphaDen-$dataset.dat
    for mut in $MUT_LIST; do
 #   rm -f $IR_LBL$ir-$a_LBL$alphaDen-${dataset}_$mut.dat
-   touch $IR_LBL$ir-$a_LBL$alphaDen-${dataset}_$mut.dat
+#   touch $IR_LBL$ir-$a_LBL$alphaDen-${dataset}_$mut.dat
+#   touch $IR_LBL$ir-$a_LBL$alphaDen-$dataset.dat
    echo -e "# ir\talpha\tctx\tbpb\ttime(s)" >> $IR_LBL$ir-$a_LBL$alphaDen-${dataset}_$mut.dat
     for((ctx=$MIN_CTX; ctx<$MAX_CTX; ctx+=1)); do
 #    for ctx in {2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20}; do
+#    ./phoenix -m t,$ctx,$alphaDen,$ir -t $FLD_archive_datasets/${dataset}_$mut -r $FLD_archive_datasets/${dataset}_$mut \
     ./phoenix -m t,$ctx,$alphaDen,$ir -t $FLD_archive_datasets/$dataset -r $FLD_archive_datasets/$dataset \
             #>> $IR_LBL$ir-$a_LBL$alphaDen-${dataset}_$mut.dat
     done
