@@ -56,8 +56,9 @@ datasets="$HUMAN_CHR$CURR_CHR"
 REF_DATASET="";  for i in {21..21}; do REF_DATASET+=$HUMAN_CHR${i}" "; done # reference dataset
 TAR_DATASET="";  for i in {24..24}; do TAR_DATASET+=$CHIMP_CHR${i}" "; done # target dataset
 
-FILE_TYPE="fa"
+FILE_TYPE="fa"          # file type
 COMP_FILE_TYPE="gz"     # compressed file type
+INF_FILE_TYPE="dat"      # information (data) file type
 
 PIX_FORMAT=png          # output format: png, svg, eps, epslatex (set output x.y)
 #rm -f *.$PIX_FORMAT    # remove FORMAT pictures, if they exist
@@ -280,27 +281,27 @@ for ir in $INV_REPEATS; do
  for alphaDen in $ALPHA_DENS; do
   for refDataset in $REF_DATASET; do
    for tarDataset in $TAR_DATASET; do
-##   rm -f $IR_LBL$ir-$a_LBL$alphaDen-${dataset}.dat
-#   touch $IR_LBL$ir-$a_LBL$alphaDen-$dataset.dat
-#   echo -e "# mut\tmin_bpb\tmin_ctx" >> $IR_LBL$ir-$a_LBL$alphaDen-$dataset.dat
+##   rm -f $IR_LBL$ir-$a_LBL$alphaDen-${dataset}.$INF_FILE_TYPE
+#   touch $IR_LBL$ir-$a_LBL$alphaDen-$dataset.$INF_FILE_TYPE
+#   echo -e "# mut\tmin_bpb\tmin_ctx" >> $IR_LBL$ir-$a_LBL$alphaDen-$dataset.$INF_FILE_TYPE
 #    for mut in $MUT_LIST; do
-#    rm -f $IR_LBL$ir-$a_LBL$alphaDen-${dataset}_$mut.dat
-#    touch $IR_LBL$ir-$a_LBL$alphaDen-${dataset}_$mut.dat
-#    touch $IR_LBL$ir-$a_LBL$alphaDen-$dataset.dat
-#    echo -e "# ir\talpha\tctx\tbpb\ttime(s)" >> $IR_LBL$ir-$a_LBL$alphaDen-${dataset}_$mut.dat
-    echo -e "# ir\talpha\tctx\tbpb\ttime(s)" >> $IR_LBL$ir-$a_LBL$alphaDen-$refDataset.dat
+#    rm -f $IR_LBL$ir-$a_LBL$alphaDen-${dataset}_$mut.$INF_FILE_TYPE
+#    touch $IR_LBL$ir-$a_LBL$alphaDen-${dataset}_$mut.$INF_FILE_TYPE
+#    touch $IR_LBL$ir-$a_LBL$alphaDen-$dataset.$INF_FILE_TYPE
+#    echo -e "# ir\talpha\tctx\tbpb\ttime(s)" >> $IR_LBL$ir-$a_LBL$alphaDen-${dataset}_$mut.$INF_FILE_TYPE
+    echo -e "# ir\talpha\tctx\tbpb\ttime(s)" >> $IR_LBL$ir-$a_LBL$alphaDen-$refDataset.$INF_FILE_TYPE
      for((ctx=$MIN_CTX; ctx<$MAX_CTX; ctx+=1)); do
 #     for ctx in {2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20}; do
 #     ./phoenix -m t,$ctx,$alphaDen,$ir -t $FLD_archive_datasets/${dataset}_$mut -r $FLD_archive_datasets/${dataset}_$mut \
      ./phoenix -m r,$ctx,$alphaDen,$ir -t $FLD_datasets/$dataset -r $FLD_datasets/$dataset \
-               >> $IR_LBL$ir-$a_LBL$alphaDen-$dataset.dat
-#               >> $IR_LBL$ir-$a_LBL$alphaDen-${dataset}_$mut.dat
+               >> $IR_LBL$ir-$a_LBL$alphaDen-$dataset.$INF_FILE_TYPE
+#               >> $IR_LBL$ir-$a_LBL$alphaDen-${dataset}_$mut.$INF_FILE_TYPE
      done
     done
 ##    # save "min bpb" and "min ctx" for each dataset
 #    minBpbCtx=$(awk 'NR==1 || $4 < minBpb {minBpb=$4; minCtx=$3}; \
-#                END {print minBpb"\t"minCtx}' $IR_LBL$ir-$a_LBL$alphaDen-${dataset}_$mut.dat)
-#    echo -e "  $mut\t$minBpbCtx" >> $IR_LBL$ir-$a_LBL$alphaDen-$dataset.dat
+#                END {print minBpb"\t"minCtx}' $IR_LBL$ir-$a_LBL$alphaDen-${dataset}_$mut.$INF_FILE_TYPE)
+#    echo -e "  $mut\t$minBpbCtx" >> $IR_LBL$ir-$a_LBL$alphaDen-$dataset.$INF_FILE_TYPE
 #   done
   done
  done
@@ -311,7 +312,7 @@ done
 #-----------------------------------
 ###rm -fr $FLD_dat              # remove "dat" folder, if it already exists
 ##mkdir -p $FLD_dat             # make "dat" folder
-#mv ${IR_LBL}*.dat $FLD_dat    # move all created dat files to the "dat" folder
+#mv ${IR_LBL}*.$INF_FILE_TYPE $FLD_dat    # move all created dat files to the "dat" folder
 
 fi  # end of running the program
 
@@ -337,29 +338,29 @@ set term $PIX_FORMAT        # set terminal for output picture format
 #set xtics add ("1" 1)
 #set key bottom right                    # legend position
 ##set output "$IR_LBL$ir-$a_LBL$alphaDen-$dataset-bpb.$PIX_FORMAT"       # set output name
-##plot "$FLD_dat/$IR_LBL$ir-$a_LBL$alphaDen-${dataset}.dat" using 1:2  with linespoints ls 7 title "$IR_LBL=$ir, $a_LBL=1/$alphaDen, $CHR$CURR_CHR"
+##plot "$FLD_dat/$IR_LBL$ir-$a_LBL$alphaDen-${dataset}.$INF_FILE_TYPE" using 1:2  with linespoints ls 7 title "$IR_LBL=$ir, $a_LBL=1/$alphaDen, $CHR$CURR_CHR"
 ##set output "$a_LBL$alphaDen-$dataset-bpb.$PIX_FORMAT"       # set output name
-##plot "$FLD_dat/${IR_LBL}0-$a_LBL$alphaDen-${dataset}.dat" using 1:2  with linespoints ls 6 title "$IR_LBL=0, $a_LBL=1/$alphaDen, $CHR$CURR_CHR", \
-##     "$FLD_dat/${IR_LBL}1-$a_LBL$alphaDen-${dataset}.dat" using 1:2  with linespoints ls 7 title "$IR_LBL=1, $a_LBL=1/$alphaDen, $CHR$CURR_CHR"
+##plot "$FLD_dat/${IR_LBL}0-$a_LBL$alphaDen-${dataset}.$INF_FILE_TYPE" using 1:2  with linespoints ls 6 title "$IR_LBL=0, $a_LBL=1/$alphaDen, $CHR$CURR_CHR", \
+##     "$FLD_dat/${IR_LBL}1-$a_LBL$alphaDen-${dataset}.$INF_FILE_TYPE" using 1:2  with linespoints ls 7 title "$IR_LBL=1, $a_LBL=1/$alphaDen, $CHR$CURR_CHR"
 #set output "$IR_LBL$ir-$a_LBL$alphaDen-bpb.$PIX_FORMAT"       # set output name
 #set title "IR=$ir,   Alpha=$alphaDen"
-##plot for [i=1:22] "$FLD_archive_dat/$IR_LBL$ir-$a_LBL$alphaDen-HS".i.".dat" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
-##     "$FLD_archive_dat/$IR_LBL$ir-$a_LBL$alphaDen-HSX.dat" using 1:2  with linespoints ls 23 title "${CHR} X", \
-##     "$FLD_archive_dat/$IR_LBL$ir-$a_LBL$alphaDen-HSY.dat" using 1:2  with linespoints ls 24 title "${CHR} Y", \
+##plot for [i=1:22] "$FLD_archive_dat/$IR_LBL$ir-$a_LBL$alphaDen-HS".i.".$INF_FILE_TYPE" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
+##     "$FLD_archive_dat/$IR_LBL$ir-$a_LBL$alphaDen-HSX.$INF_FILE_TYPE" using 1:2  with linespoints ls 23 title "${CHR} X", \
+##     "$FLD_archive_dat/$IR_LBL$ir-$a_LBL$alphaDen-HSY.$INF_FILE_TYPE" using 1:2  with linespoints ls 24 title "${CHR} Y", \
 #
 #plot \
-# for [i=1:8]    "$FLD_archive_dat/$IR_LBL$ir-$a_LBL$alphaDen-HS".i.".dat" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
-# for [i=10:12]  "$FLD_archive_dat/$IR_LBL$ir-$a_LBL$alphaDen-HS".i.".dat" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
-# for [i=18:18]  "$FLD_archive_dat/$IR_LBL$ir-$a_LBL$alphaDen-HS".i.".dat" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
-#                "$FLD_archive_dat/$IR_LBL$ir-$a_LBL$alphaDen-HSX.dat" using 1:2  with linespoints ls 23 title "${CHR} X", \
-# for [i=9:9]    "$FLD_archive_dat/$IR_LBL$ir-$a_LBL$alphaDen-HS".i.".dat" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
-# for [i=16:16]  "$FLD_archive_dat/$IR_LBL$ir-$a_LBL$alphaDen-HS".i.".dat" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
-# for [i=19:19]  "$FLD_archive_dat/$IR_LBL$ir-$a_LBL$alphaDen-HS".i.".dat" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
-## for [i=17:17]  "$FLD_archive_dat/$IR_LBL$ir-$a_LBL$alphaDen-HS".i.".dat" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
-## for [i=21:21]  "$FLD_archive_dat/$IR_LBL$ir-$a_LBL$alphaDen-HS".i.".dat" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
-## for [i=22:22]  "$FLD_archive_dat/$IR_LBL$ir-$a_LBL$alphaDen-HS".i.".dat" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
-## "$FLD_archive_dat/$IR_LBL$ir-$a_LBL$alphaDen-HSY.dat" using 1:2  with linespoints ls 24 title "${CHR} Y", \
-## for [i=13:15]  "$FLD_archive_dat/$IR_LBL$ir-$a_LBL$alphaDen-HS".i.".dat" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
+# for [i=1:8]    "$FLD_archive_dat/$IR_LBL$ir-$a_LBL$alphaDen-HS".i.".$INF_FILE_TYPE" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
+# for [i=10:12]  "$FLD_archive_dat/$IR_LBL$ir-$a_LBL$alphaDen-HS".i.".$INF_FILE_TYPE" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
+# for [i=18:18]  "$FLD_archive_dat/$IR_LBL$ir-$a_LBL$alphaDen-HS".i.".$INF_FILE_TYPE" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
+#                "$FLD_archive_dat/$IR_LBL$ir-$a_LBL$alphaDen-HSX.$INF_FILE_TYPE" using 1:2  with linespoints ls 23 title "${CHR} X", \
+# for [i=9:9]    "$FLD_archive_dat/$IR_LBL$ir-$a_LBL$alphaDen-HS".i.".$INF_FILE_TYPE" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
+# for [i=16:16]  "$FLD_archive_dat/$IR_LBL$ir-$a_LBL$alphaDen-HS".i.".$INF_FILE_TYPE" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
+# for [i=19:19]  "$FLD_archive_dat/$IR_LBL$ir-$a_LBL$alphaDen-HS".i.".$INF_FILE_TYPE" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
+## for [i=17:17]  "$FLD_archive_dat/$IR_LBL$ir-$a_LBL$alphaDen-HS".i.".$INF_FILE_TYPE" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
+## for [i=21:21]  "$FLD_archive_dat/$IR_LBL$ir-$a_LBL$alphaDen-HS".i.".$INF_FILE_TYPE" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
+## for [i=22:22]  "$FLD_archive_dat/$IR_LBL$ir-$a_LBL$alphaDen-HS".i.".$INF_FILE_TYPE" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
+## "$FLD_archive_dat/$IR_LBL$ir-$a_LBL$alphaDen-HSY.$INF_FILE_TYPE" using 1:2  with linespoints ls 24 title "${CHR} Y", \
+## for [i=13:15]  "$FLD_archive_dat/$IR_LBL$ir-$a_LBL$alphaDen-HS".i.".$INF_FILE_TYPE" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
 
 
 ##########################    ctx    ##########################
@@ -385,13 +386,13 @@ set yrange [2:10]
 #####   first column   #####
 do for [i=1:11] {
 set xtics format ''
-plot "$FLD_archive_dat/$IR_LBL$ir-$a_LBL$alphaDen-HS".i.".dat" using 1:3 \
+plot "$FLD_archive_dat/$IR_LBL$ir-$a_LBL$alphaDen-HS".i.".$INF_FILE_TYPE" using 1:3 \
      with lines linetype LT linewidth LW title "".i.""
 }
 ###   chromosome 12   ###
 set xtics add ("1" 1, "5" 5, "10" 10, "15" 15, "20" 20, "25" 25, "30" 30, "35" 35, "40" 40, "45" 45, "50  " 50) \
     scale AxisNumScale offset 0.25,0.4 font ",10"
-plot "$FLD_archive_dat/$IR_LBL$ir-$a_LBL$alphaDen-HS12.dat" using 1:3 \
+plot "$FLD_archive_dat/$IR_LBL$ir-$a_LBL$alphaDen-HS12.$INF_FILE_TYPE" using 1:3 \
      with lines linetype LT linewidth LW title "12"
 
 #####   second column   #####
@@ -399,16 +400,16 @@ do for [i=13:22] {
 set xtics 5,5,50 scale AxisNumScale
 set xtics format ''
 set ytics format ''
-plot "$FLD_archive_dat/$IR_LBL$ir-$a_LBL$alphaDen-HS".i.".dat" using 1:3 \
+plot "$FLD_archive_dat/$IR_LBL$ir-$a_LBL$alphaDen-HS".i.".$INF_FILE_TYPE" using 1:3 \
      with lines linetype LT linewidth LW title "".i.""
 }
 ###   chromosome X   ###
-plot "$FLD_archive_dat/$IR_LBL$ir-$a_LBL$alphaDen-HS23.dat" using 1:3 \
+plot "$FLD_archive_dat/$IR_LBL$ir-$a_LBL$alphaDen-HS23.$INF_FILE_TYPE" using 1:3 \
      with lines linetype LT linewidth LW title "X"
 ###   chromosome Y   ###
 set xtics add ("  1" 1, "5" 5, "10" 10, "15" 15, "20" 20, "25" 25, "30" 30, "35" 35, "40" 40, "45" 45, "50" 50) \
     scale AxisNumScale offset 0.25,0.4 font ",10"
-plot "$FLD_archive_dat/$IR_LBL$ir-$a_LBL$alphaDen-HS24.dat" using 1:3 \
+plot "$FLD_archive_dat/$IR_LBL$ir-$a_LBL$alphaDen-HS24.$INF_FILE_TYPE" using 1:3 \
      with lines linetype LT linewidth LW title "Y"
 
 unset multiplot; set output
