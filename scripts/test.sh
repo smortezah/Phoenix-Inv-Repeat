@@ -31,13 +31,13 @@ HUMAN_CHR="HS"
 CURR_CHR="21"
 chromosomes="$HUMAN_CHR_PREFIX$CHR$CURR_CHR"
 chromosomes=""
-#for i in {1..22} X Y
+#for i in {1..24}
 #do  chromosomes+=$HUMAN_CHR_PREFIX$CHR${i}" ";   done
 datasets="$HUMAN_CHR$CURR_CHR"
 #datasets="tmp"
 #datasets=""
-##for i in {4..22} X Y #alts unlocalized unplaced
-#for i in {1..22} X Y
+##for i in {1..22} X Y #alts unlocalized unplaced
+#for i in {1..24}
 #do  datasets+=$HUMAN_CHR${i}" ";    done
 
 
@@ -112,8 +112,7 @@ fi  # end of installing "goose"
 if [[ $GEN_DATASETS == 1 ]]; then
 
 XS/XS -ls 100 -n 100000 -rn 0 -f 0.20,0.20,0.20,0.20,0.20 -eh -eo -es datasetXS
-# add ">X" as the header of the sequence (build "nonRepX")
-echo ">X" > HEADER
+echo ">X" > HEADER      # add ">X" as the header of the sequence (build "nonRepX")
 cat HEADER datasetXS > dataset
 rm -f HEADER
 
