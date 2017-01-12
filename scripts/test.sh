@@ -9,13 +9,18 @@ cd ..
 #***********************************************************
 #   parameters to install and run needed programs
 #***********************************************************
-### names of folders be used
+### folders to be used
 FLD_archive_dat="archive_dat"
 FLD_archive_datasets="archive_datasets"
 FLD_chromosomes="chromosomes"
 FLD_dat="dat"
 FLD_datasets="datasets"
 
+PIX_FORMAT=png          # output format: png, svg, eps, epslatex (set output x.y)
+#rm -f *.$PIX_FORMAT    # remove FORMAT pictures, if they exist
+
+IR_NAME=i         # inverted repeat name
+a_NAME=a          # alpha denominator name
 
 DL_HUMAN=0              # download Human choromosomes
 DL_CHIMP=0              # download Chimpanzee choromosomes
@@ -57,11 +62,6 @@ ALPHA_DENS="1"    # list of alpha denominators    "1 20 100"
 MIN_CTX=2         # min context size
 MAX_CTX=3         # max context size   ->  real: -=1
 
-PIX_FORMAT=png    # output format: png, svg, eps, epslatex (set output x.y)
-#rm -f *.$PIX_FORMAT# remove FORMAT pictures, if they exist
-
-IR_NAME=i         # inverted repeat name
-a_NAME=a          # alpha denominator name
 
 
 #***********************************************************
