@@ -53,8 +53,8 @@ datasets="$HUMAN_CHR$CURR_CHR"
 #for i in {1..24}
 #do  datasets+=$HUMAN_CHR${i}" ";    done
 
-REF_DATASET="";  for i in {21..21}; do REF_DATASET+=$HUMAN_CHR${i}" "; done # reference dataset
-TAR_DATASET="";  for i in {22..22}; do TAR_DATASET+=$CHIMP_CHR${i}" "; done # target dataset
+REF_DATASET="";  for i in {6..12}; do REF_DATASET+=$HUMAN_CHR${i}" "; done # reference dataset
+TAR_DATASET="";  for i in 1 2A 2B {3..24}; do TAR_DATASET+=$CHIMP_CHR${i}" "; done # target dataset
 
 FILE_TYPE="fa"          # file type
 COMP_FILE_TYPE="gz"     # compressed file type
@@ -67,7 +67,7 @@ a_LBL=a                 # label for alpha denominator
 
 INV_REPEATS="1"         # list of inverted repeats      "0 1"
 ALPHA_DENS="100"        # list of alpha denominators    "1 20 100"
-MIN_CTX=2              # min context size
+MIN_CTX=20              # min context size
 MAX_CTX=21              # max context size   ->  real: -=1
 
 
@@ -289,12 +289,12 @@ for ir in $INV_REPEATS; do
 #    touch $IR_LBL$ir-$a_LBL$alphaDen-${dataset}_$mut.$INF_FILE_TYPE
 #    touch $IR_LBL$ir-$a_LBL$alphaDen-$dataset.$INF_FILE_TYPE
 #    echo -e "# ir\talpha\tctx\tbpb\ttime(s)" >> $IR_LBL$ir-$a_LBL$alphaDen-${dataset}_$mut.$INF_FILE_TYPE
-    echo -e "# ref\ttar\tir\talpha\tctx\tbpb\ttime(s)" #>> $IR_LBL$ir-$a_LBL$alphaDen-$refDataset.$INF_FILE_TYPE
+    echo -e "# ref\ttar\tir\talpha\tctx\tbpb\ttime(s)" >> $IR_LBL$ir-$a_LBL$alphaDen-$refDataset.$INF_FILE_TYPE
      for((ctx=$MIN_CTX; ctx<$MAX_CTX; ctx+=1)); do
 #     for ctx in {2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20}; do
 #     ./phoenix -m t,$ctx,$alphaDen,$ir -t $FLD_archive_datasets/${dataset}_$mut -r $FLD_archive_datasets/${dataset}_$mut \
      ./phoenix -m r,$ctx,$alphaDen,$ir -t $FLD_datasets/$tarDataset -r $FLD_datasets/$refDataset \
-#               >> $IR_LBL$ir-$a_LBL$alphaDen-$refDataset.$INF_FILE_TYPE
+               >> $IR_LBL$ir-$a_LBL$alphaDen-$refDataset.$INF_FILE_TYPE
 #               >> $IR_LBL$ir-$a_LBL$alphaDen-${dataset}_$mut.$INF_FILE_TYPE
      done
     done
