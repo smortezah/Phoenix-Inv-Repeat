@@ -24,7 +24,7 @@ INSTALL_XS=0            # install "XS" from Github
 INSTALL_goose=0         # install "goose" from Github
 GEN_DATASETS=0          # generate datasets using "XS"
 GEN_MUTATIONS=0         # generate mutations using "goose"
-RUN=0                   # run the program
+RUN=1                   # run the program
 PLOT_RESULTS=0          # plot results using "gnuplot"
 ARCHIVE_DATA=0          # archive data
 
@@ -52,6 +52,9 @@ datasets="$HUMAN_CHR$CURR_CHR"
 ##for i in {1..22} X Y #alts unlocalized unplaced
 #for i in {1..24}
 #do  datasets+=$HUMAN_CHR${i}" ";    done
+
+REF_DATASET="";  for i in {21..21}; do REF_DATASET+=$HUMAN_CHR${i}" "; done # reference dataset
+TAR_DATASET="";  for i in {21..21}; do TAR_DATASET+=$CHIMP_CHR${i}" "; done # target dataset
 
 FILE_TYPE="fa"
 COMP_FILE_TYPE="gz"     # compressed file type
