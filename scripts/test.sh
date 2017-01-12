@@ -12,8 +12,9 @@ cd ..
 ARCH_DAT="archive_dat"
 
 
-DL_HUMAN=1              # download Human choromosomes
+DL_HUMAN=0              # download Human choromosomes
 DL_CHIMP=0              # download Chimpanzee choromosomes
+FASTA2SEQ=1             # FASTA to sequence
 INSTALL_XS=0            # install "XS" from Github
 INSTALL_goose=0         # install "goose" from Github
 GEN_DATASETS=0          # generate datasets using "XS"
@@ -87,11 +88,12 @@ fi  # end of download Human choromosomes
 #***********************************************************
 #   FASTA to SEQ
 #***********************************************************
-#if [[ $ == 1 ]]; then
-#
-#
-#
-#fi  # end of
+if [[ $FASTA2SEQ == 1 ]]; then
+
+cp chromosomes/$HUMAN_CHR$21.fa > temp
+cat temp | grep -v ">" > ${HUMAN_CHR}21
+
+fi  # end of
 
 
 #***********************************************************
