@@ -143,8 +143,6 @@ fi  # end of generating datasets using "XS"
 #***********************************************************
 if [[ $GEN_MUTATIONS == 1 ]]; then
 
-#NUM_MUTATIONS=1     # number of mutations to be generated:     real: -=1
-
 for c in $chromosomes; do
  for x in $MUT_LIST; do      #((x=1; x<$NUM_MUTATIONS; x+=1));
  MRATE=`echo "scale=3;$x/100" | bc -l`;      # handle transition 0.09 -> 0.10
