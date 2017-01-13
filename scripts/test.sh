@@ -69,10 +69,10 @@ PIX_FORMAT=png          # output format: png, svg, eps, epslatex (set output x.y
 IR_LBL=i                # label for inverted repeat
 a_LBL=a                 # label for alpha denominator
 
-INV_REPEATS="0 1"         # list of inverted repeats      "0 1"
-ALPHA_DENS="100"        # list of alpha denominators    "1 20 100"
-MIN_CTX=3              # min context-order size
-MAX_CTX=3              # max context-order size
+INV_REPEATS="0"         # list of inverted repeats      "0 1"
+ALPHA_DENS="0.5 1 10 100"        # list of alpha denominators    "1 20 100"
+MIN_CTX=5              # min context-order size
+MAX_CTX=5              # max context-order size
 
 
 #***********************************************************
@@ -285,7 +285,7 @@ for ir in $INV_REPEATS; do
  for alphaDen in $ALPHA_DENS; do
   for refDataset in $REF_DATASET; do
    echo -e "# ref\ttar\tir\talpha\tctx\tbpb\tNRC\t\ttime(s)" \
-        >> $IR_LBL$ir-$a_LBL$alphaDen-$refDataset.$INF_FILE_TYPE
+#        >> $IR_LBL$ir-$a_LBL$alphaDen-$refDataset.$INF_FILE_TYPE
    for tarDataset in $TAR_DATASET; do
 ##   rm -f $IR_LBL$ir-$a_LBL$alphaDen-${dataset}.$INF_FILE_TYPE
 #   touch $IR_LBL$ir-$a_LBL$alphaDen-$dataset.$INF_FILE_TYPE
@@ -299,7 +299,7 @@ for ir in $INV_REPEATS; do
 #     for ctx in {2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20}; do
 #     ./phoenix -m t,$ctx,$alphaDen,$ir -t $FLD_archive_datasets/${dataset}_$mut -r $FLD_archive_datasets/${dataset}_$mut \
      ./phoenix -m r,$ctx,$alphaDen,$ir -t $FLD_datasets/$tarDataset -r $FLD_datasets/$refDataset \
-               >> $IR_LBL$ir-$a_LBL$alphaDen-$refDataset.$INF_FILE_TYPE
+#               >> $IR_LBL$ir-$a_LBL$alphaDen-$refDataset.$INF_FILE_TYPE
 #               >> $IR_LBL$ir-$a_LBL$alphaDen-${dataset}_$mut.$INF_FILE_TYPE
      done
 #    done
