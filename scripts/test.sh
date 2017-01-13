@@ -284,7 +284,7 @@ if [[ $RUN == 1 ]]; then
 for ir in $INV_REPEATS; do
  for alphaDen in $ALPHA_DENS; do
   for refDataset in $REF_DATASET; do
-   echo -e "# ref\ttar\tir\talpha\tctx\tbpb\ttime(s)" \
+   echo -e "# ref\ttar\tir\talpha\tctx\tbpb\ttime(s)\tNRC" \
         >> $IR_LBL$ir-$a_LBL$alphaDen-$refDataset.$INF_FILE_TYPE
    for tarDataset in $TAR_DATASET; do
 ##   rm -f $IR_LBL$ir-$a_LBL$alphaDen-${dataset}.$INF_FILE_TYPE

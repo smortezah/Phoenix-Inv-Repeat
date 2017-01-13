@@ -229,7 +229,8 @@ void FCM::buildTable ()
 //            << (float) 1/alphaDen << '\t'
                                   << (double) 1/alphaDen << '\t'
             << (int) contextDepth << '\t'
-            << averageEntropy
+            << averageEntropy << '\t'
+            << averageEntropy/LOG2_ALPHABET_SIZE
 //            << '\t'
 //            << hTable.size()
 //            << '\n'
@@ -430,7 +431,8 @@ void FCM::buildHashTable ()
 //            << (float) 1/alphaDen << '\t'
                                    << (double) 1/alphaDen << '\t'
             << (int) contextDepth << '\t'
-            << averageEntropy
+            << averageEntropy << '\t'
+            << averageEntropy/LOG2_ALPHABET_SIZE
 //            << '\t'
 //            << hTable.size()
 //            << '\n'
