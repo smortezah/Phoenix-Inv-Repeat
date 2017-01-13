@@ -127,11 +127,11 @@ void FCM::buildTable ()
 //                ++table[ invRepContext*ALPHABET_SIZE + iRCtxCurrSymDiv.rem ];
 //                ++table[ invRepContext * ALPHABET_SIZE + iRCtxCurrSym % ALPHABET_SIZE ];
                 ++table[ invRepContext * ALPH_SUM_SIZE + iRCtxCurrSym % ALPHABET_SIZE ];
-                /// update 'sum' column of the table
+                /// update column 'sum' of the table
                 ++table[ invRepContext * ALPH_SUM_SIZE + ALPHABET_SIZE ];
             }
 
-            /// update 'sum' column of the table
+            /// update column 'sum' of the table
             ++table[ context * ALPH_SUM_SIZE + ALPHABET_SIZE ];
 ////            sumNSyms = ++table[ context * ALPH_SUM_SIZE + ALPHABET_SIZE ];
 
