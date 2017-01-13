@@ -53,8 +53,8 @@ datasets="$HUMAN_CHR$CURR_CHR"
 #for i in {1..24}
 #do  datasets+=$HUMAN_CHR${i}" ";    done
 
-REF_DATASET="";  for i in {21..21}; do REF_DATASET+=$HUMAN_CHR${i}" "; done # reference dataset
-TAR_DATASET="";  for i in {22..24}; do TAR_DATASET+=$CHIMP_CHR${i}" "; done # target dataset
+REF_DATASET="";  for i in 22; do REF_DATASET+=$HUMAN_CHR${i}" "; done # reference dataset
+TAR_DATASET="";  for i in 24 21 22; do TAR_DATASET+=$CHIMP_CHR${i}" "; done # target dataset
 #TAR_DATASET="";  for i in 1 2A 2B {3..24}; do TAR_DATASET+=$CHIMP_CHR${i}" "; done # target dataset
 
 FILE_TYPE="fa"          # file type
