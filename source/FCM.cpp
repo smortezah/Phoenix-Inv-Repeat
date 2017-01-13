@@ -226,8 +226,8 @@ void FCM::buildTable ()
 //            << totalNOfSyms << '\n'
 //            << "  "
             << getInvertedRepeat() << '\t'
-//            << (float) 1/alphaDen << '\t'
-                                  << (double ) alphaDen << '\t'
+            << (float) 1/alphaDen << '\t'
+//                                  << (double ) alphaDen << '\t'
             << (int) contextDepth << '\t'
             << averageEntropy
 //            << '\t'
