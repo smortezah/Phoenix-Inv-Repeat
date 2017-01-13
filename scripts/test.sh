@@ -70,9 +70,9 @@ IR_LBL=i                # label for inverted repeat
 a_LBL=a                 # label for alpha denominator
 
 INV_REPEATS="0"         # list of inverted repeats      "0 1"
-ALPHA_DENS="100"        # list of alpha denominators    "1 20 100"
-MIN_CTX=2              # min context size
-MAX_CTX=3              # max context size   ->  real: -=1
+ALPHA_DENS="1000"        # list of alpha denominators    "1 20 100"
+MIN_CTX=7              # min context-order size
+MAX_CTX=7              # max context-order size
 
 
 #***********************************************************
@@ -295,7 +295,7 @@ for ir in $INV_REPEATS; do
 #    touch $IR_LBL$ir-$a_LBL$alphaDen-${dataset}_$mut.$INF_FILE_TYPE
 #    touch $IR_LBL$ir-$a_LBL$alphaDen-$dataset.$INF_FILE_TYPE
 #    echo -e "# ir\talpha\tctx\tbpb\ttime(s)" >> $IR_LBL$ir-$a_LBL$alphaDen-${dataset}_$mut.$INF_FILE_TYPE
-     for((ctx=$MIN_CTX; ctx<$MAX_CTX; ctx+=1)); do
+     for((ctx=$MIN_CTX; ctx<=$MAX_CTX; ctx+=1)); do
 #     for ctx in {2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20}; do
 #     ./phoenix -m t,$ctx,$alphaDen,$ir -t $FLD_archive_datasets/${dataset}_$mut -r $FLD_archive_datasets/${dataset}_$mut \
      ./phoenix -m r,$ctx,$alphaDen,$ir -t $FLD_datasets/$tarDataset -r $FLD_datasets/$refDataset \
