@@ -309,14 +309,14 @@ void FCM::buildHashTable ()
 //                                 (uint8_t) (ch % ALPHABET_SIZE);
 
             /// update hash table
-            ++hTable[ context ][ currSymInt ];
+//            ++hTable[ context ][ currSymInt ];
 ////            nSym = hTable[ context ][ currSymInt ]++;
 
             /// considering inverted repeats to update hash table
             if (isInvertedRepeat)
             {
                 /// concatenation of inverted repeat context and current symbol
-                uint64_t iRCtxCurrSym = (4 - currSymInt) * maxPlaceValue + invRepContext;
+                uint64_t iRCtxCurrSym = ((uint64_t)4 - currSymInt) * maxPlaceValue + invRepContext;
 
                 /// to save quotient and reminder of a division
 //                div_t iRCtxCurrSymDiv;
@@ -332,7 +332,7 @@ void FCM::buildHashTable ()
             }
 
             /// update context
-            context = (uint64_t) (context * ALPHABET_SIZE + currSymInt) % maxPlaceValue;
+            context = (uint64_t) ((uint64_t)context * (uint64_t)ALPHABET_SIZE + (uint64_t)currSymInt) % maxPlaceValue;
 
         }   /// end of for
     }   /// end of while
@@ -349,7 +349,7 @@ void FCM::buildHashTable ()
     ///***************************************************************
     /// compressing target based on the hash table built based on reference
     ///***************************************************************
-    uint32_t tarContext = 0;               /// context (integer), that slides in the dataset
+    uint64_t tarContext = 0;               /// context (integer), that slides in the dataset
 
     ////////////////////////////////
     uint64_t nSym;                         /// number of symbols (n_s). To calculate probability
@@ -409,7 +409,7 @@ void FCM::buildHashTable ()
             /////////////////////////////////
 
             /// update context
-            tarContext = (uint32_t) (tarContext * ALPHABET_SIZE + currSymInt) % maxPlaceValue;
+            tarContext = (uint64_t) (tarContext * ALPHABET_SIZE + currSymInt) % maxPlaceValue;
 
         }   /// end of for
     }   /// end of while
