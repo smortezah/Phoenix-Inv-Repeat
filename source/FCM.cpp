@@ -146,21 +146,21 @@ void FCM::buildTable ()
 
 
 
-    ///***************************************************************
-    /// print table
-    ///***************************************************************
-    cout << "\tA\tC\tN\tG\tT\tSUM"
-         //              << "\tP_A\tP_C\tP_N\tP_G\tP_T"
-         << '\n'
-         << "\t--------------------------------------------"
-         //              << "---------------------------------------------------"
-         << '\n';
-    for (int i = 0; i < tableSize; ++i)
-    {
-        if (i % 6 == 0) cout << i / 6 << ":\t";
-        cout << table[ i ] << '\t';
-        if ((i + 1) % 6 == 0) cout << '\n';
-    }
+//    ///***************************************************************
+//    /// print table
+//    ///***************************************************************
+//    cout << "\tA\tC\tN\tG\tT\tSUM"
+//         //              << "\tP_A\tP_C\tP_N\tP_G\tP_T"
+//         << '\n'
+//         << "\t--------------------------------------------"
+//         //              << "---------------------------------------------------"
+//         << '\n';
+//    for (int i = 0; i < tableSize; ++i)
+//    {
+//        if (i % 6 == 0) cout << i / 6 << ":\t";
+//        cout << table[ i ] << '\t';
+//        if ((i + 1) % 6 == 0) cout << '\n';
+//    }
 
     ///***************************************************************
     /// compressing target based on the table built based on reference
@@ -309,7 +309,7 @@ void FCM::buildHashTable ()
 //                                 (uint8_t) (ch % ALPHABET_SIZE);
 
             /// update hash table
-//            ++hTable[ context ][ currSymInt ];
+            ++hTable[ context ][ currSymInt ];
 ////            nSym = hTable[ context ][ currSymInt ]++;
 
             /// considering inverted repeats to update hash table
