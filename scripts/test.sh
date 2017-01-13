@@ -55,7 +55,7 @@ datasets="$HUMAN_CHR$CURR_CHR"
 
 ### Human as reference, Chimpanzee as target
 REF_DATASET="";  for i in 21; do REF_DATASET+=$HUMAN_CHR${i}" "; done # reference dataset
-TAR_DATASET="";  for i in 22; do TAR_DATASET+=$CHIMP_CHR${i}" "; done # target dataset
+TAR_DATASET="";  for i in 24; do TAR_DATASET+=$CHIMP_CHR${i}" "; done # target dataset
 
 ### Chimpanzee as reference, Human as target
 #REF_DATASET="";  for i in 24; do REF_DATASET+=$CHIMP_CHR${i}" "; done # reference dataset
