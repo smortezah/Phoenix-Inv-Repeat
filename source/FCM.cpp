@@ -193,12 +193,12 @@ void FCM::buildTable ()
                                             (ch == 'C') ? 1 :
                                             (ch == 'G') ? 3 :
                                             (ch == 'T') ? 4 : 2);
-
+            
             //////////////////////////////////
             /// number of symbols
             nSym     = table[ tarContext * ALPH_SUM_SIZE + currSymInt ];
             /// sum of number of symbols
-            sumNSyms = table[ tarContext * ALPH_SUM_SIZE + ALPHABET_SIZE ] ;
+            sumNSyms = table[ tarContext * ALPH_SUM_SIZE + ALPHABET_SIZE ];
 
             /// P(s|c^t)
             probability = (double) (alphaDen * nSym + 1) / (alphaDen * sumNSyms + ALPHABET_SIZE);
