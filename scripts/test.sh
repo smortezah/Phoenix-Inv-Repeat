@@ -55,7 +55,7 @@ datasets="$HUMAN_CHR$CURR_CHR"
 
 REF_DATASET="";  for i in 21; do REF_DATASET+=$HUMAN_CHR${i}" "; done # reference dataset
 #REF_DATASET="";  for i in 21; do REF_DATASET+=$HUMAN_CHR${i}" "; done # reference dataset
-TAR_DATASET="";  for i in 24; do TAR_DATASET+=$CHIMP_CHR${i}" "; done # target dataset
+TAR_DATASET="";  for i in 21; do TAR_DATASET+=$CHIMP_CHR${i}" "; done # target dataset
 #TAR_DATASET="";  for i in 24; do TAR_DATASET+=$CHIMP_CHR${i}" "; done # target dataset
 
 #TAR_DATASET="";  for i in 1 2A 2B {3..24}; do TAR_DATASET+=$CHIMP_CHR${i}" "; done # target dataset
@@ -284,7 +284,7 @@ if [[ $RUN == 1 ]]; then
 for ir in $INV_REPEATS; do
  for alphaDen in $ALPHA_DENS; do
   for refDataset in $REF_DATASET; do
-   echo -e "# ref\ttar\tir\talpha\tctx\tbpb\tNRC\t\ttime(s)" \
+   echo -e "# ref\ttar\tir\talpha\tctx\tbpb\t\tNRC\t\ttime(s)" \
         >> $IR_LBL$ir-$a_LBL$alphaDen-$refDataset.$INF_FILE_TYPE
    for tarDataset in $TAR_DATASET; do
 ##   rm -f $IR_LBL$ir-$a_LBL$alphaDen-${dataset}.$INF_FILE_TYPE
