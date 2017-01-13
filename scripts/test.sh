@@ -70,9 +70,9 @@ IR_LBL=i                # label for inverted repeat
 a_LBL=a                 # label for alpha denominator
 
 INV_REPEATS="0"         # list of inverted repeats      "0 1"
-ALPHA_DENS="0.5 1 10 100"        # list of alpha denominators    "1 20 100"
-MIN_CTX=5              # min context-order size
-MAX_CTX=5              # max context-order size
+ALPHA_DENS="100"        # list of alpha denominators    "1 20 100"
+MIN_CTX=9              # min context-order size
+MAX_CTX=9              # max context-order size
 
 
 #***********************************************************
