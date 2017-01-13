@@ -309,14 +309,14 @@ void FCM::buildHashTable ()
 //                                 (uint8_t) (ch % ALPHABET_SIZE);
 
             /// update hash table
-//            ++hTable[ context ][ currSymInt ];
+            ++hTable[ context ][ currSymInt ];
 ////            nSym = hTable[ context ][ currSymInt ]++;
 
             /// considering inverted repeats to update hash table
             if (isInvertedRepeat)
             {
                 /// concatenation of inverted repeat context and current symbol
-                uint64_t iRCtxCurrSym = ((uint64_t)4 - currSymInt) * maxPlaceValue + invRepContext;
+                uint64_t iRCtxCurrSym = (4 - currSymInt) * maxPlaceValue + invRepContext;
 
                 /// to save quotient and reminder of a division
 //                div_t iRCtxCurrSymDiv;
@@ -332,7 +332,7 @@ void FCM::buildHashTable ()
             }
 
             /// update context
-            context = (uint64_t) ((uint64_t)context * (uint64_t)ALPHABET_SIZE + (uint64_t)currSymInt) % maxPlaceValue;
+            context = (uint64_t) (context * ALPHABET_SIZE + currSymInt) % maxPlaceValue;
 
         }   /// end of for
     }   /// end of while
@@ -378,7 +378,7 @@ void FCM::buildHashTable ()
                                             (ch == 'C') ? 1 :
                                             (ch == 'G') ? 3 :
                                             (ch == 'T') ? 4 : 2);
-
+            
             //////////////////////////////////
 //            if (hTable.find(tarContext) == hTable.end())
 //            {
@@ -395,7 +395,7 @@ void FCM::buildHashTable ()
                 sumNSyms = 0;
                 for (uint64_t u : hTable[ tarContext ])    sumNSyms += u;
 //            }
-
+            
 //            cout
 //                    << "context " << tarContext << '\n'
 //                    << "nSym " << nSym << '\n'
