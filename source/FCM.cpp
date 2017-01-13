@@ -131,8 +131,8 @@ void FCM::buildTable ()
             }
 
             /// update 'sum' column of the table
-            ++table[ context * ALPH_SUM_SIZE + ALPHABET_SIZE ];
-//            sumNSyms = ++table[ context * ALPH_SUM_SIZE + ALPHABET_SIZE ];
+//            ++table[ context * ALPH_SUM_SIZE + ALPHABET_SIZE ];
+////            sumNSyms = ++table[ context * ALPH_SUM_SIZE + ALPHABET_SIZE ];
 
             /// update context
             context = (uint32_t) (context * ALPHABET_SIZE + currSymInt) % maxPlaceValue;
