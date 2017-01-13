@@ -176,14 +176,14 @@ void FCM::buildTable ()
     //////////////////////////////////
 
     string tarLine;                        /// keep each line of the file
-
+    
     while (getline(tarFileIn, tarLine))
     {
-
+        
         //////////////////////////////////
         totalNOfSyms += tarLine.size();    /// number of symbols in each line of dataset
         //////////////////////////////////
-
+        
         /// table includes the number of occurrences of symbols A, C, N, G, T
         for (string::iterator lineIter = tarLine.begin(); lineIter != tarLine.end(); ++lineIter)
         {
