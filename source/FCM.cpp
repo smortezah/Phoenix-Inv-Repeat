@@ -73,7 +73,7 @@ void FCM::buildTable ()
     /// create table
     /// 5^TABLE_MAX_CONTEXT < 2^32 => uint32_t is used, otherwise uint64_t
     uint32_t maxPlaceValue = (uint32_t) pow(ALPHABET_SIZE, contextDepth);
-    uint64_t tableSize = maxPlaceValue * ALPH_SUM_SIZE;
+    uint32_t tableSize = maxPlaceValue * ALPH_SUM_SIZE;
     uint64_t *table = new uint64_t[ tableSize ];
 
     /// initialize table with 0's
