@@ -23,8 +23,10 @@ public:
     void setTargetOrReference (char);               /// setter of target or reference
     uint8_t getContextDepth () const;               /// getter of context depth
     void setContextDepth (uint8_t);                 /// setter of context depth
-    uint16_t getAlphaDenom () const;                /// getter of alpha denominator
-    void setAlphaDenom (uint16_t);                  /// setter of alpha denominator
+//    uint16_t getAlphaDenom () const;                /// getter of alpha denominator
+//    void setAlphaDenom (uint16_t);                  /// setter of alpha denominator
+    double getAlphaDenom () const;                /// getter of alpha denominator
+    void setAlphaDenom (double);                  /// setter of alpha denominator
     bool getInvertedRepeat () const;                /// getter of inverted repeat
     void setInvertedRepeat (bool);                  /// setter of inverted repeat
     uint64_t *getTable () const;                    /// getter of table
@@ -41,7 +43,8 @@ public:
 private:
     char     targetOrReference;                     /// model built based on target or reference
     uint8_t  contextDepth;                          /// context depth (SIZE <= 255)
-    uint16_t alphaDenom;                            /// alpha denominator
+    double alphaDenom;                            /// alpha denominator
+//    uint16_t alphaDenom;                            /// alpha denominator
     bool     invertedRepeat;                        /// inverted repeat
     uint64_t *table;                                /// table
     htable_t hashTable;                             /// hash table (int key)
