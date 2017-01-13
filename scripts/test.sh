@@ -53,9 +53,9 @@ datasets="$HUMAN_CHR$CURR_CHR"
 #for i in {1..24}
 #do  datasets+=$HUMAN_CHR${i}" ";    done
 
-REF_DATASET="";  for i in 1 2; do REF_DATASET+=$HUMAN_CHR${i}" "; done # reference dataset
+REF_DATASET="";  for i in 21; do REF_DATASET+=$HUMAN_CHR${i}" "; done # reference dataset
 #REF_DATASET="";  for i in 21; do REF_DATASET+=$HUMAN_CHR${i}" "; done # reference dataset
-TAR_DATASET="";  for i in 1 2A 2B {3..24}; do TAR_DATASET+=$CHIMP_CHR${i}" "; done # target dataset
+TAR_DATASET="";  for i in 24; do TAR_DATASET+=$CHIMP_CHR${i}" "; done # target dataset
 #TAR_DATASET="";  for i in 24; do TAR_DATASET+=$CHIMP_CHR${i}" "; done # target dataset
 
 #TAR_DATASET="";  for i in 1 2A 2B {3..24}; do TAR_DATASET+=$CHIMP_CHR${i}" "; done # target dataset
@@ -71,8 +71,8 @@ a_LBL=a                 # label for alpha denominator
 
 INV_REPEATS="0 1"         # list of inverted repeats      "0 1"
 ALPHA_DENS="100"        # list of alpha denominators    "1 20 100"
-MIN_CTX=20              # min context-order size
-MAX_CTX=20              # max context-order size
+MIN_CTX=3              # min context-order size
+MAX_CTX=3              # max context-order size
 
 
 #***********************************************************
