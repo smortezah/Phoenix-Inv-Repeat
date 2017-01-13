@@ -72,7 +72,7 @@ PIX_FORMAT=png          # output format: png, svg, eps, epslatex (set output x.y
 IR_LBL=i                # label for inverted repeat
 a_LBL=a                 # label for alpha denominator
 
-INV_REPEATS="1"         # list of inverted repeats      "0 1"
+INV_REPEATS="0"         # list of inverted repeats      "0 1"
 ALPHA_DENS="100"        # list of alpha denominators    "1 20 100"
 MIN_CTX=2              # min context size
 MAX_CTX=3              # max context size   ->  real: -=1
