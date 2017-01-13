@@ -32,8 +32,7 @@ int32_t main (int argc, char *argv[])
     function.commandLineParser(argc, argv); /// parse the command line
     
     
-//    uint64_t maxPlaceValue = (uint64_t) pow(5, 20);
-//    cout<<maxPlaceValue;
+    
 
 
 //    char arr[5] = {'A', 'T', 'C', 'G', 'N'};
