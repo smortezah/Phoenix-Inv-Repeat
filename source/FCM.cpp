@@ -41,6 +41,8 @@ void FCM::buildRefModel ()
     const bool isInvertedRepeat = getInvertedRepeat();  /// get inverted repeat
 //    string tarFileName          = getTarFileAddress();  /// get target file address
     string refFileName          = getRefFileAddress();  /// get reference file address
+    /// mode: 't'=table, 'h'=hash table
+    const char mode = (contextDepth > TABLE_MAX_CONTEXT) ? 'h' : 't';
 
 
 //    const char* filename= fileName.c_str();;
@@ -57,7 +59,7 @@ void FCM::buildRefModel ()
     
     
 //    ifstream tarFileIn(tarFileName, ios::in);   /// open target file located in fileName
-    ifstream refFileIn(refFileName, ios::in);   /// open reference file located in fileName
+    ifstream refFileIn(refFileName, ios::in);   /// open reference file located in 'refFileName'
     
 //    if (!tarFileIn)                             /// error occurred while opening file
 //    {
@@ -74,16 +76,18 @@ void FCM::buildRefModel ()
     }
     
     /// create table
-    /// 5^TABLE_MAX_CONTEXT < 2^32 => uint32_t is used, otherwise uint64_t
-    uint32_t maxPlaceValue = (uint32_t) pow(ALPHABET_SIZE, contextDepth);
-    uint32_t tableSize = maxPlaceValue * ALPH_SUM_SIZE;
+    uint64_t maxPlaceValue = (uint64_t) pow(ALPHABET_SIZE, contextDepth);
+    uint64_t tableSize = maxPlaceValue * ALPH_SUM_SIZE;
     uint64_t *table = new uint64_t[ tableSize ];
     
     /// initialize table with 0's
     memset(table, 0, sizeof(table[0]) * tableSize);
     
-    uint32_t context = 0;                       /// context (integer), that slides in the dataset
-    uint32_t invRepContext = maxPlaceValue - 1; /// inverted repeat context (integer)
+    uint64_t context = 0;                       /// context (integer), that slides in the dataset
+    uint64_t invRepContext = maxPlaceValue - 1; /// inverted repeat context (integer)
+    
+    htable_t hTable;                            /// create hash table
+    hTable.insert({context, {0, 0, 0, 0, 0}});  /// initialize hash table with 0's
     
     string refLine;                             /// keep each line of the file
     
@@ -107,16 +111,21 @@ void FCM::buildRefModel ()
 //            uint8_t currSymInt = (ch == 'C') ? (uint8_t) 3 :
 //                                 (ch == 'N') ? (uint8_t) 2 :
 //                                 (uint8_t) (ch % ALPHABET_SIZE);
-            
+    
+            mode == 'h' ?
+            /// update hash table
+            ++hTable[ context ][ currSymInt ]
+            ////            nSym = hTable[ context ][ currSymInt ]++;
+                        :
             /// update table
             ++table[ context * ALPH_SUM_SIZE + currSymInt ];
-////            nSym = table[ context * ALPH_SUM_SIZE + currSymInt ]++;
+            ////            nSym = table[ context * ALPH_SUM_SIZE + currSymInt ]++;
             
             /// considering inverted repeats to update hash table
             if (isInvertedRepeat)
             {
                 /// concatenation of inverted repeat context and current symbol
-                uint32_t iRCtxCurrSym = (4 - currSymInt) * maxPlaceValue + invRepContext;
+                uint64_t iRCtxCurrSym = (4 - currSymInt) * maxPlaceValue + invRepContext;
 
 //                /// to save quotient and reminder of a division
 //                div_t iRCtxCurrSymDiv;
@@ -124,28 +133,34 @@ void FCM::buildRefModel ()
                 
                 /// update inverted repeat context (integer)
 //                invRepContext = (uint32_t) iRCtxCurrSymDiv.quot;
-                invRepContext = (uint32_t) iRCtxCurrSym / ALPHABET_SIZE;
-                
+                invRepContext = (uint64_t) iRCtxCurrSym / ALPHABET_SIZE;
+    
+                mode == 'h' ?
                 /// update table considering inverted repeats
-//                ++table[ invRepContext*ALPHABET_SIZE + iRCtxCurrSymDiv.rem ];
-//                ++table[ invRepContext * ALPHABET_SIZE + iRCtxCurrSym % ALPHABET_SIZE ];
+                //                ++hTable[ invRepContext ][ iRCtxCurrSymDiv.rem];
+                ++hTable[ invRepContext ][ iRCtxCurrSym % ALPHABET_SIZE ]
+                            :
+                /// update table considering inverted repeats
+                //                ++table[ invRepContext*ALPHABET_SIZE + iRCtxCurrSymDiv.rem ];
+                //                ++table[ invRepContext * ALPHABET_SIZE + iRCtxCurrSym % ALPHABET_SIZE ];
                 ++table[ invRepContext * ALPH_SUM_SIZE + iRCtxCurrSym % ALPHABET_SIZE ];
                 /// update column 'sum' of the table
                 ++table[ invRepContext * ALPH_SUM_SIZE + ALPHABET_SIZE ];
             }
-            
-            /// update column 'sum' of the table
-            ++table[ context * ALPH_SUM_SIZE + ALPHABET_SIZE ];
+    
+            if (mode == 't')
+                /// update column 'sum' of the table
+                ++table[ context * ALPH_SUM_SIZE + ALPHABET_SIZE ];
 ////            sumNSyms = ++table[ context * ALPH_SUM_SIZE + ALPHABET_SIZE ];
             
             /// update context
-            context = (uint32_t) (context * ALPHABET_SIZE + currSymInt) % maxPlaceValue;
+            context = (uint64_t) (context * ALPHABET_SIZE + currSymInt) % maxPlaceValue;
         }   /// end of for
     }   /// end of while
     
     refFileIn.close();                     /// close file
     
-    FCM::setTable(table);                  /// save the built table
+    mode == 'h' ? FCM::setHashTable(hTable) : FCM::setTable(table);                  /// save the built table
 
 
 
