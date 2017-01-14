@@ -241,7 +241,7 @@ void FCM::compressTarget ()
 //#define X (hTable[tarContext][currSymInt])
 //    }
 
-#define X (table[ tarContext * ALPH_SUM_SIZE + currSymInt ])
+#define X ((mode == 'h')?(table[ tarContext * ALPH_SUM_SIZE + currSymInt ]):(table[ tarContext * ALPH_SUM_SIZE + currSymInt ]))
 //    #define X 1
     
     
