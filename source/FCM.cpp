@@ -29,6 +29,213 @@ using std::setprecision;
 FCM::FCM () {}
 
 
+
+/***********************************************************
+    build table
+************************************************************/
+void FCM::buildModel ()
+{
+    const uint8_t contextDepth  = getContextDepth();    /// get context depth
+    const uint16_t alphaDen     = getAlphaDenom();      /// get alpha denominator
+//    const double alphaDen     = getAlphaDenom();      /// get alpha denominator
+    const bool isInvertedRepeat = getInvertedRepeat();  /// get inverted repeat
+    string tarFileName          = getTarFileAddress();  /// get target file address
+    string refFileName          = getRefFileAddress();  /// get reference file address
+
+
+//    const char* filename= fileName.c_str();;
+//    std::FILE *fp = std::fopen(filename, "rb");
+//    if (fp)
+//    {
+//        std::string contents;
+//        std::fseek(fp, 0, SEEK_END);
+//        contents.resize(std::ftell(fp));
+//        std::rewind(fp);
+//        std::fread(&contents[ 0 ], 1, contents.size(), fp);
+//        std::fclose(fp);
+//    }
+    
+    
+    ifstream tarFileIn(tarFileName, ios::in);   /// open target file located in fileName
+    ifstream refFileIn(refFileName, ios::in);   /// open reference file located in fileName
+    
+    if (!tarFileIn)                             /// error occurred while opening file
+    {
+        cerr << "The file '" << tarFileName << "' cannot be opened, or it is empty.\n";
+        refFileIn.close();                      /// close file
+        return;                                 /// exit this function
+    }
+    else if (!refFileIn)                        /// error occurred while opening file
+    {
+        cerr << "The file '" << refFileName << "' cannot be opened, or it is empty.\n";
+        refFileIn.close();                      /// close file
+        return;                                 /// exit this function
+    }
+    
+    /// create table
+    /// 5^TABLE_MAX_CONTEXT < 2^32 => uint32_t is used, otherwise uint64_t
+    uint32_t maxPlaceValue = (uint32_t) pow(ALPHABET_SIZE, contextDepth);
+    uint32_t tableSize = maxPlaceValue * ALPH_SUM_SIZE;
+    uint64_t *table = new uint64_t[ tableSize ];
+    
+    /// initialize table with 0's
+    memset(table, 0, sizeof(table[0]) * tableSize);
+    
+    uint32_t context = 0;                       /// context (integer), that slides in the dataset
+    uint32_t invRepContext = maxPlaceValue - 1; /// inverted repeat context (integer)
+    
+    string refLine;                             /// keep each line of the file
+    
+    while (getline(refFileIn, refLine))
+    {
+        /// fill table by number of occurrences of symbols A, C, N, G, T
+        for (string::iterator lineIter = refLine.begin(); lineIter != refLine.end(); ++lineIter)
+        {
+            /// table includes an array of uint64_t numbers
+            char ch = *lineIter;
+            uint8_t currSymInt = (uint8_t) ((ch == 'A') ? 0 :
+                                            (ch == 'C') ? 1 :
+                                            (ch == 'G') ? 3 :
+                                            (ch == 'T') ? 4 : 2);
+
+//            uint8_t currSymInt = (ch == 'A') ? (uint8_t) 0 :
+//                                 (ch == 'C') ? (uint8_t) 1 :
+//                                 (ch == 'G') ? (uint8_t) 3 :
+//                                 (ch == 'T') ? (uint8_t) 4 : (uint8_t) 2;
+//            uint8_t currSymInt = ch % ALPHABET_SIZE;
+//            uint8_t currSymInt = (ch == 'C') ? (uint8_t) 3 :
+//                                 (ch == 'N') ? (uint8_t) 2 :
+//                                 (uint8_t) (ch % ALPHABET_SIZE);
+            
+            /// update table
+            ++table[ context * ALPH_SUM_SIZE + currSymInt ];
+////            nSym = table[ context * ALPH_SUM_SIZE + currSymInt ]++;
+            
+            /// considering inverted repeats to update hash table
+            if (isInvertedRepeat)
+            {
+                /// concatenation of inverted repeat context and current symbol
+                uint32_t iRCtxCurrSym = (4 - currSymInt) * maxPlaceValue + invRepContext;
+
+//                /// to save quotient and reminder of a division
+//                div_t iRCtxCurrSymDiv;
+//                iRCtxCurrSymDiv = div(iRCtxCurrSym, ALPHABET_SIZE);
+                
+                /// update inverted repeat context (integer)
+//                invRepContext = (uint32_t) iRCtxCurrSymDiv.quot;
+                invRepContext = (uint32_t) iRCtxCurrSym / ALPHABET_SIZE;
+                
+                /// update table considering inverted repeats
+//                ++table[ invRepContext*ALPHABET_SIZE + iRCtxCurrSymDiv.rem ];
+//                ++table[ invRepContext * ALPHABET_SIZE + iRCtxCurrSym % ALPHABET_SIZE ];
+                ++table[ invRepContext * ALPH_SUM_SIZE + iRCtxCurrSym % ALPHABET_SIZE ];
+                /// update column 'sum' of the table
+                ++table[ invRepContext * ALPH_SUM_SIZE + ALPHABET_SIZE ];
+            }
+            
+            /// update column 'sum' of the table
+            ++table[ context * ALPH_SUM_SIZE + ALPHABET_SIZE ];
+////            sumNSyms = ++table[ context * ALPH_SUM_SIZE + ALPHABET_SIZE ];
+            
+            /// update context
+            context = (uint32_t) (context * ALPHABET_SIZE + currSymInt) % maxPlaceValue;
+        }   /// end of for
+    }   /// end of while
+    
+    refFileIn.close();                     /// close file
+    
+    FCM::setTable(table);                  /// save the built table
+
+
+
+//    ///***************************************************************
+//    /// print table
+//    ///***************************************************************
+//    cout << "\tA\tC\tN\tG\tT\tSUM"
+//         //              << "\tP_A\tP_C\tP_N\tP_G\tP_T"
+//         << '\n'
+//         << "\t--------------------------------------------"
+//         //              << "---------------------------------------------------"
+//         << '\n';
+//    for (int i = 0; i < tableSize; ++i)
+//    {
+//        if (i % 6 == 0) cout << i / 6 << ":\t";
+//        cout << table[ i ] << '\t';
+//        if ((i + 1) % 6 == 0) cout << '\n';
+//    }
+    
+    ///***************************************************************
+    /// compressing target based on the table built based on reference
+    ///***************************************************************
+    uint32_t tarContext = 0;               /// context (integer), that slides in the dataset
+    
+    ////////////////////////////////
+    uint64_t nSym;                         /// number of symbols (n_s). To calculate probability
+    uint64_t sumNSyms;                     /// sum of number of symbols (sum n_a). To calculate probability
+    double   probability = 0;              /// probability of a symbol, based on an identified context
+    double   sumOfEntropies = 0;           /// sum of entropies for different symbols
+    uint64_t totalNOfSyms = 0;             /// number of all symbols in the sequence
+    double   averageEntropy = 0;           /// average entropy (H)
+    //////////////////////////////////
+    
+    string tarLine;                        /// keep each line of the file
+    
+    while (getline(tarFileIn, tarLine))
+    {
+        
+        //////////////////////////////////
+        totalNOfSyms += tarLine.size();    /// number of symbols in each line of dataset
+        //////////////////////////////////
+        
+        /// table includes the number of occurrences of symbols A, C, N, G, T
+        for (string::iterator lineIter = tarLine.begin(); lineIter != tarLine.end(); ++lineIter)
+        {
+            /// table includes an array of uint64_t numbers
+            char ch = *lineIter;
+            uint8_t currSymInt = (uint8_t) ((ch == 'A') ? 0 :
+                                            (ch == 'C') ? 1 :
+                                            (ch == 'G') ? 3 :
+                                            (ch == 'T') ? 4 : 2);
+            
+            //////////////////////////////////
+            /// number of symbols
+            nSym     = table[ tarContext * ALPH_SUM_SIZE + currSymInt ];
+            /// sum of number of symbols
+            sumNSyms = table[ tarContext * ALPH_SUM_SIZE + ALPHABET_SIZE ];
+            
+            /// P(s|c^t)
+            probability = (double) (alphaDen * nSym + 1) / (alphaDen * sumNSyms + ALPHABET_SIZE);
+            
+            /// sum( log_2 P(s|c^t) )
+            sumOfEntropies += log2(probability);
+            /////////////////////////////////
+            
+            /// update context
+            tarContext = (uint32_t) (tarContext * ALPHABET_SIZE + currSymInt) % maxPlaceValue;
+            
+        }   /// end of for
+    }   /// end of while
+    
+    tarFileIn.close();          /// close file
+    
+    ////////////////////////////////
+    /// H_N = -1/N sum( log_2 P(s|c^t) )
+    averageEntropy = (-1) * sumOfEntropies / totalNOfSyms;
+
+//    cout << sumOfEntropies << '\n';
+//    cout << totalNOfSyms << '\n';
+//    cout << "  ";
+    cout.width(2);  cout << std::left << getInvertedRepeat() << "   ";
+    cout.width(6);  cout << std::left << (float) 1/alphaDen << "   ";
+//             cout.width(7);  << std::left << (double) 1/alphaDen << "   "
+    cout.width(3);  cout << std::left << (int) contextDepth << "   ";
+    cout.width(8);  cout << std::left << averageEntropy << "   ";
+    cout.width(8);  cout << std::left << averageEntropy/LOG2_ALPHABET_SIZE;
+    ////////////////////////////////
+    
+}
+
+
 /***********************************************************
     build table
 ************************************************************/

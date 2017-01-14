@@ -14,11 +14,12 @@ class FCM
 public:
     FCM ();                                         /// constructor
     
+    void buildModel ();                             /// build model (table or hash table)
     void buildTable ();                             /// build table
     void buildHashTable ();                         /// build hash table (int key)
     //    void buildHashTable_str ();                     /// build hash table (string key)
     void printHashTable () const;                   /// print hash table
-                                                    
+    
     char getTargetOrReference () const;             /// getter of target or reference
     void setTargetOrReference (char);               /// setter of target or reference
     uint8_t getContextDepth () const;               /// getter of context depth
