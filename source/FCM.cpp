@@ -232,8 +232,10 @@ void FCM::compressTarget ()
     
     htable_t hTable = getHashTable();
 #define X ((mode == 'h') ? (hTable[ tarContext ][ currSymInt ]) : (table[ tarContext * ALPH_SUM_SIZE + currSymInt ]))
+#define Y(in) do { in = 0; for (uint64_t u : hTable[ tarContext ]) in += u; } while ( 0 )
 
-//#define Y ((mode == 'h') ? (sumNSyms = 0;for (uint64_t u : hTable[ tarContext ])    sumNSyms += u;) : (table[ tarContext * ALPH_SUM_SIZE + ALPHABET_SIZE ]))
+    
+//#define Y(in) do { in = 0; for (uint64_t u : hTable[ tarContext ]) in += u; } while ( 0 )
     
     
     
@@ -307,9 +309,7 @@ void FCM::compressTarget ()
 //                sumNSyms = hTable[ tarContext ][0]+hTable[ tarContext ][1]+hTable[ tarContext ][2]
 //                           +hTable[ tarContext ][3]+hTable[ tarContext ][4];
                 
-//                sumNSyms = std::accumulate(hTable.begin()->second,hTable.end()->second);
-                
-//                Y;
+                Y(sumNSyms);
 //                }
             
                 /// P(s|c^t)
