@@ -33,13 +33,13 @@ FCM::FCM () {}
 /***********************************************************
     build table
 ************************************************************/
-void FCM::buildModel ()
+void FCM::buildRefModel ()
 {
     const uint8_t contextDepth  = getContextDepth();    /// get context depth
     const uint16_t alphaDen     = getAlphaDenom();      /// get alpha denominator
-//    const double alphaDen     = getAlphaDenom();      /// get alpha denominator
+//    const double alphaDen     = getAlphaDenom();        /// get alpha denominator
     const bool isInvertedRepeat = getInvertedRepeat();  /// get inverted repeat
-    string tarFileName          = getTarFileAddress();  /// get target file address
+//    string tarFileName          = getTarFileAddress();  /// get target file address
     string refFileName          = getRefFileAddress();  /// get reference file address
 
 
