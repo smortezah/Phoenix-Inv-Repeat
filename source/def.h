@@ -20,8 +20,8 @@ using std::array;
     constant
 ************************************************************/
 #define ALPHABET_SIZE       5               /// alphabet {A, C, N, G, T}
-#define ALPH_SUM_SIZE       6               /// ALPHABET_SIZE + 1: one more column for 'sum'
-#define LOG2_ALPHABET_SIZE  2.321928095     /// log2 of ALPHABET_SIZE
+#define ALPH_SUM_SIZE       6               /// ALPHABET_SIZE+1: one more column for 'sum'
+#define LOG2_ALPHABET_SIZE  2.321928095     /// log2 of 5
 /// TODO: max context depth for building table. 12 = possible but not cost effective
 #define TABLE_MAX_CONTEXT   11
 
