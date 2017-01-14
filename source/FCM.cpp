@@ -240,7 +240,7 @@ void FCM::compressTarget ()
 //    {
 //        htable_t hTable = getHashTable();
 //#define X (hTable[ tarContext ][ currSymInt ])
-////#define Y (((sumNSyms) = (0));) \
+////#define Y (sumNSyms = 0; \
 ////        for (uint64_t u : hTable[ tarContext ]) \
 ////        sumNSyms += u;\
 //        )
