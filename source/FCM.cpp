@@ -220,21 +220,16 @@ void FCM::buildTable ()
     ////////////////////////////////
     /// H_N = -1/N sum( log_2 P(s|c^t) )
     averageEntropy = (-1) * sumOfEntropies / totalNOfSyms;
-
-    cout
-//            << sumOfEntropies << '\n'
-//            << totalNOfSyms << '\n'
-//            << "  "
-            << getInvertedRepeat() << '\t'
-            << (float) 1/alphaDen << '\t'
-//             << (double) 1/alphaDen << '\t'
-            << (int) contextDepth << '\t'
-            << averageEntropy << "\t"
-            << averageEntropy/LOG2_ALPHABET_SIZE
-//            << '\t'
-//            << hTable.size()
-//            << '\n'
-            ;
+    
+//    cout << sumOfEntropies << '\n';
+//    cout << totalNOfSyms << '\n';
+//    cout << "  ";
+    cout.width(2);  cout << std::left << getInvertedRepeat() << '\t';
+    cout.width(7);  cout << std::left << (float) 1/alphaDen << '\t';
+//             cout.width(7);  << std::left << (double) 1/alphaDen << '\t'
+    cout.width(3);  cout << std::left << (int) contextDepth << '\t';
+    cout.width(9);  cout << std::left << averageEntropy << "\t";
+    cout.width(9);  cout << std::left << averageEntropy/LOG2_ALPHABET_SIZE;
     ////////////////////////////////
 
 }
