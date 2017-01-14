@@ -353,6 +353,11 @@ void FCM::compressTarget ()
     
 }
 
+//template <typename T>
+//inline T X()
+//{
+//    return ((mode == 'h') ? (hTable[ tarContext ][ currSymInt ]) : (table[ tarContext * ALPH_SUM_SIZE + currSymInt ]))
+//}
 
 ///***************************************************************
 /// convert char (base) to integer (uint8_t)
