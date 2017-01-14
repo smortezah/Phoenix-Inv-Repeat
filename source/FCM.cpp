@@ -139,7 +139,6 @@ void FCM::buildRefModel ()
     else if (mode == 'h')
     {
         htable_t hTable;                            /// create hash table
-        hTable.insert({context, {0, 0, 0, 0, 0}});  /// initialize hash table with 0's
     
         while (getline(refFileIn, refLine))
         {
