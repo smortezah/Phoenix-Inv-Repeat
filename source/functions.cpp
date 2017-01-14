@@ -217,7 +217,7 @@ void Functions::commandLineParser (int argc, char **argv)
                 !stoi(vecParameters[ vecParamIndex++ ]) ? models[ n ].setInvertedRepeat(false)
                                                         : models[ n ].setInvertedRepeat(true);
     
-                /// write reference and target file names in the output file
+                /// print reference and target file names in the output
                 size_t lastSlash_Ref = models[ n ].getRefFileAddress().find_last_of("/");
                 size_t lastSlash_Tar = models[ n ].getTarFileAddress().find_last_of("/");
                 
