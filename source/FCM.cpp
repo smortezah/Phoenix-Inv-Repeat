@@ -231,7 +231,15 @@ void FCM::compressTarget ()
     
     
     htable_t hTable = getHashTable();
-#define X ((mode == 'h') ? (hTable[ tarContext ][ currSymInt ]) : (table[ tarContext * ALPH_SUM_SIZE + currSymInt ]))
+//#define X ((mode == 'h') ? (hTable[ tarContext ][ currSymInt ]) : (table[ tarContext * ALPH_SUM_SIZE + currSymInt ]))
+
+#define X(in) \
+do { \
+    (mode == 'h') \
+                ? in = hTable[ tarContext ][ currSymInt ] \
+                : in = table[ tarContext * ALPH_SUM_SIZE + currSymInt ] \
+; \
+} while ( 0 )
 
 #define Y(in) do { (mode == 't') \
                 ? in = table[ tarContext * ALPH_SUM_SIZE + ALPHABET_SIZE ] \
@@ -260,7 +268,8 @@ void FCM::compressTarget ()
                 //////////////////////////////////
                 /// number of symbols
 //                nSym     = table[ tarContext * ALPH_SUM_SIZE + currSymInt ];
-                nSym     = X;
+//                nSym     = X;
+                X(nSym);
     
                 /// sum of number of symbols
                 sumNSyms = table[ tarContext * ALPH_SUM_SIZE + ALPHABET_SIZE ];
@@ -301,14 +310,13 @@ void FCM::compressTarget ()
 //                {
                     /// number of symbols
 //                    nSym = hTable[ tarContext ][ currSymInt ];
-                nSym = X;
-        
+//                nSym = X;
+        X(nSym);
                     /// the idea of adding 'sum' column, makes hash table slower
                     /// sum(n_a)
-//                    sumNSyms = 0;
-//                    for (uint64_t u : hTable[ tarContext ])     sumNSyms += u;
-                
-                Y(sumNSyms);
+                    sumNSyms = 0;
+                    for (uint64_t u : hTable[ tarContext ])     sumNSyms += u;
+//                Y(sumNSyms);
 //                }
             
                 /// P(s|c^t)
