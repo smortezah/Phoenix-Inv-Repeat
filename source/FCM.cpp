@@ -178,7 +178,7 @@ void FCM::buildTable ()
     //////////////////////////////////
 
     string tarLine;                        /// keep each line of the file
-    
+
     while (getline(tarFileIn, tarLine))
     {
         
@@ -195,7 +195,7 @@ void FCM::buildTable ()
                                             (ch == 'C') ? 1 :
                                             (ch == 'G') ? 3 :
                                             (ch == 'T') ? 4 : 2);
-            
+
             //////////////////////////////////
             /// number of symbols
             nSym     = table[ tarContext * ALPH_SUM_SIZE + currSymInt ];
