@@ -417,21 +417,16 @@ void FCM::buildHashTable ()
     ////////////////////////////////
     /// H_N = -1/N sum( log_2 P(s|c^t) )
     averageEntropy = (-1) * sumOfEntropies / totalNOfSyms;
-
-    cout
-//            << sumOfEntropies << '\n'
-//            << totalNOfSyms << '\n'
-//            << "  "
-            << getInvertedRepeat() << '\t'
-            << (float) 1/alphaDen << '\t'
-//                << (double) 1/alphaDen << '\t'
-            << (int) contextDepth << '\t'
-            << averageEntropy << "\t\t"
-            << averageEntropy/LOG2_ALPHABET_SIZE
-//            << '\t'
-//            << hTable.size()
-//            << '\n'
-            ;
+    
+//    cout << sumOfEntropies << '\n';
+//    cout << totalNOfSyms << '\n';
+//    cout << "  ";
+    cout.width(2);  cout << std::left << getInvertedRepeat() << "   ";
+    cout.width(6);  cout << std::left << (float) 1/alphaDen << "   ";
+//             cout.width(7);  << std::left << (double) 1/alphaDen << "   "
+    cout.width(3);  cout << std::left << (int) contextDepth << "   ";
+    cout.width(8);  cout << std::left << averageEntropy << "   ";
+    cout.width(8);  cout << std::left << averageEntropy/LOG2_ALPHABET_SIZE;
     ////////////////////////////////
 
 }
@@ -585,18 +580,16 @@ void FCM::buildHashTable ()
 //    /// H_N = -1/N sum( log_2 P(s|c^t) )
 //    averageEntropy = (-1) * sumOfEntropies / totalNumberOfSymbols;
 //
-//    cout
-////            << sumOfEntropies << '\n'
-////            << totalNumberOfSymbols << '\n'
-//            << "  "
-//            << getInvertedRepeat() << '\t'
-//            << (float) 1/alphaDen << '\t'
-//            << (int) contextDepth << '\t'
-//            << averageEntropy
-////            << '\t'
-////            << hTable.size()
-////            << '\n'
-//            ;
+
+////    cout << sumOfEntropies << '\n';
+////    cout << totalNOfSyms << '\n';
+////    cout << "  ";
+//cout.width(2);  cout << std::left << getInvertedRepeat() << "   ";
+//cout.width(6);  cout << std::left << (float) 1/alphaDen << "   ";
+////             cout.width(7);  << std::left << (double) 1/alphaDen << "   "
+//cout.width(3);  cout << std::left << (int) contextDepth << "   ";
+//cout.width(8);  cout << std::left << averageEntropy << "   ";
+//cout.width(8);  cout << std::left << averageEntropy/LOG2_ALPHABET_SIZE;
 //    ////////////////////////////////
 //
 //}
@@ -730,18 +723,16 @@ void FCM::buildHashTable ()
 //    /// H_N = -1/N sum( log_2 P(s|c^t) )
 //    averageEntropy = (-1) * sumOfEntropies / totalNumberOfSymbols;
 //
-//    cout
-////            << sumOfEntropies << '\n'
-////            << totalNumberOfSymbols << '\n'
-//            << "  "
-//            << getInvertedRepeat() << '\t'
-//            << (float) 1/alphaDen << '\t'
-//            << (int) contextDepth << '\t'
-//            << averageEntropy
-////            << '\t'
-////            << hTable.size()
-////            << '\n'
-//            ;
+
+////    cout << sumOfEntropies << '\n';
+////    cout << totalNOfSyms << '\n';
+////    cout << "  ";
+//cout.width(2);  cout << std::left << getInvertedRepeat() << "   ";
+//cout.width(6);  cout << std::left << (float) 1/alphaDen << "   ";
+////             cout.width(7);  << std::left << (double) 1/alphaDen << "   "
+//cout.width(3);  cout << std::left << (int) contextDepth << "   ";
+//cout.width(8);  cout << std::left << averageEntropy << "   ";
+//cout.width(8);  cout << std::left << averageEntropy/LOG2_ALPHABET_SIZE;
 //    ////////////////////////////////
 //
 //}
@@ -880,18 +871,16 @@ void FCM::buildHashTable_str ()
     /// H_N = -1/N sum( log_2 P(s|c^t) )
     averageEntropy = (-1) * sumOfEntropies / totalNumberOfSymbols;
 
-    cout
-//            << sumOfEntropies << '\n'
-//            << totalNumberOfSymbols << '\n'
-            << "  "
-            << getInvertedRepeat() << '\t'
-//            << (float) 1/alphaDen << '\t'
-            << (int) contextDepth << '\t'
-            << averageEntropy
-//            << '\t'
-//            << hTable.size()
-//            << '\n'
-            ;
+
+//    cout << sumOfEntropies << '\n';
+//    cout << totalNOfSyms << '\n';
+//    cout << "  ";
+    cout.width(2);  cout << std::left << getInvertedRepeat() << "   ";
+    cout.width(6);  cout << std::left << (float) 1/alphaDen << "   ";
+//             cout.width(7);  << std::left << (double) 1/alphaDen << "   "
+    cout.width(3);  cout << std::left << (int) contextDepth << "   ";
+    cout.width(8);  cout << std::left << averageEntropy << "   ";
+    cout.width(8);  cout << std::left << averageEntropy/LOG2_ALPHABET_SIZE;
     ////////////////////////////////
 
 }
