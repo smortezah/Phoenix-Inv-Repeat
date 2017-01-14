@@ -232,7 +232,7 @@ void FCM::compressTarget ()
     
     htable_t hTable = getHashTable();
 #define X ((mode == 'h') ? (hTable[ tarContext ][ currSymInt ]) : (table[ tarContext * ALPH_SUM_SIZE + currSymInt ]))
-#define Y(in) do { in = 0; for (uint64_t u : hTable[ tarContext ]) in += u; } while ( 0 )
+#define Y(in) ( (mode == 'h') ? do {( in = 0; for (uint64_t u : hTable[ tarContext ]) in += u; } ) while ( 0 ) : (1) )
 
     
 //#define Y(in) do { in = 0; for (uint64_t u : hTable[ tarContext ]) in += u; } while ( 0 )
