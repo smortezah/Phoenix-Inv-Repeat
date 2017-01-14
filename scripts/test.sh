@@ -25,7 +25,7 @@ INSTALL_goose=0         # install "goose" from Github
 GEN_DATASETS=0          # generate datasets using "XS"
 GEN_MUTATIONS=0         # generate mutations using "goose"
 RUN=1                   # run the program
-PLOT_RESULTS=1          # plot results using "gnuplot"
+PLOT_RESULTS=0          # plot results using "gnuplot"
 ARCHIVE_DATA=0          # archive data
 
 # mutations list:   `seq -s' ' 1 10`
@@ -284,8 +284,8 @@ if [[ $RUN == 1 ]]; then
 for ir in $INV_REPEATS; do
  for alphaDen in $ALPHA_DENS; do
   for refDataset in $REF_DATASET; do
-   echo -e "# ref    tar    ir   alpha     ctx   bpb        NRC        time(s)" \
-        >> $IR_LBL$ir-$a_LBL$alphaDen-$refDataset.$INF_FILE_TYPE
+   echo -e "# ref    tar    ir   alpha    ctx   bpb        NRC        time(s)" \
+#        >> $IR_LBL$ir-$a_LBL$alphaDen-$refDataset.$INF_FILE_TYPE
    for tarDataset in $TAR_DATASET; do
 ##   rm -f $IR_LBL$ir-$a_LBL$alphaDen-${dataset}.$INF_FILE_TYPE
 #   touch $IR_LBL$ir-$a_LBL$alphaDen-$dataset.$INF_FILE_TYPE
@@ -293,14 +293,11 @@ for ir in $INV_REPEATS; do
 #    for mut in $MUT_LIST; do
 #    rm -f $IR_LBL$ir-$a_LBL$alphaDen-${dataset}_$mut.$INF_FILE_TYPE
 #    touch $IR_LBL$ir-$a_LBL$alphaDen-${dataset}_$mut.$INF_FILE_TYPE
-#    touch $IR_LBL$ir-$a_LBL$alphaDen-$dataset.$INF_FILE_TYPE
 #    echo -e "# ir\talpha\tctx\tbpb\ttime(s)" >> $IR_LBL$ir-$a_LBL$alphaDen-${dataset}_$mut.$INF_FILE_TYPE
      for((ctx=$MIN_CTX; ctx<=$MAX_CTX; ctx+=1)); do
 #     for ctx in {2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20}; do
-#     ./phoenix -m t,$ctx,$alphaDen,$ir -t $FLD_archive_datasets/${dataset}_$mut -r $FLD_archive_datasets/${dataset}_$mut \
      ./phoenix -m r,$ctx,$alphaDen,$ir -t $FLD_datasets/$tarDataset -r $FLD_datasets/$refDataset \
-               >> $IR_LBL$ir-$a_LBL$alphaDen-$refDataset.$INF_FILE_TYPE
-#               >> $IR_LBL$ir-$a_LBL$alphaDen-${dataset}_$mut.$INF_FILE_TYPE
+#               >> $IR_LBL$ir-$a_LBL$alphaDen-$refDataset.$INF_FILE_TYPE
      done
 #    done
    done
