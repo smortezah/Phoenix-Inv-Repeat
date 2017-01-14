@@ -56,16 +56,17 @@ void FCM::buildRefModel ()
 //    }
     
     
-    ifstream tarFileIn(tarFileName, ios::in);   /// open target file located in fileName
+//    ifstream tarFileIn(tarFileName, ios::in);   /// open target file located in fileName
     ifstream refFileIn(refFileName, ios::in);   /// open reference file located in fileName
     
-    if (!tarFileIn)                             /// error occurred while opening file
-    {
-        cerr << "The file '" << tarFileName << "' cannot be opened, or it is empty.\n";
-        refFileIn.close();                      /// close file
-        return;                                 /// exit this function
-    }
-    else if (!refFileIn)                        /// error occurred while opening file
+//    if (!tarFileIn)                             /// error occurred while opening file
+//    {
+//        cerr << "The file '" << tarFileName << "' cannot be opened, or it is empty.\n";
+//        refFileIn.close();                      /// close file
+//        return;                                 /// exit this function
+//    }
+//    else
+    if (!refFileIn)                             /// error occurred while opening file
     {
         cerr << "The file '" << refFileName << "' cannot be opened, or it is empty.\n";
         refFileIn.close();                      /// close file
