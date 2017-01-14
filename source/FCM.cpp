@@ -241,9 +241,9 @@ void FCM::compressTarget ()
 //#define X (hTable[tarContext][currSymInt])
 //    }
 
-#define X ((mode == 'h')?(table[ tarContext * ALPH_SUM_SIZE + currSymInt ]):(table[ tarContext * ALPH_SUM_SIZE + currSymInt ]))
-//    #define X 1
-    
+//#define X ((mode == 'h') ? (1) : (table[ tarContext * ALPH_SUM_SIZE + currSymInt ]))
+#define X ((mode == 'h') ? (hTable[ tarContext ][ currSymInt ]) : (table[ tarContext * ALPH_SUM_SIZE + currSymInt ]))
+
     
     
     if (mode == 't')
@@ -303,8 +303,8 @@ void FCM::compressTarget ()
 //                else
 //                {
                     /// number of symbols
-//                    nSym = hTable[ tarContext ][ currSymInt ];
-                nSym = X;
+                    nSym = hTable[ tarContext ][ currSymInt ];
+//                nSym = X;
         
                     /// the idea of adding 'sum' column, makes hash table slower
                     /// sum(n_a)
