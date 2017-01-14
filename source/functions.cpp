@@ -221,9 +221,11 @@ void Functions::commandLineParser (int argc, char **argv)
                 size_t lastSlash_Ref = models[ n ].getRefFileAddress().find_last_of("/");
                 size_t lastSlash_Tar = models[ n ].getTarFileAddress().find_last_of("/");
                 
-                cout << "  "
-                     << models[ n ].getRefFileAddress().substr(lastSlash_Ref + 1) << '\t'
-                     << models[ n ].getTarFileAddress().substr(lastSlash_Tar + 1) << '\t';
+                cout << "  ";
+                cout.width(2);
+                cout << std::left << models[ n ].getRefFileAddress().substr(lastSlash_Ref + 1) << '\t';
+                cout.width(2);
+                cout << std::left <<  models[ n ].getTarFileAddress().substr(lastSlash_Tar + 1) << '\t';
                         
                 /// build table or hash table for the model
                 (ctxDepth > TABLE_MAX_CONTEXT) ? models[ n ].buildHashTable()
