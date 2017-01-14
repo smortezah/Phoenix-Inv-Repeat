@@ -230,22 +230,25 @@ void FCM::compressTarget ()
     
     
     
+//    if (mode == 't')
+//    {
+//        uint64_t *table = getTable();
+//#define X (table[ tarContext * ALPH_SUM_SIZE + currSymInt ])
+//    }
+//    else if (mode == 'h')
+//    {
+//        htable_t hTable = getHashTable();
+//#define X (hTable[tarContext][currSymInt])
+//    }
+
+#define X (table[ tarContext * ALPH_SUM_SIZE + currSymInt ])
+//    #define X 1
+    
+    
+    
     if (mode == 't')
     {
         uint64_t *table = getTable();
-#define X (table[ tarContext * ALPH_SUM_SIZE + currSymInt ])
-    }
-    else if (mode == 'h')
-    {
-        htable_t hTable = getHashTable();
-#define X (hTable[tarContext][currSymInt])
-    }
-    
-    
-    
-    if (mode == 't')
-    {
-//        uint64_t *table = getTable();
     
         while (getline(tarFileIn, tarLine))
         {
@@ -281,7 +284,7 @@ void FCM::compressTarget ()
     }
     else if (mode == 'h')
     {
-//        htable_t hTable = getHashTable();
+        htable_t hTable = getHashTable();
         
         while (getline(tarFileIn, tarLine))
         {
@@ -322,6 +325,7 @@ void FCM::compressTarget ()
             }   /// end of for
         }   /// end of while
     }
+    
     
     tarFileIn.close();          /// close file
     
