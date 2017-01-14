@@ -15,7 +15,7 @@ public:
     FCM ();                                         /// constructor
     
     void buildRefModel ();                          /// build model (table / hash table) for reference
-    void compressTarget ();                         /// compress target file based on reference
+    void compressTarget ();                         /// compress target file
     void buildTable ();                             /// build table
     void buildHashTable ();                         /// build hash table (int key)
     //    void buildHashTable_str ();                     /// build hash table (string key)

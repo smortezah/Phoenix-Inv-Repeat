@@ -31,7 +31,7 @@ FCM::FCM () {}
 
 
 /***********************************************************
-    build table
+    build
 ************************************************************/
 void FCM::buildRefModel ()
 {
@@ -161,8 +161,7 @@ void FCM::buildRefModel ()
     refFileIn.close();                     /// close file
     
     mode == 'h' ? FCM::setHashTable(hTable) : FCM::setTable(table);                  /// save the built table
-
-
+    
 
 //    ///***************************************************************
 //    /// print table
@@ -179,11 +178,36 @@ void FCM::buildRefModel ()
 //        cout << table[ i ] << '\t';
 //        if ((i + 1) % 6 == 0) cout << '\n';
 //    }
+}
+
+
+///***************************************************************
+/// compressing target based on the model built based on reference
+///***************************************************************
+void FCM::compressTarget ()
+{
+    const uint8_t contextDepth  = getContextDepth();    /// get context depth
+    const uint16_t alphaDen     = getAlphaDenom();      /// get alpha denominator
+//    const double alphaDen     = getAlphaDenom();        /// get alpha denominator
+    const bool isInvertedRepeat = getInvertedRepeat();  /// get inverted repeat
+    string tarFileName          = getTarFileAddress();  /// get target file address
+    /// mode: 't'=table, 'h'=hash table
+    const char mode = (contextDepth > TABLE_MAX_CONTEXT) ? 'h' : 't';
     
-    ///***************************************************************
-    /// compressing target based on the table built based on reference
-    ///***************************************************************
-    uint32_t tarContext = 0;               /// context (integer), that slides in the dataset
+    ifstream tarFileIn(tarFileName, ios::in);   /// open target file located in fileName
+    
+    if (!tarFileIn)                             /// error occurred while opening file
+    {
+        cerr << "The file '" << tarFileName << "' cannot be opened, or it is empty.\n";
+        tarFileIn.close();                      /// close file
+        return;                                 /// exit this function
+    }
+    
+    uint64_t maxPlaceValue = (uint64_t) pow(ALPHABET_SIZE, contextDepth);
+    uint64_t tarContext = 0;               /// context (integer), that slides in the dataset
+    
+    uint64_t *table = getTable();
+    htable_t hTable = getHashTable();
     
     ////////////////////////////////
     uint64_t nSym;                         /// number of symbols (n_s). To calculate probability
@@ -214,10 +238,31 @@ void FCM::buildRefModel ()
                                             (ch == 'T') ? 4 : 2);
             
             //////////////////////////////////
-            /// number of symbols
-            nSym     = table[ tarContext * ALPH_SUM_SIZE + currSymInt ];
-            /// sum of number of symbols
-            sumNSyms = table[ tarContext * ALPH_SUM_SIZE + ALPHABET_SIZE ];
+            if (mode == 'h')
+            {
+//            if (hTable.find(tarContext) == hTable.end())
+//            {
+//                nSym = 0;
+//                sumNSyms = 0;
+//            }
+//            else
+//            {
+                /// number of symbols
+                nSym = hTable[ tarContext ][ currSymInt ];
+    
+                /// the idea of adding 'sum' column, makes hash table slower
+                /// sum(n_a)
+                sumNSyms = 0;
+                for (uint64_t u : hTable[ tarContext ])     sumNSyms += u;
+//            }
+            }
+            else if (mode == 't')
+            {
+                /// number of symbols
+                nSym     = table[ tarContext * ALPH_SUM_SIZE + currSymInt ];
+                /// sum of number of symbols
+                sumNSyms = table[ tarContext * ALPH_SUM_SIZE + ALPHABET_SIZE ];
+            }
             
             /// P(s|c^t)
             probability = (double) (alphaDen * nSym + 1) / (alphaDen * sumNSyms + ALPHABET_SIZE);
@@ -241,7 +286,7 @@ void FCM::buildRefModel ()
 //    cout << sumOfEntropies << '\n';
 //    cout << totalNOfSyms << '\n';
 //    cout << "  ";
-    cout.width(2);  cout << std::left << getInvertedRepeat() << "   ";
+    cout.width(2);  cout << std::left << isInvertedRepeat << "   ";
     cout.width(6);  cout << std::left << (float) 1/alphaDen << "   ";
 //             cout.width(7);  << std::left << (double) 1/alphaDen << "   "
     cout.width(3);  cout << std::left << (int) contextDepth << "   ";

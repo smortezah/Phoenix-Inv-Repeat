@@ -71,8 +71,8 @@ a_LBL=a                 # label for alpha denominator
 
 INV_REPEATS="1"         # list of inverted repeats      "0 1"
 ALPHA_DENS="100"        # list of alpha denominators    "1 20 100"
-MIN_CTX=2              # min context-order size
-MAX_CTX=2              # max context-order size
+MIN_CTX=6              # min context-order size
+MAX_CTX=6              # max context-order size
 
 
 #***********************************************************
