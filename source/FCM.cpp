@@ -232,9 +232,15 @@ void FCM::compressTarget ()
     
     htable_t hTable = getHashTable();
 #define X ((mode == 'h') ? (hTable[ tarContext ][ currSymInt ]) : (table[ tarContext * ALPH_SUM_SIZE + currSymInt ]))
-#define Y(in) ( (mode == 'h') ? do {( in = 0; for (uint64_t u : hTable[ tarContext ]) in += u; } ) while ( 0 ) : (1) )
+//#define Y(in) ( (mode == 'h') ? do {( in = 0; for (uint64_t u : hTable[ tarContext ]) in += u; } ) while ( 0 ) : (1) )
 
-    
+
+#define Y(in) do { (mode == 't') \
+    ? in = table[ tarContext * ALPH_SUM_SIZE + ALPHABET_SIZE ] \
+    : in = 0; for (uint64_t u : hTable[ tarContext ]) in += u; \
+} while ( 0 )
+
+
 //#define Y(in) do { in = 0; for (uint64_t u : hTable[ tarContext ]) in += u; } while ( 0 )
     
     
@@ -261,8 +267,8 @@ void FCM::compressTarget ()
                 nSym     = X;
     
                 /// sum of number of symbols
-                sumNSyms = table[ tarContext * ALPH_SUM_SIZE + ALPHABET_SIZE ];
-//                sumNSyms = Y;
+//                sumNSyms = table[ tarContext * ALPH_SUM_SIZE + ALPHABET_SIZE ];
+                Y(sumNSyms);
             
                 /// P(s|c^t)
                 probability = (double) (alphaDen * nSym + 1) / (alphaDen * sumNSyms + ALPHABET_SIZE);
@@ -305,9 +311,6 @@ void FCM::compressTarget ()
                     /// sum(n_a)
 //                    sumNSyms = 0;
 //                    for (uint64_t u : hTable[ tarContext ])     sumNSyms += u;
-                
-//                sumNSyms = hTable[ tarContext ][0]+hTable[ tarContext ][1]+hTable[ tarContext ][2]
-//                           +hTable[ tarContext ][3]+hTable[ tarContext ][4];
                 
                 Y(sumNSyms);
 //                }
