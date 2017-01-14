@@ -224,12 +224,12 @@ void FCM::buildTable ()
 //    cout << sumOfEntropies << '\n';
 //    cout << totalNOfSyms << '\n';
 //    cout << "  ";
-    cout.width(2);  cout << std::left << getInvertedRepeat() << '\t';
-    cout.width(7);  cout << std::left << (float) 1/alphaDen << '\t';
-//             cout.width(7);  << std::left << (double) 1/alphaDen << '\t'
-    cout.width(3);  cout << std::left << (int) contextDepth << '\t';
-    cout.width(9);  cout << std::left << averageEntropy << "\t";
-    cout.width(9);  cout << std::left << averageEntropy/LOG2_ALPHABET_SIZE;
+    cout.width(2);  cout << std::left << getInvertedRepeat() << "   ";
+    cout.width(7);  cout << std::left << (float) 1/alphaDen << "   ";
+//             cout.width(7);  << std::left << (double) 1/alphaDen << "   "
+    cout.width(3);  cout << std::left << (int) contextDepth << "   ";
+    cout.width(8);  cout << std::left << averageEntropy << "   ";
+    cout.width(8);  cout << std::left << averageEntropy/LOG2_ALPHABET_SIZE;
     ////////////////////////////////
 
 }

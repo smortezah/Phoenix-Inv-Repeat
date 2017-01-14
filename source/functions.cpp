@@ -223,9 +223,9 @@ void Functions::commandLineParser (int argc, char **argv)
                 
                 cout << "  ";
                 cout.width(4);
-                cout << std::left << models[ n ].getRefFileAddress().substr(lastSlash_Ref + 1) << '\t';
+                cout << std::left << models[ n ].getRefFileAddress().substr(lastSlash_Ref + 1) << "   ";
                 cout.width(4);
-                cout << std::left <<  models[ n ].getTarFileAddress().substr(lastSlash_Tar + 1) << '\t';
+                cout << std::left <<  models[ n ].getTarFileAddress().substr(lastSlash_Tar + 1) << "   ";
                         
                 /// build table or hash table for the model
                 (ctxDepth > TABLE_MAX_CONTEXT) ? models[ n ].buildHashTable()
