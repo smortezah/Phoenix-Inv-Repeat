@@ -165,8 +165,8 @@ void FCM::buildRefModel ()
             
                 /// update context
                 context = (uint64_t) (context * ALPHABET_SIZE + currSymInt) % maxPlaceValue;
-            }   /// end of for
-        }   /// end of while
+            }
+        }
     
         FCM::setHashTable(hTable);/// save the built table
     }
@@ -228,9 +228,24 @@ void FCM::compressTarget ()
     double   averageEntropy = 0;           /// average entropy (H)
     //////////////////////////////////
     
+    
+    
     if (mode == 't')
     {
         uint64_t *table = getTable();
+#define X (table[ tarContext * ALPH_SUM_SIZE + currSymInt ])
+    }
+    else if (mode == 'h')
+    {
+        htable_t hTable = getHashTable();
+#define X (hTable[tarContext][currSymInt])
+    }
+    
+    
+    
+    if (mode == 't')
+    {
+//        uint64_t *table = getTable();
     
         while (getline(tarFileIn, tarLine))
         {
@@ -246,7 +261,9 @@ void FCM::compressTarget ()
             
                 //////////////////////////////////
                 /// number of symbols
-                nSym     = table[ tarContext * ALPH_SUM_SIZE + currSymInt ];
+//                nSym     = table[ tarContext * ALPH_SUM_SIZE + currSymInt ];
+                nSym     = X;
+    
                 /// sum of number of symbols
                 sumNSyms = table[ tarContext * ALPH_SUM_SIZE + ALPHABET_SIZE ];
             
@@ -264,7 +281,7 @@ void FCM::compressTarget ()
     }
     else if (mode == 'h')
     {
-        htable_t hTable = getHashTable();
+//        htable_t hTable = getHashTable();
         
         while (getline(tarFileIn, tarLine))
         {
@@ -283,7 +300,8 @@ void FCM::compressTarget ()
 //                else
 //                {
                     /// number of symbols
-                    nSym = hTable[ tarContext ][ currSymInt ];
+//                    nSym = hTable[ tarContext ][ currSymInt ];
+                nSym = X;
         
                     /// the idea of adding 'sum' column, makes hash table slower
                     /// sum(n_a)
