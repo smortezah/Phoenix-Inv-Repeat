@@ -97,21 +97,14 @@ void FCM::buildRefModel ()
         for (string::iterator lineIter = refLine.begin(); lineIter != refLine.end(); ++lineIter)
         {
             /// table includes an array of uint64_t numbers
-            char ch = *lineIter;
-            uint8_t currSymInt = (uint8_t) ((ch == 'A') ? 0 :
-                                            (ch == 'C') ? 1 :
-                                            (ch == 'G') ? 3 :
-                                            (ch == 'T') ? 4 : 2);
-
-//            uint8_t currSymInt = (ch == 'A') ? (uint8_t) 0 :
-//                                 (ch == 'C') ? (uint8_t) 1 :
-//                                 (ch == 'G') ? (uint8_t) 3 :
-//                                 (ch == 'T') ? (uint8_t) 4 : (uint8_t) 2;
-//            uint8_t currSymInt = ch % ALPHABET_SIZE;
-//            uint8_t currSymInt = (ch == 'C') ? (uint8_t) 3 :
-//                                 (ch == 'N') ? (uint8_t) 2 :
-//                                 (uint8_t) (ch % ALPHABET_SIZE);
+//            char ch = *lineIter;
+//            uint8_t currSymInt = (uint8_t) ((ch == 'A') ? 0 :
+//                                            (ch == 'C') ? 1 :
+//                                            (ch == 'G') ? 3 :
+//                                            (ch == 'T') ? 4 : 2);
     
+            uint8_t currSymInt = symCharToInt(*lineIter);
+                    
             mode == 'h' ?
             /// update hash table
             ++hTable[ context ][ currSymInt ]
@@ -182,27 +175,6 @@ void FCM::buildRefModel ()
 
 
 ///***************************************************************
-///
-///***************************************************************
-uint8_t FCM::symCharToInt (char ch) const
-{
-    return (uint8_t) ((ch == 'A') ? 0 :
-                      (ch == 'C') ? 1 :
-                      (ch == 'G') ? 3 :
-                      (ch == 'T') ? 4 : 2);
-    
-//    return ((ch == 'A') ? (uint8_t) 0 :
-//            (ch == 'C') ? (uint8_t) 1 :
-//            (ch == 'G') ? (uint8_t) 3 :
-//            (ch == 'T') ? (uint8_t) 4 : (uint8_t) 2);
-//    return (ch % ALPHABET_SIZE);
-//    return ((ch == 'C') ? (uint8_t) 3 :
-//            (ch == 'N') ? (uint8_t) 2 :
-//            (uint8_t) (ch % ALPHABET_SIZE));
-}
-
-
-///***************************************************************
 /// compressing target based on the model built based on reference
 ///***************************************************************
 void FCM::compressTarget ()
@@ -252,11 +224,13 @@ void FCM::compressTarget ()
         for (string::iterator lineIter = tarLine.begin(); lineIter != tarLine.end(); ++lineIter)
         {
             /// table includes an array of uint64_t numbers
-            char ch = *lineIter;
-            uint8_t currSymInt = (uint8_t) ((ch == 'A') ? 0 :
-                                            (ch == 'C') ? 1 :
-                                            (ch == 'G') ? 3 :
-                                            (ch == 'T') ? 4 : 2);
+//            char ch = *lineIter;
+//            uint8_t currSymInt = (uint8_t) ((ch == 'A') ? 0 :
+//                                            (ch == 'C') ? 1 :
+//                                            (ch == 'G') ? 3 :
+//                                            (ch == 'T') ? 4 : 2);
+    
+            uint8_t currSymInt = symCharToInt(*lineIter);
             
             //////////////////////////////////
             if (mode == 'h')
@@ -315,6 +289,24 @@ void FCM::compressTarget ()
     cout.width(8);  cout << std::left << averageEntropy/LOG2_ALPHABET_SIZE;
     ////////////////////////////////
     
+}
+
+
+///***************************************************************
+///
+///***************************************************************
+uint8_t FCM::symCharToInt (char ch) const
+{
+    return (uint8_t) ((ch == 'A') ? 0 :
+                      (ch == 'C') ? 1 :
+                      (ch == 'G') ? 3 :
+                      (ch == 'T') ? 4 : 2);
+
+//    return (uint8_t) (ch % ALPHABET_SIZE);
+
+//    return (uint8_t) ((ch == 'C') ? 3 :
+//                      (ch == 'N') ? 2 :
+//                      (ch % ALPHABET_SIZE));
 }
 
 

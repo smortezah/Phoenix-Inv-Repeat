@@ -15,8 +15,8 @@ public:
     FCM ();                                         /// constructor
     
     void buildRefModel ();                          /// build model (table / hash table) for reference
-    uint8_t symCharToInt (char) const;
     void compressTarget ();                         /// compress target file
+    uint8_t symCharToInt (char) const;
     void buildTable ();                             /// build table
     void buildHashTable ();                         /// build hash table (int key)
     //    void buildHashTable_str ();                     /// build hash table (string key)
