@@ -182,6 +182,27 @@ void FCM::buildRefModel ()
 
 
 ///***************************************************************
+///
+///***************************************************************
+uint8_t FCM::symCharToInt (char ch) const
+{
+    return (uint8_t) ((ch == 'A') ? 0 :
+                      (ch == 'C') ? 1 :
+                      (ch == 'G') ? 3 :
+                      (ch == 'T') ? 4 : 2);
+    
+//    return ((ch == 'A') ? (uint8_t) 0 :
+//            (ch == 'C') ? (uint8_t) 1 :
+//            (ch == 'G') ? (uint8_t) 3 :
+//            (ch == 'T') ? (uint8_t) 4 : (uint8_t) 2);
+//    return (ch % ALPHABET_SIZE);
+//    return ((ch == 'C') ? (uint8_t) 3 :
+//            (ch == 'N') ? (uint8_t) 2 :
+//            (uint8_t) (ch % ALPHABET_SIZE));
+}
+
+
+///***************************************************************
 /// compressing target based on the model built based on reference
 ///***************************************************************
 void FCM::compressTarget ()
@@ -1004,23 +1025,16 @@ void FCM::buildHashTable ()
 //    ////////////////////////////////
 //
 //}
+//
+//
+//////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////
+///// end of version: reference file not considered
+//////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-///***********************************************************
+//***********************************************************
 //    build hash table (string key)
 //************************************************************/
 /* COMMENT
@@ -1206,8 +1220,8 @@ uint8_t FCM::getContextDepth () const                 { return contextDepth;    
 void FCM::setContextDepth (uint8_t ctxDp)             { FCM::contextDepth = ctxDp;     }
 uint16_t FCM::getAlphaDenom () const                  { return alphaDenom;             }
 void FCM::setAlphaDenom (uint16_t alphaDen)           { FCM::alphaDenom = alphaDen;    }
-//double FCM::getAlphaDenom () const                  { return alphaDenom;             }
-//void FCM::setAlphaDenom (double alphaDen)           { FCM::alphaDenom = alphaDen;    }
+//double FCM::getAlphaDenom () const                    { return alphaDenom;             }
+//void FCM::setAlphaDenom (double alphaDen)             { FCM::alphaDenom = alphaDen;    }
 bool FCM::getInvertedRepeat () const                  { return invertedRepeat;         }
 void FCM::setInvertedRepeat (bool invRep)             { FCM::invertedRepeat = invRep;  }
 uint64_t *FCM::getTable () const                      { return table;                  }
