@@ -318,6 +318,11 @@ void FCM::compressTarget ()
                     /// sum(n_a)
 //                    sumNSyms = 0;
 //                    for (uint64_t u : hTable[ tarContext ])     sumNSyms += u;
+                
+//                sumNSyms = hTable[ tarContext ][0]+hTable[ tarContext ][1]+hTable[ tarContext ][2]
+//                           +hTable[ tarContext ][3]+hTable[ tarContext ][4];
+                
+                
 //                Y;
 //                }
             
@@ -826,6 +831,7 @@ void FCM::buildHashTable_str ()
 void FCM::printHashTable () const
 {
     htable_t hTable = this->getHashTable();
+//    htable_t hTable = getHashTable();
     
     string tar_or_ref = (this->getTargetOrReference() == 't' ? "target" : "reference");
     string Tar_or_Ref = (this->getTargetOrReference() == 't' ? "Target" : "Reference");
