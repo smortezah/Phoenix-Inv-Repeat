@@ -362,7 +362,7 @@ void FCM::compressTarget ()
 ///***************************************************************
 /// convert char (base) to integer (uint8_t)
 ///***************************************************************
-uint8_t FCM::symCharToInt (char ch) const
+inline uint8_t FCM::symCharToInt (char ch) const
 {
     return (uint8_t) ((ch == 'A') ? 0 :
                       (ch == 'C') ? 1 :
