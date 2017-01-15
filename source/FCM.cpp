@@ -310,6 +310,7 @@ void FCM::compressTarget ()
 //                {
                     /// number of symbols
                     nSym = hTable[ tarContext ][ currSymInt ];
+//                nSym = f(tarContext,currSymInt);
 //                nSym = X;
 //        X(nSym);
                     /// the idea of adding 'sum' column, makes hash table slower
@@ -353,11 +354,14 @@ void FCM::compressTarget ()
     
 }
 
-//template <typename T>
-//inline T X()
-//{
-//    return ((mode == 'h') ? (hTable[ tarContext ][ currSymInt ]) : (table[ tarContext * ALPH_SUM_SIZE + currSymInt ]))
-//}
+
+inline uint64_t FCM::f(uint64_t tarContext, uint8_t currSymInt)
+{
+    htable_t hTable =FCM::getHashTable();
+    uint64_t *table = FCM::getTable();
+    char mode = (contextDepth > TABLE_MAX_CONTEXT) ? 'h' : 't';
+    return ((mode == 'h') ? (hTable[ tarContext ][ currSymInt ]) : (table[ tarContext * ALPH_SUM_SIZE + currSymInt ]));
+}
 
 ///***************************************************************
 /// convert char (base) to integer (uint8_t)
