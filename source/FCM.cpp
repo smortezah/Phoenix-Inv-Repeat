@@ -257,7 +257,7 @@ void FCM::compressTarget ()
         {
         
             //////////////////////////////////
-            totalNOfSyms += tarLine.size();    /// number of symbols in each line of dataset
+            totalNOfSyms = totalNOfSyms + tarLine.size();    /// number of symbols in each line of dataset
             //////////////////////////////////
         
             /// table includes the number of occurrences of symbols A, C, N, G, T
@@ -282,7 +282,7 @@ void FCM::compressTarget ()
                 probability = (double) (alphaDen * nSym + 1) / (alphaDen * sumNSyms + ALPHABET_SIZE);
             
                 /// sum( log_2 P(s|c^t) )
-                sumOfEntropies += log2(probability);
+                sumOfEntropies = sumOfEntropies + log2(probability);
                 /////////////////////////////////
             
                 /// update context
@@ -299,7 +299,7 @@ void FCM::compressTarget ()
         {
         
             //////////////////////////////////
-            totalNOfSyms += tarLine.size();    /// number of symbols in each line of dataset
+            totalNOfSyms = totalNOfSyms + tarLine.size();    /// number of symbols in each line of dataset
             //////////////////////////////////
         
             /// table includes the number of occurrences of symbols A, C, N, G, T
@@ -320,7 +320,7 @@ void FCM::compressTarget ()
                     /// the idea of adding 'sum' column, makes hash table slower
                     /// sum(n_a)
                     sumNSyms = 0;
-                    for (uint64_t u : hTable[ tarContext ])     sumNSyms += u;
+                    for (uint64_t u : hTable[ tarContext ])     sumNSyms = sumNSyms + u;
 //                Y(sumNSyms);
 //                }
             
@@ -328,7 +328,7 @@ void FCM::compressTarget ()
                 probability = (double) (alphaDen * nSym + 1) / (alphaDen * sumNSyms + ALPHABET_SIZE);
             
                 /// sum( log_2 P(s|c^t) )
-                sumOfEntropies += log2(probability);
+                sumOfEntropies = sumOfEntropies + log2(probability);
                 /////////////////////////////////
             
                 /// update context
