@@ -28,12 +28,12 @@ int32_t main (int argc, char *argv[])
     high_resolution_clock::time_point exeStartTime = high_resolution_clock::now();
     
     /// for access to Functions (object 'function' on memory stack)
-//    Functions function;
-//    function.commandLineParser(argc, argv); /// parse the command line
+    Functions function;
+    function.commandLineParser(argc, argv); /// parse the command line
     
     
-//    for(uint64_t i=0; i!=1000000000;++i) ;//cout<<i;
-    for(uint64_t i=1000000000; i--;) ;//cout<<i;
+//    for(uint64_t i=0; i!=100;++i) ;//cout<<i;
+//    for(uint64_t i=100; i--;) ;//cout<<i;
 
 
 //    char arr[5] = {'A', 'T', 'C', 'G', 'N'};
