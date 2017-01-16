@@ -231,7 +231,7 @@ void FCM::compressTarget ()
     
     
     htable_t hTable = getHashTable();
-//#define X ((mode == 'h') ? (hTable[ tarContext ][ currSymInt ]) : (table[ tarContext * ALPH_SUM_SIZE + currSymInt ]))
+#define X ((mode == 'h') ? (hTable[ tarContext ][ currSymInt ]) : (table[ tarContext * ALPH_SUM_SIZE + currSymInt ]))
 
 //#define X(in) \
 //do { \
