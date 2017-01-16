@@ -358,9 +358,12 @@ inline uint8_t FCM::symCharToInt (char ch) const
     
 //    return (uint8_t) (ch % ALPHABET_SIZE);
 
-//    return (uint8_t) ((ch == 'C') ? 3 :
-//                      (ch == 'N') ? 2 :
-//                      (ch % ALPHABET_SIZE));
+//    switch (ch)
+//    {
+//        case 'C':   return (uint8_t) 3;
+//        case 'N':   return (uint8_t) 2;
+//        default:    return (uint8_t) (ch % ALPHABET_SIZE);
+//    }
 }
 
 
