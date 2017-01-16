@@ -327,11 +327,11 @@ void FCM::compressTarget ()
 //    cout << totalNOfSyms << '\n';
 //    cout << ' ';
     
-    cout << getInvertedRepeat() << ' '
-         << (float) 1 / alphaDen << ' '
-         //             cout << (double) 1/alphaDen << ' '
-         << (int) contextDepth << ' '
-         << averageEntropy << ' '
+    cout << getInvertedRepeat() << '\t'
+         << (float) 1 / alphaDen << '\t'
+         //             cout << (double) 1/alphaDen << '\t'
+         << (int) contextDepth << '\t'
+         << averageEntropy << '\t'
          << averageEntropy/LOG2_ALPHABET_SIZE;
     
 //    cout.width(2);  cout << std::left << getInvertedRepeat() << "   ";
