@@ -82,97 +82,103 @@ void FCM::buildRefModel ()
     string refLine;                             /// keep each line of the file
     
     ///
-    if (mode == 't')
+    switch (mode)
     {
-        /// create table
-        uint64_t tableSize = maxPlaceValue * ALPH_SUM_SIZE;
-        uint64_t *table = new uint64_t[ tableSize ];
-        
-        /// initialize table with 0's
-        memset(table, 0, sizeof(table[0]) * tableSize);
-        
-        while (getline(refFileIn, refLine))
+        case 't':
         {
-            /// fill table by number of occurrences of symbols A, C, N, G, T
-            for (string::iterator lineIter = refLine.begin(); lineIter != refLine.end(); ++lineIter)
+            /// create table
+            uint64_t tableSize = maxPlaceValue * ALPH_SUM_SIZE;
+            uint64_t *table = new uint64_t[tableSize];
+        
+            /// initialize table with 0's
+            memset(table, 0, sizeof(table[ 0 ]) * tableSize);
+        
+            while (getline(refFileIn, refLine))
             {
-                /// table includes an array of uint64_t numbers
-                uint8_t currSymInt = symCharToInt(*lineIter);
-    
-                /// update table
-                ++table[ context * ALPH_SUM_SIZE + currSymInt ];
-                ////            nSym = table[ context * ALPH_SUM_SIZE + currSymInt ]++;
-    
-                /// considering inverted repeats to update hash table
-                if (isInvertedRepeat)
+                /// fill table by number of occurrences of symbols A, C, N, G, T
+                for (string::iterator lineIter = refLine.begin(); lineIter != refLine.end(); ++lineIter)
                 {
-                    /// concatenation of inverted repeat context and current symbol
-                    uint64_t iRCtxCurrSym = (4 - currSymInt) * maxPlaceValue + invRepContext;
+                    /// table includes an array of uint64_t numbers
+                    uint8_t currSymInt = symCharToInt(*lineIter);
+                
+                    /// update table
+                    ++table[ context * ALPH_SUM_SIZE + currSymInt ];
+                    ////            nSym = table[ context * ALPH_SUM_SIZE + currSymInt ]++;
+                
+                    /// considering inverted repeats to update hash table
+                    if (isInvertedRepeat)
+                    {
+                        /// concatenation of inverted repeat context and current symbol
+                        uint64_t iRCtxCurrSym = (4 - currSymInt) * maxPlaceValue + invRepContext;
 
-//                /// to save quotient and reminder of a division
-//                div_t iRCtxCurrSymDiv;
-//                iRCtxCurrSymDiv = div(iRCtxCurrSym, ALPHABET_SIZE);
-    
-                    /// update inverted repeat context (integer)
-//                invRepContext = (uint64_t) iRCtxCurrSymDiv.quot;
-                    invRepContext = (uint64_t) iRCtxCurrSym / ALPHABET_SIZE;
-    
-                    /// update table considering inverted repeats
-                    //                ++table[ invRepContext*ALPHABET_SIZE + iRCtxCurrSymDiv.rem ];
-                    //                ++table[ invRepContext * ALPHABET_SIZE + iRCtxCurrSym % ALPHABET_SIZE ];
-                    ++table[ invRepContext * ALPH_SUM_SIZE + iRCtxCurrSym % ALPHABET_SIZE ];
+//                      /// to save quotient and reminder of a division
+//                      div_t iRCtxCurrSymDiv;
+//                      iRCtxCurrSymDiv = div(iRCtxCurrSym, ALPHABET_SIZE);
+                    
+                        /// update inverted repeat context (integer)
+//                      invRepContext = (uint64_t) iRCtxCurrSymDiv.quot;
+                        invRepContext = (uint64_t) iRCtxCurrSym / ALPHABET_SIZE;
+                    
+                        /// update table considering inverted repeats
+                        //                ++table[ invRepContext*ALPHABET_SIZE + iRCtxCurrSymDiv.rem ];
+                        //                ++table[ invRepContext * ALPHABET_SIZE + iRCtxCurrSym % ALPHABET_SIZE ];
+                        ++table[ invRepContext * ALPH_SUM_SIZE + iRCtxCurrSym % ALPHABET_SIZE ];
+                        /// update column 'sum' of the table
+                        ++table[ invRepContext * ALPH_SUM_SIZE + ALPHABET_SIZE ];
+                    }
+                
                     /// update column 'sum' of the table
-                    ++table[ invRepContext * ALPH_SUM_SIZE + ALPHABET_SIZE ];
-                }
+                    ++table[ context * ALPH_SUM_SIZE + ALPHABET_SIZE ];
+////                sumNSyms = ++table[ context * ALPH_SUM_SIZE + ALPHABET_SIZE ];
+                
+                    /// update context
+                    context = (uint64_t) (context * ALPHABET_SIZE + currSymInt) % maxPlaceValue;
+                }   /// end of for
+            }   /// end of while
+        
+            FCM::setTable(table);/// save the built table
+        }   /// end of case
+        break;
     
-                /// update column 'sum' of the table
-                ++table[ context * ALPH_SUM_SIZE + ALPHABET_SIZE ];
-////            sumNSyms = ++table[ context * ALPH_SUM_SIZE + ALPHABET_SIZE ];
-    
-                /// update context
-                context = (uint64_t) (context * ALPHABET_SIZE + currSymInt) % maxPlaceValue;
-            }   /// end of for
-        }   /// end of while
-    
-        FCM::setTable(table);/// save the built table
-    }
-    else if (mode == 'h')
-    {
-        htable_t hTable;                            /// create hash table
-    
-        while (getline(refFileIn, refLine))
+        case 'h':
         {
-            /// fill table by number of occurrences of symbols A, C, N, G, T
-            for (string::iterator lineIter = refLine.begin(); lineIter != refLine.end(); ++lineIter)
+            htable_t hTable;                            /// create hash table
+        
+            while (getline(refFileIn, refLine))
             {
-                uint8_t currSymInt = symCharToInt(*lineIter);
-                
-                ++hTable[ context ][ currSymInt ];      /// update hash table
-                ////            nSym = hTable[ context ][ currSymInt ]++;
-            
-                /// considering inverted repeats to update hash table
-                if (isInvertedRepeat)
+                /// fill table by number of occurrences of symbols A, C, N, G, T
+                for (string::iterator lineIter = refLine.begin(); lineIter != refLine.end(); ++lineIter)
                 {
-                    /// concatenation of inverted repeat context and current symbol
-                    uint64_t iRCtxCurrSym = (4 - currSymInt) * maxPlaceValue + invRepContext;
-
-                    /// update inverted repeat context (integer)
-                    invRepContext = (uint64_t) iRCtxCurrSym / ALPHABET_SIZE;
+                    uint8_t currSymInt = symCharToInt(*lineIter);
                 
-                    /// update hash table considering inverted repeats
-                    ++hTable[ invRepContext ][ iRCtxCurrSym % ALPHABET_SIZE ];
-                }
-            
-                /// update context
-                context = (uint64_t) (context * ALPHABET_SIZE + currSymInt) % maxPlaceValue;
-            }
-        }
+                    ++hTable[ context ][ currSymInt ];      /// update hash table
+                    ////            nSym = hTable[ context ][ currSymInt ]++;
+                
+                    /// considering inverted repeats to update hash table
+                    if (isInvertedRepeat)
+                    {
+                        /// concatenation of inverted repeat context and current symbol
+                        uint64_t iRCtxCurrSym = (4 - currSymInt) * maxPlaceValue + invRepContext;
+                    
+                        /// update inverted repeat context (integer)
+                        invRepContext = (uint64_t) iRCtxCurrSym / ALPHABET_SIZE;
+                    
+                        /// update hash table considering inverted repeats
+                        ++hTable[ invRepContext ][ iRCtxCurrSym % ALPHABET_SIZE ];
+                    }
+                
+                    /// update context
+                    context = (uint64_t) (context * ALPHABET_SIZE + currSymInt) % maxPlaceValue;
+                }   /// end of for
+            }   /// end of while
+            FCM::setHashTable(hTable);/// save the built table
+        }   /// end of case
+        break;
     
-        FCM::setHashTable(hTable);/// save the built table
-    }
+        default: break;
+    }   /// end of switch
     
     refFileIn.close();                     /// close file
-    
 
 //    ///***************************************************************
 //    /// print table
