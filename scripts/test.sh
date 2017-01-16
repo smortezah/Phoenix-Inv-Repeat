@@ -62,8 +62,8 @@ TAR_DATASET="";  for i in 24; do TAR_DATASET+=$CHIMP_CHR${i}" "; done # target d
 
 FILE_TYPE="fa"          # file type
 COMP_FILE_TYPE="gz"     # compressed file type
-#INF_FILE_TYPE="dat"      # information (data) file type
-INF_FILE_TYPE="csv"      # information (data) file type
+#INF_FILE_TYPE="dat"     # information (data) file type
+INF_FILE_TYPE="csv"     # information (data) file type
 
 PIX_FORMAT=png          # output format: png, svg, eps, epslatex (set output x.y)
 #rm -f *.$PIX_FORMAT    # remove FORMAT pictures, if they exist
