@@ -277,13 +277,13 @@ void FCM::compressTarget ()
             {
         
                 //////////////////////////////////
-                totalNOfSyms = totalNOfSyms + tarLine.size();    /// number of symbols in each line of dataset
+                totalNOfSyms = totalNOfSyms + tarLine.size();       /// number of symbols in each line of dataset
                 //////////////////////////////////
         
-                /// table includes the number of occurrences of symbols A, C, N, G, T
+                /// hash table includes the number of occurrences of symbols A, C, N, G, T
                 for (string::iterator lineIter = tarLine.begin(); lineIter != tarLine.end(); ++lineIter)
                 {
-                    uint8_t currSymInt = symCharToInt(*lineIter);
+                    uint8_t currSymInt = symCharToInt(*lineIter);   /// integer version of the current symbol
         
                     //////////////////////////////////
 //                if (hTable.find(tarContext) == hTable.end()) { nSym = 0;   sumNSyms = 0; }
