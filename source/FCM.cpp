@@ -368,11 +368,21 @@ void FCM::compressTarget ()
 ///***************************************************************
 inline uint8_t FCM::symCharToInt (char ch) const
 {
-    return (uint8_t) ((ch == 'A') ? 0 :
-                      (ch == 'C') ? 1 :
-                      (ch == 'G') ? 3 :
-                      (ch == 'T') ? 4 : 2);
+    switch (ch)
+    {
+        case 'A':   return (uint8_t) 0;
+        case 'C':   return (uint8_t) 1;
+        case 'G':   return (uint8_t) 3;
+        case 'T':   return (uint8_t) 4;
+        default:    return (uint8_t) 2;
+    }
 
+    
+//    return (uint8_t) ((ch == 'A') ? 0 :
+//                      (ch == 'C') ? 1 :
+//                      (ch == 'G') ? 3 :
+//                      (ch == 'T') ? 4 : 2);
+    
 //    return (uint8_t) (ch % ALPHABET_SIZE);
 
 //    return (uint8_t) ((ch == 'C') ? 3 :
