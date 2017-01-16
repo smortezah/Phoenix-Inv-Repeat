@@ -29,20 +29,14 @@ int32_t main (int argc, char *argv[])
     
     /// for access to Functions (object 'function' on memory stack)
     Functions function;
-//    function.commandLineParser(argc, argv); /// parse the command line
+    function.commandLineParser(argc, argv); /// parse the command line
     
     
-    string a ("1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1");
-    
-//    for(char &i:a)  cout<<i;
-//    for (int j = 0; j != 140; ++j)   cout << a[j];
-//    for (std::string::iterator i = a.begin(); i != a.end(); ++i)    cout << *i;
-    for (std::string::iterator i = a.begin(); i != a.end(); ++i)    cout << *i;
     
     
-//    for(uint64_t i=0; i!=100;++i) ;//cout<<i;
-//    for(uint64_t i=100; i--;) ;//cout<<i;
-
+    
+    
+    
 
 //    char arr[5] = {'A', 'T', 'C', 'G', 'N'};
 //
@@ -57,8 +51,6 @@ int32_t main (int argc, char *argv[])
 //        cout << '\n';
 ////        }
 //    }
-    
-    
     
     
     
