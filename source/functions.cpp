@@ -220,12 +220,14 @@ void Functions::commandLineParser (int argc, char **argv)
                 /// print reference and target file names in the output
                 size_t lastSlash_Ref = models[ n ].getRefFileAddress().find_last_of("/");
                 size_t lastSlash_Tar = models[ n ].getTarFileAddress().find_last_of("/");
-                
-                cout << "  ";
-                cout.width(4);
-                cout << std::left << models[ n ].getRefFileAddress().substr(lastSlash_Ref + 1) << "   ";
-                cout.width(4);
-                cout << std::left <<  models[ n ].getTarFileAddress().substr(lastSlash_Tar + 1) << "   ";
+//
+//                cout << "  ";
+//                cout.width(4);
+//                cout << std::left << models[ n ].getRefFileAddress().substr(lastSlash_Ref + 1) << "   ";
+//                cout.width(4);
+//                cout << std::left <<  models[ n ].getTarFileAddress().substr(lastSlash_Tar + 1) << "   ";
+                cout << std::left << models[ n ].getRefFileAddress().substr(lastSlash_Ref + 1) << ' '
+                     << std::left <<  models[ n ].getTarFileAddress().substr(lastSlash_Tar + 1) << ' ';
                 
                 models[ n ].buildRefModel();    /// build a model for reference
                 models[ n ].compressTarget();   /// compress target using model built based on reference
