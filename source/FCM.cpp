@@ -329,6 +329,8 @@ void FCM::compressTarget ()
                 }   /// end of for
             }   /// end of while
             break;
+    
+        default: break;
     }
     
 //
