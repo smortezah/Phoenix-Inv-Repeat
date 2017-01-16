@@ -42,7 +42,7 @@ void FCM::buildRefModel ()
     /// mode: 't'=table, 'h'=hash table
     const char mode = (contextDepth > TABLE_MAX_CONTEXT) ? 'h' : 't';
 
-
+//--------------------------------------------------
 //    const char* filename= fileName.c_str();;
 //    std::FILE *fp = std::fopen(filename, "rb");
 //    if (fp)
@@ -54,7 +54,7 @@ void FCM::buildRefModel ()
 //        std::fread(&contents[ 0 ], 1, contents.size(), fp);
 //        std::fclose(fp);
 //    }
-    
+//--------------------------------------------------
     
 //    ifstream tarFileIn(tarFileName, ios::in);   /// open target file located in fileName
     ifstream refFileIn(refFileName, ios::in);   /// open reference file located in 'refFileName'
@@ -79,17 +79,16 @@ void FCM::buildRefModel ()
     
     string refLine;                             /// keep each line of the file
     
-    ///
+    /// build model based on 't'=table, or 'h'=hash table
     switch (mode)
     {
         case 't':
         {
             /// create table
             uint64_t tableSize = maxPlaceValue * ALPH_SUM_SIZE;
-            uint64_t *table = new uint64_t[tableSize];
-        
-            /// initialize table with 0's
-            memset(table, 0, sizeof(table[ 0 ]) * tableSize);
+            uint64_t *table = new uint64_t[tableSize];      /// already initialized with 0's
+////            /// initialize table with 0's
+////            memset(table, 0, sizeof(table[ 0 ]) * tableSize);
         
             while (getline(refFileIn, refLine))
             {
@@ -97,7 +96,7 @@ void FCM::buildRefModel ()
                 for (string::iterator lineIter = refLine.begin(); lineIter != refLine.end(); ++lineIter)
                 {
                     /// table includes an array of uint64_t numbers
-                    uint8_t currSymInt = symCharToInt(*lineIter);
+                    uint8_t currSymInt = symCharToInt(*lineIter);/// table includes an array of uint64_t numbers
                 
                     /// update table
                     ++table[ context * ALPH_SUM_SIZE + currSymInt ];
@@ -234,7 +233,8 @@ void FCM::compressTarget ()
 //--------------------------------------------------
 ////    /// using macros make this code slower
 ////    htable_t hTable = getHashTable();
-//////#define X ((mode == 'h') ? (hTable[ tarContext ][ currSymInt ]) : (table[ tarContext * ALPH_SUM_SIZE + currSymInt ]))
+//////#define X \
+////         ((mode == 'h') ? (hTable[ tarContext ][ currSymInt ]) : (table[ tarContext * ALPH_SUM_SIZE + currSymInt ]))
 ////
 ////#define X(in) do { \
 ////                (mode == 'h') \
@@ -248,7 +248,6 @@ void FCM::compressTarget ()
 ////                : in = 0; for (uint64_t u : hTable[ tarContext ]) in += u; \
 ////              } while ( 0 )
 //--------------------------------------------------
-    
     
     switch (mode)
     {
