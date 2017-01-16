@@ -169,22 +169,23 @@ void FCM::buildRefModel ()
 //        cout << table[ i ] << '\t';
 //        if ((i + 1) % 6 == 0) cout << '\n';
 //    }
+    
 }
 
 /***********************************************************
-    compressing target based on the model built based on reference
+    compressing target using the model built based on reference
 ************************************************************/
 void FCM::compressTarget ()
 {
     const uint8_t contextDepth  = getContextDepth();    /// get context depth
     const uint16_t alphaDen     = getAlphaDenom();      /// get alpha denominator
 //    const double alphaDen     = getAlphaDenom();        /// get alpha denominator
-//    const bool isInvertedRepeat = getInvertedRepeat();  /// get inverted repeat
     string tarFileName          = getTarFileAddress();  /// get target file address
+    
     /// mode: 't'=table, 'h'=hash table
     const char mode = (contextDepth > TABLE_MAX_CONTEXT) ? 'h' : 't';
     
-    ifstream tarFileIn(tarFileName, ios::in);   /// open target file located in fileName
+    ifstream tarFileIn(tarFileName, ios::in);   /// open target file
     
     if (!tarFileIn)                             /// error occurred while opening file
     {
@@ -194,17 +195,17 @@ void FCM::compressTarget ()
     }
     
     uint64_t maxPlaceValue = (uint64_t) pow(ALPHABET_SIZE, contextDepth);
-    uint64_t tarContext = 0;               /// context (integer), that slides in the dataset
-    
-    string tarLine;                        /// keep each line of the file
-    
+    uint64_t tarContext = 0;                    /// context (integer), that slides in the dataset
+                                                
+    string tarLine;                             /// keep each line of the file
+                                                
     ////////////////////////////////
-    uint64_t nSym;                         /// number of symbols (n_s). To calculate probability
-    uint64_t sumNSyms;                     /// sum of number of symbols (sum n_a). To calculate probability
-    double   probability = 0;              /// probability of a symbol, based on an identified context
-    double   sumOfEntropies = 0;           /// sum of entropies for different symbols
-    uint64_t totalNOfSyms = 0;             /// number of all symbols in the sequence
-    double   averageEntropy = 0;           /// average entropy (H)
+    uint64_t nSym;                              /// number of symbols (n_s). To calculate probability
+    uint64_t sumNSyms;                          /// sum of number of symbols (sum n_a). To calculate probability
+    double   probability = 0;                   /// probability of a symbol, based on an identified context
+    double   sumOfEntropies = 0;                /// sum of entropies for different symbols
+    uint64_t totalNOfSyms = 0;                  /// number of all symbols in the sequence
+    double   averageEntropy = 0;                /// average entropy (H)
     //////////////////////////////////
     
 //--------------------------------------------------
