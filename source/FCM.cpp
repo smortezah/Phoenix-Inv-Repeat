@@ -7,7 +7,7 @@
 
 #include "FCM.h"
 #include "functions.h"
-#include <numeric>
+
 using std::cout;
 using std::cerr;
 using std::string;
