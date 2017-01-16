@@ -228,8 +228,8 @@ void FCM::compressTarget ()
     double   averageEntropy = 0;           /// average entropy (H)
     //////////////////////////////////
     
-
-//    /// using macros make this code slower
+//--------------------------------------------------
+////    /// using macros make this code slower
 ////    htable_t hTable = getHashTable();
 //////#define X ((mode == 'h') ? (hTable[ tarContext ][ currSymInt ]) : (table[ tarContext * ALPH_SUM_SIZE + currSymInt ]))
 ////
@@ -244,6 +244,7 @@ void FCM::compressTarget ()
 ////                ? in = table[ tarContext * ALPH_SUM_SIZE + ALPHABET_SIZE ] \
 ////                : in = 0; for (uint64_t u : hTable[ tarContext ]) in += u; \
 ////              } while ( 0 )
+//--------------------------------------------------
     
     
     switch (mode)
@@ -251,59 +252,59 @@ void FCM::compressTarget ()
         case 't':
         {
             uint64_t *table = getTable();
-
+        
             while (getline(tarFileIn, tarLine))
             {
-
+        
                 //////////////////////////////////
                 totalNOfSyms = totalNOfSyms + tarLine.size();    /// number of symbols in each line of dataset
                 //////////////////////////////////
-
+        
                 /// table includes the number of occurrences of symbols A, C, N, G, T
                 for (string::iterator lineIter = tarLine.begin(); lineIter != tarLine.end(); ++lineIter)
                 {
                     uint8_t currSymInt = symCharToInt(*lineIter);
-
+        
                     //////////////////////////////////
                     /// number of symbols
                     nSym = table[ tarContext * ALPH_SUM_SIZE + currSymInt ];
 //                    nSym = X;
 //                    X(nSym);
-
+        
                     /// sum of number of symbols
                     sumNSyms = table[ tarContext * ALPH_SUM_SIZE + ALPHABET_SIZE ];
 //                    Y(sumNSyms);
-
+        
                     /// P(s|c^t)
                     probability = (double) (alphaDen * nSym + 1) / (alphaDen * sumNSyms + ALPHABET_SIZE);
-
+        
                     /// sum( log_2 P(s|c^t) )
                     sumOfEntropies = sumOfEntropies + log2(probability);
                     /////////////////////////////////
-
+        
                     /// update context
                     tarContext = (uint64_t) (tarContext * ALPHABET_SIZE + currSymInt) % maxPlaceValue;
                 }   /// end of for
             }   /// end of while
         }   /// end of case
         break;
-
+        
         case 'h':
         {
             htable_t hTable = getHashTable();
-
+        
             while (getline(tarFileIn, tarLine))
             {
-
+        
                 //////////////////////////////////
                 totalNOfSyms = totalNOfSyms + tarLine.size();    /// number of symbols in each line of dataset
                 //////////////////////////////////
-
+        
                 /// table includes the number of occurrences of symbols A, C, N, G, T
                 for (string::iterator lineIter = tarLine.begin(); lineIter != tarLine.end(); ++lineIter)
                 {
                     uint8_t currSymInt = symCharToInt(*lineIter);
-
+        
                     //////////////////////////////////
 //                if (hTable.find(tarContext) == hTable.end()) { nSym = 0;   sumNSyms = 0; }
 //                else
@@ -312,29 +313,27 @@ void FCM::compressTarget ()
                     nSym = hTable[ tarContext ][ currSymInt ];
 //                    nSym = X;
 //                    X(nSym);
-
+        
                     /// the idea of adding 'sum' column, makes hash table slower
                     /// sum(n_a)
-                    sumNSyms = 0;
-                    for (uint64_t u : hTable[ tarContext ])
-                        sumNSyms = sumNSyms + u;
+                    sumNSyms = 0; for (uint64_t u : hTable[ tarContext ])   sumNSyms = sumNSyms + u;
 //                    Y(sumNSyms);
 //                }
-
+        
                     /// P(s|c^t)
                     probability = (double) (alphaDen * nSym + 1) / (alphaDen * sumNSyms + ALPHABET_SIZE);
-
+        
                     /// sum( log_2 P(s|c^t) )
                     sumOfEntropies = sumOfEntropies + log2(probability);
                     /////////////////////////////////
-
+        
                     /// update context
                     tarContext = (uint64_t) (tarContext * ALPHABET_SIZE + currSymInt) % maxPlaceValue;
                 }   /// end of for
             }   /// end of while
         }   /// end of case
         break;
-
+        
         default: break;
     }   /// end of switch
     
@@ -361,7 +360,7 @@ void FCM::compressTarget ()
 ///***************************************************************
 /// convert char (base) to integer (uint8_t)
 ///***************************************************************
-uint8_t FCM::symCharToInt (char ch) const
+inline uint8_t FCM::symCharToInt (char ch) const
 {
     return (uint8_t) ((ch == 'A') ? 0 :
                       (ch == 'C') ? 1 :
