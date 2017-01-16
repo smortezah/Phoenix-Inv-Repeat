@@ -228,113 +228,194 @@ void FCM::compressTarget ()
     double   averageEntropy = 0;           /// average entropy (H)
     //////////////////////////////////
     
-    
-    
-    htable_t hTable = getHashTable();
-#define X ((mode == 'h') ? (hTable[ tarContext ][ currSymInt ]) : (table[ tarContext * ALPH_SUM_SIZE + currSymInt ]))
 
-//#define X(in) \
-//do { \
-//    (mode == 'h') \
-//                ? in = hTable[ tarContext ][ currSymInt ] \
-//                : in = table[ tarContext * ALPH_SUM_SIZE + currSymInt ] \
-//; \
-//} while ( 0 )
-
-#define Y(in) do { (mode == 't') \
-                ? in = table[ tarContext * ALPH_SUM_SIZE + ALPHABET_SIZE ] \
-                : in = 0; for (uint64_t u : hTable[ tarContext ]) in += u; \
-              } while ( 0 )
+//    /// using macros make this code slower
+////    htable_t hTable = getHashTable();
+//////#define X ((mode == 'h') ? (hTable[ tarContext ][ currSymInt ]) : (table[ tarContext * ALPH_SUM_SIZE + currSymInt ]))
+////
+////#define X(in) do { \
+////                (mode == 'h') \
+////                ? in = hTable[ tarContext ][ currSymInt ] \
+////                : in = table[ tarContext * ALPH_SUM_SIZE + currSymInt ]; \
+////              } while ( 0 )
+////
+////#define Y(in) do { \
+////                (mode == 't') \
+////                ? in = table[ tarContext * ALPH_SUM_SIZE + ALPHABET_SIZE ] \
+////                : in = 0; for (uint64_t u : hTable[ tarContext ]) in += u; \
+////              } while ( 0 )
     
     
-    
-    
-    if (mode == 't')
+    switch (mode)
     {
-        uint64_t *table = getTable();
-    
-        while (getline(tarFileIn, tarLine))
-        {
+        case 't':
+            uint64_t *table = getTable();
         
-            //////////////////////////////////
-            totalNOfSyms = totalNOfSyms + tarLine.size();    /// number of symbols in each line of dataset
-            //////////////////////////////////
-        
-            /// table includes the number of occurrences of symbols A, C, N, G, T
-            for (string::iterator lineIter = tarLine.begin(); lineIter != tarLine.end(); ++lineIter)
+            while (getline(tarFileIn, tarLine))
             {
-                uint8_t currSymInt = symCharToInt(*lineIter);
             
                 //////////////////////////////////
-                /// number of symbols
-                nSym     = table[ tarContext * ALPH_SUM_SIZE + currSymInt ];
+                totalNOfSyms = totalNOfSyms + tarLine.size();    /// number of symbols in each line of dataset
+                //////////////////////////////////
+            
+                /// table includes the number of occurrences of symbols A, C, N, G, T
+                for (string::iterator lineIter = tarLine.begin(); lineIter != tarLine.end(); ++lineIter)
+                {
+                    uint8_t currSymInt = symCharToInt(*lineIter);
                 
-//                nSym     = X;
-//                X(nSym);
+                    //////////////////////////////////
+                    /// number of symbols
+                    nSym = table[ tarContext * ALPH_SUM_SIZE + currSymInt ];
+//                    nSym = X;
+//                    X(nSym);
+                
+                    /// sum of number of symbols
+                    sumNSyms = table[ tarContext * ALPH_SUM_SIZE + ALPHABET_SIZE ];
+//                    Y(sumNSyms);
+                
+                    /// P(s|c^t)
+                    probability = (double) (alphaDen * nSym + 1) / (alphaDen * sumNSyms + ALPHABET_SIZE);
+                
+                    /// sum( log_2 P(s|c^t) )
+                    sumOfEntropies = sumOfEntropies + log2(probability);
+                    /////////////////////////////////
+                
+                    /// update context
+                    tarContext = (uint64_t) (tarContext * ALPHABET_SIZE + currSymInt) % maxPlaceValue;
+                }   /// end of for
+            }   /// end of while
+            break;
     
-                /// sum of number of symbols
-                sumNSyms = table[ tarContext * ALPH_SUM_SIZE + ALPHABET_SIZE ];
-//                Y(sumNSyms);
-            
-                /// P(s|c^t)
-                probability = (double) (alphaDen * nSym + 1) / (alphaDen * sumNSyms + ALPHABET_SIZE);
-            
-                /// sum( log_2 P(s|c^t) )
-                sumOfEntropies = sumOfEntropies + log2(probability);
-                /////////////////////////////////
-            
-                /// update context
-                tarContext = (uint64_t) (tarContext * ALPHABET_SIZE + currSymInt) % maxPlaceValue;
-            }
-        }
-    }
-    else if (mode == 'h')
-    {
-//        htable_t hTable = getHashTable();
-//        hTable = getHashTable();
+        case 'h':
+            htable_t hTable = getHashTable();
         
-        while (getline(tarFileIn, tarLine))
-        {
-        
-            //////////////////////////////////
-            totalNOfSyms = totalNOfSyms + tarLine.size();    /// number of symbols in each line of dataset
-            //////////////////////////////////
-        
-            /// table includes the number of occurrences of symbols A, C, N, G, T
-            for (string::iterator lineIter = tarLine.begin(); lineIter != tarLine.end(); ++lineIter)
+            while (getline(tarFileIn, tarLine))
             {
-                uint8_t currSymInt = symCharToInt(*lineIter);
             
                 //////////////////////////////////
+                totalNOfSyms = totalNOfSyms + tarLine.size();    /// number of symbols in each line of dataset
+                //////////////////////////////////
+            
+                /// table includes the number of occurrences of symbols A, C, N, G, T
+                for (string::iterator lineIter = tarLine.begin(); lineIter != tarLine.end(); ++lineIter)
+                {
+                    uint8_t currSymInt = symCharToInt(*lineIter);
+                
+                    //////////////////////////////////
 //                if (hTable.find(tarContext) == hTable.end()) { nSym = 0;   sumNSyms = 0; }
 //                else
 //                {
                     /// number of symbols
                     nSym = hTable[ tarContext ][ currSymInt ];
-
-//                nSym = X;
-//        X(nSym);
+//                    nSym = X;
+//                    X(nSym);
+                    
                     /// the idea of adding 'sum' column, makes hash table slower
                     /// sum(n_a)
-                    sumNSyms = 0;
-                    for (uint64_t u : hTable[ tarContext ])     sumNSyms = sumNSyms + u;
-//                Y(sumNSyms);
+                    sumNSyms = 0;   for (uint64_t u : hTable[ tarContext ]) sumNSyms = sumNSyms + u;
+//                    Y(sumNSyms);
 //                }
-            
-                /// P(s|c^t)
-                probability = (double) (alphaDen * nSym + 1) / (alphaDen * sumNSyms + ALPHABET_SIZE);
-            
-                /// sum( log_2 P(s|c^t) )
-                sumOfEntropies = sumOfEntropies + log2(probability);
-                /////////////////////////////////
-            
-                /// update context
-                tarContext = (uint64_t) (tarContext * ALPHABET_SIZE + currSymInt) % maxPlaceValue;
-            
-            }   /// end of for
-        }   /// end of while
+                
+                    /// P(s|c^t)
+                    probability = (double) (alphaDen * nSym + 1) / (alphaDen * sumNSyms + ALPHABET_SIZE);
+                
+                    /// sum( log_2 P(s|c^t) )
+                    sumOfEntropies = sumOfEntropies + log2(probability);
+                    /////////////////////////////////
+                
+                    /// update context
+                    tarContext = (uint64_t) (tarContext * ALPHABET_SIZE + currSymInt) % maxPlaceValue;
+                
+                }   /// end of for
+            }   /// end of while
+            break;
     }
     
+//
+////    if (mode == 't')
+////    {
+//        uint64_t *table = getTable();
+//
+//        while (getline(tarFileIn, tarLine))
+//        {
+//
+//            //////////////////////////////////
+//            totalNOfSyms = totalNOfSyms + tarLine.size();    /// number of symbols in each line of dataset
+//            //////////////////////////////////
+//
+//            /// table includes the number of occurrences of symbols A, C, N, G, T
+//            for (string::iterator lineIter = tarLine.begin(); lineIter != tarLine.end(); ++lineIter)
+//            {
+//                uint8_t currSymInt = symCharToInt(*lineIter);
+//
+//                //////////////////////////////////
+//                /// number of symbols
+////                nSym     = table[ tarContext * ALPH_SUM_SIZE + currSymInt ];
+////                nSym     = X;
+//                X(nSym);
+//
+//                /// sum of number of symbols
+////                sumNSyms = table[ tarContext * ALPH_SUM_SIZE + ALPHABET_SIZE ];
+//                Y(sumNSyms);
+//
+//                /// P(s|c^t)
+//                probability = (double) (alphaDen * nSym + 1) / (alphaDen * sumNSyms + ALPHABET_SIZE);
+//
+//                /// sum( log_2 P(s|c^t) )
+//                sumOfEntropies = sumOfEntropies + log2(probability);
+//                /////////////////////////////////
+//
+//                /// update context
+//                tarContext = (uint64_t) (tarContext * ALPHABET_SIZE + currSymInt) % maxPlaceValue;
+//            }
+//        }
+////    }
+////    else if (mode == 'h')
+////    {
+////        htable_t hTable = getHashTable();
+//////        hTable = getHashTable();
+////
+////        while (getline(tarFileIn, tarLine))
+////        {
+////
+////            //////////////////////////////////
+////            totalNOfSyms = totalNOfSyms + tarLine.size();    /// number of symbols in each line of dataset
+////            //////////////////////////////////
+////
+////            /// table includes the number of occurrences of symbols A, C, N, G, T
+////            for (string::iterator lineIter = tarLine.begin(); lineIter != tarLine.end(); ++lineIter)
+////            {
+////                uint8_t currSymInt = symCharToInt(*lineIter);
+////
+////                //////////////////////////////////
+//////                if (hTable.find(tarContext) == hTable.end()) { nSym = 0;   sumNSyms = 0; }
+//////                else
+//////                {
+////                    /// number of symbols
+////                    nSym = hTable[ tarContext ][ currSymInt ];
+//////                nSym = X;
+//////        X(nSym);
+////                    /// the idea of adding 'sum' column, makes hash table slower
+////                    /// sum(n_a)
+////                    sumNSyms = 0;
+////                    for (uint64_t u : hTable[ tarContext ])     sumNSyms = sumNSyms + u;
+//////                Y(sumNSyms);
+//////                }
+////
+////                /// P(s|c^t)
+////                probability = (double) (alphaDen * nSym + 1) / (alphaDen * sumNSyms + ALPHABET_SIZE);
+////
+////                /// sum( log_2 P(s|c^t) )
+////                sumOfEntropies = sumOfEntropies + log2(probability);
+////                /////////////////////////////////
+////
+////                /// update context
+////                tarContext = (uint64_t) (tarContext * ALPHABET_SIZE + currSymInt) % maxPlaceValue;
+////
+////            }   /// end of for
+////        }   /// end of while
+////    }
+//
     
     tarFileIn.close();          /// close file
     
