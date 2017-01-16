@@ -17,6 +17,12 @@ public:
     void buildRefModel ();                          /// build model (table / hash table) for reference
     void compressTarget ();                         /// compress target file
     inline uint8_t symCharToInt (char) const;
+    
+    
+    inline uint64_t f(char,uint64_t,uint8_t);
+    
+    
+    
     //    void buildHashTable_str ();                     /// build hash table (string key)
     void printHashTable () const;                   /// print hash table
     
