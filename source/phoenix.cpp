@@ -32,10 +32,8 @@ int32_t main (int argc, char *argv[])
 //    function.commandLineParser(argc, argv); /// parse the command line
     
     
-    for(uint64_t i=0; i<10;++i)
-        cout<<i;
-//    for(uint64_t i=10; i--;)
-//    cout<<i;
+//    for(uint64_t i=0; i!=1000000000;++i) ;//cout<<i;
+    for(uint64_t i=1000000000; i--;) ;//cout<<i;
 
 
 //    char arr[5] = {'A', 'T', 'C', 'G', 'N'};
