@@ -56,11 +56,11 @@ void FCM::buildRefModel ()
 //        std::fread(&contents[ 0 ], 1, contents.size(), fp);
 //        std::fclose(fp);
 //    }
-    
-    
+
+
 //    ifstream tarFileIn(tarFileName, ios::in);   /// open target file located in fileName
     ifstream refFileIn(refFileName, ios::in);   /// open reference file located in 'refFileName'
-    
+
 //    if (!tarFileIn)                             /// error occurred while opening file
 //    {
 //        cerr << "The file '" << tarFileName << "' cannot be opened, or it is empty.\n";
@@ -98,11 +98,11 @@ void FCM::buildRefModel ()
             {
                 /// table includes an array of uint64_t numbers
                 uint8_t currSymInt = symCharToInt(*lineIter);
-    
+                
                 /// update table
                 ++table[ context * ALPH_SUM_SIZE + currSymInt ];
                 ////            nSym = table[ context * ALPH_SUM_SIZE + currSymInt ]++;
-    
+                
                 /// considering inverted repeats to update hash table
                 if (isInvertedRepeat)
                 {
@@ -112,11 +112,11 @@ void FCM::buildRefModel ()
 //                /// to save quotient and reminder of a division
 //                div_t iRCtxCurrSymDiv;
 //                iRCtxCurrSymDiv = div(iRCtxCurrSym, ALPHABET_SIZE);
-    
+                    
                     /// update inverted repeat context (integer)
 //                invRepContext = (uint64_t) iRCtxCurrSymDiv.quot;
                     invRepContext = (uint64_t) iRCtxCurrSym / ALPHABET_SIZE;
-    
+                    
                     /// update table considering inverted repeats
                     //                ++table[ invRepContext*ALPHABET_SIZE + iRCtxCurrSymDiv.rem ];
                     //                ++table[ invRepContext * ALPHABET_SIZE + iRCtxCurrSym % ALPHABET_SIZE ];
@@ -124,22 +124,22 @@ void FCM::buildRefModel ()
                     /// update column 'sum' of the table
                     ++table[ invRepContext * ALPH_SUM_SIZE + ALPHABET_SIZE ];
                 }
-    
+                
                 /// update column 'sum' of the table
                 ++table[ context * ALPH_SUM_SIZE + ALPHABET_SIZE ];
 ////            sumNSyms = ++table[ context * ALPH_SUM_SIZE + ALPHABET_SIZE ];
-    
+                
                 /// update context
                 context = (uint64_t) (context * ALPHABET_SIZE + currSymInt) % maxPlaceValue;
             }   /// end of for
         }   /// end of while
-    
+        
         FCM::setTable(table);/// save the built table
     }
     else if (mode == 'h')
     {
         htable_t hTable;                            /// create hash table
-    
+        
         while (getline(refFileIn, refLine))
         {
             /// fill table by number of occurrences of symbols A, C, N, G, T
@@ -149,30 +149,30 @@ void FCM::buildRefModel ()
                 
                 ++hTable[ context ][ currSymInt ];      /// update hash table
                 ////            nSym = hTable[ context ][ currSymInt ]++;
-            
+                
                 /// considering inverted repeats to update hash table
                 if (isInvertedRepeat)
                 {
                     /// concatenation of inverted repeat context and current symbol
                     uint64_t iRCtxCurrSym = (4 - currSymInt) * maxPlaceValue + invRepContext;
-
+                    
                     /// update inverted repeat context (integer)
                     invRepContext = (uint64_t) iRCtxCurrSym / ALPHABET_SIZE;
-                
+                    
                     /// update hash table considering inverted repeats
                     ++hTable[ invRepContext ][ iRCtxCurrSym % ALPHABET_SIZE ];
                 }
-            
+                
                 /// update context
                 context = (uint64_t) (context * ALPHABET_SIZE + currSymInt) % maxPlaceValue;
             }
         }
-    
+        
         FCM::setHashTable(hTable);/// save the built table
     }
     
     refFileIn.close();                     /// close file
-    
+
 
 //    ///***************************************************************
 //    /// print table
@@ -252,36 +252,36 @@ void FCM::compressTarget ()
     if (mode == 't')
     {
         uint64_t *table = getTable();
-    
+        
         while (getline(tarFileIn, tarLine))
         {
-        
+            
             //////////////////////////////////
             totalNOfSyms += tarLine.size();    /// number of symbols in each line of dataset
             //////////////////////////////////
-        
+            
             /// table includes the number of occurrences of symbols A, C, N, G, T
             for (string::iterator lineIter = tarLine.begin(); lineIter != tarLine.end(); ++lineIter)
             {
                 uint8_t currSymInt = symCharToInt(*lineIter);
-            
+                
                 //////////////////////////////////
                 /// number of symbols
                 nSym     = table[ tarContext * ALPH_SUM_SIZE + currSymInt ];
 //                nSym     = X;
 //                X(nSym);
-    
+                
                 /// sum of number of symbols
                 sumNSyms = table[ tarContext * ALPH_SUM_SIZE + ALPHABET_SIZE ];
 //                Y(sumNSyms);
-            
+                
                 /// P(s|c^t)
                 probability = (double) (alphaDen * nSym + 1) / (alphaDen * sumNSyms + ALPHABET_SIZE);
-            
+                
                 /// sum( log_2 P(s|c^t) )
                 sumOfEntropies += log2(probability);
                 /////////////////////////////////
-            
+                
                 /// update context
                 tarContext = (uint64_t) (tarContext * ALPHABET_SIZE + currSymInt) % maxPlaceValue;
             }
@@ -294,41 +294,42 @@ void FCM::compressTarget ()
         
         while (getline(tarFileIn, tarLine))
         {
-        
+            
             //////////////////////////////////
             totalNOfSyms += tarLine.size();    /// number of symbols in each line of dataset
             //////////////////////////////////
-        
+            
             /// table includes the number of occurrences of symbols A, C, N, G, T
             for (string::iterator lineIter = tarLine.begin(); lineIter != tarLine.end(); ++lineIter)
             {
                 uint8_t currSymInt = symCharToInt(*lineIter);
-            
+                
                 //////////////////////////////////
 //                if (hTable.find(tarContext) == hTable.end()) { nSym = 0;   sumNSyms = 0; }
 //                else
 //                {
-                    /// number of symbols
-                    nSym = hTable[ tarContext ][ currSymInt ];
+                /// number of symbols
+                nSym = hTable[ tarContext ][ currSymInt ];
+//                nSym = f(tarContext,currSymInt);
 //                nSym = X;
 //        X(nSym);
-                    /// the idea of adding 'sum' column, makes hash table slower
-                    /// sum(n_a)
-                    sumNSyms = 0;
-                    for (uint64_t u : hTable[ tarContext ])     sumNSyms += u;
+                /// the idea of adding 'sum' column, makes hash table slower
+                /// sum(n_a)
+                sumNSyms = 0;
+                for (uint64_t u : hTable[ tarContext ])     sumNSyms += u;
 //                Y(sumNSyms);
 //                }
-            
+                
                 /// P(s|c^t)
                 probability = (double) (alphaDen * nSym + 1) / (alphaDen * sumNSyms + ALPHABET_SIZE);
-            
+                
                 /// sum( log_2 P(s|c^t) )
                 sumOfEntropies += log2(probability);
                 /////////////////////////////////
-            
+                
                 /// update context
                 tarContext = (uint64_t) (tarContext * ALPHABET_SIZE + currSymInt) % maxPlaceValue;
-            
+                
             }   /// end of for
         }   /// end of while
     }
@@ -353,16 +354,20 @@ void FCM::compressTarget ()
     
 }
 
-//template <typename T>
-//inline T X()
+
+//inline uint64_t FCM::f(uint64_t tarContext, uint8_t currSymInt)
 //{
-//    return ((mode == 'h') ? (hTable[ tarContext ][ currSymInt ]) : (table[ tarContext * ALPH_SUM_SIZE + currSymInt ]))
+//    htable_t hTable =FCM::getHashTable();
+//    uint64_t *table = FCM::getTable();
+//    char mode = (contextDepth > TABLE_MAX_CONTEXT) ? 'h' : 't';
+//    return ((mode == 'h') ? (hTable[ tarContext ][ currSymInt ]) : (table[ tarContext * ALPH_SUM_SIZE + currSymInt ]));
 //}
+
 
 ///***************************************************************
 /// convert char (base) to integer (uint8_t)
 ///***************************************************************
-uint8_t FCM::symCharToInt (char ch) const
+inline uint8_t FCM::symCharToInt (char ch) const
 {
     return (uint8_t) ((ch == 'A') ? 0 :
                       (ch == 'C') ? 1 :
@@ -835,17 +840,17 @@ void FCM::printHashTable () const
     string Tar_or_Ref = (this->getTargetOrReference() == 't' ? "Target" : "Reference");
     
     cout
-         << " >>> Context model:\t\tBuilt from "  << tar_or_ref << '\n'
-         << " >>> Context order size:\t" << (uint16_t) this->getContextDepth() << '\n'
-         << " >>> Alpha denominator:\t\t" << (uint16_t) this->getAlphaDenom() << '\n'
-         << " >>> Inverted repeat:\t\t" << (this->getInvertedRepeat() ? "Considered"
-                                                                      : "Not considered")
-         << '\n'
-         << " >>> " << Tar_or_Ref << " file address:\t"
-         /// TODO: this line must be changed
-         // << ( tar_or_ref == "target" ? this->getTarFileAddress() : this->getRefFileAddress() )
-         << ( tar_or_ref == "target" ? this->getTarFileAddress() : this->getTarFileAddress() )
-         << "\n\n";
+            << " >>> Context model:\t\tBuilt from "  << tar_or_ref << '\n'
+            << " >>> Context order size:\t" << (uint16_t) this->getContextDepth() << '\n'
+            << " >>> Alpha denominator:\t\t" << (uint16_t) this->getAlphaDenom() << '\n'
+            << " >>> Inverted repeat:\t\t" << (this->getInvertedRepeat() ? "Considered"
+                                                                         : "Not considered")
+            << '\n'
+            << " >>> " << Tar_or_Ref << " file address:\t"
+            /// TODO: this line must be changed
+            // << ( tar_or_ref == "target" ? this->getTarFileAddress() : this->getRefFileAddress() )
+            << ( tar_or_ref == "target" ? this->getTarFileAddress() : this->getTarFileAddress() )
+            << "\n\n";
     
     cout << "\tA\tC\tN\tG\tT"
          //              << "\tP_A\tP_C\tP_N\tP_G\tP_T"
@@ -853,7 +858,7 @@ void FCM::printHashTable () const
          << "\t-----------------------------------"
          //              << "------------------------------------------"
          << '\n';
-
+    
     for (htable_t::iterator it = hTable.begin(); it != hTable.end(); ++it)
     {
         cout << it->first;
