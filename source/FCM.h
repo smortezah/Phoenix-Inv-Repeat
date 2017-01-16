@@ -16,8 +16,8 @@ public:
     
     void buildRefModel ();                          /// build model (table / hash table) for reference
     void compressTarget ();                         /// compress target file
-    inline uint8_t symCharToInt (char) const;
-    //    void buildHashTable_str ();                     /// build hash table (string key)
+    inline uint8_t symCharToInt (char) const;       /// ACNGT -> 01234
+//    void buildHashTable_str ();                     /// build hash table (string key)
     void printHashTable () const;                   /// print hash table
     
     char getTargetOrReference () const;             /// getter of target or reference

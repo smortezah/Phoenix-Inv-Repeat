@@ -31,13 +31,11 @@ FCM::FCM () {}
 
 
 /***********************************************************
-    build
+    build reference model
 ************************************************************/
 void FCM::buildRefModel ()
 {
     const uint8_t contextDepth  = getContextDepth();    /// get context depth
-    const uint16_t alphaDen     = getAlphaDenom();      /// get alpha denominator
-//    const double alphaDen     = getAlphaDenom();        /// get alpha denominator
     const bool isInvertedRepeat = getInvertedRepeat();  /// get inverted repeat
 //    string tarFileName          = getTarFileAddress();  /// get target file address
     string refFileName          = getRefFileAddress();  /// get reference file address
@@ -197,10 +195,9 @@ void FCM::buildRefModel ()
 //    }
 }
 
-
-///***************************************************************
-/// compressing target based on the model built based on reference
-///***************************************************************
+/***********************************************************
+    compressing target based on the model built based on reference
+************************************************************/
 void FCM::compressTarget ()
 {
     const uint8_t contextDepth  = getContextDepth();    /// get context depth
@@ -363,9 +360,9 @@ void FCM::compressTarget ()
 }
 
 
-///***************************************************************
-/// convert char (base) to integer (uint8_t)
-///***************************************************************
+/***********************************************************
+    convert char (base) to integer (uint8_t): ACNGT -> 01234
+************************************************************/
 inline uint8_t FCM::symCharToInt (char ch) const
 {
     switch (ch)
@@ -398,7 +395,7 @@ inline uint8_t FCM::symCharToInt (char ch) const
 //////////////////////////////////////////////////////////////////////////////////////
 //
 //
-///***********************************************************
+//***********************************************************
 //    build table
 //************************************************************/
 //void FCM::buildTable ()
@@ -551,7 +548,7 @@ inline uint8_t FCM::symCharToInt (char ch) const
 //}
 //
 //
-///***********************************************************
+//***********************************************************
 //    build hash table
 //************************************************************/
 //void FCM::buildHashTable ()
