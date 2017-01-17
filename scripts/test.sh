@@ -29,7 +29,7 @@ GEN_DATASETS=0          # generate datasets using "XS"
 GEN_MUTATIONS=0         # generate mutations using "goose"
 RUN=0                   # run the program
 PLOT_RESULTS=0          # plot results using "gnuplot"
-BUILD_MATRIX=0          # build matrix from Human Chimpanzee correspondence
+BUILD_MATRIX=1          # build matrix from Human Chimpanzee correspondence
 ARCHIVE_DATA=0          # archive data
 
 # mutations list:   `seq -s' ' 1 10`
@@ -449,19 +449,19 @@ for alphaDen in $ALPHA_DENS; do
    echo >> "mat_$IR_LBL$i-$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"
   done
 
-  for ch_PT in 1 2A 2B {3..24}; do
-   awk -F "\t" '{print $7}' "$IR_LBL$i-$a_LBL$alphaDen-$CHIMP_CHR$ch_PT.$INF_FILE_TYPE" | awk 'NR == 1 {next} {print}' \
-       | tr '\n' '\t' >> "mat_$IR_LBL$i-$a_LBL$alphaDen-$CHIMP_CHR.$INF_FILE_TYPE"
-   echo >> "mat_$IR_LBL$i-$a_LBL$alphaDen-$CHIMP_CHR.$INF_FILE_TYPE"
-  done
+#  for ch_PT in 1 2A 2B {3..24}; do
+#   awk -F "\t" '{print $7}' "$IR_LBL$i-$a_LBL$alphaDen-$CHIMP_CHR$ch_PT.$INF_FILE_TYPE" | awk 'NR == 1 {next} {print}' \
+#       | tr '\n' '\t' >> "mat_$IR_LBL$i-$a_LBL$alphaDen-$CHIMP_CHR.$INF_FILE_TYPE"
+#   echo >> "mat_$IR_LBL$i-$a_LBL$alphaDen-$CHIMP_CHR.$INF_FILE_TYPE"
+#  done
  done
 
- ### ($i==$i+0) in awk checks if the column is not numeric
- ### paste "z1" "z2" | tr ',' '.' | awk '{for (i=1;i<=NF/2;i++) printf "%s\t", ($i==$i+0)?$i-$(i+NF/2):$i; print ""}' > zz
- for chr in $HUMAN_CHR $CHIMP_CHR; do
-  paste "mat_${IR_LBL}0-$a_LBL$alphaDen-$chr.$INF_FILE_TYPE" "mat_${IR_LBL}1-$a_LBL$alphaDen-$chr.$INF_FILE_TYPE" | tr ',' '.' \
-        | awk '{for (i=1;i<=NF/2;i++) printf "%s\t", $i-$(i+NF/2); print ""}' > "mat_diff_$a_LBL$alphaDen-$chr.$INF_FILE_TYPE"
- done
+# ### ($i==$i+0) in awk checks if the column is not numeric
+# ### paste "z1" "z2" | tr ',' '.' | awk '{for (i=1;i<=NF/2;i++) printf "%s\t", ($i==$i+0)?$i-$(i+NF/2):$i; print ""}' > zz
+# for chr in $HUMAN_CHR $CHIMP_CHR; do
+#  paste "mat_${IR_LBL}0-$a_LBL$alphaDen-$chr.$INF_FILE_TYPE" "mat_${IR_LBL}1-$a_LBL$alphaDen-$chr.$INF_FILE_TYPE" | tr ',' '.' \
+#        | awk '{for (i=1;i<=NF/2;i++) printf "%s\t", $i-$(i+NF/2); print ""}' > "mat_diff_$a_LBL$alphaDen-$chr.$INF_FILE_TYPE"
+# done
 done
 
 cd ..
