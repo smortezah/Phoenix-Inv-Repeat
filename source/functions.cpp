@@ -227,8 +227,8 @@ void Functions::commandLineParser (int argc, char **argv)
 //                cout.width(4);
 //                cout << std::left <<  models[ n ].getTarFileAddress().substr(lastSlash_Tar + 1) << "   ";
                 
-                cout << std::left << models[ n ].getRefFileAddress().substr(lastSlash_Ref + 1) << ' '
-                     << std::left << models[ n ].getTarFileAddress().substr(lastSlash_Tar + 1) << ' ';
+                cout << models[ n ].getRefFileAddress().substr(lastSlash_Ref + 1) << '\t'
+                     << models[ n ].getTarFileAddress().substr(lastSlash_Tar + 1) << '\t';
                 
                 models[ n ].buildRefModel();    /// build a model for reference
                 models[ n ].compressTarget();   /// compress target using model built based on reference
