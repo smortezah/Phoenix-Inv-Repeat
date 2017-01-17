@@ -443,17 +443,23 @@ cd $FLD_dat
 
 for alphaDen in $ALPHA_DENS; do
  for i in 0 ; do
+  ### reference = Human
   for ch_HS in {1..24}; do
 #   awk -F "\t" '{print $7}' "$IR_LBL$i-$a_LBL$alphaDen-$HUMAN_CHR$ch_HS.$INF_FILE_TYPE" | awk 'NR == 1 {next} {print}' \
 #       | tr '\n' '\t' >> "mat_$IR_LBL$i-$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"
-   awk -F "\t" '{print $7}' "$IR_LBL$i-$a_LBL$alphaDen-$HUMAN_CHR$ch_HS.$INF_FILE_TYPE" | awk 'NR == 1 {print HS; next} {print}' \
-       | tr '\n' '\t' >> "mat_$IR_LBL$i-$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"
+   awk -F "\t" '{print $7}' "$IR_LBL$i-$a_LBL$alphaDen-$HUMAN_CHR$ch_HS.$INF_FILE_TYPE" \
+       | awk -v HS_ch=$HUMAN_CHR$ch_HS 'NR == 1 {print HS_ch; next} {print}' | tr '\n' '\t' \
+       >> "mat_$IR_LBL$i-$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"
    echo >> "mat_$IR_LBL$i-$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"
   done
 
+#  ### reference = Chimpanzee
 #  for ch_PT in 1 2A 2B {3..24}; do
-#   awk -F "\t" '{print $7}' "$IR_LBL$i-$a_LBL$alphaDen-$CHIMP_CHR$ch_PT.$INF_FILE_TYPE" | awk 'NR == 1 {next} {print}' \
-#       | tr '\n' '\t' >> "mat_$IR_LBL$i-$a_LBL$alphaDen-$CHIMP_CHR.$INF_FILE_TYPE"
+##   awk -F "\t" '{print $7}' "$IR_LBL$i-$a_LBL$alphaDen-$CHIMP_CHR$ch_PT.$INF_FILE_TYPE" | awk 'NR == 1 {next} {print}' \
+##       | tr '\n' '\t' >> "mat_$IR_LBL$i-$a_LBL$alphaDen-$CHIMP_CHR.$INF_FILE_TYPE"
+#   awk -F "\t" '{print $7}' "$IR_LBL$i-$a_LBL$alphaDen-$CHIMP_CHR$ch_PT.$INF_FILE_TYPE" \
+#       | awk -v PT_ch=$CHIMP_CHR$ch_PT 'NR == 1 {print PT_ch; next} {print}' | tr '\n' '\t' \
+#       >> "mat_$IR_LBL$i-$a_LBL$alphaDen-$CHIMP_CHR.$INF_FILE_TYPE"
 #   echo >> "mat_$IR_LBL$i-$a_LBL$alphaDen-$CHIMP_CHR.$INF_FILE_TYPE"
 #  done
  done
