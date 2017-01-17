@@ -453,6 +453,9 @@ cd $FLD_dat
 # done
 #done
 
+#paste "mat_i0-a100-HS.dat" "mat_i1-a100-HS.dat" | for i in 1; do awk '{print ${$i}-${$i+25}}'; done
+paste "mat_i0-a100-HS.dat" "mat_i1-a100-HS.dat" | awk '{print $1+$5}'
+
 cd ..
 
 fi
