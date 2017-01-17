@@ -24,8 +24,9 @@ INSTALL_XS=0            # install "XS" from Github
 INSTALL_goose=0         # install "goose" from Github
 GEN_DATASETS=0          # generate datasets using "XS"
 GEN_MUTATIONS=0         # generate mutations using "goose"
-RUN=1                   # run the program
+RUN=0                   # run the program
 PLOT_RESULTS=0          # plot results using "gnuplot"
+BUILD_MATRIX=1          # build matrix from Human Chimpanzee correspondence
 ARCHIVE_DATA=0          # archive data
 
 # mutations list:   `seq -s' ' 1 10`
@@ -428,6 +429,32 @@ EOF
 done
 
 fi  #end of plot output using "gnuplot"
+
+
+#***********************************************************
+#   build matrix from Human Chimpanzee correspondence
+#***********************************************************
+if [[ $BUILD_MATRIX == 1 ]]; then
+
+cd dat
+
+for i in 0 1; do
+ for ch in {1..24}; do
+  awk -F "\t" '{print $7}' "i"$i"-a100-"$HUMAN_CHR"$ch".dat" | awk 'NR == 1 {next} {print}' | tr '\n' '\t' >> "mat_i"$i"-a100-"$HUMAN_CHR".dat"
+  echo >> "mat_i"$i"-a100-"$HUMAN_CHR".dat"
+ done
+done
+
+for i in 0 1; do
+ for ch in 1 2A 2B {3..24}; do
+  awk -F "\t" '{print $7}' "i"$i"-a100-"$CHIMP_CHR"$ch".dat" | awk 'NR == 1 {next} {print}' | tr '\n' '\t' >> "mat_i"$i"-a100-"$CHIMP_CHR".dat"
+  echo >> "mat_i"$i"-a100-"$CHIMP_CHR".dat"
+ done
+done
+
+cd ..
+
+fi
 
 
 #***********************************************************
