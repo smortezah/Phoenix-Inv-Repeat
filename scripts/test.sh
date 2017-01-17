@@ -15,6 +15,9 @@ FLD_archive_datasets="archive_datasets"
 FLD_chromosomes="chromosomes"
 FLD_dat="dat"
 FLD_datasets="datasets"
+FLD_goose="goose"
+FLD_scripts="scripts"
+FLD_XS="XS"
 
 DL_HUMAN=0              # download Human choromosomes
 DL_CHIMP=0              # download Chimpanzee choromosomes
@@ -215,7 +218,7 @@ if [[ $INSTALL_XS == 1 ]]; then
 
 rm -fr XS
 git clone https://github.com/pratas/XS.git
-cd XS
+cd $FLD_XS
 make
 cd ..
 
@@ -229,7 +232,7 @@ if [[ $INSTALL_goose == 1 ]]; then
 
 rm -fr goose
 git clone https://github.com/pratas/goose.git
-cd goose/src
+cd ${FLD_goose}/src
 make
 cd ../../
 
@@ -467,4 +470,4 @@ fi
 
 
 ########################
-cd ./scripts
+cd $FLD_scripts
