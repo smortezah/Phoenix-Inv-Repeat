@@ -454,7 +454,9 @@ cd $FLD_dat
 #done
 
 #paste "mat_i0-a100-HS.dat" "mat_i1-a100-HS.dat" | for i in 1; do awk '{print ${$i}-${$i+25}}'; done
-paste "mat_i0-a100-HS.dat" "mat_i1-a100-HS.dat" | tr ',' '.' | for i in 1; do j=$i+25; awk '{print $i-$j}'; done
+#paste "mat_i0-a100-HS.dat" "mat_i1-a100-HS.dat" | tr ',' '.' | for i in 1; do awk '{print $(i+1)-$(i+0)}'; done
+
+paste "mat_i0-a100-HS.dat" "mat_i1-a100-HS.dat" | tr ',' '.' | awk '{for (i=1;i<=NF/2;i++) printf "%s ", ($i==$i+0)?$i-$(i+NF/2):$i; print ""}' > zz
 
 #paste "z1" "z2" | tr ',' '.' | awk '{print $1+$3}'
 
