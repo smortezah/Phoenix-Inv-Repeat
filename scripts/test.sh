@@ -484,7 +484,10 @@ for alphaDen in $ALPHA_DENS; do
  done
 
 # paste "HUMAN_PAD.dat" "mat_diff_$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE" >> "mat_diff_$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"
+# paste a "mat_diff_$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE" >> "mat_diff_$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"
+
 done
+paste "a" "mat_diff_$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE" >> "mat_diff_$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"
 
 cd ..
 
