@@ -454,9 +454,9 @@ cd $FLD_dat
 #done
 
 #paste "mat_i0-a100-HS.dat" "mat_i1-a100-HS.dat" | for i in 1; do awk '{print ${$i}-${$i+25}}'; done
-#paste "mat_i0-a100-HS.dat" "mat_i1-a100-HS.dat" | awk '{print $1+$26}'
+paste "mat_i0-a100-HS.dat" "mat_i1-a100-HS.dat" | tr ',' '.' | awk '{print $1+$26}'
 
-paste "z1" "z2" | tr '\n' '\t' | awk '{print $1+$3}'
+#paste "z1" "z2" | tr ',' '.' | awk '{print $1+$3}'
 
 #mat_diff_a100-HS.dat
 
