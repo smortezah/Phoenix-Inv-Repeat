@@ -441,7 +441,6 @@ if [[ $BUILD_MATRIX == 1 ]]; then
 
 cd $FLD_dat
 
-
 for alphaDen in $ALPHA_DENS; do
  for i in 0 1; do
   for ch_HS in {1..24}; do
