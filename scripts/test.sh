@@ -470,10 +470,19 @@ for alphaDen in $ALPHA_DENS; do
  printf "\n" >> "mat_diff_$a_LBL$alphaDen-$CHIMP_CHR.$INF_FILE_TYPE"
  ### ($i==$i+0) in awk checks if the column is not numeric
  ### paste "z1" "z2" | tr ',' '.' | awk '{for (i=1;i<=NF/2;i++) printf "%s\t", ($i==$i+0)?$i-$(i+NF/2):$i; print ""}' > zz
- for chr in $HUMAN_CHR $CHIMP_CHR; do
-  paste "mat_${IR_LBL}0-$a_LBL$alphaDen-$chr.$INF_FILE_TYPE" "mat_${IR_LBL}1-$a_LBL$alphaDen-$chr.$INF_FILE_TYPE" | tr ',' '.' \
-        | awk '{for (i=1;i<=NF/2;i++) printf "%s\t", $i-$(i+NF/2); print ""}' > "mat_diff_$a_LBL$alphaDen-$chr.$INF_FILE_TYPE"
- done
+
+#  for c in 1 2A 2B {3..24}; do ; done
+# for chr in $HUMAN_CHR $CHIMP_CHR; do
+  paste "mat_${IR_LBL}0-$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE" "mat_${IR_LBL}1-$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE" | tr ',' '.' \
+        | for ch_HS in {1..24}; do awk -v HS_ch=$HUMAN_CHR$ch_HS 'NR == 1 {print HS_ch; next} {print}' done \
+        | awk '{for (i=1;i<=NF/2;i++) printf "%s\t", $i-$(i+NF/2); print ""}' >> "mat_diff_$a_LBL$alphaDen-$chr.$INF_FILE_TYPE"
+# done
+
+# for chr in $HUMAN_CHR $CHIMP_CHR; do
+#  paste "mat_${IR_LBL}0-$a_LBL$alphaDen-$chr.$INF_FILE_TYPE" "mat_${IR_LBL}1-$a_LBL$alphaDen-$chr.$INF_FILE_TYPE" | tr ',' '.' \
+#        | awk -v HS_ch=$HUMAN_CHR$ch_HS 'NR == 1 {print HS_ch; next} {print}' \
+#        | awk '{for (i=1;i<=NF/2;i++) printf "%s\t", $i-$(i+NF/2); print ""}' >> "mat_diff_$a_LBL$alphaDen-$chr.$INF_FILE_TYPE"
+# done
 done
 
 cd ..
