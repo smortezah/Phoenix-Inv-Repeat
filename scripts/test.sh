@@ -464,6 +464,7 @@ for alphaDen in $ALPHA_DENS; do
   done
  done
 
+ ### making diff matrix
  for ch_HS in 1 2A 2B {3..24}; do printf "%s\t" "$CHIMP_CHR$ch_HS" >> "mat_diff_$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"; done
  printf "\n" >> "mat_diff_$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"
  for ch_PT in {1..24}; do printf "\t%s" "$HUMAN_CHR$ch_PT" >> "mat_diff_$a_LBL$alphaDen-$CHIMP_CHR.$INF_FILE_TYPE"; done
