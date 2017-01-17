@@ -441,27 +441,29 @@ if [[ $BUILD_MATRIX == 1 ]]; then
 
 cd $FLD_dat
 
-#for i in 0 1; do
-# for ch_HS in {1..24}; do
-#  awk -F "\t" '{print $7}' "i$i-a100-$HUMAN_CHR$ch_HS.dat" | awk 'NR == 1 {next} {print}' | tr '\n' '\t' >> "mat_i$i-a100-$HUMAN_CHR.dat"
-#  echo >> "mat_i$i-a100-$HUMAN_CHR.dat"
-# done
-#
-# for ch_PT in 1 2A 2B {3..24}; do
-#  awk -F "\t" '{print $7}' "i$i-a100-$CHIMP_CHR$ch_PT.dat" | awk 'NR == 1 {next} {print}' | tr '\n' '\t' >> "mat_i$i-a100-$CHIMP_CHR.dat"
-#  echo >> "mat_i$i-a100-$CHIMP_CHR.dat"
-# done
-#done
 
-#paste "mat_i0-a100-HS.dat" "mat_i1-a100-HS.dat" | for i in 1; do awk '{print ${$i}-${$i+25}}'; done
-#paste "mat_i0-a100-HS.dat" "mat_i1-a100-HS.dat" | tr ',' '.' | for i in 1; do awk '{print $(i+1)-$(i+0)}'; done
+for alphaDen in $ALPHA_DENS; do
+ for i in 0 1; do
+  for ch_HS in {1..24}; do
+   awk -F "\t" '{print $7}' "$IR_LBL$i-$a_LBL$alphaDen-$HUMAN_CHR$ch_HS.$INF_FILE_TYPE" | awk 'NR == 1 {next} {print}' \
+       | tr '\n' '\t' >> "mat_$IR_LBL$i-$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"
+   echo >> "mat_$IR_LBL$i-$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"
+  done
 
-#paste "mat_i0-a100-HS.dat" "mat_i1-a100-HS.dat" | tr ',' '.' | awk '{for (i=1;i<=NF/2;i++) printf "%s ", ($i==$i+0)?$i-$(i+NF/2):$i; print ""}' > zz
+  for ch_PT in 1 2A 2B {3..24}; do
+   awk -F "\t" '{print $7}' "$IR_LBL$i-$a_LBL$alphaDen-$CHIMP_CHR$ch_PT.$INF_FILE_TYPE" | awk 'NR == 1 {next} {print}' \
+       | tr '\n' '\t' >> "mat_$IR_LBL$i-$a_LBL$alphaDen-$CHIMP_CHR.$INF_FILE_TYPE"
+   echo >> "mat_$IR_LBL$i-$a_LBL$alphaDen-$CHIMP_CHR.$INF_FILE_TYPE"
+  done
+ done
 
-paste "z1" "z2" | tr ',' '.' | awk '{for (i=1;i<=NF/2;i++) printf "%s ", ($i==$i+0)?$i-$(i+NF/2):$i; print ""}' > zz
-
-
-#mat_diff_a100-HS.dat
+ ### ($i==$i+0) in awk checks if the column is not numeric
+ ### paste "z1" "z2" | tr ',' '.' | awk '{for (i=1;i<=NF/2;i++) printf "%s\t", ($i==$i+0)?$i-$(i+NF/2):$i; print ""}' > zz
+ for chr in $HUMAN_CHR $CHIMP_CHR; do
+  paste "mat_${IR_LBL}0-$a_LBL$alphaDen-$chr.$INF_FILE_TYPE" "mat_${IR_LBL}1-$a_LBL$alphaDen-$chr.$INF_FILE_TYPE" | tr ',' '.' \
+        | awk '{for (i=1;i<=NF/2;i++) printf "%s\t", $i-$(i+NF/2); print ""}' > "mat_diff_$a_LBL$alphaDen-$chr.$INF_FILE_TYPE"
+ done
+done
 
 cd ..
 
