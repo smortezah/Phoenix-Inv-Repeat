@@ -436,21 +436,21 @@ fi  #end of plot output using "gnuplot"
 #***********************************************************
 if [[ $BUILD_MATRIX == 1 ]]; then
 
-cd dat
+cd $FLD_dat
 
 for i in 0 1; do
  for ch in {1..24}; do
-  awk -F "\t" '{print $7}' "i"$i"-a100-"$HUMAN_CHR"$ch".dat" | awk 'NR == 1 {next} {print}' | tr '\n' '\t' >> "mat_i"$i"-a100-"$HUMAN_CHR".dat"
-  echo >> "mat_i"$i"-a100-"$HUMAN_CHR".dat"
+  awk -F "\t" '{print $7}' "i$i-a100-$HUMAN_CHR$ch.dat" | awk 'NR == 1 {next} {print}' | tr '\n' '\t' > "mat_i$i-a100-$HUMAN_CHR.dat"
+  echo >> "mat_i$i-a100-$HUMAN_CHR.dat"
  done
 done
 
-for i in 0 1; do
- for ch in 1 2A 2B {3..24}; do
-  awk -F "\t" '{print $7}' "i"$i"-a100-"$CHIMP_CHR"$ch".dat" | awk 'NR == 1 {next} {print}' | tr '\n' '\t' >> "mat_i"$i"-a100-"$CHIMP_CHR".dat"
-  echo >> "mat_i"$i"-a100-"$CHIMP_CHR".dat"
- done
-done
+#for i in 0 1; do
+# for ch in 1 2A 2B {3..24}; do
+#  awk -F "\t" '{print $7}' "i"$i"-a100-"$CHIMP_CHR"$ch".dat" | awk 'NR == 1 {next} {print}' | tr '\n' '\t' > "mat_i"$i"-a100-"$CHIMP_CHR".dat"
+#  echo >> "mat_i"$i"-a100-"$CHIMP_CHR".dat"
+# done
+#done
 
 cd ..
 
