@@ -445,7 +445,7 @@ for i in 0 1; do
  done
 
  for ch_PT in 1 2A 2B {3..24}; do
-  awk -F "\t" '{print $7}' "i$i-a100-$CHIMP_CHR$ch_PT.dat" | awk 'NR == 1 {next} {print}' | tr '\n' '\t' > "mat_i$i-a100-$CHIMP_CHR.dat"
+  awk -F "\t" '{print $7}' "i$i-a100-$CHIMP_CHR$ch_PT.dat" | awk 'NR == 1 {next} {print}' | tr '\n' '\t' >> "mat_i$i-a100-$CHIMP_CHR.dat"
   echo >> "mat_i$i-a100-$CHIMP_CHR.dat"
  done
 done
