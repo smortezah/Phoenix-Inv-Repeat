@@ -441,17 +441,17 @@ if [[ $BUILD_MATRIX == 1 ]]; then
 
 cd $FLD_dat
 
-for i in 0 1; do
- for ch_HS in {1..24}; do
-  awk -F "\t" '{print $7}' "i$i-a100-$HUMAN_CHR$ch_HS.dat" | awk 'NR == 1 {next} {print}' | tr '\n' '\t' >> "mat_i$i-a100-$HUMAN_CHR.dat"
-  echo >> "mat_i$i-a100-$HUMAN_CHR.dat"
- done
-
- for ch_PT in 1 2A 2B {3..24}; do
-  awk -F "\t" '{print $7}' "i$i-a100-$CHIMP_CHR$ch_PT.dat" | awk 'NR == 1 {next} {print}' | tr '\n' '\t' >> "mat_i$i-a100-$CHIMP_CHR.dat"
-  echo >> "mat_i$i-a100-$CHIMP_CHR.dat"
- done
-done
+#for i in 0 1; do
+# for ch_HS in {1..24}; do
+#  awk -F "\t" '{print $7}' "i$i-a100-$HUMAN_CHR$ch_HS.dat" | awk 'NR == 1 {next} {print}' | tr '\n' '\t' >> "mat_i$i-a100-$HUMAN_CHR.dat"
+#  echo >> "mat_i$i-a100-$HUMAN_CHR.dat"
+# done
+#
+# for ch_PT in 1 2A 2B {3..24}; do
+#  awk -F "\t" '{print $7}' "i$i-a100-$CHIMP_CHR$ch_PT.dat" | awk 'NR == 1 {next} {print}' | tr '\n' '\t' >> "mat_i$i-a100-$CHIMP_CHR.dat"
+#  echo >> "mat_i$i-a100-$CHIMP_CHR.dat"
+# done
+#done
 
 cd ..
 
