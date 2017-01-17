@@ -469,11 +469,11 @@ for alphaDen in $ALPHA_DENS; do
  done
 
  ### making diff matrix (Human)
- for ch_PT in 1 2A 2B {3..24}; do printf "%s\t" "$CHIMP_CHR$ch_PT" >> "mat_diff_$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"; done
- printf "\n" >> "mat_diff_$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"
+ for ch_PT in 1 2A 2B {3..24}; do printf "%s\t" "$CHIMP_CHR$ch_PT" >> "mat_diff_$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"; done \
+     >> "mat_diff_$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"
  ### making diff matrix (Chimpanzee)
- for ch_HS in {1..24}; do printf "%s\t" "$HUMAN_CHR$ch_HS" >> "mat_diff_$a_LBL$alphaDen-$CHIMP_CHR.$INF_FILE_TYPE"; done
- printf "\n" >> "mat_diff_$a_LBL$alphaDen-$CHIMP_CHR.$INF_FILE_TYPE"
+ for ch_HS in {1..24}; do printf "%s\t" "$HUMAN_CHR$ch_HS" >> "mat_diff_$a_LBL$alphaDen-$CHIMP_CHR.$INF_FILE_TYPE"; done \
+     >> "mat_diff_$a_LBL$alphaDen-$CHIMP_CHR.$INF_FILE_TYPE"
  ### ($i==$i+0) in awk checks if the column is not numeric
  ### paste "z1" "z2" | tr ',' '.' | awk '{for (i=1;i<=NF/2;i++) printf "%s\t", ($i==$i+0)?$i-$(i+NF/2):$i; print ""}' > zz
 
@@ -487,7 +487,7 @@ for alphaDen in $ALPHA_DENS; do
 # paste a "mat_diff_$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE" >> "mat_diff_$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"
 
 done
-paste "a" "mat_diff_$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE" >> "mat_diff_$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"
+paste "HUMAN_PAD.dat" "mat_diff_$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE" >> c
 
 cd ..
 
