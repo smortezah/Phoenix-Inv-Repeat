@@ -447,8 +447,9 @@ cd $FLD_dat
 #for ch_PT in 1 2A 2B {3..24}; do printf "\t%s" "$CHIMP_CHR$ch_PT" >> mat_i0-a100-HS.dat; done
 #echo >> mat_i0-a100-HS.dat
 
-for ch_PT in 1 2A 2B {3..24}; do printf "\t%s" "$CHIMP_CHR$ch_PT" >> "mori"; done
-echo >> "mori"
+for ch_PT in 1 2A 2B {3..24}; do printf "\t%s" "$CHIMP_CHR$ch_PT" >> "${CHIMP_CHR}_HORIZ_PAD"; done;  echo >> "${CHIMP_CHR}_HORIZ_PAD"
+for ch_HS in {1..24}; do printf "\t%s" "$HUMAN_CHR$ch_HS" >> "${HUMAN_CHR}_HORIZ_PAD"; done;  echo >> "${HUMAN_CHR}_HORIZ_PAD"
+
 
 for alphaDen in $ALPHA_DENS; do
  for i in 0 1; do
@@ -456,7 +457,7 @@ for alphaDen in $ALPHA_DENS; do
 #  for ch_PT in 1 2A 2B {3..24}; do printf "\t%s" "$CHIMP_CHR$ch_PT" >> "HS_HORIZ_PAD"; done
 #  echo < HS_HORIZ_PAD >> "mat_$IR_LBL$i-$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"
 
-  cat "mori" >> "mat_$IR_LBL$i-$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"
+  cat "PT_HORIZ_PAD" >> "mat_$IR_LBL$i-$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"
 
   ### reference = Human
   for ch_HS in {1..24}; do
@@ -492,18 +493,15 @@ for alphaDen in $ALPHA_DENS; do
   paste "mat_${IR_LBL}0-$a_LBL$alphaDen-$chr.$INF_FILE_TYPE" "mat_${IR_LBL}1-$a_LBL$alphaDen-$chr.$INF_FILE_TYPE" | tr ',' '.' \
         | awk 'NR == 1 {print; next} {print}' \
         | awk '{for (i=1;i<=NF/2;i++) printf "%s\t", ($i==$i+0)?$i-$(i+NF/2):$i; print ""}' \
-        >> "TEMP_mat_diff_$a_LBL$alphaDen-$chr.$INF_FILE_TYPE"
+        >> "mat_diff_$a_LBL$alphaDen-$chr.$INF_FILE_TYPE"
 
-    echo -e "\t$(cat "TEMP_mat_diff_$a_LBL$alphaDen-$chr.$INF_FILE_TYPE")" > "TEMP_mat_diff_$a_LBL$alphaDen-$chr.$INF_FILE_TYPE"
- done #        | awk -v HS_ch=$HUMAN_CHR$ch_HS 'NR == 1 {print HS_ch;} {print}'
-
-
+  echo -e "\t$(cat "mat_diff_$a_LBL$alphaDen-$chr.$INF_FILE_TYPE")" > "mat_diff_$a_LBL$alphaDen-$chr.$INF_FILE_TYPE"
+ done
 
 #paste "HUMAN_PAD.dat" "TEMP_mat_diff_$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE" >> "mat_diff_$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"
 #paste "CHIMP_PAD.dat" "TEMP_mat_diff_$a_LBL$alphaDen-$CHIMP_CHR.$INF_FILE_TYPE" >> "mat_diff_$a_LBL$alphaDen-$CHIMP_CHR.$INF_FILE_TYPE"
 
-#rm -f "HUMAN_PAD.dat" "TEMP_mat_diff_$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE" \
-#      "CHIMP_PAD.dat" "TEMP_mat_diff_$a_LBL$alphaDen-$CHIMP_CHR.$INF_FILE_TYPE"
+rm -f "HUMAN_PAD.dat" "CHIMP_PAD.dat" "${HUMAN_CHR}_HORIZ_PAD" "${CHIMP_CHR}_HORIZ_PAD"
 done
 
 cd ..
