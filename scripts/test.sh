@@ -449,6 +449,7 @@ cd $FLD_dat
 
 for ch_PT in 1 2A 2B {3..24}; do printf "\t%s" "$CHIMP_CHR$ch_PT" >> "mori"; done #| echo >> "mori"
 
+
 for alphaDen in $ALPHA_DENS; do
  for i in 0 1; do
 
