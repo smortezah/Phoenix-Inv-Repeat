@@ -29,7 +29,8 @@ GEN_DATASETS=0          # generate datasets using "XS"
 GEN_MUTATIONS=0         # generate mutations using "goose"
 RUN=0                   # run the program
 PLOT_RESULTS=0          # plot results using "gnuplot"
-BUILD_MATRIX=1          # build matrix from Human Chimpanzee correspondence
+BUILD_MATRIX=1          # build matrix from datasets
+PLOT_MATRIX=1           # plot matrix from datasets
 ARCHIVE_DATA=0          # archive data
 
 # mutations list:   `seq -s' ' 1 10`
@@ -488,30 +489,55 @@ cd ..
 fi
 
 
-#file='a.dat'
-#
-#gnuplot -persist <<- EOF
-#set term png
-#set tmargin 3.5
-#set bmargin 2.5
-#set output "z.png"
-#set title "NRC (relative compression: HS-PT)\nReference: HS, Target: PT, inverted repeats: not considered"
-#
-#set pm3d map
-##set palette rgb 34,35,36
-#set palette defined (0 "red", 1 "green", 2 "white")
-#
-##set xrange [0:1]
-##set yrange [0:1]
-#
-#YTICS="`awk 'BEGIN{getline}{printf "%s ",$1}' $file`"
-#XTICS="`head -1 $file`"
-#set for [i=1:words(XTICS)] xtics ( word(XTICS,i) i-1 ) font ",9" rotate by 90 offset 0,-1.4
-#set for [i=1:words(YTICS)] ytics ( word(YTICS,i) i-1 ) font ",9" offset 0.5,0
-#
-#plot "<awk 'NR>1' $file | cut -f2-" matrix w image
-#
-#EOF
+#***********************************************************
+#   build matrix from Human Chimpanzee correspondence
+#***********************************************************
+if [[ $BUILD_MATRIX == 1 ]]; then
+
+file='a.dat'
+
+for alphaDen in $ALPHA_DENS; do
+
+gnuplot <<- EOF
+set term $PIX_FORMAT
+set tmargin 3.5
+set bmargin 2.5
+set pm3d map
+set palette defined (0 "red", 1 "yellow", 2 "white")
+
+set output "${IR_LBL}0-$a_LBL$alphaDen-$HUMAN_CHR.$PIX_FORMAT"
+set title "Relative compression: HS-PT\nReference: HS, Target: PT, inverted repeats: not considered"
+
+#set nocbtics
+set cblabel "NRC"
+set cbtics scale 0 font ",11"
+#set cbtics
+#set cbrange [ 0.2 : 1 ] noreverse nowriteback
+
+
+YTICS="`awk 'BEGIN{getline}{printf "%s ",$1}' $file`"
+XTICS="`head -1 $file`"
+set for [i=1:words(XTICS)] xtics ( word(XTICS,i) i-1 ) font ",9" rotate by 90 offset 0,-1.4
+set for [i=1:words(YTICS)] ytics ( word(YTICS,i) i-1 ) font ",9" offset 0.5,0
+
+plot "<awk 'NR>1' $file | cut -f2-" matrix w image
+
+
+set output "${IR_LBL}1-$a_LBL$alphaDen-$HUMAN_CHR.$PIX_FORMAT"
+set title "Relative compression: HS-PT\nReference: HS, Target: PT, inverted repeats: not considered"
+
+
+
+set output "diff-$a_LBL$alphaDen-$HUMAN_CHR.$PIX_FORMAT"
+set title "Relative compression: HS-PT\nReference: HS, Target: PT, inverted repeats: not considered"
+
+
+EOF
+
+done
+
+fi
+
 
 #***********************************************************
 #   archive data
