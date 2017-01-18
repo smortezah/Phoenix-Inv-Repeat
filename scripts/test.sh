@@ -496,6 +496,11 @@ fi
 #set bmargin 2.5
 #set output "z.png"
 #set title "NRC (relative compression: HS-PT)\nReference: HS, Target: PT, inverted repeats: not considered"
+#
+#set pm3d map
+##set palette rgb 34,35,36
+#set palette defined (0 "red", 1 "green", 2 "white")
+#
 ##set xrange [0:1]
 ##set yrange [0:1]
 #
