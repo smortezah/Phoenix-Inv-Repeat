@@ -441,18 +441,21 @@ if [[ $BUILD_MATRIX == 1 ]]; then
 
 cd $FLD_dat
 
-echo "" >> HUMAN_PAD.dat;   for ch_HS in {1..24}; do echo "$HUMAN_CHR$ch_HS" >> HUMAN_PAD.dat; done
+#echo "" >> HUMAN_PAD.dat;   for ch_HS in {1..24}; do echo "$HUMAN_CHR$ch_HS" >> HUMAN_PAD.dat; done
 #echo "" >> CHIMP_PAD.dat;   for ch_PT in 1 2A 2B {3..24}; do echo "$CHIMP_CHR$ch_PT" >> CHIMP_PAD.dat; done
 
 #for ch_PT in 1 2A 2B {3..24}; do printf "\t%s" "$CHIMP_CHR$ch_PT" >> mat_i0-a100-HS.dat; done
 #echo >> mat_i0-a100-HS.dat
 
+for ch_PT in 1 2A 2B {3..24}; do printf "\t%s" "$CHIMP_CHR$ch_PT" >> "mori"; done #| echo >> "mori"
 
 for alphaDen in $ALPHA_DENS; do
  for i in 0 1; do
 
-  for ch_PT in 1 2A 2B {3..24}; do printf "\t%s" "$CHIMP_CHR$ch_PT" >> "HS_HORIZ_PAD"; done
-  echo < HS_HORIZ_PAD >> "mat_$IR_LBL$i-$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"
+#  for ch_PT in 1 2A 2B {3..24}; do printf "\t%s" "$CHIMP_CHR$ch_PT" >> "HS_HORIZ_PAD"; done
+#  echo < HS_HORIZ_PAD >> "mat_$IR_LBL$i-$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"
+
+  cat "mori" >> "mat_$IR_LBL$i-$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"
 
   ### reference = Human
   for ch_HS in {1..24}; do
