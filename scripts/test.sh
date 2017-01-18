@@ -29,7 +29,7 @@ GEN_DATASETS=0          # generate datasets using "XS"
 GEN_MUTATIONS=0         # generate mutations using "goose"
 RUN=0                   # run the program
 PLOT_RESULTS=0          # plot results using "gnuplot"
-BUILD_MATRIX=1          # build matrix from datasets
+BUILD_MATRIX=0          # build matrix from datasets
 PLOT_MATRIX=1           # plot matrix from datasets
 ARCHIVE_DATA=0          # archive data
 
@@ -492,9 +492,7 @@ fi
 #***********************************************************
 #   build matrix from Human Chimpanzee correspondence
 #***********************************************************
-if [[ $BUILD_MATRIX == 1 ]]; then
-
-file='a.dat'
+if [[ $PLOT_MATRIX == 1 ]]; then
 
 for alphaDen in $ALPHA_DENS; do
 
@@ -515,12 +513,12 @@ set cbtics scale 0 font ",11"
 set output "${IR_LBL}0-$a_LBL$alphaDen-$HUMAN_CHR.$PIX_FORMAT"
 set title "Relative compression: HS-PT\nReference: HS, Target: PT, inverted repeats: not considered"
 
-YTICS="`awk 'BEGIN{getline}{printf "%s ",$1}' "mat-$IR_LBL$i0-$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"`"
-XTICS="`head -1 "mat-$IR_LBL$i0-$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"`"
+YTICS="`awk 'BEGIN{getline}{printf "%s ",$1}' "mat-${IR_LBL}0-$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"`"
+XTICS="`head -1 "mat-${IR_LBL}0-$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"`"
 set for [i=1:words(XTICS)] xtics ( word(XTICS,i) i-1 ) font ",9" rotate by 90 offset 0,-1.4
 set for [i=1:words(YTICS)] ytics ( word(YTICS,i) i-1 ) font ",9" offset 0.5,0
 
-plot "<awk 'NR>1' "mat-$IR_LBL$i0-$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE" | cut -f2-" matrix with image
+plot "<awk 'NR>1' "mat-${IR_LBL}0-$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE" | cut -f2-" matrix with image
 
 
 #set output "${IR_LBL}1-$a_LBL$alphaDen-$HUMAN_CHR.$PIX_FORMAT"
