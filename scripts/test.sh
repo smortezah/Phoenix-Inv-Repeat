@@ -447,7 +447,8 @@ cd $FLD_dat
 #for ch_PT in 1 2A 2B {3..24}; do printf "\t%s" "$CHIMP_CHR$ch_PT" >> mat_i0-a100-HS.dat; done
 #echo >> mat_i0-a100-HS.dat
 
-for ch_PT in 1 2A 2B {3..24}; do printf "\t%s" "$CHIMP_CHR$ch_PT" >> "mori"; done #| echo >> "mori"
+for ch_PT in 1 2A 2B {3..24}; do printf "\t%s" "$CHIMP_CHR$ch_PT" >> "mori"; done
+echo >> "mori"
 
 for alphaDen in $ALPHA_DENS; do
  for i in 0 1; do
@@ -455,7 +456,7 @@ for alphaDen in $ALPHA_DENS; do
 #  for ch_PT in 1 2A 2B {3..24}; do printf "\t%s" "$CHIMP_CHR$ch_PT" >> "HS_HORIZ_PAD"; done
 #  echo < HS_HORIZ_PAD >> "mat_$IR_LBL$i-$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"
 
-  echo >> "mori" | cat "mat_$IR_LBL$i-$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"
+  cat "mori" >> "mat_$IR_LBL$i-$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"
 
   ### reference = Human
   for ch_HS in {1..24}; do
