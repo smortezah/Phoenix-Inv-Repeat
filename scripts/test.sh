@@ -497,18 +497,18 @@ if [[ $PLOT_MATRIX == 1 ]]; then
 for alphaDen in $ALPHA_DENS; do
 
 gnuplot <<- EOF
-#set term $PIX_FORMAT
-#set tmargin 3.5
-#set bmargin 2.5
-#set pm3d map
-#set palette defined (0 "red", 1 "yellow", 2 "white")
-#
-##set nocbtics
-#set cblabel "NRC"
-#set cbtics scale 0 font ",11"
-##set cbtics
-##set cbrange [ 0.2 : 1 ] noreverse nowriteback
-#
+set term $PIX_FORMAT
+set tmargin 3.5
+set bmargin 2.5
+set pm3d map
+set palette defined (0 "red", 1 "yellow", 2 "white")
+
+#set nocbtics
+set cblabel "NRC"
+set cbtics scale 0 font ",11"
+#set cbtics
+#set cbrange [ 0.2 : 1 ] noreverse nowriteback
+
 #### i0, Human
 #set output "${IR_LBL}0-$a_LBL$alphaDen-$HUMAN_CHR.$PIX_FORMAT"
 #set title "Relative compression: HS-PT\nReference: HS, Target: PT, inverted repeats: not considered"
