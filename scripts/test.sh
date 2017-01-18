@@ -488,18 +488,21 @@ cd ..
 fi
 
 
-#file='c.dat'
+#file='a.dat'
 #
 #gnuplot -persist <<- EOF
-#
-#set title "Heat Map"
+#set term png
+#set tmargin 3.5
+#set bmargin 2.5
+#set output "z.png"
+#set title "NRC (relative compression: HS-PT)\nReference: HS, Target: PT, inverted repeats: not considered"
 ##set xrange [0:1]
 ##set yrange [0:1]
 #
 #YTICS="`awk 'BEGIN{getline}{printf "%s ",$1}' $file`"
 #XTICS="`head -1 $file`"
-#set for [i=1:words(XTICS)] xtics ( word(XTICS,i) i-1 )
-#set for [i=1:words(YTICS)] ytics ( word(YTICS,i) i-1 )
+#set for [i=1:words(XTICS)] xtics ( word(XTICS,i) i-1 ) font ",9" rotate by 90 offset 0,-1.4
+#set for [i=1:words(YTICS)] ytics ( word(YTICS,i) i-1 ) font ",9" offset 0.5,0
 #
 #plot "<awk 'NR>1' $file | cut -f2-" matrix w image
 #
