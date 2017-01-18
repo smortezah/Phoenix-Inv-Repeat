@@ -497,38 +497,38 @@ if [[ $PLOT_MATRIX == 1 ]]; then
 for alphaDen in $ALPHA_DENS; do
 
 gnuplot <<- EOF
-set term $PIX_FORMAT
-set tmargin 3.5
-set bmargin 2.5
-set pm3d map
-set palette defined (0 "red", 1 "yellow", 2 "white")
-
-#set nocbtics
-set cblabel "NRC"
-set cbtics scale 0 font ",11"
-#set cbtics
-#set cbrange [ 0.2 : 1 ] noreverse nowriteback
-
-### i0, Human
-set output "${IR_LBL}0-$a_LBL$alphaDen-$HUMAN_CHR.$PIX_FORMAT"
-set title "Relative compression: HS-PT\nReference: HS, Target: PT, inverted repeats: not considered"
-
-YTICS="`awk 'BEGIN{getline}{printf "%s ",$1}' "mat-${IR_LBL}0-$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"`"
-XTICS="`head -1 "mat-${IR_LBL}0-$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"`"
-set for [i=1:words(XTICS)] xtics ( word(XTICS,i) i-1 ) font ",9" rotate by 90 offset 0,-1.4
-set for [i=1:words(YTICS)] ytics ( word(YTICS,i) i-1 ) font ",9" offset 0.5,0
-
-plot "<awk 'NR>1' "mat-${IR_LBL}0-$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE" | cut -f2-" matrix with image
-
-
-#set output "${IR_LBL}1-$a_LBL$alphaDen-$HUMAN_CHR.$PIX_FORMAT"
+#set term $PIX_FORMAT
+#set tmargin 3.5
+#set bmargin 2.5
+#set pm3d map
+#set palette defined (0 "red", 1 "yellow", 2 "white")
+#
+##set nocbtics
+#set cblabel "NRC"
+#set cbtics scale 0 font ",11"
+##set cbtics
+##set cbrange [ 0.2 : 1 ] noreverse nowriteback
+#
+#### i0, Human
+#set output "${IR_LBL}0-$a_LBL$alphaDen-$HUMAN_CHR.$PIX_FORMAT"
 #set title "Relative compression: HS-PT\nReference: HS, Target: PT, inverted repeats: not considered"
 #
+#YTICS="`awk 'BEGIN{getline}{printf "%s ",$1}' "mat-${IR_LBL}0-$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"`"
+#XTICS="`head -1 "mat-${IR_LBL}0-$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"`"
+#set for [i=1:words(XTICS)] xtics ( word(XTICS,i) i-1 ) font ",9" rotate by 90 offset 0,-1.4
+#set for [i=1:words(YTICS)] ytics ( word(YTICS,i) i-1 ) font ",9" offset 0.5,0
+#
+#plot "<awk 'NR>1' "mat-${IR_LBL}0-$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE" | cut -f2-" matrix with image
 #
 #
-#set output "diff-$a_LBL$alphaDen-$HUMAN_CHR.$PIX_FORMAT"
-#set title "Relative compression: HS-PT\nReference: HS, Target: PT, inverted repeats: not considered"
-
+##set output "${IR_LBL}1-$a_LBL$alphaDen-$HUMAN_CHR.$PIX_FORMAT"
+##set title "Relative compression: HS-PT\nReference: HS, Target: PT, inverted repeats: not considered"
+##
+##
+##
+##set output "diff-$a_LBL$alphaDen-$HUMAN_CHR.$PIX_FORMAT"
+##set title "Relative compression: HS-PT\nReference: HS, Target: PT, inverted repeats: not considered"
+#
 
 EOF
 
