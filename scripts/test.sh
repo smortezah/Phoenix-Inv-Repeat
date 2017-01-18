@@ -441,54 +441,57 @@ if [[ $BUILD_MATRIX == 1 ]]; then
 
 cd $FLD_dat
 
-echo "" >> HUMAN_PAD.dat;   for ch_HS in {1..24}; do echo "$HUMAN_CHR$ch_HS" >> HUMAN_PAD.dat; done
-echo "" >> CHIMP_PAD.dat;   for ch_PT in 1 2A 2B {3..24}; do echo "$CHIMP_CHR$ch_PT" >> CHIMP_PAD.dat; done
+#echo "" >> HUMAN_PAD.dat;   for ch_HS in {1..24}; do echo "$HUMAN_CHR$ch_HS" >> HUMAN_PAD.dat; done
+#echo "" >> CHIMP_PAD.dat;   for ch_PT in 1 2A 2B {3..24}; do echo "$CHIMP_CHR$ch_PT" >> CHIMP_PAD.dat; done
 
-for alphaDen in $ALPHA_DENS; do
- for i in 0 1; do
+for ch_PT in 1 2A 2B {3..24}; do printf "\t%s" "$CHIMP_CHR$ch_PT" >> mat_i0-a100-HS.dat; done >> mat_i0-a100-HS.dat
 
-  ### reference = Human
-  for ch_HS in {1..24}; do
-   awk -F "\t" '{print $7}' "$IR_LBL$i-$a_LBL$alphaDen-$HUMAN_CHR$ch_HS.$INF_FILE_TYPE" | awk 'NR == 1 {next} {print}' \
-       | tr '\n' '\t' >> "mat_$IR_LBL$i-$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"
+
+#for alphaDen in $ALPHA_DENS; do
+# for i in 0 1; do
+
+#  ### reference = Human
+#  for ch_HS in {1..24}; do
+##   awk -F "\t" '{print $7}' "$IR_LBL$i-$a_LBL$alphaDen-$HUMAN_CHR$ch_HS.$INF_FILE_TYPE" | awk 'NR == 1 {next} {print}' \
+##       | tr '\n' '\t' >> "mat_$IR_LBL$i-$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"
 #   awk -F "\t" '{print $7}' "$IR_LBL$i-$a_LBL$alphaDen-$HUMAN_CHR$ch_HS.$INF_FILE_TYPE" \
 #       | awk -v HS_ch=$HUMAN_CHR$ch_HS 'NR == 1 {print HS_ch; next} {print}' | tr '\n' '\t' \
 #       >> "mat_$IR_LBL$i-$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"
-   echo >> "mat_$IR_LBL$i-$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"
-  done
-
-  ### reference = Chimpanzee
-  for ch_PT in 1 2A 2B {3..24}; do
-   awk -F "\t" '{print $7}' "$IR_LBL$i-$a_LBL$alphaDen-$CHIMP_CHR$ch_PT.$INF_FILE_TYPE" | awk 'NR == 1 {next} {print}' \
-       | tr '\n' '\t' >> "mat_$IR_LBL$i-$a_LBL$alphaDen-$CHIMP_CHR.$INF_FILE_TYPE"
-#   awk -F "\t" '{print $7}' "$IR_LBL$i-$a_LBL$alphaDen-$CHIMP_CHR$ch_PT.$INF_FILE_TYPE" \
-#       | awk -v PT_ch=$CHIMP_CHR$ch_PT 'NR == 1 {print PT_ch; next} {print}' | tr '\n' '\t' \
-#       >> "mat_$IR_LBL$i-$a_LBL$alphaDen-$CHIMP_CHR.$INF_FILE_TYPE"
-   echo >> "mat_$IR_LBL$i-$a_LBL$alphaDen-$CHIMP_CHR.$INF_FILE_TYPE"
-  done
- done
-
- ### making diff matrix (Human)
- for ch_PT in 1 2A 2B {3..24}; do printf "\t%s" "$CHIMP_CHR$ch_PT" >> "mat_diff_$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"; done \
-     >> "mat_diff_$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"
- ### making diff matrix (Chimpanzee)
- for ch_HS in {1..24}; do printf "\t%s" "$HUMAN_CHR$ch_HS" >> "mat_diff_$a_LBL$alphaDen-$CHIMP_CHR.$INF_FILE_TYPE"; done \
-     >> "mat_diff_$a_LBL$alphaDen-$CHIMP_CHR.$INF_FILE_TYPE"
- ### ($i==$i+0) in awk checks if the column is not numeric
- ### paste "z1" "z2" | tr ',' '.' | awk '{for (i=1;i<=NF/2;i++) printf "%s\t", ($i==$i+0)?$i-$(i+NF/2):$i; print ""}' > zz
-
- for chr in $HUMAN_CHR $CHIMP_CHR; do
-  paste "mat_${IR_LBL}0-$a_LBL$alphaDen-$chr.$INF_FILE_TYPE" "mat_${IR_LBL}1-$a_LBL$alphaDen-$chr.$INF_FILE_TYPE" | tr ',' '.' \
-        | awk -v HS_ch=$HUMAN_CHR$ch_HS 'NR == 1 {print HS_ch; next} {print}' \
-        | awk '{for (i=1;i<=NF/2;i++) printf "%s\t", $i-$(i+NF/2); print ""}' >> "TEMP_mat_diff_$a_LBL$alphaDen-$chr.$INF_FILE_TYPE"
- done
-
-paste "HUMAN_PAD.dat" "TEMP_mat_diff_$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE" >> "mat_diff_$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"
-paste "CHIMP_PAD.dat" "TEMP_mat_diff_$a_LBL$alphaDen-$CHIMP_CHR.$INF_FILE_TYPE" >> "mat_diff_$a_LBL$alphaDen-$CHIMP_CHR.$INF_FILE_TYPE"
-
-rm -f "HUMAN_PAD.dat" "TEMP_mat_diff_$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE" \
-      "CHIMP_PAD.dat" "TEMP_mat_diff_$a_LBL$alphaDen-$CHIMP_CHR.$INF_FILE_TYPE"
-done
+#   echo >> "mat_$IR_LBL$i-$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"
+#  done
+#
+#  ### reference = Chimpanzee
+#  for ch_PT in 1 2A 2B {3..24}; do
+#   awk -F "\t" '{print $7}' "$IR_LBL$i-$a_LBL$alphaDen-$CHIMP_CHR$ch_PT.$INF_FILE_TYPE" | awk 'NR == 1 {next} {print}' \
+#       | tr '\n' '\t' >> "mat_$IR_LBL$i-$a_LBL$alphaDen-$CHIMP_CHR.$INF_FILE_TYPE"
+##   awk -F "\t" '{print $7}' "$IR_LBL$i-$a_LBL$alphaDen-$CHIMP_CHR$ch_PT.$INF_FILE_TYPE" \
+##       | awk -v PT_ch=$CHIMP_CHR$ch_PT 'NR == 1 {print PT_ch; next} {print}' | tr '\n' '\t' \
+##       >> "mat_$IR_LBL$i-$a_LBL$alphaDen-$CHIMP_CHR.$INF_FILE_TYPE"
+#   echo >> "mat_$IR_LBL$i-$a_LBL$alphaDen-$CHIMP_CHR.$INF_FILE_TYPE"
+#  done
+# done
+#
+# ### making diff matrix (Human)
+# for ch_PT in 1 2A 2B {3..24}; do printf "\t%s" "$CHIMP_CHR$ch_PT" >> "mat_diff_$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"; done \
+#     >> "mat_diff_$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"
+# ### making diff matrix (Chimpanzee)
+# for ch_HS in {1..24}; do printf "\t%s" "$HUMAN_CHR$ch_HS" >> "mat_diff_$a_LBL$alphaDen-$CHIMP_CHR.$INF_FILE_TYPE"; done \
+#     >> "mat_diff_$a_LBL$alphaDen-$CHIMP_CHR.$INF_FILE_TYPE"
+# ### ($i==$i+0) in awk checks if the column is not numeric
+# ### paste "z1" "z2" | tr ',' '.' | awk '{for (i=1;i<=NF/2;i++) printf "%s\t", ($i==$i+0)?$i-$(i+NF/2):$i; print ""}' > zz
+#
+# for chr in $HUMAN_CHR $CHIMP_CHR; do
+#  paste "mat_${IR_LBL}0-$a_LBL$alphaDen-$chr.$INF_FILE_TYPE" "mat_${IR_LBL}1-$a_LBL$alphaDen-$chr.$INF_FILE_TYPE" | tr ',' '.' \
+#        | awk -v HS_ch=$HUMAN_CHR$ch_HS 'NR == 1 {print HS_ch;} {print}' \
+#        | awk '{for (i=1;i<=NF/2;i++) printf "%s\t", $i-$(i+NF/2); print ""}' >> "TEMP_mat_diff_$a_LBL$alphaDen-$chr.$INF_FILE_TYPE"
+# done
+#
+#paste "HUMAN_PAD.dat" "TEMP_mat_diff_$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE" >> "mat_diff_$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"
+#paste "CHIMP_PAD.dat" "TEMP_mat_diff_$a_LBL$alphaDen-$CHIMP_CHR.$INF_FILE_TYPE" >> "mat_diff_$a_LBL$alphaDen-$CHIMP_CHR.$INF_FILE_TYPE"
+#
+#rm -f "HUMAN_PAD.dat" "TEMP_mat_diff_$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE" \
+#      "CHIMP_PAD.dat" "TEMP_mat_diff_$a_LBL$alphaDen-$CHIMP_CHR.$INF_FILE_TYPE"
+#done
 
 cd ..
 
