@@ -455,7 +455,7 @@ for alphaDen in $ALPHA_DENS; do
 #   awk -F "\t" '{print $7}' "$IR_LBL$i-$a_LBL$alphaDen-$HUMAN_CHR$ch_HS.$INF_FILE_TYPE" | awk 'NR == 1 {next} {print}' \
 #       | tr '\n' '\t' >> "mat_$IR_LBL$i-$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"
    awk -F "\t" '{print $7}' "$IR_LBL$i-$a_LBL$alphaDen-$HUMAN_CHR$ch_HS.$INF_FILE_TYPE" \
-        | awk -v HS_ch=$HUMAN_CHR$ch_HS 'NR == 1 {print HS_ch; next} {print}' | tr '\n' '\t' \
+        | awk -v HS_ch=$HUMAN_CHR$ch_HS 'NR == 1 {print HS_ch; next} {print}' | tr '\n' '\t' | tr ',' '.' \
         >> "mat_$IR_LBL$i-$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"
    echo >> "mat_$IR_LBL$i-$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"
   done
@@ -465,7 +465,7 @@ for alphaDen in $ALPHA_DENS; do
 #   awk -F "\t" '{print $7}' "$IR_LBL$i-$a_LBL$alphaDen-$CHIMP_CHR$ch_PT.$INF_FILE_TYPE" | awk 'NR == 1 {next} {print}' \
 #       | tr '\n' '\t' >> "mat_$IR_LBL$i-$a_LBL$alphaDen-$CHIMP_CHR.$INF_FILE_TYPE"
    awk -F "\t" '{print $7}' "$IR_LBL$i-$a_LBL$alphaDen-$CHIMP_CHR$ch_PT.$INF_FILE_TYPE" \
-        | awk -v PT_ch=$CHIMP_CHR$ch_PT 'NR == 1 {print PT_ch; next} {print}' | tr '\n' '\t' \
+        | awk -v PT_ch=$CHIMP_CHR$ch_PT 'NR == 1 {print PT_ch; next} {print}' | tr '\n' '\t' | tr ',' '.' \
         >> "mat_$IR_LBL$i-$a_LBL$alphaDen-$CHIMP_CHR.$INF_FILE_TYPE"
    echo >> "mat_$IR_LBL$i-$a_LBL$alphaDen-$CHIMP_CHR.$INF_FILE_TYPE"
   done
@@ -487,6 +487,23 @@ cd ..
 
 fi
 
+
+#file='c.dat'
+#
+#gnuplot -persist <<- EOF
+#
+#set title "Heat Map"
+##set xrange [0:1]
+##set yrange [0:1]
+#
+#YTICS="`awk 'BEGIN{getline}{printf "%s ",$1}' $file`"
+#XTICS="`head -1 $file`"
+#set for [i=1:words(XTICS)] xtics ( word(XTICS,i) i-1 )
+#set for [i=1:words(YTICS)] ytics ( word(YTICS,i) i-1 )
+#
+#plot "<awk 'NR>1' $file | cut -f2-" matrix w image
+#
+#EOF
 
 #***********************************************************
 #   archive data
