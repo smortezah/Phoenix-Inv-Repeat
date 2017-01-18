@@ -486,14 +486,19 @@ for alphaDen in $ALPHA_DENS; do
 #
  for chr in $HUMAN_CHR $CHIMP_CHR; do
   paste "mat_${IR_LBL}0-$a_LBL$alphaDen-$chr.$INF_FILE_TYPE" "mat_${IR_LBL}1-$a_LBL$alphaDen-$chr.$INF_FILE_TYPE" | tr ',' '.' \
-        | awk -v HS_ch=$HUMAN_CHR$ch_HS 'NR == 1 {print HS_ch;} {print}' \
-        | awk '{for (i=1;i<=NF/2;i++) printf "%s\t", ($i==$i+0)?$i-$(i+NF/2):$i; print ""}' >> "TEMP_mat_diff_$a_LBL$alphaDen-$chr.$INF_FILE_TYPE"
- done
+    | awk '{for (i=1;i<=NF/2;i++) printf "%s\t", ($i==$i+0)?$i-$(i+NF/2):$i; print ""}' >> "TEMP_mat_diff_$a_LBL$alphaDen-$chr.$INF_FILE_TYPE"
+#  | awk 'NR == 1 {print;next} {print}' | awk '{for (i=1;i<=NF/2;i++) printf "%s\t", ($i==$i+0)?$i-$(i+NF/2):$i; print ""}' >> "TEMP_mat_diff_$a_LBL$alphaDen-$chr.$INF_FILE_TYPE"
+ done #        | awk -v HS_ch=$HUMAN_CHR$ch_HS 'NR == 1 {print HS_ch;} {print}'
 
-paste "HUMAN_PAD.dat" "TEMP_mat_diff_$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE" >> "mat_diff_$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"
+#    | awk 'NR == 1 {printf '\t';print;next} {print}' \
+
+
+
+
+#paste "HUMAN_PAD.dat" "TEMP_mat_diff_$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE" >> "mat_diff_$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"
 #paste "CHIMP_PAD.dat" "TEMP_mat_diff_$a_LBL$alphaDen-$CHIMP_CHR.$INF_FILE_TYPE" >> "mat_diff_$a_LBL$alphaDen-$CHIMP_CHR.$INF_FILE_TYPE"
 
-rm -f "HUMAN_PAD.dat" "TEMP_mat_diff_$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE" \
+#rm -f "HUMAN_PAD.dat" "TEMP_mat_diff_$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE" \
       "CHIMP_PAD.dat" "TEMP_mat_diff_$a_LBL$alphaDen-$CHIMP_CHR.$INF_FILE_TYPE"
 done
 
