@@ -441,9 +441,6 @@ if [[ $BUILD_MATRIX == 1 ]]; then
 
 cd $FLD_dat
 
-#echo "" >> HUMAN_PAD.dat;   for ch_HS in {1..24}; do echo "$HUMAN_CHR$ch_HS" >> HUMAN_PAD.dat; done
-#echo "" >> CHIMP_PAD.dat;   for ch_PT in 1 2A 2B {3..24}; do echo "$CHIMP_CHR$ch_PT" >> CHIMP_PAD.dat; done
-
 for ch_PT in 1 2A 2B {3..24}; do printf "\t%s" "$CHIMP_CHR$ch_PT" >> "${CHIMP_CHR}_HORIZ_PAD"; done;  echo >> "${CHIMP_CHR}_HORIZ_PAD"
 for ch_HS in {1..24}; do printf "\t%s" "$HUMAN_CHR$ch_HS" >> "${HUMAN_CHR}_HORIZ_PAD"; done;  echo >> "${HUMAN_CHR}_HORIZ_PAD"
 
@@ -473,15 +470,6 @@ for alphaDen in $ALPHA_DENS; do
    echo >> "mat_$IR_LBL$i-$a_LBL$alphaDen-$CHIMP_CHR.$INF_FILE_TYPE"
   done
  done
-#
-# ### making diff matrix (Human)
-# for ch_PT in 1 2A 2B {3..24}; do printf "\t%s" "$CHIMP_CHR$ch_PT" >> "mat_diff_$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"; done \
-#     >> "mat_diff_$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"
-# ### making diff matrix (Chimpanzee)
-# for ch_HS in {1..24}; do printf "\t%s" "$HUMAN_CHR$ch_HS" >> "mat_diff_$a_LBL$alphaDen-$CHIMP_CHR.$INF_FILE_TYPE"; done \
-#     >> "mat_diff_$a_LBL$alphaDen-$CHIMP_CHR.$INF_FILE_TYPE"
-# ### ($i==$i+0) in awk checks if the column is not numeric
-# ### paste "z1" "z2" | tr ',' '.' | awk '{for (i=1;i<=NF/2;i++) printf "%s\t", ($i==$i+0)?$i-$(i+NF/2):$i; print ""}' > zz
 
  for chr in $HUMAN_CHR $CHIMP_CHR; do
   paste "mat_${IR_LBL}0-$a_LBL$alphaDen-$chr.$INF_FILE_TYPE" "mat_${IR_LBL}1-$a_LBL$alphaDen-$chr.$INF_FILE_TYPE" | tr ',' '.' \
@@ -492,10 +480,7 @@ for alphaDen in $ALPHA_DENS; do
   echo -e "\t$(cat "mat_diff_$a_LBL$alphaDen-$chr.$INF_FILE_TYPE")" > "mat_diff_$a_LBL$alphaDen-$chr.$INF_FILE_TYPE"
  done
 
-#paste "HUMAN_PAD.dat" "TEMP_mat_diff_$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE" >> "mat_diff_$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"
-#paste "CHIMP_PAD.dat" "TEMP_mat_diff_$a_LBL$alphaDen-$CHIMP_CHR.$INF_FILE_TYPE" >> "mat_diff_$a_LBL$alphaDen-$CHIMP_CHR.$INF_FILE_TYPE"
-
-rm -f "HUMAN_PAD.dat" "CHIMP_PAD.dat" "${HUMAN_CHR}_HORIZ_PAD" "${CHIMP_CHR}_HORIZ_PAD"
+rm -f "${HUMAN_CHR}_HORIZ_PAD" "${CHIMP_CHR}_HORIZ_PAD"
 done
 
 cd ..
