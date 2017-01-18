@@ -449,25 +449,23 @@ cd $FLD_dat
 
 for ch_PT in 1 2A 2B {3..24}; do printf "\t%s" "$CHIMP_CHR$ch_PT" >> "mori"; done #| echo >> "mori"
 
-
 for alphaDen in $ALPHA_DENS; do
  for i in 0 1; do
 
 #  for ch_PT in 1 2A 2B {3..24}; do printf "\t%s" "$CHIMP_CHR$ch_PT" >> "HS_HORIZ_PAD"; done
 #  echo < HS_HORIZ_PAD >> "mat_$IR_LBL$i-$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"
 
-  cat "mori" >> "mat_$IR_LBL$i-$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"
+  echo >> "mori" | cat "mat_$IR_LBL$i-$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"
 
-#  ### reference = Human
-#  for ch_HS in {1..24}; do
-##   awk -F "\t" '{print $7}' "$IR_LBL$i-$a_LBL$alphaDen-$HUMAN_CHR$ch_HS.$INF_FILE_TYPE" | awk 'NR == 1 {next} {print}' \
-##       | tr '\n' '\t' >> "mat_$IR_LBL$i-$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"
-#   awk -F "\t" '{print $7}' "$IR_LBL$i-$a_LBL$alphaDen-$HUMAN_CHR$ch_HS.$INF_FILE_TYPE" \
-#   | awk -v HS_ch=$HUMAN_CHR$ch_HS 'NR == 1 {print HS_ch; next} {print}' \
-#   | tr '\n' '\t'
-#       >> "mat_$IR_LBL$i-$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"
-#   echo >> "mat_$IR_LBL$i-$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"
-#  done #
+  ### reference = Human
+  for ch_HS in {1..24}; do
+#   awk -F "\t" '{print $7}' "$IR_LBL$i-$a_LBL$alphaDen-$HUMAN_CHR$ch_HS.$INF_FILE_TYPE" | awk 'NR == 1 {next} {print}' \
+#       | tr '\n' '\t' >> "mat_$IR_LBL$i-$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"
+   awk -F "\t" '{print $7}' "$IR_LBL$i-$a_LBL$alphaDen-$HUMAN_CHR$ch_HS.$INF_FILE_TYPE" \
+   | awk -v HS_ch=$HUMAN_CHR$ch_HS 'NR == 1 {print HS_ch; next} {print}' \
+   | tr '\n' '\t' >> "mat_$IR_LBL$i-$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"
+   echo >> "mat_$IR_LBL$i-$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"
+  done
 
 #  ### reference = Chimpanzee
 #  for ch_PT in 1 2A 2B {3..24}; do
@@ -494,7 +492,6 @@ for alphaDen in $ALPHA_DENS; do
 #      | awk 'NR == 1 {next} {print}' \
 #    | awk '{for (i=1;i<=NF/2;i++) printf "%s\t", ($i==$i+0)?$i-$(i+NF/2):$i; print ""}' >> "TEMP_mat_diff_$a_LBL$alphaDen-$chr.$INF_FILE_TYPE"
 # done #        | awk -v HS_ch=$HUMAN_CHR$ch_HS 'NR == 1 {print HS_ch;} {print}'
-
 
 
 
