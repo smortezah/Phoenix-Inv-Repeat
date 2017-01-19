@@ -21,7 +21,7 @@ FLD_XS="XS"
 
 DL_HUMAN=0              # download Human choromosomes
 DL_CHIMP=0              # download Chimpanzee choromosomes
-GET_GORIL=1             # download Gorilla choromosomes and make sequences out of fasta
+GET_GORIL=0             # download Gorilla choromosomes and make sequences out of fasta
 FASTA2SEQ_HUMAN=0       # FASTA to sequence for Human
 FASTA2SEQ_CHIMP=0       # FASTA to sequence for Chimpanzee
 INSTALL_XS=0            # install "XS" from Github
@@ -29,7 +29,7 @@ INSTALL_goose=0         # install "goose" from Github
 GEN_DATASETS=0          # generate datasets using "XS"
 GEN_MUTATIONS=0         # generate mutations using "goose"
 GEN_ARCHAEA=0           # generate archea dataset using "goose" -- output: out#.fa
-RUN=0                   # run the program
+RUN=1                   # run the program
 PLOT_RESULTS=0          # plot results using "gnuplot"
 BUILD_MATRIX=0          # build matrix from datasets
 PLOT_MATRIX=0           # plot matrix from datasets
@@ -64,11 +64,13 @@ datasets="$HUMAN_CHR$CURR_CHR"
 #for i in {1..24}
 #do  datasets+=$HUMAN_CHR${i}" ";    done
 
-REF_DATASET="";  for i in 1; do REF_DATASET+=$ARCH_CHR${i}" "; done # reference dataset
+REF_DATASET_SPECIE=$HUMAN_CHR
+REF_DATASET="";  for i in 21; do REF_DATASET+=$HUMAN_CHR${i}" "; done # reference dataset
 #REF_DATASET="";  for i in 21; do REF_DATASET+=$HUMAN_CHR${i}" "; done # reference dataset
 #REF_DATASET="";  for i in 1 2A 2B {3..24}; do REF_DATASET+=CHIMP_CHR{i}" "; done # reference dataset
 
-TAR_DATASET="";  for i in {1..10}; do TAR_DATASET+=$ARCH_CHR${i}" "; done # target dataset
+TAR_DATASET_SPECIE=$GORIL_CHR
+TAR_DATASET="";  for i in unlocalized; do TAR_DATASET+=$GORIL_CHR${i}" "; done # target dataset
 #TAR_DATASET="";  for i in 24; do TAR_DATASET+=$CHIMP_CHR${i}" "; done # target dataset
 #TAR_DATASET="";  for i in {1..24}; do TAR_DATASET+=HUMAN_CHR{i}" "; done # target dataset
 
@@ -82,10 +84,10 @@ PIX_FORMAT=svg          # output format: png, svg, eps, epslatex (set output x.y
 IR_LBL=i                # label for inverted repeat
 a_LBL=a                 # label for alpha denominator
 
-INV_REPEATS="0 1"         # list of inverted repeats      "0 1"
+INV_REPEATS="0"         # list of inverted repeats      "0 1"
 ALPHA_DENS="100"        # list of alpha denominators    "1 20 100"
-MIN_CTX=20              # min context-order size
-MAX_CTX=20              # max context-order size
+MIN_CTX=2              # min context-order size
+MAX_CTX=2              # max context-order size
 
 
 #***********************************************************
@@ -202,11 +204,18 @@ fi  # end of download Chimpanzee choromosomes
 #***********************************************************
 if [[ $GET_GORIL == 1 ]]; then
 
-for i in 1 2A 2B {3..22} X MT unlocalized unplaced; do
+for i in 1 2A 2B {3..22} X MT; do
  wget ftp://ftp.ncbi.nlm.nih.gov/genomes/Gorilla_gorilla/Assembled_chromosomes/seq/$GORILLA_CHROMOSOME$i.$FILE_TYPE.$COMP_FILE_TYPE;
  gunzip < $GORILLA_CHROMOSOME$i.$FILE_TYPE.$COMP_FILE_TYPE > $FLD_chromosomes/$GORIL_CHR$i.$FILE_TYPE;
  rm $GORILLA_CHROMOSOME$i.$FILE_TYPE.$COMP_FILE_TYPE
 done
+wget ftp://ftp.ncbi.nlm.nih.gov/genomes/Gorilla_gorilla/Assembled_chromosomes/seq/9595_ref_gorGor4_unlocalized.fa.gz;
+wget ftp://ftp.ncbi.nlm.nih.gov/genomes/Gorilla_gorilla/Assembled_chromosomes/seq/9595_ref_gorGor4_unplaced.fa.gz;
+gunzip < 9595_ref_gorGor4_unlocalized.fa.gz > $FLD_chromosomes/${GORIL_CHR}unlocalized.fa;
+gunzip < 9595_ref_gorGor4_unplaced.fa.gz > $FLD_chromosomes/${GORIL_CHR}unplaced.fa;
+rm 9595_ref_gorGor4_unlocalized.fa.gz
+rm 9595_ref_gorGor4_unplaced.fa.gz
+
 #mv ${HUMAN_CHR}X.$FILE_TYPE ${HUMAN_CHR}23.$FILE_TYPE     # rename chrX to chr23
 #mv ${HUMAN_CHR}Y.$FILE_TYPE ${HUMAN_CHR}24.$FILE_TYPE     # rename chrY to chr24
 
@@ -330,13 +339,13 @@ make
 
 if [[ $RUN == 1 ]]; then
 
+OUTPUT=$IR_LBL$ir-$refDataset-$TAR_DATASET_SPECIE.$INF_FILE_TYPE
+
 for ir in $INV_REPEATS; do
  for alphaDen in $ALPHA_DENS; do
   for refDataset in $REF_DATASET; do
-#   echo -e "# ref    tar    ir   alpha    ctx   bpb        NRC        time(s)" \
-##        >> $IR_LBL$ir-$a_LBL$alphaDen-$refDataset.$INF_FILE_TYPE
    echo -e "ref\ttar\tir\talpha\tctx\tbpb\tNRC\ttime(s)" \
-        >> $IR_LBL$ir-$a_LBL$alphaDen-$refDataset.$INF_FILE_TYPE
+        >> $OUTPUT
    for tarDataset in $TAR_DATASET; do
 ##   rm -f $IR_LBL$ir-$a_LBL$alphaDen-${dataset}.$INF_FILE_TYPE
 #   touch $IR_LBL$ir-$a_LBL$alphaDen-$dataset.$INF_FILE_TYPE
@@ -348,7 +357,7 @@ for ir in $INV_REPEATS; do
      for((ctx=$MIN_CTX; ctx<=$MAX_CTX; ctx+=1)); do
 #     for ctx in {2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20}; do
      ./phoenix -m r,$ctx,$alphaDen,$ir -t $FLD_datasets/$tarDataset -r $FLD_datasets/$refDataset \
-               >> $IR_LBL$ir-$a_LBL$alphaDen-$refDataset.$INF_FILE_TYPE
+               >> $OUTPUT
      done
 #    done
    done
