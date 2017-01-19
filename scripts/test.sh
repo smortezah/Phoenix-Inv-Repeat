@@ -27,6 +27,7 @@ INSTALL_XS=0            # install "XS" from Github
 INSTALL_goose=0         # install "goose" from Github
 GEN_DATASETS=0          # generate datasets using "XS"
 GEN_MUTATIONS=0         # generate mutations using "goose"
+GEN_ARCHAEA=1           # generate archea dataset using "goose" -- output: out#.fa
 RUN=0                   # run the program
 PLOT_RESULTS=0          # plot results using "gnuplot"
 BUILD_MATRIX=0          # build matrix from datasets
@@ -273,6 +274,26 @@ rm -f temp*    # remove temporary files
 ##rm -fr $FLD_datasets
 #mkdir -p $FLD_datasets
 mv ${HUMAN_CHR}* $FLD_datasets
+
+fi  # end of generating mutations using "goose"
+
+
+#***********************************************************
+#   generate archaea dataset using "goose" -- output: out#.fa
+#***********************************************************
+if [[ $GEN_ARCHAEA == 1 ]]; then
+
+$FLD_goose/src/goose-splitreads < "$FLD_archive_datasets/DB.mfa"
+
+
+rm -f temp*    # remove temporary files
+
+#-----------------------------------
+#   move all generated mutations files to "datasets" folder
+#-----------------------------------
+##rm -fr $FLD_datasets
+#mkdir -p $FLD_datasets
+#mv ${HUMAN_CHR}* $FLD_datasets
 
 fi  # end of generating mutations using "goose"
 
