@@ -40,11 +40,13 @@ ARCHIVE_DATA=0          # archive data
 #MUT_LIST="1"
 
 HUMAN_CHR_PREFIX="hs_ref_GRCh38.p7_"
+GORILLA_CHR_PREFIX="9595_ref_gorGor4_"
 CHR="chr"
 HUMAN_CHR="HS"
 CURR_CHR="21"
 chromosomes="$HUMAN_CHR_PREFIX$CHR$CURR_CHR"
 HUMAN_CHROMOSOME="$HUMAN_CHR_PREFIX$CHR"
+GORILLA_CHROMOSOME="$GORILLA_CHR_PREFIX$CHR"
 
 CHIMP_CHR="PT"
 ARCH_CHR="A"
@@ -195,19 +197,19 @@ fi  # end of download Chimpanzee choromosomes
 
 
 #***********************************************************
-#   download Human choromosomes
+#   download Gorilla choromosomes
 #***********************************************************
 if [[ $DL_GORIL == 1 ]]; then
 
 for i in 1 2A 2B {3..22} X MT unlocalized unplaced; do
- wget ftp://ftp.ncbi.nlm.nih.gov/genomes/H_sapiens/Assembled_chromosomes/seq/$HUMAN_CHROMOSOME$i.$FILE_TYPE.$COMP_FILE_TYPE;
- gunzip < $HUMAN_CHROMOSOME$i.$FILE_TYPE.$COMP_FILE_TYPE > $FLD_chromosomes/$HUMAN_CHR$i.$FILE_TYPE;
- rm $HUMAN_CHROMOSOME$i.$FILE_TYPE.$COMP_FILE_TYPE
+ wget ftp://ftp.ncbi.nlm.nih.gov/genomes/Gorilla_gorilla/Assembled_chromosomes/seq/$GORILLA_CHROMOSOME$i.$FILE_TYPE.$COMP_FILE_TYPE;
+ gunzip < $GORILLA_CHROMOSOME$i.$FILE_TYPE.$COMP_FILE_TYPE > $FLD_chromosomes/$HUMAN_CHR$i.$FILE_TYPE;
+ rm $GORILLA_CHROMOSOME$i.$FILE_TYPE.$COMP_FILE_TYPE
 done
-mv ${HUMAN_CHR}X.$FILE_TYPE ${HUMAN_CHR}23.$FILE_TYPE     # rename chrX to chr23
-mv ${HUMAN_CHR}Y.$FILE_TYPE ${HUMAN_CHR}24.$FILE_TYPE     # rename chrY to chr24
+#mv ${HUMAN_CHR}X.$FILE_TYPE ${HUMAN_CHR}23.$FILE_TYPE     # rename chrX to chr23
+#mv ${HUMAN_CHR}Y.$FILE_TYPE ${HUMAN_CHR}24.$FILE_TYPE     # rename chrY to chr24
 
-fi  # end of download Human choromosomes
+fi  # end of download Gorilla choromosomes
 
 
 #***********************************************************
