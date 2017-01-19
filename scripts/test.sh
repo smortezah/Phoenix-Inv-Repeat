@@ -68,7 +68,7 @@ COMP_FILE_TYPE="gz"     # compressed file type
 INF_FILE_TYPE="dat"     # information (data) file type
 #INF_FILE_TYPE="csv"     # information (data) file type
 
-PIX_FORMAT=png          # output format: png, svg, eps, epslatex (set output x.y)
+PIX_FORMAT=svg          # output format: png, svg, eps, epslatex (set output x.y)
 #rm -f *.$PIX_FORMAT    # remove FORMAT pictures, if they exist
 IR_LBL=i                # label for inverted repeat
 a_LBL=a                 # label for alpha denominator
