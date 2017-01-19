@@ -30,7 +30,7 @@ GEN_MUTATIONS=0         # generate mutations using "goose"
 RUN=0                   # run the program
 PLOT_RESULTS=0          # plot results using "gnuplot"
 BUILD_MATRIX=0          # build matrix from datasets
-PLOT_MATRIX=1           # plot matrix from datasets
+PLOT_MATRIX=0           # plot matrix from datasets
 ARCHIVE_DATA=0          # archive data
 
 # mutations list:   `seq -s' ' 1 10`
