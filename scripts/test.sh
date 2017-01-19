@@ -520,6 +520,27 @@ set for [i=1:words(YTICS)] ytics ( word(YTICS,i) i-1 ) font ",9" offset 0.5,0
 
 plot "<awk 'NR>1' '$FLD_dat/mat-${IR_LBL}0-$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE' | cut -f2-" matrix with image
 
+### Human, i1
+set output "${IR_LBL}1-$a_LBL$alphaDen-$HUMAN_CHR.$PIX_FORMAT"
+set title "Relative compression: HS-PT\nReference: HS, Target: PT, inverted repeats: considered"
+
+YTICS="`awk 'BEGIN{getline}{printf "%s ",$1}' "$FLD_dat/mat-${IR_LBL}1-$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"`"
+XTICS="`head -1 "$FLD_dat/mat-${IR_LBL}1-$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"`"
+set for [i=1:words(XTICS)] xtics ( word(XTICS,i) i-1 ) font ",9" rotate by 90 offset 0,-1.4
+set for [i=1:words(YTICS)] ytics ( word(YTICS,i) i-1 ) font ",9" offset 0.5,0
+
+plot "<awk 'NR>1' '$FLD_dat/mat-${IR_LBL}1-$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE' | cut -f2-" matrix with image
+
+### Human, difference of i0 and i1
+set output "diff-$a_LBL$alphaDen-$HUMAN_CHR.$PIX_FORMAT"
+set title "Relative compression: HS-PT\nDifference between considering and not considering inverted repeats\nReference: HS, Target: PT"
+
+YTICS="`awk 'BEGIN{getline}{printf "%s ",$1}' "$FLD_dat/mat-diff-$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"`"
+XTICS="`head -1 "$FLD_dat/mat-diff-$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"`"
+set for [i=1:words(XTICS)] xtics ( word(XTICS,i) i-1 ) font ",9" rotate by 90 offset 0,-1.4
+set for [i=1:words(YTICS)] ytics ( word(YTICS,i) i-1 ) font ",9" offset 0.5,0
+
+plot "<awk 'NR>1' '$FLD_dat/mat-diff-$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE' | cut -f2-" matrix with image
 
 
 EOF
