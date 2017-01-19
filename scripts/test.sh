@@ -70,7 +70,7 @@ REF_DATASET="";  for i in 21; do REF_DATASET+=$HUMAN_CHR${i}" "; done # referenc
 #REF_DATASET="";  for i in 1 2A 2B {3..24}; do REF_DATASET+=CHIMP_CHR{i}" "; done # reference dataset
 
 TAR_DATASET_SPECIE=$GORIL_CHR
-TAR_DATASET="";  for i in unlocalized; do TAR_DATASET+=$GORIL_CHR${i}" "; done # target dataset
+TAR_DATASET="";  for i in 1 2A 2B {3..22} X MT unlocalized unplaced; do TAR_DATASET+=$GORIL_CHR${i}" "; done # target dataset
 #TAR_DATASET="";  for i in 24; do TAR_DATASET+=$CHIMP_CHR${i}" "; done # target dataset
 #TAR_DATASET="";  for i in {1..24}; do TAR_DATASET+=HUMAN_CHR{i}" "; done # target dataset
 
