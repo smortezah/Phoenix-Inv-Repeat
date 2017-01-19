@@ -21,7 +21,7 @@ FLD_XS="XS"
 
 DL_HUMAN=0              # download Human choromosomes
 DL_CHIMP=0              # download Chimpanzee choromosomes
-DL_GORIL=1              # download Gorilla choromosomes
+GET_GORIL=1             # download Gorilla choromosomes and make sequences out of fasta
 FASTA2SEQ_HUMAN=0       # FASTA to sequence for Human
 FASTA2SEQ_CHIMP=0       # FASTA to sequence for Chimpanzee
 INSTALL_XS=0            # install "XS" from Github
@@ -50,6 +50,7 @@ GORILLA_CHROMOSOME="$GORILLA_CHR_PREFIX$CHR"
 
 CHIMP_CHR="PT"
 ARCH_CHR="A"
+GORIL_CHR="GG"
 
 #chromosomes=""
 #for i in {1..24}
@@ -197,19 +198,23 @@ fi  # end of download Chimpanzee choromosomes
 
 
 #***********************************************************
-#   download Gorilla choromosomes
+#   download Gorilla choromosomes and make sequences out of fasta
 #***********************************************************
-if [[ $DL_GORIL == 1 ]]; then
+if [[ $GET_GORIL == 1 ]]; then
 
 for i in 1 2A 2B {3..22} X MT unlocalized unplaced; do
  wget ftp://ftp.ncbi.nlm.nih.gov/genomes/Gorilla_gorilla/Assembled_chromosomes/seq/$GORILLA_CHROMOSOME$i.$FILE_TYPE.$COMP_FILE_TYPE;
- gunzip < $GORILLA_CHROMOSOME$i.$FILE_TYPE.$COMP_FILE_TYPE > $FLD_chromosomes/$HUMAN_CHR$i.$FILE_TYPE;
+ gunzip < $GORILLA_CHROMOSOME$i.$FILE_TYPE.$COMP_FILE_TYPE > $FLD_chromosomes/$GORIL_CHR$i.$FILE_TYPE;
  rm $GORILLA_CHROMOSOME$i.$FILE_TYPE.$COMP_FILE_TYPE
 done
 #mv ${HUMAN_CHR}X.$FILE_TYPE ${HUMAN_CHR}23.$FILE_TYPE     # rename chrX to chr23
 #mv ${HUMAN_CHR}Y.$FILE_TYPE ${HUMAN_CHR}24.$FILE_TYPE     # rename chrY to chr24
 
-fi  # end of download Gorilla choromosomes
+for i in 1 2A 2B {3..22} X MT unlocalized unplaced; do
+ grep -v ">" $FLD_chromosomes/$GORIL_CHR$i.$FILE_TYPE > $FLD_datasets/$GORIL_CHR$i;
+done
+
+fi  # end of downloading Gorilla choromosomes and make sequences out of fasta
 
 
 #***********************************************************
