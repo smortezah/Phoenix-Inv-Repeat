@@ -501,7 +501,7 @@ set term $PIX_FORMAT
 set tmargin 3.5
 set bmargin 2.5
 set pm3d map
-set palette defined (0 "red", 1 "yellow", 2 "white")
+set palette defined (0 "red", 1 "green", 2 "white")
 
 #set nocbtics
 set cblabel "NRC"
@@ -531,7 +531,10 @@ set for [i=1:words(YTICS)] ytics ( word(YTICS,i) i-1 ) font ",9" offset 0.5,0
 
 plot "<awk 'NR>1' '$FLD_dat/mat-${IR_LBL}1-$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE' | cut -f2-" matrix with image
 
-### Human, difference of i0 and i1
+### Human, difference between i0 and i1
+set tmargin 4.5
+set palette defined (0 "white", 1 "green", 2 "red")
+
 set output "diff-$a_LBL$alphaDen-$HUMAN_CHR.$PIX_FORMAT"
 set title "Relative compression: HS-PT\nDifference between considering and not considering inverted repeats\nReference: HS, Target: PT"
 
