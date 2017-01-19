@@ -490,7 +490,7 @@ fi
 
 
 #***********************************************************
-#   build matrix from Human Chimpanzee correspondence
+#   plot matrix from Human Chimpanzee correspondence
 #***********************************************************
 if [[ $PLOT_MATRIX == 1 ]]; then
 
