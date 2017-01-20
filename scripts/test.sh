@@ -19,9 +19,9 @@ FLD_goose="goose"
 FLD_scripts="scripts"
 FLD_XS="XS"
 
-GET_HUMAN=1             # download Human choromosomes and make SEQ out of FASTA
+GET_HUMAN=0             # download Human choromosomes and make SEQ out of FASTA
 DL_CHIMP=0              # download Chimpanzee choromosomes and make SEQ out of FASTA
-GET_GORIL=0             # download Gorilla choromosomes and make SEQ out of FASTA
+GET_GORIL=1             # download Gorilla choromosomes and make SEQ out of FASTA
 FASTA2SEQ_HUMAN=0       # FASTA to sequence for Human
 FASTA2SEQ_CHIMP=0       # FASTA to sequence for Chimpanzee
 INSTALL_XS=0            # install "XS" from Github
@@ -112,7 +112,7 @@ if [[ $GET_HUMAN == 1 ]]; then
 ### FASTA -> SEQ
 #for i in {1..22} X MT alts unlocalized unplaced; do
 for i in MT alts unlocalized unplaced; do
- grep -v ">" $FLD_chromosomes/$HUMAN_CHR$i.$FILE_TYPE > $FLD_datasets/$GORIL_CHR$i;
+ grep -v ">" $FLD_chromosomes/$HUMAN_CHR$i.$FILE_TYPE > $FLD_datasets/$HUMAN_CHR$i;
 done
 
 
