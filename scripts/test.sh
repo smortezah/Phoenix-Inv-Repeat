@@ -29,7 +29,7 @@ INSTALL_goose=0         # install "goose" from Github
 GEN_DATASETS=0          # generate datasets using "XS"
 GEN_MUTATIONS=0         # generate mutations using "goose"
 GEN_ARCHAEA=0           # generate archea dataset using "goose" -- output: out#.fa
-RUN=1                   # run the program
+RUN=0                   # run the program
 PLOT_RESULTS=0          # plot results using "gnuplot"
 BUILD_MATRIX=0          # build matrix from datasets
 PLOT_MATRIX=0           # plot matrix from datasets
@@ -65,8 +65,8 @@ datasets="$HUMAN_CHR$CURR_CHR"
 #do  datasets+=$HUMAN_CHR${i}" ";    done
 
 REF_DATASET_SPECIE=$HUMAN_CHR
-REF_DATASET="";  for i in MT; do REF_DATASET+=$GORIL_CHR${i}" "; done # reference dataset
-#REF_DATASET="";  for i in 21; do REF_DATASET+=$HUMAN_CHR${i}" "; done # reference dataset
+#REF_DATASET="";  for i in MT; do REF_DATASET+=$GORIL_CHR${i}" "; done # reference dataset
+REF_DATASET="";  for i in 21; do REF_DATASET+=$HUMAN_CHR${i}" "; done # reference dataset
 #REF_DATASET="";  for i in 1 2A 2B {3..24}; do REF_DATASET+=CHIMP_CHR{i}" "; done # reference dataset
 
 TAR_DATASET_SPECIE=$GORIL_CHR
@@ -80,7 +80,7 @@ COMP_FILE_TYPE="gz"     # compressed file type
 INF_FILE_TYPE="dat"     # information (data) file type
 #INF_FILE_TYPE="csv"     # information (data) file type
 
-PIX_FORMAT=svg          # output format: png, svg, eps, epslatex (set output x.y)
+PIX_FORMAT=eps          # output format: png, svg, eps, epslatex (set output x.y)
 #rm -f *.$PIX_FORMAT    # remove FORMAT pictures, if they exist
 IR_LBL=i                # label for inverted repeat
 a_LBL=a                 # label for alpha denominator
