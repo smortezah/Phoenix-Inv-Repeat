@@ -20,8 +20,8 @@ FLD_scripts="scripts"
 FLD_XS="XS"
 
 GET_HUMAN=0             # download Human choromosomes and make SEQ out of FASTA
-GET_CHIMPANZEE=1        # download Chimpanzee choromosomes and make SEQ out of FASTA
-GET_GORIL=0             # download Gorilla choromosomes and make SEQ out of FASTA
+GET_CHIMPANZEE=0        # download Chimpanzee choromosomes and make SEQ out of FASTA
+GET_GORILLA=0           # download Gorilla choromosomes and make SEQ out of FASTA
 FASTA2SEQ_HUMAN=0       # FASTA to sequence for Human
 FASTA2SEQ_CHIMP=0       # FASTA to sequence for Chimpanzee
 INSTALL_XS=0            # install "XS" from Github
@@ -148,7 +148,7 @@ fi  # end of $GET_CHIMPANZEE
 #***********************************************************
 #   download Gorilla choromosomes and make SEQ out of FASTA
 #***********************************************************
-if [[ $GET_GORIL == 1 ]]; then
+if [[ $GET_GORILLA == 1 ]]; then
 
 for i in 1 2A 2B {3..22} X MT; do
  wget ftp://ftp.ncbi.nlm.nih.gov/genomes/Gorilla_gorilla/Assembled_chromosomes/seq/$GORILLA_CHROMOSOME$i.$FILE_TYPE.$COMP_FILE_TYPE;
@@ -166,7 +166,7 @@ for i in 1 2A 2B {3..22} X MT unlocalized unplaced; do
  grep -v ">" $FLD_chromosomes/$GORIL_CHR$i.$FILE_TYPE > $FLD_datasets/$GORIL_CHR$i;
 done
 
-fi  # end of $GET_GORIL
+fi  # end of $GET_GORILLA
 
 
 #***********************************************************
