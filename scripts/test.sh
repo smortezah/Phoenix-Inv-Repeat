@@ -416,29 +416,25 @@ for alphaDen in $ALPHA_DENS; do
 
   for c in $REF_SEQ_RUN; do
    awk -F "\t" '{print $7}' "$IR_LBL$i-$REF_SPECIE$c-$TAR_SPECIE.$INF_FILE_TYPE" \
-        | awk -v HS_ch=$REF_SPECIE$c 'NR == 1 {print HS_ch; next} {print}' | tr '\n' '\t' | tr ',' '.' \
+        | awk -v ref_ch=$REF_SPECIE$c 'NR == 1 {print ref_ch; next} {print}' | tr '\n' '\t' | tr ',' '.' \
         >> "tot-$IR_LBL$i-$REF_SPECIE-$TAR_SPECIE.$INF_FILE_TYPE"
    echo >> "tot-$IR_LBL$i-$REF_SPECIE-$TAR_SPECIE.$INF_FILE_TYPE"
   done
-
-  ### reference = Human
-  for c in $HS_SEQ_RUN; do
-   awk -F "\t" '{print $7}' "$IR_LBL$i-$HUMAN_CHR$c.$INF_FILE_TYPE" \
-        | awk -v HS_ch=$HUMAN_CHR$c 'NR == 1 {print HS_ch; next} {print}' | tr '\n' '\t' | tr ',' '.' \
-        >> "mat-$IR_LBL$i-$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"
-   echo >> "mat-$IR_LBL$i-$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"
-  done
-
-  ### reference = Chimpanzee
-  for ch_PT in $PT_SEQ_RUN; do
-#   awk -F "\t" '{print $7}' "$IR_LBL$i-$a_LBL$alphaDen-$CHIMP_CHR$ch_PT.$INF_FILE_TYPE" | awk 'NR == 1 {next} {print}' \
-#       | tr '\n' '\t' >> "mat_$IR_LBL$i-$a_LBL$alphaDen-$CHIMP_CHR.$INF_FILE_TYPE"
-   awk -F "\t" '{print $7}' "$IR_LBL$i-$a_LBL$alphaDen-$CHIMP_CHR$ch_PT.$INF_FILE_TYPE" \
-        | awk -v PT_ch=$CHIMP_CHR$ch_PT 'NR == 1 {print PT_ch; next} {print}' | tr '\n' '\t' | tr ',' '.' \
-        >> "mat-$IR_LBL$i-$a_LBL$alphaDen-$CHIMP_CHR.$INF_FILE_TYPE"
-   echo >> "mat-$IR_LBL$i-$a_LBL$alphaDen-$CHIMP_CHR.$INF_FILE_TYPE"
-  done
  done
+
+# for chr in $HUMAN_CHR $CHIMP_CHR; do
+  paste "mat-${IR_LBL}0-$a_LBL$alphaDen-$chr.$INF_FILE_TYPE" "mat-${IR_LBL}1-$a_LBL$alphaDen-$chr.$INF_FILE_TYPE" \
+        | tr ',' '.' | awk 'NR == 1 {print; next} {print}' \
+        | awk '{for (i=1;i<=NF/2;i++) printf "%s\t", ($i==$i+0)?$i-$(i+NF/2):$i; print ""}' \
+        >> "mat-diff-$a_LBL$alphaDen-$chr.$INF_FILE_TYPE"
+
+  echo -e "\t$(cat "mat-diff-$a_LBL$alphaDen-$chr.$INF_FILE_TYPE")" > "mat-diff-$a_LBL$alphaDen-$chr.$INF_FILE_TYPE"
+# done
+
+
+
+
+
 
  for chr in $HUMAN_CHR $CHIMP_CHR; do
   paste "mat-${IR_LBL}0-$a_LBL$alphaDen-$chr.$INF_FILE_TYPE" "mat-${IR_LBL}1-$a_LBL$alphaDen-$chr.$INF_FILE_TYPE" \
