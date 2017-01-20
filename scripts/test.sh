@@ -66,9 +66,9 @@ REF_DATASET_SPECIE=$HUMAN_CHR
 REF_DATASET="";  for i in MT; do REF_DATASET+=$GORIL_CHR${i}" "; done
 
 TAR_DATASET_SPECIE=$GORIL_CHR
-TAR_DATASET="";  for i in MT unlocalized; do TAR_DATASET+=$GORIL_CHR${i}" "; done # target dataset
+TAR_DATASET="";  for i in MT unlocalized; do TAR_DATASET+=$GORIL_CHR${i}" "; done
 #TAR_DATASET="";  for i in {1..22} X Y MT alts unlocalized unplaced; do TAR_DATASET+=HUMAN_CHR{i}" "; done
-#TAR_DATASET="";  for i in 1 2A 2B {3..24}; do TAR_DATASET+=$CHIMP_CHR${i}" "; done
+#TAR_DATASET="";  for i in 1 2A 2B {3..22} X Y MT unlocalized unplaced; do TAR_DATASET+=$CHIMP_CHR${i}" "; done
 #TAR_DATASET="";  for i in 1 2A 2B {3..22} X MT unlocalized unplaced; do TAR_DATASET+=$GORIL_CHR${i}" "; done
 
 FILE_TYPE="fa"          # file type
@@ -77,7 +77,6 @@ INF_FILE_TYPE="dat"     # information (data) file type
 #INF_FILE_TYPE="csv"     # information (data) file type
 
 PIX_FORMAT=eps          # output format: png, svg, eps, epslatex (set output x.y)
-#rm -f *.$PIX_FORMAT    # remove FORMAT pictures, if they exist
 IR_LBL=i                # label for inverted repeat
 a_LBL=a                 # label for alpha denominator
 
