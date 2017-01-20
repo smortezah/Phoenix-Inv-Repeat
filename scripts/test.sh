@@ -412,12 +412,8 @@ for i in 1 2A 2B {3..22} X MT unlocalized unplaced; do printf "\t%s" "$GORIL_CHR
 echo >> "${GORIL_CHR}_HORIZ_PAD"
 
 for alphaDen in $ALPHA_DENS; do
- for i in 0 1; do
-       # >> $IR_LBL$ir-$refDataset-$TAR_DATASET_SPECIE.$INF_FILE_TYPE
-
-  cat "${HUMAN_CHR}_HORIZ_PAD" >> "mat-$IR_LBL$i-$a_LBL$alphaDen-$CHIMP_CHR.$INF_FILE_TYPE"
-  cat "${CHIMP_CHR}_HORIZ_PAD" >> "mat-$IR_LBL$i-$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"
-  cat "${GORIL_CHR}_HORIZ_PAD" >> "mat-$IR_LBL$i-$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"
+ for i in $INV_REPEATS; do
+  cat "${TAR_DATASET_SPECIE}_HORIZ_PAD" >> "tot-$IR_LBL$i-$REF_DATASET_SPECIE-$TAR_DATASET_SPECIE.$INF_FILE_TYPE"
 
   ### reference = Human
   for ch_HS in {1..24}; do
