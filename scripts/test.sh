@@ -95,23 +95,22 @@ MAX_CTX=20              # max context-order size
 #   download Human choromosomes and make SEQ out of FASTA
 #***********************************************************
 if [[ $GET_HUMAN == 1 ]]; then
-#
-#### download FASTA
-#for i in {1..22} X Y MT; do
-# wget ftp://ftp.ncbi.nlm.nih.gov/genomes/H_sapiens/Assembled_chromosomes/seq/$HUMAN_CHROMOSOME$i.$FILE_TYPE.$COMP_FILE_TYPE;
-# gunzip < $HUMAN_CHROMOSOME$i.$FILE_TYPE.$COMP_FILE_TYPE > $FLD_chromosomes/$HUMAN_CHR$i.$FILE_TYPE;
-# rm $HUMAN_CHROMOSOME$i.$FILE_TYPE.$COMP_FILE_TYPE
-#done
-#
-#for i in alts unlocalized unplaced; do
-# wget ftp://ftp.ncbi.nlm.nih.gov/genomes/H_sapiens/Assembled_chromosomes/seq/$HUMAN_CHR_PREFIX$i.$FILE_TYPE.$COMP_FILE_TYPE;
-# gunzip < $HUMAN_CHR_PREFIX$i.$FILE_TYPE.$COMP_FILE_TYPE > $FLD_chromosomes/$HUMAN_CHR$i.$FILE_TYPE;
-# rm $HUMAN_CHR_PREFIX$i.$FILE_TYPE.$COMP_FILE_TYPE
-#done
+
+### download FASTA
+for i in {1..22} X Y MT; do
+ wget ftp://ftp.ncbi.nlm.nih.gov/genomes/H_sapiens/Assembled_chromosomes/seq/$HUMAN_CHROMOSOME$i.$FILE_TYPE.$COMP_FILE_TYPE;
+ gunzip < $HUMAN_CHROMOSOME$i.$FILE_TYPE.$COMP_FILE_TYPE > $FLD_chromosomes/$HUMAN_CHR$i.$FILE_TYPE;
+ rm $HUMAN_CHROMOSOME$i.$FILE_TYPE.$COMP_FILE_TYPE
+done
+
+for i in alts unlocalized unplaced; do
+ wget ftp://ftp.ncbi.nlm.nih.gov/genomes/H_sapiens/Assembled_chromosomes/seq/$HUMAN_CHR_PREFIX$i.$FILE_TYPE.$COMP_FILE_TYPE;
+ gunzip < $HUMAN_CHR_PREFIX$i.$FILE_TYPE.$COMP_FILE_TYPE > $FLD_chromosomes/$HUMAN_CHR$i.$FILE_TYPE;
+ rm $HUMAN_CHR_PREFIX$i.$FILE_TYPE.$COMP_FILE_TYPE
+done
 
 ### FASTA -> SEQ
-#for i in {1..22} X MT alts unlocalized unplaced; do
-for i in MT alts unlocalized unplaced; do
+for i in {1..22} X MT alts unlocalized unplaced; do
  grep -v ">" $FLD_chromosomes/$HUMAN_CHR$i.$FILE_TYPE > $FLD_datasets/$HUMAN_CHR$i;
 done
 
