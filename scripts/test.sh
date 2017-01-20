@@ -31,7 +31,7 @@ GEN_MUTATIONS=0         # generate mutations using "goose"
 GEN_ARCHAEA=0           # generate archea dataset using "goose" -- output: out#.fa
 RUN=0                   # run the program
 PLOT_RESULTS=0          # plot results using "gnuplot"
-BUILD_MATRIX=0          # build matrix from datasets
+BUILD_MATRIX=1          # build matrix from datasets
 PLOT_MATRIX=0           # plot matrix from datasets
 ARCHIVE_DATA=0          # archive data
 
@@ -63,9 +63,9 @@ datasets="$HUMAN_CHR$CURR_CHR"
 #datasets="";   for i in $HS_SEQ_RUN; do datasets+=$HUMAN_CHR${i}" "; done
 
 
-#REF_SPECIE=$HUMAN_CHR
+REF_SPECIE=$HUMAN_CHR
 #REF_SPECIE=$CHIMP_CHR
-REF_SPECIE=$GORIL_CHR
+#REF_SPECIE=$GORIL_CHR
 #
 tempRefSeqRun=${REF_SPECIE}_SEQ_RUN
 REF_SEQ_RUN=${!tempRefSeqRun}     # all chromosomes for that specie, e.g. HS_SEQ_RUN
@@ -73,8 +73,8 @@ REF_DATASET="";  for i in 24; do REF_DATASET+=$REF_SPECIE${i}" "; done
 #REF_DATASET="";  for i in $REF_SEQ_RUN; do REF_DATASET+=$REF_SPECIE${i}" "; done
 
 #TAR_SPECIE=$HUMAN_CHR
-#TAR_SPECIE=$CHIMP_CHR
-TAR_SPECIE=$GORIL_CHR
+TAR_SPECIE=$CHIMP_CHR
+#TAR_SPECIE=$GORIL_CHR
 #
 tempTarSeqRun=${TAR_SPECIE}_SEQ_RUN
 TAR_SEQ_RUN=${!tempTarSeqRun}     # all chromosomes for that specie, e.g. HS_SEQ_RUN
@@ -429,8 +429,10 @@ for alphaDen in $ALPHA_DENS; do
 
  echo -e "\t$(cat "diff-$REF_SPECIE-$TAR_SPECIE.$INF_FILE_TYPE")" > "diff-$REF_SPECIE-$TAR_SPECIE.$INF_FILE_TYPE"
 
- rm -f "*_HORIZ_PAD"
+
 done
+
+rm -f *HORIZ_PAD
 
 cd ..
 
