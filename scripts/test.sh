@@ -60,9 +60,8 @@ PT_SEQ_RUN="1 2A 2B {3..22} X Y MT unlocalized unplaced"
 GG_SEQ_RUN="1 2A 2B {3..22} X MT unlocalized unplaced"
 
 datasets="$HUMAN_CHR$CURR_CHR"
-#datasets=""
-#for i in {1..22} X Y #alts unlocalized unplaced
-#do  datasets+=$HUMAN_CHR${i}" ";    done
+#datasets="";   for i in $HS_SEQ_RUN; do datasets+=$HUMAN_CHR${i}" "; done
+
 
 #REF_SPECIE=$HUMAN_CHR
 #REF_SEQ_RUN=$HS_SEQ_RUN
@@ -76,10 +75,6 @@ REF_SPECIE=$GORIL_CHR
 REF_SEQ_RUN=$GG_SEQ_RUN
 REF_DATASET="";  for i in MT; do REF_DATASET+=$GORIL_CHR${i}" "; done
 
-TAR_SPECIE=$GORIL_CHR
-TAR_SEQ_RUN=$GG_SEQ_RUN
-TAR_DATASET="";  for i in MT unlocalized; do TAR_DATASET+=$GORIL_CHR${i}" "; done
-#
 #TAR_SPECIE=$HUMAN_CHR
 #TAR_SEQ_RUN=$HS_SEQ_RUN
 #TAR_DATASET="";  for i in $HS_SEQ_RUN; do TAR_DATASET+=$HUMAN_CHR${i}" "; done
@@ -88,9 +83,9 @@ TAR_DATASET="";  for i in MT unlocalized; do TAR_DATASET+=$GORIL_CHR${i}" "; don
 #TAR_SEQ_RUN=$PT_SEQ_RUN
 #TAR_DATASET="";  for i in $PT_SEQ_RUN; do TAR_DATASET+=$CHIMP_CHR${i}" "; done
 #
-#TAR_SPECIE=$GORIL_CHR
-#TAR_SEQ_RUN=$GG_SEQ_RUN
-#TAR_DATASET="";  for i in $GG_SEQ_RUN; do TAR_DATASET+=$GORIL_CHR${i}" "; done
+TAR_SPECIE=$GORIL_CHR
+TAR_SEQ_RUN=$GG_SEQ_RUN
+TAR_DATASET="";  for i in MT; do TAR_DATASET+=$GORIL_CHR${i}" "; done
 
 
 FILE_TYPE="fa"          # file type
@@ -127,9 +122,7 @@ for i in alts unlocalized unplaced; do
 done
 
 ### FASTA -> SEQ
-for i in {1..22} X Y MT alts unlocalized unplaced; do
- grep -v ">" $FLD_chromosomes/$HUMAN_CHR$i.$FILE_TYPE > $FLD_datasets/$HUMAN_CHR$i;
-done
+for i in $HS_SEQ_RUN; do grep -v ">" $FLD_chromosomes/$HUMAN_CHR$i.$FILE_TYPE > $FLD_datasets/$HUMAN_CHR$i; done
 
 fi  # end of $GET_HUMAN
 
