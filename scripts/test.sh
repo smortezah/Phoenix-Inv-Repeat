@@ -37,45 +37,39 @@ ARCHIVE_DATA=0          # archive data
 
 # mutations list:   `seq -s' ' 1 10`
 #MUT_LIST="1 2 3 4 5 6 7 8 9 10 12 14 16 18 20 25 30 35 40 45 50"
-#MUT_LIST="1"
 
 HUMAN_CHR_PREFIX="hs_ref_GRCh38.p7_"
 CHIMPANZEE_CHR_PREFIX="ptr_ref_Pan_tro_3.0_"
 GORILLA_CHR_PREFIX="9595_ref_gorGor4_"
 CHR="chr"
-HUMAN_CHR="HS"
-CURR_CHR="21"
-chromosomes="$HUMAN_CHR_PREFIX$CHR$CURR_CHR"
-HUMAN_CHROMOSOME="$HUMAN_CHR_PREFIX$CHR"
-CHIMPANZEE_CHROMOSOME="$CHIMPANZEE_CHR_PREFIX$CHR"
-GORILLA_CHROMOSOME="$GORILLA_CHR_PREFIX$CHR"
 
+HUMAN_CHR="HS"
 CHIMP_CHR="PT"
 ARCH_CHR="A"
 GORIL_CHR="GG"
 
-#chromosomes=""
-#for i in {1..24}
-#do  chromosomes+=$HUMAN_CHR_PREFIX$CHR${i}" ";   done
+CURR_CHR="21"
+chromosomes="$HUMAN_CHR_PREFIX$CHR$CURR_CHR"
+
+HUMAN_CHROMOSOME="$HUMAN_CHR_PREFIX$CHR"
+CHIMPANZEE_CHROMOSOME="$CHIMPANZEE_CHR_PREFIX$CHR"
+GORILLA_CHROMOSOME="$GORILLA_CHR_PREFIX$CHR"
 
 datasets="$HUMAN_CHR$CURR_CHR"
-#datasets="tmp"
-
 #datasets=""
-##for i in {1..22} X Y #alts unlocalized unplaced
-#for i in {1..24}
+#for i in {1..22} X Y #alts unlocalized unplaced
 #do  datasets+=$HUMAN_CHR${i}" ";    done
 
 REF_DATASET_SPECIE=$HUMAN_CHR
-REF_DATASET="";  for i in MT; do REF_DATASET+=$GORIL_CHR${i}" "; done # reference dataset
-#REF_DATASET="";  for i in 21; do REF_DATASET+=$HUMAN_CHR${i}" "; done # reference dataset
-#REF_DATASET="";  for i in 24; do REF_DATASET+=CHIMP_CHR{i}" "; done # reference dataset
+#REF_DATASET="";  for i in 21; do REF_DATASET+=$HUMAN_CHR${i}" "; done
+#REF_DATASET="";  for i in 24; do REF_DATASET+=CHIMP_CHR{i}" "; done
+REF_DATASET="";  for i in MT; do REF_DATASET+=$GORIL_CHR${i}" "; done
 
 TAR_DATASET_SPECIE=$GORIL_CHR
 TAR_DATASET="";  for i in MT unlocalized; do TAR_DATASET+=$GORIL_CHR${i}" "; done # target dataset
-#TAR_DATASET="";  for i in 1 2A 2B {3..22} X MT unlocalized unplaced; do TAR_DATASET+=$GORIL_CHR${i}" "; done # target dataset
-#TAR_DATASET="";  for i in {1..22} X Y; do TAR_DATASET+=HUMAN_CHR{i}" "; done # target dataset
-#TAR_DATASET="";  for i in 1 2A 2B {3..24}; do TAR_DATASET+=$CHIMP_CHR${i}" "; done # target dataset
+#TAR_DATASET="";  for i in {1..22} X Y MT alts unlocalized unplaced; do TAR_DATASET+=HUMAN_CHR{i}" "; done
+#TAR_DATASET="";  for i in 1 2A 2B {3..24}; do TAR_DATASET+=$CHIMP_CHR${i}" "; done
+#TAR_DATASET="";  for i in 1 2A 2B {3..22} X MT unlocalized unplaced; do TAR_DATASET+=$GORIL_CHR${i}" "; done
 
 FILE_TYPE="fa"          # file type
 COMP_FILE_TYPE="gz"     # compressed file type
