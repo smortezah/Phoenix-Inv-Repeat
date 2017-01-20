@@ -65,11 +65,13 @@ datasets="$HUMAN_CHR$CURR_CHR"
 #do  datasets+=$HUMAN_CHR${i}" ";    done
 
 REF_SPECIE=$HUMAN_CHR
+REF_SEQ_RUN=$HS_SEQ_RUN
 #REF_DATASET="";  for i in 21; do REF_DATASET+=$HUMAN_CHR${i}" "; done
 #REF_DATASET="";  for i in 24; do REF_DATASET+=CHIMP_CHR{i}" "; done
 REF_DATASET="";  for i in MT; do REF_DATASET+=$GORIL_CHR${i}" "; done
 
 TAR_SPECIE=$GORIL_CHR
+TAR_SEQ_RUN=$GG_SEQ_RUN
 TAR_DATASET="";  for i in MT unlocalized; do TAR_DATASET+=$GORIL_CHR${i}" "; done
 #TAR_DATASET="";  for i in {1..22} X Y MT alts unlocalized unplaced; do TAR_DATASET+=HUMAN_CHR{i}" "; done
 #TAR_DATASET="";  for i in 1 2A 2B {3..22} X Y MT unlocalized unplaced; do TAR_DATASET+=$CHIMP_CHR${i}" "; done
