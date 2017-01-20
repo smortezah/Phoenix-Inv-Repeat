@@ -62,7 +62,7 @@ GG_SEQ_RUN="1 2A 2B 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 X MT un
 datasets="$HUMAN_CHR$CURR_CHR"
 #datasets="";   for i in $HS_SEQ_RUN; do datasets+=$HUMAN_CHR${i}" "; done
 
-
+### reference parameters
 REF_SPECIE=$HUMAN_CHR
 #REF_SPECIE=$CHIMP_CHR
 #REF_SPECIE=$GORIL_CHR
@@ -72,6 +72,7 @@ REF_SEQ_RUN=${!tempRefSeqRun}     # all chromosomes for that specie, e.g. HS_SEQ
 REF_DATASET="";  for i in 24; do REF_DATASET+=$REF_SPECIE${i}" "; done
 #REF_DATASET="";  for i in $REF_SEQ_RUN; do REF_DATASET+=$REF_SPECIE${i}" "; done
 
+### target parameters
 #TAR_SPECIE=$HUMAN_CHR
 TAR_SPECIE=$CHIMP_CHR
 #TAR_SPECIE=$GORIL_CHR
