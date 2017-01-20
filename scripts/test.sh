@@ -413,9 +413,11 @@ echo >> "${GORIL_CHR}_HORIZ_PAD"
 
 for alphaDen in $ALPHA_DENS; do
  for i in 0 1; do
+        >> $IR_LBL$ir-$refDataset-$TAR_DATASET_SPECIE.$INF_FILE_TYPE
 
-  cat "${CHIMP_CHR}_HORIZ_PAD" >> "mat-$IR_LBL$i-$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"
   cat "${HUMAN_CHR}_HORIZ_PAD" >> "mat-$IR_LBL$i-$a_LBL$alphaDen-$CHIMP_CHR.$INF_FILE_TYPE"
+  cat "${CHIMP_CHR}_HORIZ_PAD" >> "mat-$IR_LBL$i-$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"
+  cat "${GORIL_CHR}_HORIZ_PAD" >> "mat-$IR_LBL$i-$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"
 
   ### reference = Human
   for ch_HS in {1..24}; do
