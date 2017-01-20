@@ -22,8 +22,6 @@ FLD_XS="XS"
 GET_HUMAN=0             # download Human choromosomes and make SEQ out of FASTA
 GET_CHIMPANZEE=0        # download Chimpanzee choromosomes and make SEQ out of FASTA
 GET_GORILLA=0           # download Gorilla choromosomes and make SEQ out of FASTA
-FASTA2SEQ_HUMAN=0       # FASTA to sequence for Human
-FASTA2SEQ_CHIMP=0       # FASTA to sequence for Chimpanzee
 INSTALL_XS=0            # install "XS" from Github
 INSTALL_goose=0         # install "goose" from Github
 GEN_DATASETS=0          # generate datasets using "XS"
@@ -150,47 +148,25 @@ fi  # end of $GET_CHIMPANZEE
 #***********************************************************
 if [[ $GET_GORILLA == 1 ]]; then
 
+### download FASTA
 for i in 1 2A 2B {3..22} X MT; do
  wget ftp://ftp.ncbi.nlm.nih.gov/genomes/Gorilla_gorilla/Assembled_chromosomes/seq/$GORILLA_CHROMOSOME$i.$FILE_TYPE.$COMP_FILE_TYPE;
  gunzip < $GORILLA_CHROMOSOME$i.$FILE_TYPE.$COMP_FILE_TYPE > $FLD_chromosomes/$GORIL_CHR$i.$FILE_TYPE;
  rm $GORILLA_CHROMOSOME$i.$FILE_TYPE.$COMP_FILE_TYPE
 done
-wget ftp://ftp.ncbi.nlm.nih.gov/genomes/Gorilla_gorilla/Assembled_chromosomes/seq/9595_ref_gorGor4_unlocalized.fa.gz;
-wget ftp://ftp.ncbi.nlm.nih.gov/genomes/Gorilla_gorilla/Assembled_chromosomes/seq/9595_ref_gorGor4_unplaced.fa.gz;
-gunzip < 9595_ref_gorGor4_unlocalized.fa.gz > $FLD_chromosomes/${GORIL_CHR}unlocalized.fa;
-gunzip < 9595_ref_gorGor4_unplaced.fa.gz > $FLD_chromosomes/${GORIL_CHR}unplaced.fa;
-rm 9595_ref_gorGor4_unlocalized.fa.gz
-rm 9595_ref_gorGor4_unplaced.fa.gz
 
+for i in unlocalized unplaced; do
+ wget ftp://ftp.ncbi.nlm.nih.gov/genomes/Gorilla_gorilla/Assembled_chromosomes/seq/$GORILLA_CHR_PREFIX$i.$FILE_TYPE.$COMP_FILE_TYPE;
+ gunzip < $GORILLA_CHR_PREFIX$i.$FILE_TYPE.$COMP_FILE_TYPE > $FLD_chromosomes/$GORIL_CHR$i.$FILE_TYPE;
+ rm $GORILLA_CHR_PREFIX$i.$FILE_TYPE.$COMP_FILE_TYPE
+done
+
+### FASTA -> SEQ
 for i in 1 2A 2B {3..22} X MT unlocalized unplaced; do
  grep -v ">" $FLD_chromosomes/$GORIL_CHR$i.$FILE_TYPE > $FLD_datasets/$GORIL_CHR$i;
 done
 
 fi  # end of $GET_GORILLA
-
-
-#***********************************************************
-#   FASTA to SEQ for Human
-#***********************************************************
-if [[ $FASTA2SEQ_HUMAN == 1 ]]; then
-
-for i in {1..24}; do
- grep -v ">" $FLD_chromosomes/$HUMAN_CHR$i.$FILE_TYPE > $FLD_datasets/$HUMAN_CHR$i;
-done
-
-fi  # end of FASTA to SEQ
-
-
-#***********************************************************
-#   FASTA to SEQ for Chimpanzee
-#***********************************************************
-if [[ $FASTA2SEQ_CHIMP == 1 ]]; then
-
-for i in 1 2A 2B {3..27}; do
- grep -v ">" $FLD_chromosomes/$CHIMP_CHR$i.$FILE_TYPE > $FLD_datasets/$CHIMP_CHR$i;
-done
-
-fi  # end of FASTA to SEQ
 
 
 #***********************************************************
