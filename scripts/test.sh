@@ -422,14 +422,12 @@ for alphaDen in $ALPHA_DENS; do
   done
  done
 
-# for chr in $HUMAN_CHR $CHIMP_CHR; do
-  paste "mat-${IR_LBL}0-$a_LBL$alphaDen-$chr.$INF_FILE_TYPE" "mat-${IR_LBL}1-$a_LBL$alphaDen-$chr.$INF_FILE_TYPE" \
-        | tr ',' '.' | awk 'NR == 1 {print; next} {print}' \
-        | awk '{for (i=1;i<=NF/2;i++) printf "%s\t", ($i==$i+0)?$i-$(i+NF/2):$i; print ""}' \
-        >> "mat-diff-$a_LBL$alphaDen-$chr.$INF_FILE_TYPE"
+ paste "tot-${IR_LBL}0-$REF_SPECIE-$TAR_SPECIE.$INF_FILE_TYPE" "tot-${IR_LBL}1-$REF_SPECIE-$TAR_SPECIE.$INF_FILE_TYPE" \
+       | tr ',' '.' | awk 'NR == 1 {print; next} {print}' \
+       | awk '{for (i=1;i<=NF/2;i++) printf "%s\t", ($i==$i+0)?$i-$(i+NF/2):$i; print ""}' \
+       >> "diff-$REF_SPECIE-$TAR_SPECIE.$INF_FILE_TYPE"
 
-  echo -e "\t$(cat "mat-diff-$a_LBL$alphaDen-$chr.$INF_FILE_TYPE")" > "mat-diff-$a_LBL$alphaDen-$chr.$INF_FILE_TYPE"
-# done
+ echo -e "\t$(cat "diff-$REF_SPECIE-$TAR_SPECIE.$INF_FILE_TYPE")" > "diff-$REF_SPECIE-$TAR_SPECIE.$INF_FILE_TYPE"
 
 
 
