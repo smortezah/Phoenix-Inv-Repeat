@@ -146,9 +146,7 @@ for i in unlocalized unplaced; do
 done
 
 ### FASTA -> SEQ
-for i in 1 2A 2B {3..22} X Y MT unlocalized unplaced; do
- grep -v ">" $FLD_chromosomes/$CHIMP_CHR$i.$FILE_TYPE > $FLD_datasets/$CHIMP_CHR$i;
-done
+for i in $PT_SEQ_RUN; do grep -v ">" $FLD_chromosomes/$CHIMP_CHR$i.$FILE_TYPE > $FLD_datasets/$CHIMP_CHR$i; done
 
 fi  # end of $GET_CHIMPANZEE
 
@@ -172,9 +170,7 @@ for i in unlocalized unplaced; do
 done
 
 ### FASTA -> SEQ
-for i in 1 2A 2B {3..22} X MT unlocalized unplaced; do
- grep -v ">" $FLD_chromosomes/$GORIL_CHR$i.$FILE_TYPE > $FLD_datasets/$GORIL_CHR$i;
-done
+for i in $GG_SEQ_RUN; do grep -v ">" $FLD_chromosomes/$GORIL_CHR$i.$FILE_TYPE > $FLD_datasets/$GORIL_CHR$i; done
 
 fi  # end of $GET_GORILLA
 
