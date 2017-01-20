@@ -104,6 +104,32 @@ done
 mv ${HUMAN_CHR}X.$FILE_TYPE ${HUMAN_CHR}23.$FILE_TYPE     # rename chrX to chr23
 mv ${HUMAN_CHR}Y.$FILE_TYPE ${HUMAN_CHR}24.$FILE_TYPE     # rename chrY to chr24
 
+
+
+
+
+
+for i in 1 2A 2B {3..22} X MT; do
+ wget ftp://ftp.ncbi.nlm.nih.gov/genomes/Gorilla_gorilla/Assembled_chromosomes/seq/$GORILLA_CHROMOSOME$i.$FILE_TYPE.$COMP_FILE_TYPE;
+ gunzip < $GORILLA_CHROMOSOME$i.$FILE_TYPE.$COMP_FILE_TYPE > $FLD_chromosomes/$GORIL_CHR$i.$FILE_TYPE;
+ rm $GORILLA_CHROMOSOME$i.$FILE_TYPE.$COMP_FILE_TYPE
+done
+wget ftp://ftp.ncbi.nlm.nih.gov/genomes/Gorilla_gorilla/Assembled_chromosomes/seq/9595_ref_gorGor4_unlocalized.fa.gz;
+wget ftp://ftp.ncbi.nlm.nih.gov/genomes/Gorilla_gorilla/Assembled_chromosomes/seq/9595_ref_gorGor4_unplaced.fa.gz;
+gunzip < 9595_ref_gorGor4_unlocalized.fa.gz > $FLD_chromosomes/${GORIL_CHR}unlocalized.fa;
+gunzip < 9595_ref_gorGor4_unplaced.fa.gz > $FLD_chromosomes/${GORIL_CHR}unplaced.fa;
+rm 9595_ref_gorGor4_unlocalized.fa.gz
+rm 9595_ref_gorGor4_unplaced.fa.gz
+
+for i in 1 2A 2B {3..22} X MT unlocalized unplaced; do
+ grep -v ">" $FLD_chromosomes/$GORIL_CHR$i.$FILE_TYPE > $FLD_datasets/$GORIL_CHR$i;
+done
+
+
+
+
+
+
 fi  # end of $GET_HUMAN
 
 
