@@ -416,11 +416,9 @@ for alphaDen in $ALPHA_DENS; do
   cat "${TAR_DATASET_SPECIE}_HORIZ_PAD" >> "tot-$IR_LBL$i-$REF_DATASET_SPECIE-$TAR_DATASET_SPECIE.$INF_FILE_TYPE"
 
   ### reference = Human
-  for ch_HS in {1..24}; do
-#   awk -F "\t" '{print $7}' "$IR_LBL$i-$a_LBL$alphaDen-$HUMAN_CHR$ch_HS.$INF_FILE_TYPE" | awk 'NR == 1 {next} {print}' \
-#       | tr '\n' '\t' >> "mat_$IR_LBL$i-$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"
-   awk -F "\t" '{print $7}' "$IR_LBL$i-$a_LBL$alphaDen-$HUMAN_CHR$ch_HS.$INF_FILE_TYPE" \
-        | awk -v HS_ch=$HUMAN_CHR$ch_HS 'NR == 1 {print HS_ch; next} {print}' | tr '\n' '\t' | tr ',' '.' \
+  for c in {1..22} X Y MT alts unlocalized unplaced; do
+   awk -F "\t" '{print $7}' "$IR_LBL$i-$HUMAN_CHR$c.$INF_FILE_TYPE" \
+        | awk -v HS_ch=$HUMAN_CHR$c 'NR == 1 {print HS_ch; next} {print}' | tr '\n' '\t' | tr ',' '.' \
         >> "mat-$IR_LBL$i-$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"
    echo >> "mat-$IR_LBL$i-$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"
   done
