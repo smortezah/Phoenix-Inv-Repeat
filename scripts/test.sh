@@ -80,8 +80,8 @@ PIX_FORMAT=eps          # output format: png, svg, eps, epslatex (set output x.y
 IR_LBL=i                # label for inverted repeat
 a_LBL=a                 # label for alpha denominator
 
-INV_REPEATS="0 1"         # list of inverted repeats      "0 1"
-ALPHA_DENS="100"        # list of alpha denominators    "1 20 100"
+INV_REPEATS="0 1"         # list of inverted repeats
+ALPHA_DENS="100"        # list of alpha denominators
 MIN_CTX=20              # min context-order size
 MAX_CTX=20              # max context-order size
 
@@ -258,7 +258,7 @@ for ir in $INV_REPEATS; do
    for tarDataset in $TAR_DATASET; do
 ##   rm -f $IR_LBL$ir-$a_LBL$alphaDen-${dataset}.$INF_FILE_TYPE
 #   touch $IR_LBL$ir-$a_LBL$alphaDen-$dataset.$INF_FILE_TYPE
-#   echo -e "# mut\tmin_bpb\tmin_ctx" >> $IR_LBL$ir-$a_LBL$alphaDen-$dataset.$INF_FILE_TYPE
+#   echo -e "mut\tmin_bpb\tmin_ctx" >> $IR_LBL$ir-$a_LBL$alphaDen-$dataset.$INF_FILE_TYPE
 #    for mut in $MUT_LIST; do
 #    rm -f $IR_LBL$ir-$a_LBL$alphaDen-${dataset}_$mut.$INF_FILE_TYPE
 #    touch $IR_LBL$ir-$a_LBL$alphaDen-${dataset}_$mut.$INF_FILE_TYPE
@@ -273,7 +273,7 @@ for ir in $INV_REPEATS; do
 ##    # save "min bpb" and "min ctx" for each dataset
 #    minBpbCtx=$(awk 'NR==1 || $4 < minBpb {minBpb=$4; minCtx=$3}; \
 #                END {print minBpb"\t"minCtx}' $IR_LBL$ir-$a_LBL$alphaDen-${dataset}_$mut.$INF_FILE_TYPE)
-#    echo -e "  $mut\t$minBpbCtx" >> $IR_LBL$ir-$a_LBL$alphaDen-$dataset.$INF_FILE_TYPE
+#    echo -e "$mut\t$minBpbCtx" >> $IR_LBL$ir-$a_LBL$alphaDen-$dataset.$INF_FILE_TYPE
 #   done
   done
  done
@@ -294,8 +294,7 @@ fi  # end of $RUN
 #***********************************************************
 if [[ $PLOT_RESULTS == 1 ]]; then
 
-#for ir in $INV_REPEATS; do
-for ir in 0; do
+for ir in $INV_REPEATS; do
  for alphaDen in $ALPHA_DENS; do
 #  for dataset in $datasets; do
 #   for mut in $MUT_LIST; do
@@ -405,8 +404,12 @@ if [[ $BUILD_MATRIX == 1 ]]; then
 
 cd $FLD_dat
 
-for ch_PT in 1 2A 2B {3..24}; do printf "\t%s" "$CHIMP_CHR$ch_PT" >> "${CHIMP_CHR}_HORIZ_PAD"; done;  echo >> "${CHIMP_CHR}_HORIZ_PAD"
-for ch_HS in {1..24}; do printf "\t%s" "$HUMAN_CHR$ch_HS" >> "${HUMAN_CHR}_HORIZ_PAD"; done;  echo >> "${HUMAN_CHR}_HORIZ_PAD"
+for ch_HS in {1..22} X Y MT alts unlocalized unplaced; do printf "\t%s" "$HUMAN_CHR$ch_HS" >> "${HUMAN_CHR}_HORIZ_PAD"; done;
+echo >> "${HUMAN_CHR}_HORIZ_PAD"
+for ch_PT in 1 2A 2B {3..22} X Y MT unlocalized unplaced; do printf "\t%s" "$CHIMP_CHR$ch_PT" >> "${CHIMP_CHR}_HORIZ_PAD"; done;
+echo >> "${CHIMP_CHR}_HORIZ_PAD"
+for ch_GG in 1 2A 2B {3..22} X MT unlocalized unplaced; do printf "\t%s" "$CHIMP_CHR$ch_PT" >> "${CHIMP_CHR}_HORIZ_PAD"; done;
+echo >> "${CHIMP_CHR}_HORIZ_PAD"
 
 for alphaDen in $ALPHA_DENS; do
  for i in 0 1; do
