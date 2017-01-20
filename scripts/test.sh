@@ -65,15 +65,15 @@ datasets="$HUMAN_CHR$CURR_CHR"
 
 #REF_SPECIE=$HUMAN_CHR
 #REF_SEQ_RUN=$HS_SEQ_RUN
-#REF_DATASET="";  for i in 21; do REF_DATASET+=$HUMAN_CHR${i}" "; done
 #
 #REF_SPECIE=$CHIMP_CHR
 #REF_SEQ_RUN=$PT_SEQ_RUN
-#REF_DATASET="";  for i in 24; do REF_DATASET+=$CHIMP_CHR${i}" "; done
 #
 REF_SPECIE=$GORIL_CHR
-REF_SEQ_RUN=$GG_SEQ_RUN
-REF_DATASET="";  for i in MT; do REF_DATASET+=$GORIL_CHR${i}" "; done
+REF_SEQ_RUN=${REF_SPECIE}_SEQ_RUN
+REF_DATASET="";  for i in 24; do REF_DATASET+=$REF_SPECIE${i}" "; done
+#REF_DATASET="";  for i in $REF_SEQ_RUN; do REF_DATASET+=$REF_SPECIE${i}" "; done
+echo $REF_SEQ_RUN
 
 #TAR_SPECIE=$HUMAN_CHR
 #TAR_SEQ_RUN=$HS_SEQ_RUN
@@ -83,8 +83,7 @@ REF_DATASET="";  for i in MT; do REF_DATASET+=$GORIL_CHR${i}" "; done
 #
 TAR_SPECIE=$GORIL_CHR
 TAR_SEQ_RUN=$GG_SEQ_RUN
-TAR_DATASET="";  for i in MT; do TAR_DATASET+=$GORIL_CHR${i}" "; done
-#TAR_DATASET="";  for i in $TAR_SEQ_RUN; do TAR_DATASET+=$TAR_SPECIE${i}" "; done
+TAR_DATASET="";  for i in $TAR_SEQ_RUN; do TAR_DATASET+=$TAR_SPECIE${i}" "; done
 
 
 FILE_TYPE="fa"          # file type
