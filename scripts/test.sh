@@ -414,6 +414,13 @@ for alphaDen in $ALPHA_DENS; do
  for i in $INV_REPEATS; do
   cat "${TAR_SPECIE}_HORIZ_PAD" >> "tot-$IR_LBL$i-$REF_SPECIE-$TAR_SPECIE.$INF_FILE_TYPE"
 
+  for c in $REF_SEQ_RUN; do
+   awk -F "\t" '{print $7}' "$IR_LBL$i-$REF_SPECIE$c-$TAR_SPECIE.$INF_FILE_TYPE" \
+        | awk -v HS_ch=$REF_SPECIE$c 'NR == 1 {print HS_ch; next} {print}' | tr '\n' '\t' | tr ',' '.' \
+        >> "tot-$IR_LBL$i-$REF_SPECIE-$TAR_SPECIE.$INF_FILE_TYPE"
+   echo >> "tot-$IR_LBL$i-$REF_SPECIE-$TAR_SPECIE.$INF_FILE_TYPE"
+  done
+
   ### reference = Human
   for c in $HS_SEQ_RUN; do
    awk -F "\t" '{print $7}' "$IR_LBL$i-$HUMAN_CHR$c.$INF_FILE_TYPE" \
