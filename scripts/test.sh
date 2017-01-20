@@ -110,7 +110,7 @@ for i in alts unlocalized unplaced; do
 done
 
 ### make SEQ out of FASTA
-for i in {1..22} X MT unlocalized unplaced; do
+for i in {1..22} X MT alts unlocalized unplaced; do
  grep -v ">" $FLD_chromosomes/$GORIL_CHR$i.$FILE_TYPE > $FLD_datasets/$GORIL_CHR$i;
 done
 
