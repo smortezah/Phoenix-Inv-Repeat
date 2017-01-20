@@ -47,6 +47,7 @@ HUMAN_CHR="HS"
 CURR_CHR="21"
 chromosomes="$HUMAN_CHR_PREFIX$CHR$CURR_CHR"
 HUMAN_CHROMOSOME="$HUMAN_CHR_PREFIX$CHR"
+CHIMPANZEE_CHROMOSOME="$CHIMPANZEE_CHR_PREFIX$CHR"
 GORILLA_CHROMOSOME="$GORILLA_CHR_PREFIX$CHR"
 
 CHIMP_CHR="PT"
@@ -124,20 +125,20 @@ fi  # end of $GET_HUMAN
 if [[ $GET_CHIMPANZEE == 1 ]]; then
 
 ### download FASTA
-for i in {1..22} X Y MT; do
- wget ftp://ftp.ncbi.nlm.nih.gov/genomes/H_sapiens/Assembled_chromosomes/seq/$HUMAN_CHROMOSOME$i.$FILE_TYPE.$COMP_FILE_TYPE;
+for i in 1 2A 2B {3..22} X Y MT; do
+ wget ftp://ftp.ncbi.nlm.nih.gov/genomes/Pan_troglodytes/Assembled_chromosomes/seq/$HUMAN_CHROMOSOME$i.$FILE_TYPE.$COMP_FILE_TYPE;
  gunzip < $HUMAN_CHROMOSOME$i.$FILE_TYPE.$COMP_FILE_TYPE > $FLD_chromosomes/$HUMAN_CHR$i.$FILE_TYPE;
  rm $HUMAN_CHROMOSOME$i.$FILE_TYPE.$COMP_FILE_TYPE
 done
 
-for i in alts unlocalized unplaced; do
+for i in unlocalized unplaced; do
  wget ftp://ftp.ncbi.nlm.nih.gov/genomes/H_sapiens/Assembled_chromosomes/seq/$HUMAN_CHR_PREFIX$i.$FILE_TYPE.$COMP_FILE_TYPE;
  gunzip < $HUMAN_CHR_PREFIX$i.$FILE_TYPE.$COMP_FILE_TYPE > $FLD_chromosomes/$HUMAN_CHR$i.$FILE_TYPE;
  rm $HUMAN_CHR_PREFIX$i.$FILE_TYPE.$COMP_FILE_TYPE
 done
 
 ### FASTA -> SEQ
-for i in {1..22} X Y MT alts unlocalized unplaced; do
+for i in 1 2A 2B {3..22} X Y MT unlocalized unplaced; do
  grep -v ">" $FLD_chromosomes/$HUMAN_CHR$i.$FILE_TYPE > $FLD_datasets/$HUMAN_CHR$i;
 done
 
