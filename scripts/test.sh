@@ -415,12 +415,9 @@ if [[ $BUILD_MATRIX == 1 ]]; then
 
 cd $FLD_dat
 
-for i in {1..22} X Y MT alts unlocalized unplaced; do printf "\t%s" "$HUMAN_CHR$i" >> "${HUMAN_CHR}_HORIZ_PAD"; done;
-echo >> "${HUMAN_CHR}_HORIZ_PAD"
-for i in 1 2A 2B {3..22} X Y MT unlocalized unplaced; do printf "\t%s" "$CHIMP_CHR$i" >> "${CHIMP_CHR}_HORIZ_PAD"; done;
-echo >> "${CHIMP_CHR}_HORIZ_PAD"
-for i in 1 2A 2B {3..22} X MT unlocalized unplaced; do printf "\t%s" "$GORIL_CHR$i" >> "${GORIL_CHR}_HORIZ_PAD"; done;
-echo >> "${GORIL_CHR}_HORIZ_PAD"
+for i in $HS_SEQ_RUN; do printf "\t%s" "$HUMAN_CHR$i" >> "${HUMAN_CHR}_HORIZ_PAD"; done;    echo >> "${HUMAN_CHR}_HORIZ_PAD"
+for i in $PT_SEQ_RUN; do printf "\t%s" "$CHIMP_CHR$i" >> "${CHIMP_CHR}_HORIZ_PAD"; done;    echo >> "${CHIMP_CHR}_HORIZ_PAD"
+for i in $GG_SEQ_RUN; do printf "\t%s" "$GORIL_CHR$i" >> "${GORIL_CHR}_HORIZ_PAD"; done;    echo >> "${GORIL_CHR}_HORIZ_PAD"
 
 for alphaDen in $ALPHA_DENS; do
  for i in $INV_REPEATS; do
