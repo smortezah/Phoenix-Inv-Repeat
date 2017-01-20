@@ -11,7 +11,7 @@ make
 #***********************************************************
 #   parameters to install and run needed programs
 #***********************************************************
-### folders to be used
+###*** folders to be used
 FLD_archive_dat="archive_dat"
 FLD_archive_datasets="archive_datasets"
 FLD_chromosomes="chromosomes"
@@ -31,7 +31,7 @@ GEN_MUTATIONS=0         # generate mutations using "goose"
 GEN_ARCHAEA=0           # generate archea dataset using "goose" -- output: out#.fa
 RUN=0                   # run the program
 PLOT_RESULTS=0          # plot results using "gnuplot"
-BUILD_MATRIX=1          # build matrix from datasets
+BUILD_MATRIX=0          # build matrix from datasets
 PLOT_MATRIX=0           # plot matrix from datasets
 ARCHIVE_DATA=0          # archive data
 
@@ -72,7 +72,7 @@ REF_SEQ_RUN=${!tempRefSeqRun}     # all chromosomes for that specie, e.g. HS_SEQ
 REF_DATASET="";  for i in 24; do REF_DATASET+=$REF_SPECIE${i}" "; done
 #REF_DATASET="";  for i in $REF_SEQ_RUN; do REF_DATASET+=$REF_SPECIE${i}" "; done
 
-### target parameters
+###*** target parameters
 #TAR_SPECIE=$HUMAN_CHR
 TAR_SPECIE=$CHIMP_CHR
 #TAR_SPECIE=$GORIL_CHR
@@ -102,7 +102,7 @@ MAX_CTX=20              # max context-order size
 #***********************************************************
 if [[ $GET_HUMAN == 1 ]]; then
 
-### download FASTA
+###*** download FASTA
 for i in {1..22} X Y MT; do
  wget ftp://ftp.ncbi.nlm.nih.gov/genomes/H_sapiens/Assembled_chromosomes/seq/$HUMAN_CHROMOSOME$i.$FILE_TYPE.$COMP_FILE_TYPE;
  gunzip < $HUMAN_CHROMOSOME$i.$FILE_TYPE.$COMP_FILE_TYPE > $FLD_chromosomes/$HUMAN_CHR$i.$FILE_TYPE;
@@ -115,7 +115,7 @@ for i in alts unlocalized unplaced; do
  rm $HUMAN_CHR_PREFIX$i.$FILE_TYPE.$COMP_FILE_TYPE
 done
 
-### FASTA -> SEQ
+###*** FASTA -> SEQ
 for i in $HS_SEQ_RUN; do grep -v ">" $FLD_chromosomes/$HUMAN_CHR$i.$FILE_TYPE > $FLD_datasets/$HUMAN_CHR$i; done
 
 fi  # end of $GET_HUMAN
@@ -126,7 +126,7 @@ fi  # end of $GET_HUMAN
 #***********************************************************
 if [[ $GET_CHIMPANZEE == 1 ]]; then
 
-### download FASTA
+###*** download FASTA
 for i in 1 2A 2B {3..22} X Y MT; do
  wget ftp://ftp.ncbi.nlm.nih.gov/genomes/Pan_troglodytes/Assembled_chromosomes/seq/$CHIMPANZEE_CHROMOSOME$i.$FILE_TYPE.$COMP_FILE_TYPE;
  gunzip < $CHIMPANZEE_CHROMOSOME$i.$FILE_TYPE.$COMP_FILE_TYPE > $FLD_chromosomes/$CHIMP_CHR$i.$FILE_TYPE;
@@ -139,7 +139,7 @@ for i in unlocalized unplaced; do
  rm $CHIMPANZEE_CHR_PREFIX$i.$FILE_TYPE.$COMP_FILE_TYPE
 done
 
-### FASTA -> SEQ
+###*** FASTA -> SEQ
 for i in $PT_SEQ_RUN; do grep -v ">" $FLD_chromosomes/$CHIMP_CHR$i.$FILE_TYPE > $FLD_datasets/$CHIMP_CHR$i; done
 
 fi  # end of $GET_CHIMPANZEE
@@ -150,7 +150,7 @@ fi  # end of $GET_CHIMPANZEE
 #***********************************************************
 if [[ $GET_GORILLA == 1 ]]; then
 
-### download FASTA
+###*** download FASTA
 for i in 1 2A 2B {3..22} X MT; do
  wget ftp://ftp.ncbi.nlm.nih.gov/genomes/Gorilla_gorilla/Assembled_chromosomes/seq/$GORILLA_CHROMOSOME$i.$FILE_TYPE.$COMP_FILE_TYPE;
  gunzip < $GORILLA_CHROMOSOME$i.$FILE_TYPE.$COMP_FILE_TYPE > $FLD_chromosomes/$GORIL_CHR$i.$FILE_TYPE;
@@ -163,7 +163,7 @@ for i in unlocalized unplaced; do
  rm $GORILLA_CHR_PREFIX$i.$FILE_TYPE.$COMP_FILE_TYPE
 done
 
-### FASTA -> SEQ
+###*** FASTA -> SEQ
 for i in $GG_SEQ_RUN; do grep -v ">" $FLD_chromosomes/$GORIL_CHR$i.$FILE_TYPE > $FLD_datasets/$GORIL_CHR$i; done
 
 fi  # end of $GET_GORILLA
