@@ -55,6 +55,10 @@ HUMAN_CHROMOSOME="$HUMAN_CHR_PREFIX$CHR"
 CHIMPANZEE_CHROMOSOME="$CHIMPANZEE_CHR_PREFIX$CHR"
 GORILLA_CHROMOSOME="$GORILLA_CHR_PREFIX$CHR"
 
+HS_SEQ_RUN="{1..22} X Y MT alts unlocalized unplaced"
+PT_SEQ_RUN="1 2A 2B {3..22} X Y MT unlocalized unplaced"
+GG_SEQ_RUN="1 2A 2B {3..22} X MT unlocalized unplaced"
+
 datasets="$HUMAN_CHR$CURR_CHR"
 #datasets=""
 #for i in {1..22} X Y #alts unlocalized unplaced
