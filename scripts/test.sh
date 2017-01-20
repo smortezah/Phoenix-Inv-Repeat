@@ -402,15 +402,13 @@ fi  #end of $PLOT_RESULTS
 
 
 #***********************************************************
-#   build matrix from Human Chimpanzee correspondence
+#   build matrix from Reference Target correspondence
 #***********************************************************
 if [[ $BUILD_MATRIX == 1 ]]; then
 
 cd $FLD_dat
 
-for i in $HS_SEQ_RUN; do printf "\t%s" "$HUMAN_CHR$i" >> "${HUMAN_CHR}_HORIZ_PAD"; done;    echo >> "${HUMAN_CHR}_HORIZ_PAD"
-for i in $PT_SEQ_RUN; do printf "\t%s" "$CHIMP_CHR$i" >> "${CHIMP_CHR}_HORIZ_PAD"; done;    echo >> "${CHIMP_CHR}_HORIZ_PAD"
-for i in $GG_SEQ_RUN; do printf "\t%s" "$GORIL_CHR$i" >> "${GORIL_CHR}_HORIZ_PAD"; done;    echo >> "${GORIL_CHR}_HORIZ_PAD"
+for i in $TAR_SEQ_RUN; do printf "\t%s" "$TAR_SPECIE$i" >> "${TAR_SPECIE}_HORIZ_PAD"; done;    echo >> "${TAR_SPECIE}_HORIZ_PAD"
 
 for alphaDen in $ALPHA_DENS; do
  for i in $INV_REPEATS; do
