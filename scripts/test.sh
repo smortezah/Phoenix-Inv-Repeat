@@ -19,9 +19,9 @@ FLD_goose="goose"
 FLD_scripts="scripts"
 FLD_XS="XS"
 
-DL_HUMAN=0              # download Human choromosomes
-DL_CHIMP=0              # download Chimpanzee choromosomes
-GET_GORIL=0             # download Gorilla choromosomes and make sequences out of fasta
+GET_HUMAN=0              # download Human choromosomes and make SEQ out of FASTA
+DL_CHIMP=0              # download Chimpanzee choromosomes and make SEQ out of FASTA
+GET_GORIL=0             # download Gorilla choromosomes and make SEQ out of FASTA
 FASTA2SEQ_HUMAN=0       # FASTA to sequence for Human
 FASTA2SEQ_CHIMP=0       # FASTA to sequence for Chimpanzee
 INSTALL_XS=0            # install "XS" from Github
@@ -94,7 +94,7 @@ MAX_CTX=20              # max context-order size
 #***********************************************************
 #   download Human choromosomes
 #***********************************************************
-if [[ $DL_HUMAN == 1 ]]; then
+if [[ $GET_HUMAN == 1 ]]; then
 
 for i in {1..22} X Y; do
  wget ftp://ftp.ncbi.nlm.nih.gov/genomes/H_sapiens/Assembled_chromosomes/seq/$HUMAN_CHROMOSOME$i.$FILE_TYPE.$COMP_FILE_TYPE;
