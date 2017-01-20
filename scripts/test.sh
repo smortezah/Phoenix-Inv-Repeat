@@ -449,7 +449,7 @@ for alphaDen in $ALPHA_DENS; do
   echo -e "\t$(cat "mat-diff-$a_LBL$alphaDen-$chr.$INF_FILE_TYPE")" > "mat-diff-$a_LBL$alphaDen-$chr.$INF_FILE_TYPE"
  done
 
-rm -f "${HUMAN_CHR}_HORIZ_PAD" "${CHIMP_CHR}_HORIZ_PAD"
+rm -f "*_HORIZ_PAD"
 done
 
 cd ..
