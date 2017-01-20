@@ -64,18 +64,29 @@ datasets="$HUMAN_CHR$CURR_CHR"
 #for i in {1..22} X Y #alts unlocalized unplaced
 #do  datasets+=$HUMAN_CHR${i}" ";    done
 
-REF_SPECIE=$HUMAN_CHR
-REF_SEQ_RUN=$HS_SEQ_RUN
+#REF_SPECIE=$HUMAN_CHR
+#REF_SEQ_RUN=$HS_SEQ_RUN
 #REF_DATASET="";  for i in 21; do REF_DATASET+=$HUMAN_CHR${i}" "; done
-#REF_DATASET="";  for i in 24; do REF_DATASET+=CHIMP_CHR{i}" "; done
+#REF_SPECIE=$CHIMP_CHR
+#REF_SEQ_RUN=$PT_SEQ_RUN
+#REF_DATASET="";  for i in 24; do REF_DATASET+=$CHIMP_CHR${i}" "; done
+REF_SPECIE=$GORIL_CHR
+REF_SEQ_RUN=$GG_SEQ_RUN
 REF_DATASET="";  for i in MT; do REF_DATASET+=$GORIL_CHR${i}" "; done
 
 TAR_SPECIE=$GORIL_CHR
 TAR_SEQ_RUN=$GG_SEQ_RUN
 TAR_DATASET="";  for i in MT unlocalized; do TAR_DATASET+=$GORIL_CHR${i}" "; done
-#TAR_DATASET="";  for i in {1..22} X Y MT alts unlocalized unplaced; do TAR_DATASET+=HUMAN_CHR{i}" "; done
-#TAR_DATASET="";  for i in 1 2A 2B {3..22} X Y MT unlocalized unplaced; do TAR_DATASET+=$CHIMP_CHR${i}" "; done
-#TAR_DATASET="";  for i in 1 2A 2B {3..22} X MT unlocalized unplaced; do TAR_DATASET+=$GORIL_CHR${i}" "; done
+#TAR_SPECIE=$HUMAN_CHR
+#TAR_SEQ_RUN=$HS_SEQ_RUN
+#TAR_DATASET="";  for i in $HS_SEQ_RUN; do TAR_DATASET+=$HUMAN_CHR${i}" "; done
+#TAR_SPECIE=$CHIMP_CHR
+#TAR_SEQ_RUN=$PT_SEQ_RUN
+#TAR_DATASET="";  for i in $PT_SEQ_RUN; do TAR_DATASET+=$CHIMP_CHR${i}" "; done
+#TAR_SPECIE=$GORIL_CHR
+#TAR_SEQ_RUN=$GG_SEQ_RUN
+#TAR_DATASET="";  for i in $GG_SEQ_RUN; do TAR_DATASET+=$GORIL_CHR${i}" "; done
+
 
 FILE_TYPE="fa"          # file type
 COMP_FILE_TYPE="gz"     # compressed file type
