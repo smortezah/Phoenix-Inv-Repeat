@@ -104,7 +104,7 @@ done
 mv ${HUMAN_CHR}X.$FILE_TYPE ${HUMAN_CHR}23.$FILE_TYPE     # rename chrX to chr23
 mv ${HUMAN_CHR}Y.$FILE_TYPE ${HUMAN_CHR}24.$FILE_TYPE     # rename chrY to chr24
 
-fi  # end of download Human choromosomes
+fi  # end of $GET_HUMAN
 
 
 #***********************************************************
@@ -197,11 +197,11 @@ echo "Done!"
 
 mv ${CHIMP_CHR}* $FLD_chromosomes/
 
-fi  # end of download Chimpanzee choromosomes
+fi  # end of $DL_CHIMP
 
 
 #***********************************************************
-#   download Gorilla choromosomes and make sequences out of fasta
+#   download Gorilla choromosomes and make SEQ out of FASTA
 #***********************************************************
 if [[ $GET_GORIL == 1 ]]; then
 
@@ -217,14 +217,11 @@ gunzip < 9595_ref_gorGor4_unplaced.fa.gz > $FLD_chromosomes/${GORIL_CHR}unplaced
 rm 9595_ref_gorGor4_unlocalized.fa.gz
 rm 9595_ref_gorGor4_unplaced.fa.gz
 
-#mv ${HUMAN_CHR}X.$FILE_TYPE ${HUMAN_CHR}23.$FILE_TYPE     # rename chrX to chr23
-#mv ${HUMAN_CHR}Y.$FILE_TYPE ${HUMAN_CHR}24.$FILE_TYPE     # rename chrY to chr24
-
 for i in 1 2A 2B {3..22} X MT unlocalized unplaced; do
  grep -v ">" $FLD_chromosomes/$GORIL_CHR$i.$FILE_TYPE > $FLD_datasets/$GORIL_CHR$i;
 done
 
-fi  # end of downloading Gorilla choromosomes and make sequences out of fasta
+fi  # end of $GET_GORIL
 
 
 #***********************************************************
