@@ -77,15 +77,14 @@ REF_DATASET="";  for i in MT; do REF_DATASET+=$GORIL_CHR${i}" "; done
 
 #TAR_SPECIE=$HUMAN_CHR
 #TAR_SEQ_RUN=$HS_SEQ_RUN
-#TAR_DATASET="";  for i in $HS_SEQ_RUN; do TAR_DATASET+=$HUMAN_CHR${i}" "; done
 #
 #TAR_SPECIE=$CHIMP_CHR
 #TAR_SEQ_RUN=$PT_SEQ_RUN
-#TAR_DATASET="";  for i in $PT_SEQ_RUN; do TAR_DATASET+=$CHIMP_CHR${i}" "; done
 #
 TAR_SPECIE=$GORIL_CHR
 TAR_SEQ_RUN=$GG_SEQ_RUN
 TAR_DATASET="";  for i in MT; do TAR_DATASET+=$GORIL_CHR${i}" "; done
+#TAR_DATASET="";  for i in $TAR_SEQ_RUN; do TAR_DATASET+=$TAR_SPECIE${i}" "; done
 
 
 FILE_TYPE="fa"          # file type
@@ -424,7 +423,7 @@ for alphaDen in $ALPHA_DENS; do
   cat "${TAR_SPECIE}_HORIZ_PAD" >> "tot-$IR_LBL$i-$REF_SPECIE-$TAR_SPECIE.$INF_FILE_TYPE"
 
   ### reference = Human
-  for c in {1..22} X Y MT alts unlocalized unplaced; do
+  for c in $HS_SEQ_RUN; do
    awk -F "\t" '{print $7}' "$IR_LBL$i-$HUMAN_CHR$c.$INF_FILE_TYPE" \
         | awk -v HS_ch=$HUMAN_CHR$c 'NR == 1 {print HS_ch; next} {print}' | tr '\n' '\t' | tr ',' '.' \
         >> "mat-$IR_LBL$i-$a_LBL$alphaDen-$HUMAN_CHR.$INF_FILE_TYPE"
@@ -432,7 +431,7 @@ for alphaDen in $ALPHA_DENS; do
   done
 
   ### reference = Chimpanzee
-  for ch_PT in 1 2A 2B {3..24}; do
+  for ch_PT in $PT_SEQ_RUN; do
 #   awk -F "\t" '{print $7}' "$IR_LBL$i-$a_LBL$alphaDen-$CHIMP_CHR$ch_PT.$INF_FILE_TYPE" | awk 'NR == 1 {next} {print}' \
 #       | tr '\n' '\t' >> "mat_$IR_LBL$i-$a_LBL$alphaDen-$CHIMP_CHR.$INF_FILE_TYPE"
    awk -F "\t" '{print $7}' "$IR_LBL$i-$a_LBL$alphaDen-$CHIMP_CHR$ch_PT.$INF_FILE_TYPE" \
