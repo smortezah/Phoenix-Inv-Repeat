@@ -408,8 +408,8 @@ for ch_HS in {1..22} X Y MT alts unlocalized unplaced; do printf "\t%s" "$HUMAN_
 echo >> "${HUMAN_CHR}_HORIZ_PAD"
 for ch_PT in 1 2A 2B {3..22} X Y MT unlocalized unplaced; do printf "\t%s" "$CHIMP_CHR$ch_PT" >> "${CHIMP_CHR}_HORIZ_PAD"; done;
 echo >> "${CHIMP_CHR}_HORIZ_PAD"
-for ch_GG in 1 2A 2B {3..22} X MT unlocalized unplaced; do printf "\t%s" "$CHIMP_CHR$ch_PT" >> "${CHIMP_CHR}_HORIZ_PAD"; done;
-echo >> "${CHIMP_CHR}_HORIZ_PAD"
+for ch_GG in 1 2A 2B {3..22} X MT unlocalized unplaced; do printf "\t%s" "$GORIL_CHR$ch_GG" >> "${GORIL_CHR}_HORIZ_PAD"; done;
+echo >> "${GORIL_CHR}_HORIZ_PAD"
 
 for alphaDen in $ALPHA_DENS; do
  for i in 0 1; do
