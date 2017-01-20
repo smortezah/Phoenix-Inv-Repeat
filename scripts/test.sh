@@ -373,7 +373,7 @@ done
 ##mkdir -p $FLD_dat             # make "dat" folder
 #mv ${IR_LBL}*.$INF_FILE_TYPE $FLD_dat    # move all created dat files to the "dat" folder
 
-fi  # end of running the program
+fi  # end of $RUN
 
 
 #***********************************************************
@@ -482,7 +482,7 @@ EOF
  done
 done
 
-fi  #end of plot output using "gnuplot"
+fi  #end of $PLOT_RESULTS
 
 
 #***********************************************************
@@ -536,7 +536,7 @@ done
 
 cd ..
 
-fi
+fi  # end of $BUILD_MATRIX
 
 
 #***********************************************************
@@ -573,11 +573,6 @@ set palette defined (0 "red", 1 "green", 2 "white")
 #
 #plot "<awk 'NR>1' '$FLD_dat/$f.$INF_FILE_TYPE' | cut -f2-" matrix with image
 #
-
-
-
-
-
 
 
 
@@ -656,7 +651,7 @@ EOF
 
 done
 
-fi
+fi  # end of $PLOT_MATRIX
 
 
 #***********************************************************
@@ -667,7 +662,7 @@ if [[ $ARCHIVE_DATA == 1 ]]; then
 #mkdir -p archive
 mv $FLD_dat/* $FLD_archive_dat/
 
-fi
+fi  # end of $ARCHIVE_DATA
 
 
 ########################
