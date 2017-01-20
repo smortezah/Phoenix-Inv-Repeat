@@ -64,27 +64,20 @@ datasets="$HUMAN_CHR$CURR_CHR"
 
 
 #REF_SPECIE=$HUMAN_CHR
-#REF_SEQ_RUN=$HS_SEQ_RUN
-#
 #REF_SPECIE=$CHIMP_CHR
-#REF_SEQ_RUN=$PT_SEQ_RUN
-#
 REF_SPECIE=$GORIL_CHR
-#REF_SEQ_RUN=${REF_SPECIE}_SEQ_RUN
-eval ${REF_SPECIE}_SEQ_RUN
-REF_SEQ_RUN=eval ${REF_SPECIE}_SEQ_RUN
+#
+tempRefSeqRun=${REF_SPECIE}_SEQ_RUN
+REF_SEQ_RUN=${!tempRefSeqRun}     # all chromosomes for that specie, e.g. HS_SEQ_RUN
 REF_DATASET="";  for i in 24; do REF_DATASET+=$REF_SPECIE${i}" "; done
 #REF_DATASET="";  for i in $REF_SEQ_RUN; do REF_DATASET+=$REF_SPECIE${i}" "; done
-echo $m
 
 #TAR_SPECIE=$HUMAN_CHR
-#TAR_SEQ_RUN=$HS_SEQ_RUN
-#
 #TAR_SPECIE=$CHIMP_CHR
-#TAR_SEQ_RUN=$PT_SEQ_RUN
-#
 TAR_SPECIE=$GORIL_CHR
-TAR_SEQ_RUN=$GG_SEQ_RUN
+#
+tempTarSeqRun=${TAR_SPECIE}_SEQ_RUN
+TAR_SEQ_RUN=${!tempTarSeqRun}     # all chromosomes for that specie, e.g. HS_SEQ_RUN
 TAR_DATASET="";  for i in $TAR_SEQ_RUN; do TAR_DATASET+=$TAR_SPECIE${i}" "; done
 
 
