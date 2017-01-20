@@ -110,7 +110,7 @@ for i in alts unlocalized unplaced; do
 done
 
 ### FASTA -> SEQ
-for i in {1..22} X MT alts unlocalized unplaced; do
+for i in {1..22} X Y MT alts unlocalized unplaced; do
  grep -v ">" $FLD_chromosomes/$HUMAN_CHR$i.$FILE_TYPE > $FLD_datasets/$HUMAN_CHR$i;
 done
 
