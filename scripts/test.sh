@@ -96,7 +96,7 @@ MAX_CTX=20              # max context-order size
 #***********************************************************
 if [[ $GET_HUMAN == 1 ]]; then
 
-### download
+### download FASTA
 for i in {1..22} X Y MT; do
  wget ftp://ftp.ncbi.nlm.nih.gov/genomes/H_sapiens/Assembled_chromosomes/seq/$HUMAN_CHROMOSOME$i.$FILE_TYPE.$COMP_FILE_TYPE;
  gunzip < $HUMAN_CHROMOSOME$i.$FILE_TYPE.$COMP_FILE_TYPE > $FLD_chromosomes/$HUMAN_CHR$i.$FILE_TYPE;
@@ -109,9 +109,9 @@ for i in alts unlocalized unplaced; do
  rm $HUMAN_CHR_PREFIX$i.$FILE_TYPE.$COMP_FILE_TYPE
 done
 
-### make SEQ out of FASTA
+### FASTA -> SEQ
 for i in {1..22} X MT alts unlocalized unplaced; do
- grep -v ">" $FLD_chromosomes/$GORIL_CHR$i.$FILE_TYPE > $FLD_datasets/$GORIL_CHR$i;
+ grep -v ">" $FLD_chromosomes/$HUMAN_CHR$i.$FILE_TYPE > $FLD_datasets/$GORIL_CHR$i;
 done
 
 
