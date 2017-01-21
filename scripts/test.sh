@@ -470,12 +470,12 @@ do for [i=0:1] {
 set output "${IR_LBL}".i."-$HUMAN_CHR-$CHIMP_CHR.$PIX_FORMAT"
 #set title "Relative compression: HS-PT\nReference: HS, Target: PT, inverted repeats: not considered"
 
-YTICS="`awk 'BEGIN{getline}{printf "%s ",$1}' "$FLD_dat/tot-${IR_LBL}".i."-$HUMAN_CHR-$CHIMP_CHR.$INF_FILE_TYPE"`"
-#XTICS="`head -1 "$FLD_dat/tot-${IR_LBL}$ir-$HUMAN_CHR-$CHIMP_CHR.$INF_FILE_TYPE"`"
-#set for [i=1:words(XTICS)] xtics ( word(XTICS,i) i-1 ) font ",9" rotate by 90 offset 0,-1.4
-#set for [i=1:words(YTICS)] ytics ( word(YTICS,i) i-1 ) font ",9" offset 0.5,0
-#
-#plot "<awk 'NR>1' '$FLD_dat/tot-${IR_LBL}$ir-$HUMAN_CHR-$CHIMP_CHR.$INF_FILE_TYPE' | cut -f2-" matrix with image
+YTICS="`awk 'BEGIN{getline}{printf "%s ",$1}' "$FLD_dat/tot-${IR_LBL}0-$HUMAN_CHR-$CHIMP_CHR.$INF_FILE_TYPE"`"
+XTICS="`head -1 "$FLD_dat/tot-${IR_LBL}0-$HUMAN_CHR-$CHIMP_CHR.$INF_FILE_TYPE"`"
+set for [i=1:words(XTICS)] xtics ( word(XTICS,i) i-1 ) font ",9" rotate by 90 offset 0,-1.4
+set for [i=1:words(YTICS)] ytics ( word(YTICS,i) i-1 ) font ",9" offset 0.5,0
+
+plot "<awk -v m=i 'NR>1' '$FLD_dat/tot-${IR_LBL}m-$HUMAN_CHR-$CHIMP_CHR.$INF_FILE_TYPE' | cut -f2-" matrix with image
 }
 
 
