@@ -457,8 +457,8 @@ set key off
 #set tmargin 3.5    ### with title
 set tmargin 0.5     ### without title
 set bmargin 2.3
-#set lmargin at screen 0.03
-set rmargin 1.5
+set lmargin at screen 0.07
+set rmargin 1.0
 set pm3d map
 
 #set nocbtics
