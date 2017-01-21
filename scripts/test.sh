@@ -445,7 +445,7 @@ fi  # end of $BUILD_MATRIX
 #***********************************************************
 if [[ $PLOT_MATRIX == 1 ]]; then
 
-for ir in $INV_REPEATS; do
+#for ir in $INV_REPEATS; do
  for alphaDen in $ALPHA_DENS; do
 
 gnuplot <<- EOF
@@ -467,10 +467,10 @@ set palette defined (0 "red", 1 "green", 2 "white")
 
 
 ### Human, i0
-set for [m=0:1] output "${IR_LBL}m-$HUMAN_CHR-$CHIMP_CHR.$PIX_FORMAT"
+set for [i=0:1] output "${IR_LBL}".i."-$HUMAN_CHR-$CHIMP_CHR.$PIX_FORMAT"
 #set title "Relative compression: HS-PT\nReference: HS, Target: PT, inverted repeats: not considered"
-#
-#YTICS="`awk 'BEGIN{getline}{printf "%s ",$1}' "$FLD_dat/tot-${IR_LBL}$ir-$HUMAN_CHR-$CHIMP_CHR.$INF_FILE_TYPE"`"
+
+YTICS="`awk 'BEGIN{getline}{printf "%s ",$1}' "$FLD_dat/tot-${IR_LBL}$ir-$HUMAN_CHR-$CHIMP_CHR.$INF_FILE_TYPE"`"
 #XTICS="`head -1 "$FLD_dat/tot-${IR_LBL}$ir-$HUMAN_CHR-$CHIMP_CHR.$INF_FILE_TYPE"`"
 #set for [i=1:words(XTICS)] xtics ( word(XTICS,i) i-1 ) font ",9" rotate by 90 offset 0,-1.4
 #set for [i=1:words(YTICS)] ytics ( word(YTICS,i) i-1 ) font ",9" offset 0.5,0
@@ -555,7 +555,7 @@ set for [m=0:1] output "${IR_LBL}m-$HUMAN_CHR-$CHIMP_CHR.$PIX_FORMAT"
 
 EOF
 
- done
+# done
 done
 
 fi  # end of $PLOT_MATRIX
