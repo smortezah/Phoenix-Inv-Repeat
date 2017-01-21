@@ -23,7 +23,7 @@ FLD_XS="XS"
 
 GET_HUMAN=0             # download Human choromosomes and make SEQ out of FASTA
 GET_CHIMPANZEE=0        # download Chimpanzee choromosomes and make SEQ out of FASTA
-GET_GORILLA=0           # download Gorilla choromosomes and make SEQ out of FASTA
+GET_GORILLA=1           # download Gorilla choromosomes and make SEQ out of FASTA
 INSTALL_XS=0            # install "XS" from Github
 INSTALL_goose=0         # install "goose" from Github
 GEN_DATASETS=0          # generate datasets using "XS"
@@ -32,7 +32,7 @@ GEN_ARCHAEA=0           # generate archea dataset using "goose" -- output: out#.
 RUN=0                   # run the program
 PLOT_RESULTS=0          # plot results using "gnuplot"
 BUILD_MATRIX=0          # build matrix from datasets
-PLOT_MATRIX=1           # plot matrix from datasets
+PLOT_MATRIX=0           # plot matrix from datasets
 ARCHIVE_DATA=0          # archive data
 
 # mutations list:   `seq -s' ' 1 10`
@@ -55,9 +55,12 @@ HUMAN_CHROMOSOME="$HUMAN_CHR_PREFIX$CHR"
 CHIMPANZEE_CHROMOSOME="$CHIMPANZEE_CHR_PREFIX$CHR"
 GORILLA_CHROMOSOME="$GORILLA_CHR_PREFIX$CHR"
 
-HS_SEQ_RUN="1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 X Y MT alts unlocalized unplaced"
-PT_SEQ_RUN="1 2A 2B 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 X Y MT unlocalized unplaced"
-GG_SEQ_RUN="1 2A 2B 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 X MT unlocalized unplaced"
+#HS_SEQ_RUN="1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 X Y MT alts unlocalized unplaced"
+#PT_SEQ_RUN="1 2A 2B 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 X Y MT unlocalized unplaced"
+#GG_SEQ_RUN="1 2A 2B 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 X MT unlocalized unplaced"
+HS_SEQ_RUN="1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 X Y MT AL UL UP"
+PT_SEQ_RUN="1 2A 2B 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 X Y MT UL UP"
+GG_SEQ_RUN="1 2A 2B 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 X MT UL UP"
 
 datasets="$HUMAN_CHR$CURR_CHR"
 #datasets="";   for i in $HS_SEQ_RUN; do datasets+=$HUMAN_CHR${i}" "; done
@@ -115,6 +118,11 @@ for i in alts unlocalized unplaced; do
  rm $HUMAN_CHR_PREFIX$i.$FILE_TYPE.$COMP_FILE_TYPE
 done
 
+###*** rename: HSalts -> HSAL, HSunlocalized -> HSUL, HSunplaced -> HSUP
+mv $FLD_chromosomes/$HUMAN_CHR"alts".$FILE_TYPE $FLD_chromosomes/$HUMAN_CHR"AL".$FILE_TYPE
+mv $FLD_chromosomes/$HUMAN_CHR"unlocalized".$FILE_TYPE $FLD_chromosomes/$HUMAN_CHR"UL".$FILE_TYPE
+mv $FLD_chromosomes/$HUMAN_CHR"unplaced".$FILE_TYPE $FLD_chromosomes/$HUMAN_CHR"UP".$FILE_TYPE
+
 ###*** FASTA -> SEQ
 for i in $HS_SEQ_RUN; do grep -v ">" $FLD_chromosomes/$HUMAN_CHR$i.$FILE_TYPE > $FLD_datasets/$HUMAN_CHR$i; done
 
@@ -139,6 +147,10 @@ for i in unlocalized unplaced; do
  rm $CHIMPANZEE_CHR_PREFIX$i.$FILE_TYPE.$COMP_FILE_TYPE
 done
 
+###*** rename: PTunlocalized -> PTUL, PTunplaced -> PTUP
+mv $FLD_chromosomes/$CHIMP_CHR"unlocalized".$FILE_TYPE $FLD_chromosomes/$CHIMP_CHR"UL".$FILE_TYPE
+mv $FLD_chromosomes/$CHIMP_CHR"unplaced".$FILE_TYPE $FLD_chromosomes/$CHIMP_CHR"UP".$FILE_TYPE
+
 ###*** FASTA -> SEQ
 for i in $PT_SEQ_RUN; do grep -v ">" $FLD_chromosomes/$CHIMP_CHR$i.$FILE_TYPE > $FLD_datasets/$CHIMP_CHR$i; done
 
@@ -162,6 +174,10 @@ for i in unlocalized unplaced; do
  gunzip < $GORILLA_CHR_PREFIX$i.$FILE_TYPE.$COMP_FILE_TYPE > $FLD_chromosomes/$GORIL_CHR$i.$FILE_TYPE;
  rm $GORILLA_CHR_PREFIX$i.$FILE_TYPE.$COMP_FILE_TYPE
 done
+
+###*** rename: GGunlocalized -> GGUL, GGunplaced -> GGUP
+mv $FLD_chromosomes/$GORIL_CHR"unlocalized".$FILE_TYPE $FLD_chromosomes/$GORIL_CHR"UL".$FILE_TYPE
+mv $FLD_chromosomes/$GORIL_CHR"unplaced".$FILE_TYPE $FLD_chromosomes/$GORIL_CHR"UP".$FILE_TYPE
 
 ###*** FASTA -> SEQ
 for i in $GG_SEQ_RUN; do grep -v ">" $FLD_chromosomes/$GORIL_CHR$i.$FILE_TYPE > $FLD_datasets/$GORIL_CHR$i; done
@@ -449,14 +465,14 @@ if [[ $PLOT_MATRIX == 1 ]]; then
  for alphaDen in $ALPHA_DENS; do
 
 gnuplot <<- EOF
-xticsOffset=-1.2
-yticsOffset=0.2
+xticsOffset=0.2 #-1.2
+yticsOffset=0.2 #-2.3
 set terminal $PIX_FORMAT enhanced color size 4,3
 #set size ratio .9 #0.85
 set key off
 #set tmargin 3.5    ### with title
 set tmargin 0.5     ### without title
-set bmargin 2.3
+set bmargin 2.2 #4
 set lmargin 4.0
 #set lmargin at screen 0.14
 set rmargin 1.0
@@ -476,8 +492,8 @@ set output "${IR_LBL}0-$HUMAN_CHR-$CHIMP_CHR.$PIX_FORMAT"
 
 YTICS="`awk 'BEGIN{getline}{printf "%s ",$1}' "$FLD_dat/tot-${IR_LBL}0-$HUMAN_CHR-$CHIMP_CHR.$INF_FILE_TYPE"`"
 XTICS="`head -1 "$FLD_dat/tot-${IR_LBL}0-$HUMAN_CHR-$CHIMP_CHR.$INF_FILE_TYPE"`"
-set for [i=1:words(XTICS)] xtics ( word(XTICS,i) i-1 ) font ",9" rotate by 90 offset 0,xticsOffset
-set for [i=1:words(YTICS)] ytics ( word(YTICS,i) i-1 ) font ",9" offset yticsOffset,0
+set for [i=1:words(XTICS)] xtics ( word(XTICS,i) i-1 ) right font ",9" rotate by 90 offset 0,xticsOffset
+set for [i=1:words(YTICS)] ytics ( word(YTICS,i) i-1 ) right font ",9" offset yticsOffset,0
 
 plot "<awk 'NR>1' '$FLD_dat/tot-${IR_LBL}0-$HUMAN_CHR-$CHIMP_CHR.$INF_FILE_TYPE' | cut -f2-" matrix with image
 ### ! before any command inside gnuplot lets bash command work (e.g. the followings)
