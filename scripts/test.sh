@@ -457,7 +457,8 @@ set key off
 #set tmargin 3.5    ### with title
 set tmargin 0.5     ### without title
 set bmargin 2.3
-set lmargin at screen 0.07
+set lmargin 4.0
+#set lmargin at screen 0.14
 set rmargin 1.0
 set pm3d map
 
@@ -505,7 +506,7 @@ plot "<awk 'NR>1' '$FLD_dat/tot-${IR_LBL}0-$HUMAN_CHR-$CHIMP_CHR.$INF_FILE_TYPE'
 #set for [i=1:words(YTICS)] ytics ( word(YTICS,i) i-1 ) font ",9" offset yticsOffset,0
 #
 #plot "<awk 'NR>1' '$FLD_dat/tot-${IR_LBL}0-$CHIMP_CHR-$HUMAN_CHR.$INF_FILE_TYPE' | cut -f2-" matrix with image
-#
+
 #### Chimpanzee, i1
 #set output "${IR_LBL}1-$CHIMP_CHR-$HUMAN_CHR.$PIX_FORMAT"
 ##set title "Relative compression: PT-HS\nReference: PT, Target: HS, inverted repeats: considered"
