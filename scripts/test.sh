@@ -451,11 +451,13 @@ if [[ $PLOT_MATRIX == 1 ]]; then
 gnuplot <<- EOF
 xticsOffset=-1.2
 yticsOffset=0.2
-set terminal $PIX_FORMAT enhanced color
+set terminal $PIX_FORMAT enhanced color size 4,3
+#set size ratio .9 #0.85
+set key off
 #set tmargin 3.5    ### with title
 set tmargin 0.5     ### without title
 set bmargin 2.3
-set lmargin 4.0
+#set lmargin at screen 0.03
 set rmargin 1.5
 set pm3d map
 
@@ -477,6 +479,10 @@ set for [i=1:words(XTICS)] xtics ( word(XTICS,i) i-1 ) font ",9" rotate by 90 of
 set for [i=1:words(YTICS)] ytics ( word(YTICS,i) i-1 ) font ",9" offset yticsOffset,0
 
 plot "<awk 'NR>1' '$FLD_dat/tot-${IR_LBL}0-$HUMAN_CHR-$CHIMP_CHR.$INF_FILE_TYPE' | cut -f2-" matrix with image
+### ! before any command inside gnuplot lets bash command work (e.g. the followings)
+##!awk 'NR>1' $FLD_dat/tot-${IR_LBL}0-$HUMAN_CHR-$CHIMP_CHR.$INF_FILE_TYPE | cut -f2- > temp
+##plot "temp" matrix with image
+##!rm temp
 
 #### Human, i1
 #set output "${IR_LBL}1-$HUMAN_CHR-$CHIMP_CHR.$PIX_FORMAT"
