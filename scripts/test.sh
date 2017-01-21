@@ -450,7 +450,8 @@ if [[ $PLOT_MATRIX == 1 ]]; then
 
 gnuplot <<- EOF
 set term $PIX_FORMAT
-set tmargin 3.5
+#set tmargin 3.5    ### with title
+set tmargin 0.5     ### without title
 set bmargin 2.5
 set lmargin 3.5
 set rmargin 1.5
@@ -464,29 +465,29 @@ set cbtics scale 0 font ",11"
 
 set palette defined (0 "red", 1 "green", 2 "white")
 
-#
-#### Human, i0
-#set output "${IR_LBL}0-$HUMAN_CHR-$CHIMP_CHR.$PIX_FORMAT"
-#set title "Relative compression: HS-PT\nReference: HS, Target: PT, inverted repeats: not considered"
-#
-#YTICS="`awk 'BEGIN{getline}{printf "%s ",$1}' "$FLD_dat/tot-${IR_LBL}0-$HUMAN_CHR-$CHIMP_CHR.$INF_FILE_TYPE"`"
-#XTICS="`head -1 "$FLD_dat/tot-${IR_LBL}0-$HUMAN_CHR-$CHIMP_CHR.$INF_FILE_TYPE"`"
-#set for [i=1:words(XTICS)] xtics ( word(XTICS,i) i-1 ) font ",9" rotate by 90 offset 0,-1.4
-#set for [i=1:words(YTICS)] ytics ( word(YTICS,i) i-1 ) font ",9" offset 0.5,0
-#
-#plot "<awk 'NR>1' '$FLD_dat/tot-${IR_LBL}0-$HUMAN_CHR-$CHIMP_CHR.$INF_FILE_TYPE' | cut -f2-" matrix with image
 
-#### Human, i1
-#set output "${IR_LBL}1-$HUMAN_CHR-$CHIMP_CHR.$PIX_FORMAT"
+### Human, i0
+set output "${IR_LBL}0-$HUMAN_CHR-$CHIMP_CHR.$PIX_FORMAT"
+#set title "Relative compression: HS-PT\nReference: HS, Target: PT, inverted repeats: not considered"
+
+YTICS="`awk 'BEGIN{getline}{printf "%s ",$1}' "$FLD_dat/tot-${IR_LBL}0-$HUMAN_CHR-$CHIMP_CHR.$INF_FILE_TYPE"`"
+XTICS="`head -1 "$FLD_dat/tot-${IR_LBL}0-$HUMAN_CHR-$CHIMP_CHR.$INF_FILE_TYPE"`"
+set for [i=1:words(XTICS)] xtics ( word(XTICS,i) i-1 ) font ",9" rotate by 90 offset 0,-1.4
+set for [i=1:words(YTICS)] ytics ( word(YTICS,i) i-1 ) font ",9" offset 0.5,0
+
+plot "<awk 'NR>1' '$FLD_dat/tot-${IR_LBL}0-$HUMAN_CHR-$CHIMP_CHR.$INF_FILE_TYPE' | cut -f2-" matrix with image
+
+### Human, i1
+set output "${IR_LBL}1-$HUMAN_CHR-$CHIMP_CHR.$PIX_FORMAT"
 #set title "Relative compression: HS-PT\nReference: HS, Target: PT, inverted repeats: considered"
-#
-#YTICS="`awk 'BEGIN{getline}{printf "%s ",$1}' "$FLD_dat/tot-${IR_LBL}1-$HUMAN_CHR-$CHIMP_CHR.$INF_FILE_TYPE"`"
-#XTICS="`head -1 "$FLD_dat/tot-${IR_LBL}1-$HUMAN_CHR-$CHIMP_CHR.$INF_FILE_TYPE"`"
-#set for [i=1:words(XTICS)] xtics ( word(XTICS,i) i-1 ) font ",9" rotate by 90 offset 0,-1.4
-#set for [i=1:words(YTICS)] ytics ( word(YTICS,i) i-1 ) font ",9" offset 0.5,0
-#
-#plot "<awk 'NR>1' '$FLD_dat/tot-${IR_LBL}1-$HUMAN_CHR-$CHIMP_CHR.$INF_FILE_TYPE' | cut -f2-" matrix with image
-#
+
+YTICS="`awk 'BEGIN{getline}{printf "%s ",$1}' "$FLD_dat/tot-${IR_LBL}1-$HUMAN_CHR-$CHIMP_CHR.$INF_FILE_TYPE"`"
+XTICS="`head -1 "$FLD_dat/tot-${IR_LBL}1-$HUMAN_CHR-$CHIMP_CHR.$INF_FILE_TYPE"`"
+set for [i=1:words(XTICS)] xtics ( word(XTICS,i) i-1 ) font ",9" rotate by 90 offset 0,-1.4
+set for [i=1:words(YTICS)] ytics ( word(YTICS,i) i-1 ) font ",9" offset 0.5,0
+
+plot "<awk 'NR>1' '$FLD_dat/tot-${IR_LBL}1-$HUMAN_CHR-$CHIMP_CHR.$INF_FILE_TYPE' | cut -f2-" matrix with image
+
 #### Chimpanzee, i0
 #set output "${IR_LBL}0-$CHIMP_CHR-$HUMAN_CHR.$PIX_FORMAT"
 #set title "Relative compression: PT-HS\nReference: PT, Target: HS, inverted repeats: not considered"
