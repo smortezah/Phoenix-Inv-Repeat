@@ -451,7 +451,6 @@ if [[ $PLOT_MATRIX == 1 ]]; then
 gnuplot <<- EOF
 xticsOffset=-1.2
 yticsOffset=0.2
-#set term $PIX_FORMAT
 set terminal $PIX_FORMAT enhanced color
 #set tmargin 3.5    ### with title
 set tmargin 0.5     ### without title
