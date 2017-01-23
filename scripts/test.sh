@@ -69,7 +69,7 @@ HS_SEQ_RUN=`seq -s' ' 1 22`; HS_SEQ_RUN+=" X Y MT AL UL UP"
 PT_SEQ_RUN="1 2A 2B "; PT_SEQ_RUN+=`seq -s' ' 3 22`; PT_SEQ_RUN+=" X Y MT UL UP"
 GG_SEQ_RUN="1 2A 2B "; GG_SEQ_RUN+=`seq -s' ' 3 22`; GG_SEQ_RUN+=" X MT UL UP"
 A_SEQ_RUN=`seq -s' ' 1 206`
-GGA_SEQ_RUN=`seq -s' ' 1 33`; GGA_SEQ_RUN+=" LGE64 MT W Z UL UP"
+GGA_SEQ_RUN=`seq -s' ' 1 33`; GGA_SEQ_RUN+=" LG MT W Z UL UP"
 
 datasets="$HUMAN_CHR$CURR_CHR"
 #datasets="";   for i in $HS_SEQ_RUN; do datasets+=$HUMAN_CHR${i}" "; done
