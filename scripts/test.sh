@@ -521,8 +521,6 @@ for alphaDen in $ALPHA_DENS; do
        >> "diff-$REF_SPECIE-$TAR_SPECIE.$INF_FILE_TYPE"
 
  echo -e "\t$(cat "diff-$REF_SPECIE-$TAR_SPECIE.$INF_FILE_TYPE")" > "diff-$REF_SPECIE-$TAR_SPECIE.$INF_FILE_TYPE"
-
-
 done
 
 rm -f *HORIZ_PAD
