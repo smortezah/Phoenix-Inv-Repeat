@@ -34,7 +34,7 @@ GEN_ARCHAEA=0           # generate archea dataset using "goose" -- output: out#.
 RUN=0                   # run the program
 PLOT_RESULTS=0          # plot results using "gnuplot"
 BUILD_MATRIX=0          # build matrix from datasets
-PLOT_MATRIX=0           # plot matrix from datasets
+PLOT_MATRIX=1           # plot matrix from datasets
 ARCHIVE_DATA=0          # archive data
 
 # mutations list:   `seq -s' ' 1 10`
@@ -82,9 +82,9 @@ datasets="$HUMAN_CHR$CURR_CHR"
 
 ### reference parameters
 #REF_SPECIE=$HUMAN_CHR
-#REF_SPECIE=$CHIMPANZEE_CHR
+REF_SPECIE=$CHIMPANZEE_CHR
 #REF_SPECIE=$GORILLA_CHR
-REF_SPECIE=$CHICKEN_CHR
+#REF_SPECIE=$CHICKEN_CHR
 #REF_SPECIE=$TURKEY_CHR
 #
 tempRefSeqRun=${REF_SPECIE}_SEQ_RUN
@@ -93,11 +93,11 @@ REF_DATASET="";  for i in 24; do REF_DATASET+=$REF_SPECIE${i}" "; done
 #REF_DATASET="";  for i in $REF_SEQ_RUN; do REF_DATASET+=$REF_SPECIE${i}" "; done
 
 ###*** target parameters
-#TAR_SPECIE=$HUMAN_CHR
+TAR_SPECIE=$HUMAN_CHR
 #TAR_SPECIE=$CHIMPANZEE_CHR
 #TAR_SPECIE=$GORILLA_CHR
 #TAR_SPECIE=$CHICKEN_CHR
-TAR_SPECIE=$TURKEY_CHR
+#TAR_SPECIE=$TURKEY_CHR
 #
 tempTarSeqRun=${TAR_SPECIE}_SEQ_RUN
 TAR_SEQ_RUN=${!tempTarSeqRun}     # all chromosomes for that specie, e.g. HS_SEQ_RUN
@@ -546,13 +546,13 @@ set terminal $PIX_FORMAT enhanced color size 4,3
 set key off
 #set tmargin 2.1    ### with title
 set tmargin 0.5     ### without title
-set bmargin 2.2 #4
-set lmargin 4.0
+set bmargin 2.7 #4
+set lmargin 5
 set rmargin 1.35
 set pm3d map
 
 #set nocbtics
-set cblabel "NRC" font ",11" offset -1,0
+set cblabel "NRC" font ",11" offset -0.25,0
 set cbtics scale 1 font ",9.5"
 #set cbtics
 #set cbrange [ 0.2 : 1 ] noreverse nowriteback
@@ -614,6 +614,7 @@ plot "<awk 'NR>1' '$FLD_dat/tot-${IR_LBL}1-$REF_SPECIE-$TAR_SPECIE.$INF_FILE_TYP
 
 set palette defined (0 "white", 1 "green", 2 "red")
 #set tmargin 4.5
+set cblabel "Difference in NRCs (NRC_{IR=0} - NRC_{IR=1})" font ",11" offset -1.5,0
 
 ### reference-target, difference between i0 and i1
 set output "diff-$REF_SPECIE-$TAR_SPECIE.$PIX_FORMAT"
