@@ -195,6 +195,34 @@ fi  # end of $GET_GORILLA
 
 
 #***********************************************************
+#   download Gorilla choromosomes and make SEQ out of FASTA
+#***********************************************************
+if [[ $GET_CHICKEN == 1 ]]; then
+
+###*** download FASTA
+for i in 1 2A 2B {3..22} X MT; do
+ wget ftp://ftp.ncbi.nlm.nih.gov/genomes/Gorilla_gorilla/Assembled_chromosomes/seq/$GORILLA_CHROMOSOME$i.$FILE_TYPE.$COMP_FILE_TYPE;
+ gunzip < $GORILLA_CHROMOSOME$i.$FILE_TYPE.$COMP_FILE_TYPE > $FLD_chromosomes/$GORIL_CHR$i.$FILE_TYPE;
+ rm $GORILLA_CHROMOSOME$i.$FILE_TYPE.$COMP_FILE_TYPE
+done
+
+for i in unlocalized unplaced; do
+ wget ftp://ftp.ncbi.nlm.nih.gov/genomes/Gorilla_gorilla/Assembled_chromosomes/seq/$GORILLA_CHR_PREFIX$i.$FILE_TYPE.$COMP_FILE_TYPE;
+ gunzip < $GORILLA_CHR_PREFIX$i.$FILE_TYPE.$COMP_FILE_TYPE > $FLD_chromosomes/$GORIL_CHR$i.$FILE_TYPE;
+ rm $GORILLA_CHR_PREFIX$i.$FILE_TYPE.$COMP_FILE_TYPE
+done
+
+###*** rename: GGunlocalized -> GGUL, GGunplaced -> GGUP
+mv $FLD_chromosomes/$GORIL_CHR"unlocalized".$FILE_TYPE $FLD_chromosomes/$GORIL_CHR"UL".$FILE_TYPE
+mv $FLD_chromosomes/$GORIL_CHR"unplaced".$FILE_TYPE $FLD_chromosomes/$GORIL_CHR"UP".$FILE_TYPE
+
+###*** FASTA -> SEQ
+for i in $GG_SEQ_RUN; do grep -v ">" $FLD_chromosomes/$GORIL_CHR$i.$FILE_TYPE > $FLD_datasets/$GORIL_CHR$i; done
+
+fi  # end of $GET_GORILLA
+
+
+#***********************************************************
 #   install "XS" from Github
 #***********************************************************
 if [[ $INSTALL_XS == 1 ]]; then
