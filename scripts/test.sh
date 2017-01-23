@@ -24,7 +24,7 @@ FLD_XS="XS"
 GET_HUMAN=0             # download Human choromosomes and make SEQ out of FASTA
 GET_CHIMPANZEE=0        # download Chimpanzee choromosomes and make SEQ out of FASTA
 GET_GORILLA=0           # download Gorilla choromosomes and make SEQ out of FASTA
-GET_CHICKEN=1           # download Chicken choromosomes and make SEQ out of FASTA
+GET_CHICKEN=0           # download Chicken choromosomes and make SEQ out of FASTA
 INSTALL_XS=0            # install "XS" from Github
 INSTALL_goose=0         # install "goose" from Github
 GEN_DATASETS=0          # generate datasets using "XS"
@@ -69,8 +69,8 @@ HS_SEQ_RUN=`seq -s' ' 1 22`; HS_SEQ_RUN+=" X Y MT AL UL UP"
 PT_SEQ_RUN="1 2A 2B "; PT_SEQ_RUN+=`seq -s' ' 3 22`; PT_SEQ_RUN+=" X Y MT UL UP"
 GG_SEQ_RUN="1 2A 2B "; GG_SEQ_RUN+=`seq -s' ' 3 22`; GG_SEQ_RUN+=" X MT UL UP"
 A_SEQ_RUN=`seq -s' ' 1 206`
-GGA_SEQ_RUN=`seq -s' ' 1 33`; GGA_SEQ_RUN+=" LG MT W Z UL UP"
-
+GGA_SEQ_RUN=`seq -s' ' 1 28`; GGA_SEQ_RUN+=" "; GGA_SEQ_RUN+=`seq -s' ' 30 33`;GGA_SEQ_RUN+=" LG MT W Z UL UP"
+echo $GGA_SEQ_RUN
 datasets="$HUMAN_CHR$CURR_CHR"
 #datasets="";   for i in $HS_SEQ_RUN; do datasets+=$HUMAN_CHR${i}" "; done
 
@@ -202,25 +202,27 @@ fi  # end of $GET_GORILLA
 if [[ $GET_CHICKEN == 1 ]]; then
 
 ###*** download FASTA
-for i in {1..33} LGE64 MT W Z; do
+#for i in {1..33} LGE64 MT W Z; do
+for i in 29 LGE64; do
  wget $CHICKEN_URL/$CHICKEN_CHROMOSOME$i.$FILE_TYPE.$COMP_FILE_TYPE;
  gunzip < $CHICKEN_CHROMOSOME$i.$FILE_TYPE.$COMP_FILE_TYPE > $FLD_chromosomes/$CHICK_CHR$i.$FILE_TYPE;
  rm $CHICKEN_CHROMOSOME$i.$FILE_TYPE.$COMP_FILE_TYPE
 done
 
-for i in unlocalized unplaced; do
- wget $CHICKEN_URL/$CHICKEN_CHR_PREFIX$i.$FILE_TYPE.$COMP_FILE_TYPE;
- gunzip < $CHICKEN_CHR_PREFIX$i.$FILE_TYPE.$COMP_FILE_TYPE > $FLD_chromosomes/$CHICK_CHR$i.$FILE_TYPE;
- rm $CHICKEN_CHR_PREFIX$i.$FILE_TYPE.$COMP_FILE_TYPE
-done
+#for i in unlocalized unplaced; do
+# wget $CHICKEN_URL/$CHICKEN_CHR_PREFIX$i.$FILE_TYPE.$COMP_FILE_TYPE;
+# gunzip < $CHICKEN_CHR_PREFIX$i.$FILE_TYPE.$COMP_FILE_TYPE > $FLD_chromosomes/$CHICK_CHR$i.$FILE_TYPE;
+# rm $CHICKEN_CHR_PREFIX$i.$FILE_TYPE.$COMP_FILE_TYPE
+#done
 
 ###*** rename: GGALGE64 -> GGALG, GGAunlocalized -> GGAUL, GGAunplaced -> GGAUP
 mv $FLD_chromosomes/$CHICK_CHR"LGE64".$FILE_TYPE $FLD_chromosomes/$CHICK_CHR"LG".$FILE_TYPE
-mv $FLD_chromosomes/$CHICK_CHR"unlocalized".$FILE_TYPE $FLD_chromosomes/$CHICK_CHR"UL".$FILE_TYPE
-mv $FLD_chromosomes/$CHICK_CHR"unplaced".$FILE_TYPE $FLD_chromosomes/$CHICK_CHR"UP".$FILE_TYPE
+#mv $FLD_chromosomes/$CHICK_CHR"unlocalized".$FILE_TYPE $FLD_chromosomes/$CHICK_CHR"UL".$FILE_TYPE
+#mv $FLD_chromosomes/$CHICK_CHR"unplaced".$FILE_TYPE $FLD_chromosomes/$CHICK_CHR"UP".$FILE_TYPE
 
 ###*** FASTA -> SEQ
-for i in $GGA_SEQ_RUN; do grep -v ">" $FLD_chromosomes/$CHICK_CHR$i.$FILE_TYPE > $FLD_datasets/$CHICK_CHR$i; done
+for i in 29 LGE64; do grep -v ">" $FLD_chromosomes/$CHICK_CHR$i.$FILE_TYPE > $FLD_datasets/$CHICK_CHR$i; done
+#for i in $GGA_SEQ_RUN; do grep -v ">" $FLD_chromosomes/$CHICK_CHR$i.$FILE_TYPE > $FLD_datasets/$CHICK_CHR$i; done
 
 fi  # end of $GET_CHICKEN
 
