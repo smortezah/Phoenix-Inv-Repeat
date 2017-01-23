@@ -68,7 +68,6 @@ PT_SEQ_RUN="1 2A 2B "; PT_SEQ_RUN+=`seq -s' ' 3 22`; PT_SEQ_RUN+=" X Y MT UL UP"
 GG_SEQ_RUN="1 2A 2B "; GG_SEQ_RUN+=`seq -s' ' 3 22`; GG_SEQ_RUN+=" X MT UL UP"
 A_SEQ_RUN=`seq -s' ' 1 206`
 GGA_SEQ_RUN=`seq -s' ' 1 33`; GGA_SEQ_RUN+=" LGE64 MT W Z UL UP"
-echo $HS_SEQ_RUN
 
 datasets="$HUMAN_CHR$CURR_CHR"
 #datasets="";   for i in $HS_SEQ_RUN; do datasets+=$HUMAN_CHR${i}" "; done
@@ -77,7 +76,7 @@ datasets="$HUMAN_CHR$CURR_CHR"
 #REF_SPECIE=$HUMAN_CHR
 #REF_SPECIE=$CHIMP_CHR
 #REF_SPECIE=$GORIL_CHR
-REF_SPECIE=$ARCH_CHR
+REF_SPECIE=$CHICK_CHR
 #
 tempRefSeqRun=${REF_SPECIE}_SEQ_RUN
 REF_SEQ_RUN=${!tempRefSeqRun}     # all chromosomes for that specie, e.g. HS_SEQ_RUN
@@ -88,7 +87,7 @@ REF_DATASET="";  for i in 24; do REF_DATASET+=$REF_SPECIE${i}" "; done
 #TAR_SPECIE=$HUMAN_CHR
 #TAR_SPECIE=$CHIMP_CHR
 #TAR_SPECIE=$GORIL_CHR
-TAR_SPECIE=$ARCH_CHR
+TAR_SPECIE=$CHICK_CHR
 #
 tempTarSeqRun=${TAR_SPECIE}_SEQ_RUN
 TAR_SEQ_RUN=${!tempTarSeqRun}     # all chromosomes for that specie, e.g. HS_SEQ_RUN
