@@ -222,7 +222,7 @@ mv $FLD_chromosomes/$CHICK_CHR"unplaced".$FILE_TYPE $FLD_chromosomes/$CHICK_CHR"
 ###*** FASTA -> SEQ
 for i in $GGA_SEQ_RUN; do grep -v ">" $FLD_chromosomes/$CHICK_CHR$i.$FILE_TYPE > $FLD_datasets/$CHICK_CHR$i; done
 
-fi  # end of $GET_GORILLA
+fi  # end of $GET_CHICKEN
 
 
 #***********************************************************
