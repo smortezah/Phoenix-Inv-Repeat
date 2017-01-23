@@ -43,7 +43,7 @@ HUMAN_CHR_PREFIX="hs_ref_GRCh38.p7_"
 CHIMPANZEE_CHR_PREFIX="ptr_ref_Pan_tro_3.0_"
 GORILLA_CHR_PREFIX="9595_ref_gorGor4_"
 CHICKEN_CHR_PREFIX="gga_ref_Gallus_gallus-5.0_"
-#ftp://ftp.ncbi.nlm.nih.gov/genomes/Gallus_gallus/Assembled_chromosomes/seq/gga_ref_Gallus_gallus-5.0_chr1.fa.gz
+
 CHR="chr"
 
 HUMAN_CHR="HS"
@@ -200,14 +200,14 @@ fi  # end of $GET_GORILLA
 if [[ $GET_CHICKEN == 1 ]]; then
 
 ###*** download FASTA
-for i in 1 2A 2B {3..22} X MT; do
- wget ftp://ftp.ncbi.nlm.nih.gov/genomes/Gorilla_gorilla/Assembled_chromosomes/seq/$GORILLA_CHROMOSOME$i.$FILE_TYPE.$COMP_FILE_TYPE;
- gunzip < $GORILLA_CHROMOSOME$i.$FILE_TYPE.$COMP_FILE_TYPE > $FLD_chromosomes/$GORIL_CHR$i.$FILE_TYPE;
- rm $GORILLA_CHROMOSOME$i.$FILE_TYPE.$COMP_FILE_TYPE
+for i in {1..33} LGE64 MT W Z; do
+ wget ftp://ftp.ncbi.nlm.nih.gov/genomes/Gallus_gallus/Assembled_chromosomes/seq/$CHICKEN_CHROMOSOME$i.$FILE_TYPE.$COMP_FILE_TYPE;
+ gunzip < $CHICKEN_CHROMOSOME$i.$FILE_TYPE.$COMP_FILE_TYPE > $FLD_chromosomes/$CHICK_CHR$i.$FILE_TYPE;
+ rm $CHICKEN_CHROMOSOME$i.$FILE_TYPE.$COMP_FILE_TYPE
 done
 
 for i in unlocalized unplaced; do
- wget ftp://ftp.ncbi.nlm.nih.gov/genomes/Gorilla_gorilla/Assembled_chromosomes/seq/$GORILLA_CHR_PREFIX$i.$FILE_TYPE.$COMP_FILE_TYPE;
+ wget ftp://ftp.ncbi.nlm.nih.gov/genomes/Gallus_gallus/Assembled_chromosomes/seq/$GORILLA_CHR_PREFIX$i.$FILE_TYPE.$COMP_FILE_TYPE;
  gunzip < $GORILLA_CHR_PREFIX$i.$FILE_TYPE.$COMP_FILE_TYPE > $FLD_chromosomes/$GORIL_CHR$i.$FILE_TYPE;
  rm $GORILLA_CHR_PREFIX$i.$FILE_TYPE.$COMP_FILE_TYPE
 done
