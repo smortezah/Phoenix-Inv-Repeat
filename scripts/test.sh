@@ -31,8 +31,8 @@ GEN_MUTATIONS=0         # generate mutations using "goose"
 GEN_ARCHAEA=0           # generate archea dataset using "goose" -- output: out#.fa
 RUN=0                   # run the program
 PLOT_RESULTS=0          # plot results using "gnuplot"
-BUILD_MATRIX=1          # build matrix from datasets
-PLOT_MATRIX=0           # plot matrix from datasets
+BUILD_MATRIX=0          # build matrix from datasets
+PLOT_MATRIX=1           # plot matrix from datasets
 ARCHIVE_DATA=0          # archive data
 
 # mutations list:   `seq -s' ' 1 10`
@@ -55,13 +55,10 @@ HUMAN_CHROMOSOME="$HUMAN_CHR_PREFIX$CHR"
 CHIMPANZEE_CHROMOSOME="$CHIMPANZEE_CHR_PREFIX$CHR"
 GORILLA_CHROMOSOME="$GORILLA_CHR_PREFIX$CHR"
 
-#HS_SEQ_RUN="1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 X Y MT alts unlocalized unplaced"
-#PT_SEQ_RUN="1 2A 2B 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 X Y MT unlocalized unplaced"
-#GG_SEQ_RUN="1 2A 2B 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 X MT unlocalized unplaced"
 HS_SEQ_RUN="1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 X Y MT AL UL UP"
 PT_SEQ_RUN="1 2A 2B 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 X Y MT UL UP"
 GG_SEQ_RUN="1 2A 2B 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 X MT UL UP"
-A_SEQ_RUN={1..206}
+A_SEQ_RUN=`seq -s' ' 1 206`
 
 datasets="$HUMAN_CHR$CURR_CHR"
 #datasets="";   for i in $HS_SEQ_RUN; do datasets+=$HUMAN_CHR${i}" "; done
@@ -516,29 +513,29 @@ set for [i=1:words(YTICS)] ytics ( word(YTICS,i) i-1 ) font ",9" offset yticsOff
 
 plot "<awk 'NR>1' '$FLD_dat/tot-${IR_LBL}1-$REF_SPECIE-$TAR_SPECIE.$INF_FILE_TYPE' | cut -f2-" matrix with image
 
-### target-reference, i0
-set output "${IR_LBL}0-$REF_SPECIE-$TAR_SPECIE.$PIX_FORMAT"
-#set title "Inverted repeats considered"
-#set title "Relative compression: PT-HS\nReference: PT, Target: HS, inverted repeats: not considered"
-
-YTICS="`awk 'BEGIN{getline}{printf "%s ",$1}' "$FLD_dat/tot-${IR_LBL}0-$REF_SPECIE-$TAR_SPECIE.$INF_FILE_TYPE"`"
-XTICS="`head -1 "$FLD_dat/tot-${IR_LBL}0-$REF_SPECIE-$TAR_SPECIE.$INF_FILE_TYPE"`"
-set for [i=1:words(XTICS)] xtics ( word(XTICS,i) i-1 ) font ",9" rotate by 90 offset 0,xticsOffset
-set for [i=1:words(YTICS)] ytics ( word(YTICS,i) i-1 ) font ",9" offset yticsOffset,0
-
-plot "<awk 'NR>1' '$FLD_dat/tot-${IR_LBL}0-$REF_SPECIE-$TAR_SPECIE.$INF_FILE_TYPE' | cut -f2-" matrix with image
-
-### target-reference, i1
-set output "${IR_LBL}1-$REF_SPECIE-$TAR_SPECIE.$PIX_FORMAT"
-#set title "Inverted repeats not considered"
-#set title "Relative compression: PT-HS\nReference: PT, Target: HS, inverted repeats: considered"
-
-YTICS="`awk 'BEGIN{getline}{printf "%s ",$1}' "$FLD_dat/tot-${IR_LBL}1-$REF_SPECIE-$TAR_SPECIE.$INF_FILE_TYPE"`"
-XTICS="`head -1 "$FLD_dat/tot-${IR_LBL}1-$REF_SPECIE-$TAR_SPECIE.$INF_FILE_TYPE"`"
-set for [i=1:words(XTICS)] xtics ( word(XTICS,i) i-1 ) font ",9" rotate by 90 offset 0,xticsOffset
-set for [i=1:words(YTICS)] ytics ( word(YTICS,i) i-1 ) font ",9" offset yticsOffset,0
-
-plot "<awk 'NR>1' '$FLD_dat/tot-${IR_LBL}1-$REF_SPECIE-$TAR_SPECIE.$INF_FILE_TYPE' | cut -f2-" matrix with image
+#### target-reference, i0
+#set output "${IR_LBL}0-$REF_SPECIE-$TAR_SPECIE.$PIX_FORMAT"
+##set title "Inverted repeats considered"
+##set title "Relative compression: PT-HS\nReference: PT, Target: HS, inverted repeats: not considered"
+#
+#YTICS="`awk 'BEGIN{getline}{printf "%s ",$1}' "$FLD_dat/tot-${IR_LBL}0-$REF_SPECIE-$TAR_SPECIE.$INF_FILE_TYPE"`"
+#XTICS="`head -1 "$FLD_dat/tot-${IR_LBL}0-$REF_SPECIE-$TAR_SPECIE.$INF_FILE_TYPE"`"
+#set for [i=1:words(XTICS)] xtics ( word(XTICS,i) i-1 ) font ",9" rotate by 90 offset 0,xticsOffset
+#set for [i=1:words(YTICS)] ytics ( word(YTICS,i) i-1 ) font ",9" offset yticsOffset,0
+#
+#plot "<awk 'NR>1' '$FLD_dat/tot-${IR_LBL}0-$REF_SPECIE-$TAR_SPECIE.$INF_FILE_TYPE' | cut -f2-" matrix with image
+#
+#### target-reference, i1
+#set output "${IR_LBL}1-$REF_SPECIE-$TAR_SPECIE.$PIX_FORMAT"
+##set title "Inverted repeats not considered"
+##set title "Relative compression: PT-HS\nReference: PT, Target: HS, inverted repeats: considered"
+#
+#YTICS="`awk 'BEGIN{getline}{printf "%s ",$1}' "$FLD_dat/tot-${IR_LBL}1-$REF_SPECIE-$TAR_SPECIE.$INF_FILE_TYPE"`"
+#XTICS="`head -1 "$FLD_dat/tot-${IR_LBL}1-$REF_SPECIE-$TAR_SPECIE.$INF_FILE_TYPE"`"
+#set for [i=1:words(XTICS)] xtics ( word(XTICS,i) i-1 ) font ",9" rotate by 90 offset 0,xticsOffset
+#set for [i=1:words(YTICS)] ytics ( word(YTICS,i) i-1 ) font ",9" offset yticsOffset,0
+#
+#plot "<awk 'NR>1' '$FLD_dat/tot-${IR_LBL}1-$REF_SPECIE-$TAR_SPECIE.$INF_FILE_TYPE' | cut -f2-" matrix with image
 
 
 set palette defined (0 "white", 1 "green", 2 "red")
