@@ -24,6 +24,7 @@ FLD_XS="XS"
 GET_HUMAN=0             # download Human choromosomes and make SEQ out of FASTA
 GET_CHIMPANZEE=0        # download Chimpanzee choromosomes and make SEQ out of FASTA
 GET_GORILLA=0           # download Gorilla choromosomes and make SEQ out of FASTA
+GET_CHICKEN=0           # download Chicken choromosomes and make SEQ out of FASTA
 INSTALL_XS=0            # install "XS" from Github
 INSTALL_goose=0         # install "goose" from Github
 GEN_DATASETS=0          # generate datasets using "XS"
@@ -41,12 +42,15 @@ ARCHIVE_DATA=0          # archive data
 HUMAN_CHR_PREFIX="hs_ref_GRCh38.p7_"
 CHIMPANZEE_CHR_PREFIX="ptr_ref_Pan_tro_3.0_"
 GORILLA_CHR_PREFIX="9595_ref_gorGor4_"
+CHICKEN_CHR_PREFIX="gga_ref_Gallus_gallus-5.0_"
+#ftp://ftp.ncbi.nlm.nih.gov/genomes/Gallus_gallus/Assembled_chromosomes/seq/gga_ref_Gallus_gallus-5.0_chr1.fa.gz
 CHR="chr"
 
 HUMAN_CHR="HS"
 CHIMP_CHR="PT"
-ARCH_CHR="A"
 GORIL_CHR="GG"
+ARCH_CHR="A"
+CHICK_CHR="GGA"
 
 CURR_CHR="21"
 chromosomes="$HUMAN_CHR_PREFIX$CHR$CURR_CHR"
@@ -54,11 +58,17 @@ chromosomes="$HUMAN_CHR_PREFIX$CHR$CURR_CHR"
 HUMAN_CHROMOSOME="$HUMAN_CHR_PREFIX$CHR"
 CHIMPANZEE_CHROMOSOME="$CHIMPANZEE_CHR_PREFIX$CHR"
 GORILLA_CHROMOSOME="$GORILLA_CHR_PREFIX$CHR"
+CHICKEN_CHROMOSOME="$CHICKEN_CHR_PREFIX$CHR"
 
 HS_SEQ_RUN="1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 X Y MT AL UL UP"
 PT_SEQ_RUN="1 2A 2B 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 X Y MT UL UP"
-GG_SEQ_RUN="1 2A 2B 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 X MT UL UP"
+#GG_SEQ_RUN="1 2A 2B 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 X MT UL UP"
+
+GGA_SEQ_RUN=`seq -s' ' 1 33`;   GGA_SEQ_RUN+=" LGE64 MT W Z UL UP"
+
 A_SEQ_RUN=`seq -s' ' 1 206`
+GGA_SEQ_RUN=`seq -s' ' 1 33`;   GGA_SEQ_RUN+=" LGE64 MT W Z UL UP"
+echo $GG_SEQ_RUN
 
 datasets="$HUMAN_CHR$CURR_CHR"
 #datasets="";   for i in $HS_SEQ_RUN; do datasets+=$HUMAN_CHR${i}" "; done
