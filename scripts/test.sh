@@ -25,6 +25,7 @@ GET_HUMAN=0             # download Human choromosomes and make SEQ out of FASTA
 GET_CHIMPANZEE=0        # download Chimpanzee choromosomes and make SEQ out of FASTA
 GET_GORILLA=0           # download Gorilla choromosomes and make SEQ out of FASTA
 GET_CHICKEN=0           # download Chicken choromosomes and make SEQ out of FASTA
+GET_TURKEY=0            # download Turkey choromosomes and make SEQ out of FASTA
 INSTALL_XS=0            # install "XS" from Github
 INSTALL_goose=0         # install "goose" from Github
 GEN_DATASETS=0          # generate datasets using "XS"
@@ -43,11 +44,13 @@ HUMAN_URL="ftp://ftp.ncbi.nlm.nih.gov/genomes/H_sapiens/Assembled_chromosomes/se
 CHIMPANZEE_URL="ftp://ftp.ncbi.nlm.nih.gov/genomes/Pan_troglodytes/Assembled_chromosomes/seq"
 GORILLA_URL="ftp://ftp.ncbi.nlm.nih.gov/genomes/Gorilla_gorilla/Assembled_chromosomes/seq"
 CHICKEN_URL="ftp://ftp.ncbi.nlm.nih.gov/genomes/Gallus_gallus/Assembled_chromosomes/seq"
+TURKEY_URL="ftp://ftp.ncbi.nlm.nih.gov/genomes/Meleagris_gallopavo/Assembled_chromosomes/seq"
 
 HUMAN_CHR_PREFIX="hs_ref_GRCh38.p7_"
 CHIMPANZEE_CHR_PREFIX="ptr_ref_Pan_tro_3.0_"
 GORILLA_CHR_PREFIX="9595_ref_gorGor4_"
 CHICKEN_CHR_PREFIX="gga_ref_Gallus_gallus-5.0_"
+TURKEY_CHR_PREFIX="mga_ref_Turkey_5.0_"
 
 CHR="chr"
 
@@ -69,7 +72,8 @@ HS_SEQ_RUN=`seq -s' ' 1 22`; HS_SEQ_RUN+=" X Y MT AL UL UP"
 PT_SEQ_RUN="1 2A 2B "; PT_SEQ_RUN+=`seq -s' ' 3 22`; PT_SEQ_RUN+=" X Y MT UL UP"
 GG_SEQ_RUN="1 2A 2B "; GG_SEQ_RUN+=`seq -s' ' 3 22`; GG_SEQ_RUN+=" X MT UL UP"
 A_SEQ_RUN=`seq -s' ' 1 206`
-GGA_SEQ_RUN=`seq -s' ' 1 28`; GGA_SEQ_RUN+=" "; GGA_SEQ_RUN+=`seq -s' ' 30 33`;GGA_SEQ_RUN+=" LG MT W Z UL UP"
+GGA_SEQ_RUN=`seq -s' ' 1 28`; GGA_SEQ_RUN+=" "; GGA_SEQ_RUN+=`seq -s' ' 30 33`; GGA_SEQ_RUN+=" LG MT W Z UL UP"
+MGA_SEQ_RUN=`seq -s' ' 1 30`; GGA_SEQ_RUN+=" MT W Z UL UP"
 
 datasets="$HUMAN_CHR$CURR_CHR"
 #datasets="";   for i in $HS_SEQ_RUN; do datasets+=$HUMAN_CHR${i}" "; done
