@@ -25,7 +25,7 @@ GET_HUMAN=0             # download Human choromosomes and make SEQ out of FASTA
 GET_CHIMPANZEE=0        # download Chimpanzee choromosomes and make SEQ out of FASTA
 GET_GORILLA=0           # download Gorilla choromosomes and make SEQ out of FASTA
 GET_CHICKEN=0           # download Chicken choromosomes and make SEQ out of FASTA
-GET_TURKEY=0            # download Turkey choromosomes and make SEQ out of FASTA
+GET_TURKEY=1            # download Turkey choromosomes and make SEQ out of FASTA
 INSTALL_XS=0            # install "XS" from Github
 INSTALL_goose=0         # install "goose" from Github
 GEN_DATASETS=0          # generate datasets using "XS"
@@ -55,10 +55,11 @@ TURKEY_CHR_PREFIX="mga_ref_Turkey_5.0_"
 CHR="chr"
 
 HUMAN_CHR="HS"
-CHIMP_CHR="PT"
-GORIL_CHR="GG"
-ARCH_CHR="A"
-CHICK_CHR="GGA"
+CHIMPANZEE_CHR="PT"
+GORILLA_CHR="GG"
+ARCHAEA_CHR="A"
+CHICKEN_CHR="GGA"
+TURKEY_CHR="GGA"
 
 CURR_CHR="21"
 chromosomes="$HUMAN_CHR_PREFIX$CHR$CURR_CHR"
@@ -67,22 +68,23 @@ HUMAN_CHROMOSOME="$HUMAN_CHR_PREFIX$CHR"
 CHIMPANZEE_CHROMOSOME="$CHIMPANZEE_CHR_PREFIX$CHR"
 GORILLA_CHROMOSOME="$GORILLA_CHR_PREFIX$CHR"
 CHICKEN_CHROMOSOME="$CHICKEN_CHR_PREFIX$CHR"
+TURKEY_CHROMOSOME="$TURKEY_CHR_PREFIX$CHR"
 
 HS_SEQ_RUN=`seq -s' ' 1 22`; HS_SEQ_RUN+=" X Y MT AL UL UP"
 PT_SEQ_RUN="1 2A 2B "; PT_SEQ_RUN+=`seq -s' ' 3 22`; PT_SEQ_RUN+=" X Y MT UL UP"
 GG_SEQ_RUN="1 2A 2B "; GG_SEQ_RUN+=`seq -s' ' 3 22`; GG_SEQ_RUN+=" X MT UL UP"
 A_SEQ_RUN=`seq -s' ' 1 206`
 GGA_SEQ_RUN=`seq -s' ' 1 28`; GGA_SEQ_RUN+=" "; GGA_SEQ_RUN+=`seq -s' ' 30 33`; GGA_SEQ_RUN+=" LG MT W Z UL UP"
-MGA_SEQ_RUN=`seq -s' ' 1 30`; GGA_SEQ_RUN+=" MT W Z UL UP"
+MGA_SEQ_RUN=`seq -s' ' 1 30`; MGA_SEQ_RUN+=" MT W Z UL UP"
 
 datasets="$HUMAN_CHR$CURR_CHR"
 #datasets="";   for i in $HS_SEQ_RUN; do datasets+=$HUMAN_CHR${i}" "; done
 
 ### reference parameters
 #REF_SPECIE=$HUMAN_CHR
-#REF_SPECIE=$CHIMP_CHR
-#REF_SPECIE=$GORIL_CHR
-REF_SPECIE=$CHICK_CHR
+#REF_SPECIE=$CHIMPANZEE_CHR
+#REF_SPECIE=$GORILLA_CHR
+REF_SPECIE=$CHICKEN_CHR
 #
 tempRefSeqRun=${REF_SPECIE}_SEQ_RUN
 REF_SEQ_RUN=${!tempRefSeqRun}     # all chromosomes for that specie, e.g. HS_SEQ_RUN
@@ -91,9 +93,9 @@ REF_DATASET="";  for i in 24; do REF_DATASET+=$REF_SPECIE${i}" "; done
 
 ###*** target parameters
 #TAR_SPECIE=$HUMAN_CHR
-#TAR_SPECIE=$CHIMP_CHR
-#TAR_SPECIE=$GORIL_CHR
-TAR_SPECIE=$CHICK_CHR
+#TAR_SPECIE=$CHIMPANZEE_CHR
+#TAR_SPECIE=$GORILLA_CHR
+TAR_SPECIE=$CHICKEN_CHR
 #
 tempTarSeqRun=${TAR_SPECIE}_SEQ_RUN
 TAR_SEQ_RUN=${!tempTarSeqRun}     # all chromosomes for that specie, e.g. HS_SEQ_RUN
@@ -152,22 +154,22 @@ if [[ $GET_CHIMPANZEE == 1 ]]; then
 ###*** download FASTA
 for i in 1 2A 2B {3..22} X Y MT; do
  wget $CHIMPANZEE_URL/$CHIMPANZEE_CHROMOSOME$i.$FILE_TYPE.$COMP_FILE_TYPE;
- gunzip < $CHIMPANZEE_CHROMOSOME$i.$FILE_TYPE.$COMP_FILE_TYPE > $FLD_chromosomes/$CHIMP_CHR$i.$FILE_TYPE;
+ gunzip < $CHIMPANZEE_CHROMOSOME$i.$FILE_TYPE.$COMP_FILE_TYPE > $FLD_chromosomes/$CHIMPANZEE_CHR$i.$FILE_TYPE;
  rm $CHIMPANZEE_CHROMOSOME$i.$FILE_TYPE.$COMP_FILE_TYPE
 done
 
 for i in unlocalized unplaced; do
  wget $CHIMPANZEE_URL/$CHIMPANZEE_CHR_PREFIX$i.$FILE_TYPE.$COMP_FILE_TYPE;
- gunzip < $CHIMPANZEE_CHR_PREFIX$i.$FILE_TYPE.$COMP_FILE_TYPE > $FLD_chromosomes/$CHIMP_CHR$i.$FILE_TYPE;
+ gunzip < $CHIMPANZEE_CHR_PREFIX$i.$FILE_TYPE.$COMP_FILE_TYPE > $FLD_chromosomes/$CHIMPANZEE_CHR$i.$FILE_TYPE;
  rm $CHIMPANZEE_CHR_PREFIX$i.$FILE_TYPE.$COMP_FILE_TYPE
 done
 
 ###*** rename: PTunlocalized -> PTUL, PTunplaced -> PTUP
-mv $FLD_chromosomes/$CHIMP_CHR"unlocalized".$FILE_TYPE $FLD_chromosomes/$CHIMP_CHR"UL".$FILE_TYPE
-mv $FLD_chromosomes/$CHIMP_CHR"unplaced".$FILE_TYPE $FLD_chromosomes/$CHIMP_CHR"UP".$FILE_TYPE
+mv $FLD_chromosomes/$CHIMPANZEE_CHR"unlocalized".$FILE_TYPE $FLD_chromosomes/$CHIMPANZEE_CHR"UL".$FILE_TYPE
+mv $FLD_chromosomes/$CHIMPANZEE_CHR"unplaced".$FILE_TYPE $FLD_chromosomes/$CHIMPANZEE_CHR"UP".$FILE_TYPE
 
 ###*** FASTA -> SEQ
-for i in $PT_SEQ_RUN; do grep -v ">" $FLD_chromosomes/$CHIMP_CHR$i.$FILE_TYPE > $FLD_datasets/$CHIMP_CHR$i; done
+for i in $PT_SEQ_RUN; do grep -v ">" $FLD_chromosomes/$CHIMPANZEE_CHR$i.$FILE_TYPE > $FLD_datasets/$CHIMPANZEE_CHR$i; done
 
 fi  # end of $GET_CHIMPANZEE
 
@@ -180,22 +182,22 @@ if [[ $GET_GORILLA == 1 ]]; then
 ###*** download FASTA
 for i in 1 2A 2B {3..22} X MT; do
  wget $GORILLA_URL/$GORILLA_CHROMOSOME$i.$FILE_TYPE.$COMP_FILE_TYPE;
- gunzip < $GORILLA_CHROMOSOME$i.$FILE_TYPE.$COMP_FILE_TYPE > $FLD_chromosomes/$GORIL_CHR$i.$FILE_TYPE;
+ gunzip < $GORILLA_CHROMOSOME$i.$FILE_TYPE.$COMP_FILE_TYPE > $FLD_chromosomes/$GORILLA_CHR$i.$FILE_TYPE;
  rm $GORILLA_CHROMOSOME$i.$FILE_TYPE.$COMP_FILE_TYPE
 done
 
 for i in unlocalized unplaced; do
  wget $GORILLA_URL/$GORILLA_CHR_PREFIX$i.$FILE_TYPE.$COMP_FILE_TYPE;
- gunzip < $GORILLA_CHR_PREFIX$i.$FILE_TYPE.$COMP_FILE_TYPE > $FLD_chromosomes/$GORIL_CHR$i.$FILE_TYPE;
+ gunzip < $GORILLA_CHR_PREFIX$i.$FILE_TYPE.$COMP_FILE_TYPE > $FLD_chromosomes/$GORILLA_CHR$i.$FILE_TYPE;
  rm $GORILLA_CHR_PREFIX$i.$FILE_TYPE.$COMP_FILE_TYPE
 done
 
 ###*** rename: GGunlocalized -> GGUL, GGunplaced -> GGUP
-mv $FLD_chromosomes/$GORIL_CHR"unlocalized".$FILE_TYPE $FLD_chromosomes/$GORIL_CHR"UL".$FILE_TYPE
-mv $FLD_chromosomes/$GORIL_CHR"unplaced".$FILE_TYPE $FLD_chromosomes/$GORIL_CHR"UP".$FILE_TYPE
+mv $FLD_chromosomes/$GORILLA_CHR"unlocalized".$FILE_TYPE $FLD_chromosomes/$GORILLA_CHR"UL".$FILE_TYPE
+mv $FLD_chromosomes/$GORILLA_CHR"unplaced".$FILE_TYPE $FLD_chromosomes/$GORILLA_CHR"UP".$FILE_TYPE
 
 ###*** FASTA -> SEQ
-for i in $GG_SEQ_RUN; do grep -v ">" $FLD_chromosomes/$GORIL_CHR$i.$FILE_TYPE > $FLD_datasets/$GORIL_CHR$i; done
+for i in $GG_SEQ_RUN; do grep -v ">" $FLD_chromosomes/$GORILLA_CHR$i.$FILE_TYPE > $FLD_datasets/$GORILLA_CHR$i; done
 
 fi  # end of $GET_GORILLA
 
@@ -206,27 +208,55 @@ fi  # end of $GET_GORILLA
 if [[ $GET_CHICKEN == 1 ]]; then
 
 ###*** download FASTA
-for i in {1..33} LGE64 MT W Z; do
+for i in {1..28} {30..33} LGE64 MT W Z; do
  wget $CHICKEN_URL/$CHICKEN_CHROMOSOME$i.$FILE_TYPE.$COMP_FILE_TYPE;
- gunzip < $CHICKEN_CHROMOSOME$i.$FILE_TYPE.$COMP_FILE_TYPE > $FLD_chromosomes/$CHICK_CHR$i.$FILE_TYPE;
+ gunzip < $CHICKEN_CHROMOSOME$i.$FILE_TYPE.$COMP_FILE_TYPE > $FLD_chromosomes/$CHICKEN_CHR$i.$FILE_TYPE;
  rm $CHICKEN_CHROMOSOME$i.$FILE_TYPE.$COMP_FILE_TYPE
 done
 
 for i in unlocalized unplaced; do
  wget $CHICKEN_URL/$CHICKEN_CHR_PREFIX$i.$FILE_TYPE.$COMP_FILE_TYPE;
- gunzip < $CHICKEN_CHR_PREFIX$i.$FILE_TYPE.$COMP_FILE_TYPE > $FLD_chromosomes/$CHICK_CHR$i.$FILE_TYPE;
+ gunzip < $CHICKEN_CHR_PREFIX$i.$FILE_TYPE.$COMP_FILE_TYPE > $FLD_chromosomes/$CHICKEN_CHR$i.$FILE_TYPE;
  rm $CHICKEN_CHR_PREFIX$i.$FILE_TYPE.$COMP_FILE_TYPE
 done
 
 ###*** rename: GGALGE64 -> GGALG, GGAunlocalized -> GGAUL, GGAunplaced -> GGAUP
-mv $FLD_chromosomes/$CHICK_CHR"LGE64".$FILE_TYPE $FLD_chromosomes/$CHICK_CHR"LG".$FILE_TYPE
-mv $FLD_chromosomes/$CHICK_CHR"unlocalized".$FILE_TYPE $FLD_chromosomes/$CHICK_CHR"UL".$FILE_TYPE
-mv $FLD_chromosomes/$CHICK_CHR"unplaced".$FILE_TYPE $FLD_chromosomes/$CHICK_CHR"UP".$FILE_TYPE
+mv $FLD_chromosomes/$CHICKEN_CHR"LGE64".$FILE_TYPE $FLD_chromosomes/$CHICKEN_CHR"LG".$FILE_TYPE
+mv $FLD_chromosomes/$CHICKEN_CHR"unlocalized".$FILE_TYPE $FLD_chromosomes/$CHICKEN_CHR"UL".$FILE_TYPE
+mv $FLD_chromosomes/$CHICKEN_CHR"unplaced".$FILE_TYPE $FLD_chromosomes/$CHICKEN_CHR"UP".$FILE_TYPE
 
 ###*** FASTA -> SEQ
-for i in $GGA_SEQ_RUN; do grep -v ">" $FLD_chromosomes/$CHICK_CHR$i.$FILE_TYPE > $FLD_datasets/$CHICK_CHR$i; done
+for i in $GGA_SEQ_RUN; do grep -v ">" $FLD_chromosomes/$CHICKEN_CHR$i.$FILE_TYPE > $FLD_datasets/$CHICKEN_CHR$i; done
 
 fi  # end of $GET_CHICKEN
+
+
+#***********************************************************
+#   download Turkey choromosomes and make SEQ out of FASTA
+#***********************************************************
+if [[ $GET_TURKEY == 1 ]]; then
+
+###*** download FASTA
+for i in {1..30} MT W Z; do
+ wget $TURKEY_URL/$TURKEY_CHROMOSOME$i.$FILE_TYPE.$COMP_FILE_TYPE;
+ gunzip < $TURKEY_CHROMOSOME$i.$FILE_TYPE.$COMP_FILE_TYPE > $FLD_chromosomes/$TURKEY_CHR$i.$FILE_TYPE;
+ rm $TURKEY_CHROMOSOME$i.$FILE_TYPE.$COMP_FILE_TYPE
+done
+
+for i in unlocalized unplaced; do
+ wget $TURKEY_URL/$TURKEY_CHR_PREFIX$i.$FILE_TYPE.$COMP_FILE_TYPE;
+ gunzip < $TURKEY_CHR_PREFIX$i.$FILE_TYPE.$COMP_FILE_TYPE > $FLD_chromosomes/$TURKEY_CHR$i.$FILE_TYPE;
+ rm $TURKEY_CHR_PREFIX$i.$FILE_TYPE.$COMP_FILE_TYPE
+done
+
+###*** rename: MGAunlocalized -> MGAUL, MGAunplaced -> MGAUP
+mv $FLD_chromosomes/$TURKEY_CHR"unlocalized".$FILE_TYPE $FLD_chromosomes/$TURKEY_CHR"UL".$FILE_TYPE
+mv $FLD_chromosomes/$TURKEY_CHR"unplaced".$FILE_TYPE $FLD_chromosomes/$TURKEY_CHR"UP".$FILE_TYPE
+
+###*** FASTA -> SEQ
+for i in $MGA_SEQ_RUN; do grep -v ">" $FLD_chromosomes/$TURKEY_CHR$i.$FILE_TYPE > $FLD_datasets/$TURKEY_CHR$i; done
+
+fi  # end of $GET_TURKEY
 
 
 #***********************************************************
@@ -541,7 +571,7 @@ set for [i=1:words(YTICS)] ytics ( word(YTICS,i) i-1 ) right font ",9" offset yt
 
 plot "<awk 'NR>1' '$FLD_dat/tot-${IR_LBL}0-$REF_SPECIE-$TAR_SPECIE.$INF_FILE_TYPE' | cut -f2-" matrix with image
 ### ! before any command inside gnuplot lets bash command work (e.g. the followings)
-##!awk 'NR>1' $FLD_dat/tot-${IR_LBL}0-$HUMAN_CHR-$CHIMP_CHR.$INF_FILE_TYPE | cut -f2- > temp
+##!awk 'NR>1' $FLD_dat/tot-${IR_LBL}0-$HUMAN_CHR-$CHIMPANZEE_CHR.$INF_FILE_TYPE | cut -f2- > temp
 ##plot "temp" matrix with image
 ##!rm temp
 
