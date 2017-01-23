@@ -82,10 +82,10 @@ datasets="$HUMAN_CHR$CURR_CHR"
 
 ### reference parameters
 #REF_SPECIE=$HUMAN_CHR
-REF_SPECIE=$CHIMPANZEE_CHR
+#REF_SPECIE=$CHIMPANZEE_CHR
 #REF_SPECIE=$GORILLA_CHR
 #REF_SPECIE=$CHICKEN_CHR
-#REF_SPECIE=$TURKEY_CHR
+REF_SPECIE=$TURKEY_CHR
 #
 tempRefSeqRun=${REF_SPECIE}_SEQ_RUN
 REF_SEQ_RUN=${!tempRefSeqRun}     # all chromosomes for that specie, e.g. HS_SEQ_RUN
@@ -93,10 +93,10 @@ REF_DATASET="";  for i in 24; do REF_DATASET+=$REF_SPECIE${i}" "; done
 #REF_DATASET="";  for i in $REF_SEQ_RUN; do REF_DATASET+=$REF_SPECIE${i}" "; done
 
 ###*** target parameters
-TAR_SPECIE=$HUMAN_CHR
+#TAR_SPECIE=$HUMAN_CHR
 #TAR_SPECIE=$CHIMPANZEE_CHR
 #TAR_SPECIE=$GORILLA_CHR
-#TAR_SPECIE=$CHICKEN_CHR
+TAR_SPECIE=$CHICKEN_CHR
 #TAR_SPECIE=$TURKEY_CHR
 #
 tempTarSeqRun=${TAR_SPECIE}_SEQ_RUN
@@ -614,7 +614,7 @@ plot "<awk 'NR>1' '$FLD_dat/tot-${IR_LBL}1-$REF_SPECIE-$TAR_SPECIE.$INF_FILE_TYP
 
 set palette defined (0 "white", 1 "green", 2 "red")
 #set tmargin 4.5
-set cblabel "Difference in NRCs (NRC_{IR=0} - NRC_{IR=1})" font ",11" offset -1.5,0
+set cblabel "The difference between NRCs (NRC_{IR=0} - NRC_{IR=1})" font ",11" offset -1.5,0
 
 ### reference-target, difference between i0 and i1
 set output "diff-$REF_SPECIE-$TAR_SPECIE.$PIX_FORMAT"
