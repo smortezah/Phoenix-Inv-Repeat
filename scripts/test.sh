@@ -31,7 +31,7 @@ GEN_MUTATIONS=0         # generate mutations using "goose"
 GEN_ARCHAEA=0           # generate archea dataset using "goose" -- output: out#.fa
 RUN=0                   # run the program
 PLOT_RESULTS=0          # plot results using "gnuplot"
-BUILD_MATRIX=0          # build matrix from datasets
+BUILD_MATRIX=1          # build matrix from datasets
 PLOT_MATRIX=0           # plot matrix from datasets
 ARCHIVE_DATA=0          # archive data
 
@@ -61,14 +61,16 @@ GORILLA_CHROMOSOME="$GORILLA_CHR_PREFIX$CHR"
 HS_SEQ_RUN="1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 X Y MT AL UL UP"
 PT_SEQ_RUN="1 2A 2B 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 X Y MT UL UP"
 GG_SEQ_RUN="1 2A 2B 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 X MT UL UP"
+A_SEQ_RUN={1..206}
 
 datasets="$HUMAN_CHR$CURR_CHR"
 #datasets="";   for i in $HS_SEQ_RUN; do datasets+=$HUMAN_CHR${i}" "; done
 
 ### reference parameters
-REF_SPECIE=$HUMAN_CHR
+#REF_SPECIE=$HUMAN_CHR
 #REF_SPECIE=$CHIMP_CHR
 #REF_SPECIE=$GORIL_CHR
+REF_SPECIE=$ARCH_CHR
 #
 tempRefSeqRun=${REF_SPECIE}_SEQ_RUN
 REF_SEQ_RUN=${!tempRefSeqRun}     # all chromosomes for that specie, e.g. HS_SEQ_RUN
@@ -78,7 +80,8 @@ REF_DATASET="";  for i in 24; do REF_DATASET+=$REF_SPECIE${i}" "; done
 ###*** target parameters
 #TAR_SPECIE=$HUMAN_CHR
 #TAR_SPECIE=$CHIMP_CHR
-TAR_SPECIE=$GORIL_CHR
+#TAR_SPECIE=$GORIL_CHR
+TAR_SPECIE=$ARCH_CHR
 #
 tempTarSeqRun=${TAR_SPECIE}_SEQ_RUN
 TAR_SEQ_RUN=${!tempTarSeqRun}     # all chromosomes for that specie, e.g. HS_SEQ_RUN
