@@ -24,7 +24,7 @@ FLD_XS="XS"
 GET_HUMAN=0             # download Human choromosomes and make SEQ out of FASTA
 GET_CHIMPANZEE=0        # download Chimpanzee choromosomes and make SEQ out of FASTA
 GET_GORILLA=0           # download Gorilla choromosomes and make SEQ out of FASTA
-GET_CHICKEN=0           # download Chicken choromosomes and make SEQ out of FASTA
+GET_CHICKEN=1           # download Chicken choromosomes and make SEQ out of FASTA
 GET_TURKEY=1            # download Turkey choromosomes and make SEQ out of FASTA
 INSTALL_XS=0            # install "XS" from Github
 INSTALL_goose=0         # install "goose" from Github
@@ -59,7 +59,7 @@ CHIMPANZEE_CHR="PT"
 GORILLA_CHR="GG"
 ARCHAEA_CHR="A"
 CHICKEN_CHR="GGA"
-TURKEY_CHR="GGA"
+TURKEY_CHR="MGA"
 
 CURR_CHR="21"
 chromosomes="$HUMAN_CHR_PREFIX$CHR$CURR_CHR"
