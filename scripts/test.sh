@@ -212,12 +212,13 @@ for i in unlocalized unplaced; do
  rm $CHICKEN_CHR_PREFIX$i.$FILE_TYPE.$COMP_FILE_TYPE
 done
 
-###*** rename: GGAunlocalized -> GGAUL, GGAunplaced -> GGAUP
-mv $FLD_chromosomes/$GORIL_CHR"unlocalized".$FILE_TYPE $FLD_chromosomes/$GORIL_CHR"UL".$FILE_TYPE
-mv $FLD_chromosomes/$GORIL_CHR"unplaced".$FILE_TYPE $FLD_chromosomes/$GORIL_CHR"UP".$FILE_TYPE
+###*** rename: GGALGE64 -> GGALG, GGAunlocalized -> GGAUL, GGAunplaced -> GGAUP
+mv $FLD_chromosomes/$CHICK_CHR"LGE64".$FILE_TYPE $FLD_chromosomes/$CHICK_CHR"LG".$FILE_TYPE
+mv $FLD_chromosomes/$CHICK_CHR"unlocalized".$FILE_TYPE $FLD_chromosomes/$CHICK_CHR"UL".$FILE_TYPE
+mv $FLD_chromosomes/$CHICK_CHR"unplaced".$FILE_TYPE $FLD_chromosomes/$CHICK_CHR"UP".$FILE_TYPE
 
 ###*** FASTA -> SEQ
-for i in $GG_SEQ_RUN; do grep -v ">" $FLD_chromosomes/$GORIL_CHR$i.$FILE_TYPE > $FLD_datasets/$GORIL_CHR$i; done
+for i in $GGA_SEQ_RUN; do grep -v ">" $FLD_chromosomes/$CHICK_CHR$i.$FILE_TYPE > $FLD_datasets/$CHICK_CHR$i; done
 
 fi  # end of $GET_GORILLA
 
