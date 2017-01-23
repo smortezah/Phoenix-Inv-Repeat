@@ -212,7 +212,7 @@ for i in unlocalized unplaced; do
  rm $CHICKEN_CHR_PREFIX$i.$FILE_TYPE.$COMP_FILE_TYPE
 done
 
-###*** rename: GGunlocalized -> GGUL, GGunplaced -> GGUP
+###*** rename: GGAunlocalized -> GGAUL, GGAunplaced -> GGAUP
 mv $FLD_chromosomes/$GORIL_CHR"unlocalized".$FILE_TYPE $FLD_chromosomes/$GORIL_CHR"UL".$FILE_TYPE
 mv $FLD_chromosomes/$GORIL_CHR"unplaced".$FILE_TYPE $FLD_chromosomes/$GORIL_CHR"UP".$FILE_TYPE
 
