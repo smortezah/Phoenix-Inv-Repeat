@@ -517,9 +517,12 @@ for alphaDen in $ALPHA_DENS; do
 #  done
 # done
 
+
+#       | tr ',' '.' | awk 'NR == 1 {print; next} {print}' \
+#       | awk '{for (i=1;i<=NF/2;i++) printf "%s\t", ($i==$i+0)?$i-$(i+NF/2):$i; print ""}' \
  paste "tot-${IR_LBL}0-$REF_SPECIE-$TAR_SPECIE.$INF_FILE_TYPE" "tot-${IR_LBL}1-$REF_SPECIE-$TAR_SPECIE.$INF_FILE_TYPE" \
-       | tr ',' '.' | awk 'NR == 1 {print; next} {print}' \
-       | awk '{for (i=1;i<=NF/2;i++) printf "%s\t", ($i==$i+0)?$i-$(i+NF/2):$i; print ""}' \
+       | tr ',' '.' \
+       | awk '{for (i=1;i<=NF/2;i++) if($i==$i+0) {printf "%0.5f\t", $i-$(i+NF/2);} else if($i!=$i+0) {printf "%s\t", $i;} print ""}' \
        > "diff-$REF_SPECIE-$TAR_SPECIE.$INF_FILE_TYPE"
 
  echo -e "\t$(cat "diff-$REF_SPECIE-$TAR_SPECIE.$INF_FILE_TYPE")" > "diff-$REF_SPECIE-$TAR_SPECIE.$INF_FILE_TYPE"
