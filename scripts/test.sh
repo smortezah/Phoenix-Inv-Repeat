@@ -29,7 +29,7 @@ GET_CHICKEN=0           # download Chicken choromosomes and make SEQ out of FAST
 GET_TURKEY=0            # download Turkey choromosomes and make SEQ out of FASTA
 INSTALL_XS=0            # install "XS" from Github
 INSTALL_goose=0         # install "goose" from Github
-INSTALL_GULL=0         # install "goose" from Github
+INSTALL_GULL=0          # install "GULL" from Github
 GEN_DATASETS=0          # generate datasets using "XS"
 GEN_MUTATIONS=0         # generate mutations using "goose"
 GEN_ARCHAEA=0           # generate archea dataset using "goose" -- output: out#.fa
@@ -87,8 +87,8 @@ datasets="$HUMAN_CHR$CURR_CHR"
 #REF_SPECIE=$CHIMPANZEE_CHR
 #REF_SPECIE=$GORILLA_CHR
 #REF_SPECIE=$CHICKEN_CHR
-REF_SPECIE=$TURKEY_CHR
-#REF_SPECIE=$ARCHAEA_CHR
+#REF_SPECIE=$TURKEY_CHR
+REF_SPECIE=$ARCHAEA_CHR
 #
 tempRefSeqRun=${REF_SPECIE}_SEQ_RUN
 REF_SEQ_RUN=${!tempRefSeqRun}     # all chromosomes for that specie, e.g. HS_SEQ_RUN
@@ -99,9 +99,9 @@ REF_DATASET="";  for i in 24; do REF_DATASET+=$REF_SPECIE${i}" "; done
 #TAR_SPECIE=$HUMAN_CHR
 #TAR_SPECIE=$CHIMPANZEE_CHR
 #TAR_SPECIE=$GORILLA_CHR
-TAR_SPECIE=$CHICKEN_CHR
+#TAR_SPECIE=$CHICKEN_CHR
 #TAR_SPECIE=$TURKEY_CHR
-#TAR_SPECIE=$ARCHAEA_CHR
+TAR_SPECIE=$ARCHAEA_CHR
 #
 tempTarSeqRun=${TAR_SPECIE}_SEQ_RUN
 TAR_SEQ_RUN=${!tempTarSeqRun}     # all chromosomes for that specie, e.g. HS_SEQ_RUN
