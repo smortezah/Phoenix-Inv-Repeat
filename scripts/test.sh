@@ -86,8 +86,8 @@ datasets="$HUMAN_CHR$CURR_CHR"
 #REF_SPECIE=$HUMAN_CHR
 #REF_SPECIE=$CHIMPANZEE_CHR
 #REF_SPECIE=$GORILLA_CHR
-REF_SPECIE=$CHICKEN_CHR
-#REF_SPECIE=$TURKEY_CHR
+#REF_SPECIE=$CHICKEN_CHR
+REF_SPECIE=$TURKEY_CHR
 #REF_SPECIE=$ARCHAEA_CHR
 #
 tempRefSeqRun=${REF_SPECIE}_SEQ_RUN
@@ -99,8 +99,8 @@ REF_DATASET="";  for i in 24; do REF_DATASET+=$REF_SPECIE${i}" "; done
 #TAR_SPECIE=$HUMAN_CHR
 #TAR_SPECIE=$CHIMPANZEE_CHR
 #TAR_SPECIE=$GORILLA_CHR
-#TAR_SPECIE=$CHICKEN_CHR
-TAR_SPECIE=$TURKEY_CHR
+TAR_SPECIE=$CHICKEN_CHR
+#TAR_SPECIE=$TURKEY_CHR
 #TAR_SPECIE=$ARCHAEA_CHR
 #
 tempTarSeqRun=${TAR_SPECIE}_SEQ_RUN
@@ -574,7 +574,8 @@ set rmargin 1.35
 set pm3d map
 
 #set nocbtics
-set cblabel "NRC" font ",11" offset -0.25,0
+set cblabel "NRC" font ",11" offset -0.25,0     # works for some files
+#set cblabel "NRC" font ",11" offset -1.1,0     # works for some other files
 set cbtics scale 1 font ",9.5"
 #set cbtics
 #set cbrange [ 0.2 : 1 ] noreverse nowriteback
