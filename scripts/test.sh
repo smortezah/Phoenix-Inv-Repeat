@@ -592,30 +592,6 @@ set for [i=1:words(YTICS)] ytics ( word(YTICS,i) i-1 ) font ",9" offset yticsOff
 
 plot "<awk 'NR>1' '$FLD_dat/tot-${IR_LBL}1-$REF_SPECIE-$TAR_SPECIE.$INF_FILE_TYPE' | cut -f2-" matrix with image
 
-#### target-reference, i0
-#set output "${IR_LBL}0-$REF_SPECIE-$TAR_SPECIE.$PIX_FORMAT"
-##set title "Inverted repeats considered"
-##set title "Relative compression: PT-HS\nReference: PT, Target: HS, inverted repeats: not considered"
-#
-#YTICS="`awk 'BEGIN{getline}{printf "%s ",$1}' "$FLD_dat/tot-${IR_LBL}0-$REF_SPECIE-$TAR_SPECIE.$INF_FILE_TYPE"`"
-#XTICS="`head -1 "$FLD_dat/tot-${IR_LBL}0-$REF_SPECIE-$TAR_SPECIE.$INF_FILE_TYPE"`"
-#set for [i=1:words(XTICS)] xtics ( word(XTICS,i) i-1 ) font ",9" rotate by 90 offset 0,xticsOffset
-#set for [i=1:words(YTICS)] ytics ( word(YTICS,i) i-1 ) font ",9" offset yticsOffset,0
-#
-#plot "<awk 'NR>1' '$FLD_dat/tot-${IR_LBL}0-$REF_SPECIE-$TAR_SPECIE.$INF_FILE_TYPE' | cut -f2-" matrix with image
-#
-#### target-reference, i1
-#set output "${IR_LBL}1-$REF_SPECIE-$TAR_SPECIE.$PIX_FORMAT"
-##set title "Inverted repeats not considered"
-##set title "Relative compression: PT-HS\nReference: PT, Target: HS, inverted repeats: considered"
-#
-#YTICS="`awk 'BEGIN{getline}{printf "%s ",$1}' "$FLD_dat/tot-${IR_LBL}1-$REF_SPECIE-$TAR_SPECIE.$INF_FILE_TYPE"`"
-#XTICS="`head -1 "$FLD_dat/tot-${IR_LBL}1-$REF_SPECIE-$TAR_SPECIE.$INF_FILE_TYPE"`"
-#set for [i=1:words(XTICS)] xtics ( word(XTICS,i) i-1 ) font ",9" rotate by 90 offset 0,xticsOffset
-#set for [i=1:words(YTICS)] ytics ( word(YTICS,i) i-1 ) font ",9" offset yticsOffset,0
-#
-#plot "<awk 'NR>1' '$FLD_dat/tot-${IR_LBL}1-$REF_SPECIE-$TAR_SPECIE.$INF_FILE_TYPE' | cut -f2-" matrix with image
-
 
 set palette defined (0 "white", 1 "green", 2 "red")
 #set tmargin 4.5
