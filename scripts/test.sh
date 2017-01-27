@@ -18,6 +18,7 @@ FLD_chromosomes="chromosomes"
 FLD_dat="dat"
 FLD_datasets="datasets"
 FLD_goose="goose"
+FLD_GULL="GULL"
 FLD_scripts="scripts"
 FLD_XS="XS"
 
@@ -28,6 +29,7 @@ GET_CHICKEN=0           # download Chicken choromosomes and make SEQ out of FAST
 GET_TURKEY=0            # download Turkey choromosomes and make SEQ out of FASTA
 INSTALL_XS=0            # install "XS" from Github
 INSTALL_goose=0         # install "goose" from Github
+INSTALL_GULL=0         # install "goose" from Github
 GEN_DATASETS=0          # generate datasets using "XS"
 GEN_MUTATIONS=0         # generate mutations using "goose"
 GEN_ARCHAEA=0           # generate archea dataset using "goose" -- output: out#.fa
@@ -84,9 +86,9 @@ datasets="$HUMAN_CHR$CURR_CHR"
 #REF_SPECIE=$HUMAN_CHR
 #REF_SPECIE=$CHIMPANZEE_CHR
 #REF_SPECIE=$GORILLA_CHR
-REF_SPECIE=$CHICKEN_CHR
+#REF_SPECIE=$CHICKEN_CHR
 #REF_SPECIE=$TURKEY_CHR
-#REF_SPECIE=$ARCHAEA_CHR
+REF_SPECIE=$ARCHAEA_CHR
 #
 tempRefSeqRun=${REF_SPECIE}_SEQ_RUN
 REF_SEQ_RUN=${!tempRefSeqRun}     # all chromosomes for that specie, e.g. HS_SEQ_RUN
@@ -98,8 +100,8 @@ REF_DATASET="";  for i in 24; do REF_DATASET+=$REF_SPECIE${i}" "; done
 #TAR_SPECIE=$CHIMPANZEE_CHR
 #TAR_SPECIE=$GORILLA_CHR
 #TAR_SPECIE=$CHICKEN_CHR
-TAR_SPECIE=$TURKEY_CHR
-#TAR_SPECIE=$ARCHAEA_CHR
+#TAR_SPECIE=$TURKEY_CHR
+TAR_SPECIE=$ARCHAEA_CHR
 #
 tempTarSeqRun=${TAR_SPECIE}_SEQ_RUN
 TAR_SEQ_RUN=${!tempTarSeqRun}     # all chromosomes for that specie, e.g. HS_SEQ_RUN
@@ -290,6 +292,20 @@ cd ../../
 
 fi  # end of $INSTALL_goose
 
+
+#***********************************************************
+#   install "GULL" from Github
+#***********************************************************
+if [[ $INSTALL_GULL == 1 ]]; then
+
+rm -fr GULL
+git clone https://github.com/pratas/GULL.git
+cd ${FLD_GULL}/src
+cmake .
+make
+cd ../../
+
+fi  # end of $INSTALL_goose
 
 #***********************************************************
 #   generate datasets using "XS"
@@ -609,17 +625,17 @@ set for [i=1:words(YTICS)] ytics ( word(YTICS,i) i-1 ) font ",9" offset yticsOff
 
 plot "<awk 'NR>1' '$FLD_dat/diff-$REF_SPECIE-$TAR_SPECIE.$INF_FILE_TYPE' | cut -f2-" matrix with image
 
-#### target-reference, difference between i0 and i1
-#set output "diff-$TAR_SPECIE-$REF_SPECIE.$PIX_FORMAT"
-##set title "The difference"
-##set title "Relative compression: PT-HS\nDifference between considering and not considering inverted repeats\nReference: PT, Target: HS"
-#
-#YTICS="`awk 'BEGIN{getline}{printf "%s ",$1}' "$FLD_dat/diff-$TAR_SPECIE-$REF_SPECIE.$INF_FILE_TYPE"`"
-#XTICS="`head -1 "$FLD_dat/diff-$TAR_SPECIE-$REF_SPECIE.$INF_FILE_TYPE"`"
-#set for [i=1:words(XTICS)] xtics ( word(XTICS,i) i-1 ) font ",9" rotate by 90 offset 0,xticsOffset
-#set for [i=1:words(YTICS)] ytics ( word(YTICS,i) i-1 ) font ",9" offset yticsOffset,0
-#
-#plot "<awk 'NR>1' '$FLD_dat/diff-$TAR_SPECIE-$REF_SPECIE.$INF_FILE_TYPE' | cut -f2-" matrix with image
+### target-reference, difference between i0 and i1
+set output "diff-$TAR_SPECIE-$REF_SPECIE.$PIX_FORMAT"
+#set title "The difference"
+#set title "Relative compression: PT-HS\nDifference between considering and not considering inverted repeats\nReference: PT, Target: HS"
+
+YTICS="`awk 'BEGIN{getline}{printf "%s ",$1}' "$FLD_dat/diff-$TAR_SPECIE-$REF_SPECIE.$INF_FILE_TYPE"`"
+XTICS="`head -1 "$FLD_dat/diff-$TAR_SPECIE-$REF_SPECIE.$INF_FILE_TYPE"`"
+set for [i=1:words(XTICS)] xtics ( word(XTICS,i) i-1 ) font ",9" rotate by 90 offset 0,xticsOffset
+set for [i=1:words(YTICS)] ytics ( word(YTICS,i) i-1 ) font ",9" offset yticsOffset,0
+
+plot "<awk 'NR>1' '$FLD_dat/diff-$TAR_SPECIE-$REF_SPECIE.$INF_FILE_TYPE' | cut -f2-" matrix with image
 
 EOF
 
