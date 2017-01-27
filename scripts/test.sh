@@ -33,7 +33,7 @@ GEN_MUTATIONS=0         # generate mutations using "goose"
 GEN_ARCHAEA=0           # generate archea dataset using "goose" -- output: out#.fa
 RUN=0                   # run the program
 PLOT_RESULTS=0          # plot results using "gnuplot"
-BUILD_MATRIX=1          # build matrix from datasets
+BUILD_MATRIX=0          # build matrix from datasets
 PLOT_MATRIX=0           # plot matrix from datasets
 ARCHIVE_DATA=0          # archive data
 
@@ -506,16 +506,16 @@ cd $FLD_dat
 for i in $TAR_SEQ_RUN; do printf "\t%s" "$TAR_SPECIE$i" >> "${TAR_SPECIE}_HORIZ_PAD"; done;    echo >> "${TAR_SPECIE}_HORIZ_PAD"
 
 for alphaDen in $ALPHA_DENS; do
-# for i in $INV_REPEATS; do
-#  cat "${TAR_SPECIE}_HORIZ_PAD" >> "tot-$IR_LBL$i-$REF_SPECIE-$TAR_SPECIE.$INF_FILE_TYPE"
-#
-#  for c in $REF_SEQ_RUN; do
-#   awk -F "\t" '{print $7}' "$IR_LBL$i-$REF_SPECIE$c-$TAR_SPECIE.$INF_FILE_TYPE" \
-#        | awk -v ref_ch=$REF_SPECIE$c 'NR == 1 {print ref_ch; next} {print}' | tr '\n' '\t' | tr ',' '.' \
-#        >> "tot-$IR_LBL$i-$REF_SPECIE-$TAR_SPECIE.$INF_FILE_TYPE"
-#   echo >> "tot-$IR_LBL$i-$REF_SPECIE-$TAR_SPECIE.$INF_FILE_TYPE"
-#  done
-# done
+ for i in $INV_REPEATS; do
+  cat "${TAR_SPECIE}_HORIZ_PAD" >> "tot-$IR_LBL$i-$REF_SPECIE-$TAR_SPECIE.$INF_FILE_TYPE"
+
+  for c in $REF_SEQ_RUN; do
+   awk -F "\t" '{print $7}' "$IR_LBL$i-$REF_SPECIE$c-$TAR_SPECIE.$INF_FILE_TYPE" \
+        | awk -v ref_ch=$REF_SPECIE$c 'NR == 1 {print ref_ch; next} {print}' | tr '\n' '\t' | tr ',' '.' \
+        >> "tot-$IR_LBL$i-$REF_SPECIE-$TAR_SPECIE.$INF_FILE_TYPE"
+   echo >> "tot-$IR_LBL$i-$REF_SPECIE-$TAR_SPECIE.$INF_FILE_TYPE"
+  done
+ done
 
 
 #       | tr ',' '.' | awk 'NR == 1 {print; next} {print}' \
