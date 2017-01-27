@@ -305,7 +305,8 @@ cmake .
 make
 cd ../../
 
-fi  # end of $INSTALL_goose
+fi  # end of $INSTALL_GULL
+
 
 #***********************************************************
 #   generate datasets using "XS"
