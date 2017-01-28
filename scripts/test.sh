@@ -35,7 +35,7 @@ GEN_MUTATIONS=0         # generate mutations using "goose"
 GEN_ARCHAEA=0           # generate archea dataset using "goose" -- output: out#.fa
 RUN=0                   # run the program
 PLOT_RESULTS=0          # plot results using "gnuplot"
-BUILD_MATRIX=0          # build matrix from datasets
+BUILD_MATRIX=1          # build matrix from datasets
 PLOT_MATRIX=1           # plot matrix from datasets
 ARCHIVE_DATA=0          # archive data
 
@@ -83,11 +83,11 @@ datasets="$HUMAN_CHR$CURR_CHR"
 #datasets="";   for i in $HS_SEQ_RUN; do datasets+=$HUMAN_CHR${i}" "; done
 
 ### reference parameters
-REF_SPECIE=$HUMAN_CHR
+#REF_SPECIE=$HUMAN_CHR
 #REF_SPECIE=$CHIMPANZEE_CHR
 #REF_SPECIE=$GORILLA_CHR
 #REF_SPECIE=$CHICKEN_CHR
-#REF_SPECIE=$TURKEY_CHR
+REF_SPECIE=$TURKEY_CHR
 #REF_SPECIE=$ARCHAEA_CHR
 #
 tempRefSeqRun=${REF_SPECIE}_SEQ_RUN
@@ -98,8 +98,8 @@ REF_DATASET="";  for i in 24; do REF_DATASET+=$REF_SPECIE${i}" "; done
 ###*** target parameters
 #TAR_SPECIE=$HUMAN_CHR
 #TAR_SPECIE=$CHIMPANZEE_CHR
-TAR_SPECIE=$GORILLA_CHR
-#TAR_SPECIE=$CHICKEN_CHR
+#TAR_SPECIE=$GORILLA_CHR
+TAR_SPECIE=$CHICKEN_CHR
 #TAR_SPECIE=$TURKEY_CHR
 #TAR_SPECIE=$ARCHAEA_CHR
 #
