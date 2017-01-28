@@ -35,8 +35,8 @@ GEN_MUTATIONS=0         # generate mutations using "goose"
 GEN_ARCHAEA=0           # generate archea dataset using "goose" -- output: out#.fa
 RUN=0                   # run the program
 PLOT_RESULTS=0          # plot results using "gnuplot"
-BUILD_MATRIX=1          # build matrix from datasets
-PLOT_MATRIX=0           # plot matrix from datasets
+BUILD_MATRIX=0          # build matrix from datasets
+PLOT_MATRIX=1           # plot matrix from datasets
 ARCHIVE_DATA=0          # archive data
 
 # mutations list:   `seq -s' ' 1 10`
@@ -532,8 +532,20 @@ for alphaDen in $ALPHA_DENS; do
         >> "tot-$IR_LBL$i-$REF_SPECIE-$TAR_SPECIE.$INF_FILE_TYPE"
    echo >> "tot-$IR_LBL$i-$REF_SPECIE-$TAR_SPECIE.$INF_FILE_TYPE"
   done
- done
 
+ ###*** filter NRC values greater than 1
+  awk 'NR>1 ' tot-$IR_LBL$i-$REF_SPECIE-$TAR_SPECIE.dat \
+   | awk '{for (i=1;i<=NF;i++) if($i!=$i+0) printf "%s\t", $i; \
+			 else if($i==$i+0 && $i>1) printf "%.5f\t", 1; \
+ 		   	 else if($i==$i+0 && $i<=1) printf "%.5f\t", $i; \
+		   	 print ""}' \
+   > temp;
+  cat "${TAR_SPECIE}_HORIZ_PAD" > "temp-tot"
+  cat "temp" >> "temp-tot"
+  rm -f "tot-$IR_LBL$i-$REF_SPECIE-$TAR_SPECIE.dat";
+  mv "temp-tot" "tot-$IR_LBL$i-$REF_SPECIE-$TAR_SPECIE.dat";
+  rm -f "temp" "temp-tot"
+ done
 
 #       | tr ',' '.' | awk 'NR == 1 {print; next} {print}' \
 #       | awk '{for (i=1;i<=NF/2;i++) printf "%s\t", ($i==$i+0)?$i-$(i+NF/2):$i; print ""}' \
