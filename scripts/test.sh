@@ -536,9 +536,9 @@ for alphaDen in $ALPHA_DENS; do
  ###*** filter NRC values greater than 1
   awk 'NR>1 ' tot-$IR_LBL$i-$REF_SPECIE-$TAR_SPECIE.dat \
    | awk '{for (i=1;i<=NF;i++) if($i!=$i+0) printf "%s\t", $i; \
-			 else if($i==$i+0 && $i>1) printf "%.5f\t", 1; \
- 		   	 else if($i==$i+0 && $i<=1) printf "%.5f\t", $i; \
-		   	 print ""}' \
+			              else if($i==$i+0 && $i>1) printf "%.5f\t", 1; \
+ 		   	              else if($i==$i+0 && $i<=1) printf "%.5f\t", $i; \
+ 		   	              print ""}' \
    > temp;
   cat "${TAR_SPECIE}_HORIZ_PAD" > "temp-tot"
   cat "temp" >> "temp-tot"
