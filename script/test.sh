@@ -1,12 +1,12 @@
 #!/bin/bash
 
+
 #***********************************************************
 #   change directory to home
 #***********************************************************
 cd ..
 cmake src
 make
-
 
 #***********************************************************
 #   parameters to install and run needed programs
@@ -19,6 +19,7 @@ FLD_dat="dat"
 FLD_datasets="datasets"
 FLD_goose="goose"
 FLD_GULL="GULL"
+FLD_src="src"
 FLD_script="script"
 FLD_XS="XS"
 
@@ -126,19 +127,19 @@ MAX_CTX=20              # max context-order size
 
 
 #>>>>>  download Human choromosomes and make SEQ out of FASTA
-if [[ $GET_HUMAN==1 ]]; then . $FLD_script/get_human.sh; fi
+if [[ $GET_HUMAN == 1 ]]; then . $FLD_script/get_human.sh; fi
 
 #>>>>>  download Chimpanzee choromosomes and make SEQ out of FASTA
-if [[ $GET_CHIMPANZEE==1 ]]; then . $FLD_script/get_chimpanzee.sh; fi
+if [[ $GET_CHIMPANZEE == 1 ]]; then . $FLD_script/get_chimpanzee.sh; fi
 
 #>>>>>  download Gorilla choromosomes and make SEQ out of FASTA
-if [[ $GET_GORILLA==1 ]]; then . $FLD_script/get_gorilla.sh; fi
+if [[ $GET_GORILLA == 1 ]]; then . $FLD_script/get_gorilla.sh; fi
 
 #>>>>>  download Chicken choromosomes and make SEQ out of FASTA
-if [[ $GET_CHICKEN==1 ]]; then . $FLD_script/get_chicken.sh; fi
+if [[ $GET_CHICKEN == 1 ]]; then . $FLD_script/get_chicken.sh; fi
 
 #>>>>>  download Turkey choromosomes and make SEQ out of FASTA
-if [[ $GET_TURKEY==1 ]]; then . $FLD_script/get_turkey.sh; fi
+if [[ $GET_TURKEY == 1 ]]; then . $FLD_script/get_turkey.sh; fi
 
 
 
@@ -284,13 +285,13 @@ fi  # end of $RUN
 
 
 #>>>>>  plot results using "gnuplot"
-if [[ $PLOT_RESULT==1 ]]; then . $FLD_script/plot_result.sh; fi
+if [[ $PLOT_RESULT == 1 ]]; then . $FLD_script/plot_result.sh; fi
 
 #>>>>>  build matrix from Reference Target correspondence
-if [[ $BUILD_MATRIX==1 ]]; then . $FLD_script/build_matrix.sh; fi
+if [[ $BUILD_MATRIX == 1 ]]; then . $FLD_script/build_matrix.sh; fi
 
 #>>>>>  plot matrix from Reference Target correspondence
-if [[ $PLOT_MATRIX==1 ]]; then . $FLD_script/plot_matrix.sh; fi
+if [[ $PLOT_MATRIX == 1 ]]; then . $FLD_script/plot_matrix.sh; fi
 
 
 ########################
