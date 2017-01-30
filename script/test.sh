@@ -36,8 +36,7 @@ GEN_ARCHAEA=0           # generate archea dataset using "goose" -- output: out#.
 RUN=0                   # run the program
 PLOT_RESULTS=0          # plot results using "gnuplot"
 BUILD_MATRIX=0          # build matrix from datasets
-PLOT_MATRIX=1           # plot matrix from datasets
-ARCHIVE_DATA=0          # archive data
+PLOT_MATRIX=0           # plot matrix from datasets
 
 # mutations list:   `seq -s' ' 1 10`
 #MUT_LIST="1 2 3 4 5 6 7 8 9 10 12 14 16 18 20 25 30 35 40 45 50"
@@ -564,25 +563,8 @@ cd ..
 fi  # end of $BUILD_MATRIX
 
 
-#***********************************************************
-#   plot matrix from Reference Target correspondence
-#***********************************************************
-
-
-
-#>>>    plot matrix from Reference Target correspondence
+#>>>>>  plot matrix from Reference Target correspondence
 if [[ $PLOT_MATRIX==1 ]]; then . $FLD_script/plot_matrix.sh; fi
-
-
-#***********************************************************
-#   archive data
-#***********************************************************
-if [[ $ARCHIVE_DATA == 1 ]]; then
-
-#mkdir -p archive
-mv $FLD_dat/* $FLD_archive_dat/
-
-fi  # end of $ARCHIVE_DATA
 
 
 ########################
