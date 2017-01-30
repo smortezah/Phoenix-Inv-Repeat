@@ -19,7 +19,7 @@ FLD_dat="dat"
 FLD_datasets="datasets"
 FLD_goose="goose"
 FLD_GULL="GULL"
-FLD_scripts="scripts"
+FLD_scripts="script"
 FLD_XS="XS"
 
 GET_HUMAN=0             # download Human choromosomes and make SEQ out of FASTA
