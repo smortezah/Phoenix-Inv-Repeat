@@ -19,7 +19,7 @@ FLD_dat="dat"
 FLD_datasets="datasets"
 FLD_goose="goose"
 FLD_GULL="GULL"
-FLD_scripts="script"
+FLD_script="script"
 FLD_XS="XS"
 
 GET_HUMAN=0             # download Human choromosomes and make SEQ out of FASTA
@@ -567,7 +567,7 @@ fi  # end of $BUILD_MATRIX
 #***********************************************************
 #   plot matrix from Reference Target correspondence
 #***********************************************************
-if [[ $PLOT_MATRIX == 1 ]]; then . plot_matrix.sh; fi  # end of $PLOT_MATRIX
+if [[ $PLOT_MATRIX==1 ]]; then . $FLD_script/plot_matrix.sh; fi  # end of $PLOT_MATRIX
 
 
 #***********************************************************
@@ -582,4 +582,4 @@ fi  # end of $ARCHIVE_DATA
 
 
 ########################
-cd $FLD_scripts
+cd $FLD_script
