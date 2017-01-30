@@ -4,7 +4,7 @@
 #   change directory to home
 #***********************************************************
 cd ..
-cmake source
+cmake src
 make
 
 
