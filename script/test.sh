@@ -121,6 +121,8 @@ ALPHA_DENS="100"        # list of alpha denominators
 MIN_CTX=20              # min context-order size
 MAX_CTX=20              # max context-order size
 
+#>>>>>  download Human choromosomes and make SEQ out of FASTA
+if [[ $GET_HUMAN==1 ]]; then . $FLD_script/get_human.sh; fi
 
 #***********************************************************
 #   download Human choromosomes and make SEQ out of FASTA
