@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+
 ###*** download FASTA
 for i in {1..22} X Y MT; do
  wget $HUMAN_URL/$HUMAN_CHROMOSOME$i.$FILE_TYPE.$COMP_FILE_TYPE;

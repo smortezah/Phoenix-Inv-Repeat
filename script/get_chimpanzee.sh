@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+
 ###*** download FASTA
 for i in 1 2A 2B {3..22} X Y MT; do
  wget $CHIMPANZEE_URL/$CHIMPANZEE_CHROMOSOME$i.$FILE_TYPE.$COMP_FILE_TYPE;

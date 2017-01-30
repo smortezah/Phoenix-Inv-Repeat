@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+
 ###*** download FASTA
 for i in {1..28} {30..33} LGE64 MT W Z; do
  wget $CHICKEN_URL/$CHICKEN_CHROMOSOME$i.$FILE_TYPE.$COMP_FILE_TYPE;
