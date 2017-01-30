@@ -567,7 +567,7 @@ fi  # end of $BUILD_MATRIX
 #***********************************************************
 #   plot matrix from Reference Target correspondence
 #***********************************************************
-if [[ $PLOT_MATRIX==1 ]]; then . $FLD_script/plot_matrix.sh; fi  # end of $PLOT_MATRIX
+if [[ $PLOT_MATRIX==1 ]]; then . $FLD_script/plot_matrix.sh; fi
 
 
 #***********************************************************
