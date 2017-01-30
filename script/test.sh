@@ -127,19 +127,19 @@ MAX_CTX=20              # max context-order size
 
 
 #>>>>>  download Human choromosomes and make SEQ out of FASTA
-if [[ $GET_HUMAN == 1 ]]; then . $FLD_script/get_human.sh; fi
+if [[ $GET_HUMAN -eq 1 ]]; then . $FLD_script/get_human.sh; fi
 
 #>>>>>  download Chimpanzee choromosomes and make SEQ out of FASTA
-if [[ $GET_CHIMPANZEE == 1 ]]; then . $FLD_script/get_chimpanzee.sh; fi
+if [[ $GET_CHIMPANZEE -eq 1 ]]; then . $FLD_script/get_chimpanzee.sh; fi
 
 #>>>>>  download Gorilla choromosomes and make SEQ out of FASTA
-if [[ $GET_GORILLA == 1 ]]; then . $FLD_script/get_gorilla.sh; fi
+if [[ $GET_GORILLA -eq 1 ]]; then . $FLD_script/get_gorilla.sh; fi
 
 #>>>>>  download Chicken choromosomes and make SEQ out of FASTA
-if [[ $GET_CHICKEN == 1 ]]; then . $FLD_script/get_chicken.sh; fi
+if [[ $GET_CHICKEN -eq 1 ]]; then . $FLD_script/get_chicken.sh; fi
 
 #>>>>>  download Turkey choromosomes and make SEQ out of FASTA
-if [[ $GET_TURKEY == 1 ]]; then . $FLD_script/get_turkey.sh; fi
+if [[ $GET_TURKEY -eq 1 ]]; then . $FLD_script/get_turkey.sh; fi
 
 
 
@@ -147,7 +147,7 @@ if [[ $GET_TURKEY == 1 ]]; then . $FLD_script/get_turkey.sh; fi
 #***********************************************************
 #   install "XS" from Github
 #***********************************************************
-if [[ $INSTALL_XS == 1 ]]; then
+if [[ $INSTALL_XS -eq 1 ]]; then
 
 rm -fr XS
 git clone https://github.com/pratas/XS.git
@@ -161,7 +161,7 @@ fi  # end of $INSTALL_XS
 #***********************************************************
 #   install "goose" from Github
 #***********************************************************
-if [[ $INSTALL_goose == 1 ]]; then
+if [[ $INSTALL_goose -eq 1 ]]; then
 
 rm -fr goose
 git clone https://github.com/pratas/goose.git
@@ -175,7 +175,7 @@ fi  # end of $INSTALL_goose
 #***********************************************************
 #   install "GULL" from Github
 #***********************************************************
-if [[ $INSTALL_GULL == 1 ]]; then
+if [[ $INSTALL_GULL -eq 1 ]]; then
 
 rm -fr GULL
 git clone https://github.com/pratas/GULL.git
@@ -190,7 +190,7 @@ fi  # end of $INSTALL_GULL
 #***********************************************************
 #   generate datasets using "XS"
 #***********************************************************
-if [[ $GEN_DATASETS == 1 ]]; then
+if [[ $GEN_DATASETS -eq 1 ]]; then
 
 XS/XS -ls 100 -n 100000 -rn 0 -f 0.20,0.20,0.20,0.20,0.20 -eh -eo -es datasetXS
 echo ">X" > HEADER      # add ">X" as the header of the sequence (build "nonRepX")
@@ -203,7 +203,7 @@ fi  # end of $GEN_DATASETS
 #***********************************************************
 #   generate mutations using "goose"
 #***********************************************************
-if [[ $GEN_MUTATIONS == 1 ]]; then
+if [[ $GEN_MUTATIONS -eq 1 ]]; then
 
 for c in $chromosomes; do
  for x in $MUT_LIST; do      #((x=1; x<$NUM_MUTATIONS; x+=1));
@@ -227,7 +227,7 @@ fi  # end of $GEN_MUTATIONS
 #***********************************************************
 #   generate archaea dataset using "goose" -- output: out#.fa
 #***********************************************************
-if [[ $GEN_ARCHAEA == 1 ]]; then
+if [[ $GEN_ARCHAEA -eq 1 ]]; then
 
 $FLD_goose/src/goose-splitreads < "$FLD_archive_datasets/DB.mfa"
 
@@ -243,7 +243,7 @@ fi  # end of $GEN_ARCHAEA
 #***********************************************************
 #   running the program
 #***********************************************************
-if [[ $RUN == 1 ]]; then
+if [[ $RUN -eq 1 ]]; then
 
 for ir in $INV_REPEATS; do
  for alphaDen in $ALPHA_DENS; do
@@ -285,13 +285,13 @@ fi  # end of $RUN
 
 
 #>>>>>  plot results using "gnuplot"
-if [[ $PLOT_RESULT == 1 ]]; then . $FLD_script/plot_result.sh; fi
+if [[ $PLOT_RESULT -eq 1 ]]; then . $FLD_script/plot_result.sh; fi
 
 #>>>>>  build matrix from Reference Target correspondence
-if [[ $BUILD_MATRIX == 1 ]]; then . $FLD_script/build_matrix.sh; fi
+if [[ $BUILD_MATRIX -eq 1 ]]; then . $FLD_script/build_matrix.sh; fi
 
 #>>>>>  plot matrix from Reference Target correspondence
-if [[ $PLOT_MATRIX == 1 ]]; then . $FLD_script/plot_matrix.sh; fi
+if [[ $PLOT_MATRIX -eq 1 ]]; then . $FLD_script/plot_matrix.sh; fi
 
 
 ########################
