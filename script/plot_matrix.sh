@@ -51,7 +51,8 @@ unset colorbox      # remove color palette
 
 #YTICS="`awk -v start_ind="$REF_SPECIES_LEN_IND" 'BEGIN{getline}{printf "%s ",substr($1,start_ind)}' \
 #        "$FLD_dat/tot-${IR_LBL}0-$REF_SPECIES-$TAR_SPECIES.$INF_FILE_TYPE"`"
-XTICS="`head -1 "$FLD_dat/tot-${IR_LBL}0-$REF_SPECIES-$TAR_SPECIES.$INF_FILE_TYPE"`"
+XTICS="`head -1 "$FLD_dat/tot-${IR_LBL}0-$REF_SPECIES-$TAR_SPECIES.$INF_FILE_TYPE" \
+        | awk -v start_ind="$TAR_SPECIES_LEN_IND" '{for(i=1;i<=NF;i++) printf "%s\t",substr($i,start_ind);}'`"
 set for [i=1:words(XTICS)] xtics ( word(XTICS,i) i-1 ) right font ",9" rotate by 90 offset 0,xticsOffset
 #set for [i=1:words(YTICS)] ytics ( word(YTICS,i) i-1 ) #right font ",9" offset yticsOffset,0
 set xlabel "$TAR_SPECIES_NAME" offset 0,xlabelOffset
@@ -72,7 +73,8 @@ set colorbox        # draw color palette
 
 YTICS="`awk -v start_ind="$REF_SPECIES_LEN_IND" 'BEGIN{getline}{printf "%s ",substr($1,start_ind)}' \
         "$FLD_dat/tot-${IR_LBL}0-$REF_SPECIES-$TAR_SPECIES.$INF_FILE_TYPE"`"
-XTICS="`head -1 "$FLD_dat/tot-${IR_LBL}1-$REF_SPECIES-$TAR_SPECIES.$INF_FILE_TYPE"`"
+XTICS="`head -1 "$FLD_dat/tot-${IR_LBL}1-$REF_SPECIES-$TAR_SPECIES.$INF_FILE_TYPE" \
+        | awk -v start_ind="$TAR_SPECIES_LEN_IND" '{for(i=1;i<=NF;i++) printf "%s\t",substr($i,start_ind);}'`"
 set for [i=1:words(XTICS)] xtics ( word(XTICS,i) i-1 ) font ",9" rotate by 90 offset 0,xticsOffset
 set for [i=1:words(YTICS)] ytics ( word(YTICS,i) i-1 ) font ",9" center offset yticsOffset,0
 unset ylabel
