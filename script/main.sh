@@ -27,9 +27,9 @@ PLOT_MATRIX=0           # plot matrix from datasets
 #REF_SPECIE=$CHICKEN_CHR
 #REF_SPECIE=$TURKEY_CHR
 REF_SPECIE=$ARCHAEA_CHR
-#
-tempRefSeqRun=${REF_SPECIE}_SEQ_RUN
-REF_SEQ_RUN=${!tempRefSeqRun}     # all chromosomes for that specie, e.g. HS_SEQ_RUN
+### all chromosomes for that specie, e.g. HS_SEQ_RUN
+tempRefSeqRun=${REF_SPECIE}_SEQ_RUN;    REF_SEQ_RUN=${!tempRefSeqRun}
+
 REF_DATASET="";  for i in 24; do REF_DATASET+=$REF_SPECIE${i}" "; done
 #REF_DATASET="";  for i in $REF_SEQ_RUN; do REF_DATASET+=$REF_SPECIE${i}" "; done
 
@@ -40,9 +40,9 @@ REF_DATASET="";  for i in 24; do REF_DATASET+=$REF_SPECIE${i}" "; done
 #TAR_SPECIE=$CHICKEN_CHR
 #TAR_SPECIE=$TURKEY_CHR
 TAR_SPECIE=$ARCHAEA_CHR
-#
-tempTarSeqRun=${TAR_SPECIE}_SEQ_RUN
-TAR_SEQ_RUN=${!tempTarSeqRun}     # all chromosomes for that specie, e.g. HS_SEQ_RUN
+### all chromosomes for that specie, e.g. HS_SEQ_RUN
+tempTarSeqRun=${TAR_SPECIE}_SEQ_RUN;    TAR_SEQ_RUN=${!tempTarSeqRun}
+
 TAR_DATASET="";  for i in $TAR_SEQ_RUN; do TAR_DATASET+=$TAR_SPECIE${i}" "; done
 
 
