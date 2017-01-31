@@ -7,13 +7,12 @@
 gnuplot <<- EOF
 set terminal $PIX_FORMAT enhanced color #size 4,3
 set output "$REF_SPECIES-$TAR_SPECIES.$PIX_FORMAT"
-set multiplot layout 1,2 columnsfirst margins 0.04,0.88,0.11,0.98 spacing 0.039,0
+set multiplot layout 1,2 columnsfirst margins 0.04,0.895,0.11,0.98 spacing 0.039,0
 #set offset 0,0,graph 0.1, graph 0.1
 xticsOffset=0.2 #-1.2
 yticsOffset=-0.4 #-2.3
 xlabelOffset=0.8 #-1.2
 ylabelOffset=0 #-2.3
-paletteLabelOffset=-0.25    #-1.1
 #set size ratio .9 #0.85
 set key off
 ##set tmargin 2.1    ### with title
@@ -23,12 +22,15 @@ set key off
 #set lmargin 5
 #set rmargin 1.35
 #set pm3d map
+set macros
 labelFont="Latin Modern Math"
+fontLabel='font "Latin Modern Math, 11"'
+fontTics='font ", 9"'
 ticsFont=""
 
 #set nocbtics
-set cblabel "NRC" font ",11" offset paletteLabelOffset,0
-set cbtics scale 0.5 font ",9.5" offset -0.6,0
+set cblabel "NRC" @fontLabel offset -1.3,0     #-0.25 or -1.1
+set cbtics scale 0.5 font ",9" offset -0.6,0
 #set cbtics
 #set cbrange [ 0.2 : 1 ] noreverse nowriteback
 
