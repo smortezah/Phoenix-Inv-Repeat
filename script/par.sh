@@ -28,7 +28,7 @@ TURKEY_CHR_PREFIX="mga_ref_Turkey_5.0_"
 
 CHR="chr"
 
-HUMAN_LBL="Human"
+HUMAN_LBL=Human
 CHIMPANZEE_LBL="Chimpanzee"
 GORILLA_LBL="Gorilla"
 ARCHAEA_LBL="Archaea"
