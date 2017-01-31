@@ -16,6 +16,7 @@ set key off
 ##set tmargin 2.1    ### with title
 #set tmargin 0.5     ### without title
 #set bmargin 2.7 #4
+set bmargin 7
 #set lmargin 5
 #set rmargin 1.35
 #set pm3d map
@@ -46,7 +47,7 @@ set palette defined (0 "red", 1 "green", 2 "white")
 #set title "Relative compression: HS-PT\nReference: HS, Target: PT, inverted repeats: not considered"
 #set label 2 '$TAR_SPECIES_NAME' at screen 0.01,0.5 rotate by 90     # y vertex label
 #set label 1 '$REF_SPECIES_NAME' at screen 0.47,0.015                # x vertex label
-set label 1 '$REF_SPECIES_NAME'                 # x vertex label
+#set ylabel '$REF_SPECIES_NAME'                 # x vertex label
 
 unset colorbox      # remove color palette
 
@@ -74,6 +75,8 @@ YTICS="`awk -v start_ind="$REF_SPECIES_LEN_IND" 'BEGIN{getline}{printf "%s ",sub
 XTICS="`head -1 "$FLD_dat/tot-${IR_LBL}1-$REF_SPECIES-$TAR_SPECIES.$INF_FILE_TYPE"`"
 set for [i=1:words(XTICS)] xtics ( word(XTICS,i) i-1 ) font ",9" rotate by 90 offset 0,xticsOffset
 set for [i=1:words(YTICS)] ytics ( word(YTICS,i) i-1 ) font ",9" offset yticsOffset,0
+
+set xlabel "hi" #${REF_SPECIES_NAME}
 
 plot "<awk 'NR>1' '$FLD_dat/tot-${IR_LBL}1-$REF_SPECIES-$TAR_SPECIES.$INF_FILE_TYPE' | cut -f2-" matrix with image
 
