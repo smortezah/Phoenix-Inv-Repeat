@@ -12,7 +12,7 @@ GET_TURKEY=0            # download Turkey choromosomes and make SEQ out of FASTA
 INSTALL_XS=0            # install "XS" from Github
 INSTALL_GOOSE=0         # install "GOOSE" from Github
 INSTALL_GULL=0          # install "GULL" from Github
-GEN_DATASETS=0          # generate datasets using "XS"
+GEN_DATASET=0          # generate datasets using "XS"
 GEN_MUTATIONS=0         # generate mutations using "GOOSE"
 GEN_ARCHAEA=0           # generate archea dataset using "GOOSE" -- output: out#.fa
 RUN_PHOENIX=0           # run Phoenix
@@ -77,7 +77,7 @@ if [[ $INSTALL_GOOSE -eq 1 ]]; then . $FLD_script/install_GOOSE.sh; fi
 if [[ $INSTALL_GULL -eq 1 ]]; then . $FLD_script/install_GULL.sh; fi
 
 #>>>>>  generate datasets using "XS"
-if [[ $GEN_DATASETS -eq 1 ]]; then . $FLD_script/generate_dataset.sh; fi
+if [[ $GEN_DATASET -eq 1 ]]; then . $FLD_script/generate_dataset.sh; fi
 
 #>>>>>  generate mutations using "GOOSE"
 if [[ $GEN_MUTATIONS -eq 1 ]]; then . $FLD_script/generate_mutation.sh; fi
