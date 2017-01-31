@@ -7,7 +7,8 @@
 gnuplot <<- EOF
 set terminal $PIX_FORMAT enhanced color #size 4,3
 set output "$REF_SPECIES-$TAR_SPECIES.$PIX_FORMAT"
-set multiplot layout 1,2 #margins 0.08,0.98,0.06,0.98 spacing 0.013,0.0
+set multiplot layout 1,2 #columnsfirst margins 0.08,0.98,0.06,0.98 spacing 0.013,0.0
+#set offset 0,0,graph 0.1, graph 0.1
 xticsOffset=0.2 #-1.2
 yticsOffset=0.2 #-2.3
 #set size ratio .9 #0.85
@@ -29,14 +30,6 @@ set cbtics scale 1 font ",9.5"
 set palette defined (0 "red", 1 "green", 2 "white")
 
 
-
-
-#set multiplot layout 2,1 columnsfirst margins 0.08,0.98,0.06,0.98 spacing 0.013,0.0
-#set offset 0,0,graph 0.1, graph 0.1
-#set key top right samplen 2 spacing 1.5 font ",11"
-#
-#LT=7                # linetype
-#LW=2.0              # linewidth
 #AxisNumScale=0.35   # axis numbers scale
 #
 #set grid
@@ -46,23 +39,6 @@ set palette defined (0 "red", 1 "green", 2 "white")
 ##set ytics 2,2,10 scale 0.5 offset 0.4,0 font ",10"      # set steps for y axis
 ##set yrange [2:10]
 ##
-#######   first column   #####
-##do for [i=1:11] {
-##set xtics format ''
-##plot "$FLD_archive_dat/$IR_LBL$ir-$a_LBL$alphaDen-HS".i.".$INF_FILE_TYPE" using 1:3 \
-##     with lines linetype LT linewidth LW title "".i.""
-##}
-##
-#######   second column   #####
-##do for [i=13:22] {
-##set xtics 5,5,50 scale AxisNumScale
-##set xtics format ''
-##set ytics format ''
-##plot "$FLD_archive_dat/$IR_LBL$ir-$a_LBL$alphaDen-HS".i.".$INF_FILE_TYPE" using 1:3 \
-##     with lines linetype LT linewidth LW title "".i.""
-##}
-
-
 
 ### reference-target, i0
 #set output "$REF_SPECIES-$TAR_SPECIES.$PIX_FORMAT"
