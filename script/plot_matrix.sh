@@ -71,6 +71,7 @@ set palette defined (0 "red", 1 "green", 2 "white")
 #set output "$REF_SPECIES-$TAR_SPECIES.$PIX_FORMAT"
 #set title "Inverted repeats considered"
 #set title "Relative compression: HS-PT\nReference: HS, Target: PT, inverted repeats: not considered"
+unset colorbox      # remove color palette
 
 YTICS="`awk 'BEGIN{getline}{printf "%s ",$1}' "$FLD_dat/tot-${IR_LBL}0-$REF_SPECIES-$TAR_SPECIES.$INF_FILE_TYPE"`"
 XTICS="`head -1 "$FLD_dat/tot-${IR_LBL}0-$REF_SPECIES-$TAR_SPECIES.$INF_FILE_TYPE"`"
@@ -87,6 +88,7 @@ plot "<awk 'NR>1' '$FLD_dat/tot-${IR_LBL}0-$REF_SPECIES-$TAR_SPECIES.$INF_FILE_T
 #set output "${IR_LBL}1-$REF_SPECIES-$TAR_SPECIES.$PIX_FORMAT"
 #set title "Inverted repeats not considered"
 #set title "Relative compression: HS-PT\nReference: HS, Target: PT, inverted repeats: considered"
+set colorbox        # draw color palette
 
 YTICS="`awk 'BEGIN{getline}{printf "%s ",$1}' "$FLD_dat/tot-${IR_LBL}1-$REF_SPECIES-$TAR_SPECIES.$INF_FILE_TYPE"`"
 XTICS="`head -1 "$FLD_dat/tot-${IR_LBL}1-$REF_SPECIES-$TAR_SPECIES.$INF_FILE_TYPE"`"
