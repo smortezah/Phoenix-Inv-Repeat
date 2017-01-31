@@ -1,27 +1,10 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 
-#***********************************************************
-#   change directory to home
-#***********************************************************
 cd ..
 cmake src
 make
 
-#***********************************************************
-#   parameters to install and run needed programs
-#***********************************************************
-###*** folders to be used
-FLD_archive_dat="archive_dat"
-FLD_archive_datasets="archive_datasets"
-FLD_chromosomes="chromosomes"
-FLD_dat="dat"
-FLD_datasets="datasets"
-FLD_GOOSE="goose"
-FLD_GULL="GULL"
-FLD_XS="XS"
-FLD_src="src"
-FLD_script="script"
 
 GET_HUMAN=0             # download Human choromosomes and make SEQ out of FASTA
 GET_CHIMPANZEE=0        # download Chimpanzee choromosomes and make SEQ out of FASTA
@@ -34,53 +17,10 @@ INSTALL_GULL=0          # install "GULL" from Github
 GEN_DATASETS=0          # generate datasets using "XS"
 GEN_MUTATIONS=0         # generate mutations using "GOOSE"
 GEN_ARCHAEA=0           # generate archea dataset using "GOOSE" -- output: out#.fa
-RUN_PHOENIX=0                   # run the program
-PLOT_RESULT=0          # plot results using "gnuplot"
+RUN_PHOENIX=0           # run Phoenix
+PLOT_RESULT=0           # plot results using "gnuplot"
 BUILD_MATRIX=0          # build matrix from datasets
 PLOT_MATRIX=0           # plot matrix from datasets
-
-# mutations list:   `seq -s' ' 1 10`
-#MUT_LIST="1 2 3 4 5 6 7 8 9 10 12 14 16 18 20 25 30 35 40 45 50"
-
-HUMAN_URL="ftp://ftp.ncbi.nlm.nih.gov/genomes/H_sapiens/Assembled_chromosomes/seq"
-CHIMPANZEE_URL="ftp://ftp.ncbi.nlm.nih.gov/genomes/Pan_troglodytes/Assembled_chromosomes/seq"
-GORILLA_URL="ftp://ftp.ncbi.nlm.nih.gov/genomes/Gorilla_gorilla/Assembled_chromosomes/seq"
-CHICKEN_URL="ftp://ftp.ncbi.nlm.nih.gov/genomes/Gallus_gallus/Assembled_chromosomes/seq"
-TURKEY_URL="ftp://ftp.ncbi.nlm.nih.gov/genomes/Meleagris_gallopavo/Assembled_chromosomes/seq"
-
-HUMAN_CHR_PREFIX="hs_ref_GRCh38.p7_"
-CHIMPANZEE_CHR_PREFIX="ptr_ref_Pan_tro_3.0_"
-GORILLA_CHR_PREFIX="9595_ref_gorGor4_"
-CHICKEN_CHR_PREFIX="gga_ref_Gallus_gallus-5.0_"
-TURKEY_CHR_PREFIX="mga_ref_Turkey_5.0_"
-
-CHR="chr"
-
-HUMAN_CHR="HS"
-CHIMPANZEE_CHR="PT"
-GORILLA_CHR="GG"
-ARCHAEA_CHR="A"
-CHICKEN_CHR="GGA"
-TURKEY_CHR="MGA"
-
-CURR_CHR="21"
-chromosomes="$HUMAN_CHR_PREFIX$CHR$CURR_CHR"
-
-HUMAN_CHROMOSOME="$HUMAN_CHR_PREFIX$CHR"
-CHIMPANZEE_CHROMOSOME="$CHIMPANZEE_CHR_PREFIX$CHR"
-GORILLA_CHROMOSOME="$GORILLA_CHR_PREFIX$CHR"
-CHICKEN_CHROMOSOME="$CHICKEN_CHR_PREFIX$CHR"
-TURKEY_CHROMOSOME="$TURKEY_CHR_PREFIX$CHR"
-
-HS_SEQ_RUN=`seq -s' ' 1 22`; HS_SEQ_RUN+=" X Y MT AL UL UP"
-PT_SEQ_RUN="1 2A 2B "; PT_SEQ_RUN+=`seq -s' ' 3 22`; PT_SEQ_RUN+=" X Y MT UL UP"
-GG_SEQ_RUN="1 2A 2B "; GG_SEQ_RUN+=`seq -s' ' 3 22`; GG_SEQ_RUN+=" X MT UL UP"
-A_SEQ_RUN=`seq -s' ' 1 206`
-GGA_SEQ_RUN=`seq -s' ' 1 28`; GGA_SEQ_RUN+=" "; GGA_SEQ_RUN+=`seq -s' ' 30 33`; GGA_SEQ_RUN+=" LG MT W Z UL UP"
-MGA_SEQ_RUN=`seq -s' ' 1 30`; MGA_SEQ_RUN+=" MT W Z UL UP"
-
-datasets="$HUMAN_CHR$CURR_CHR"
-#datasets="";   for i in $HS_SEQ_RUN; do datasets+=$HUMAN_CHR${i}" "; done
 
 ### reference parameters
 #REF_SPECIE=$HUMAN_CHR
