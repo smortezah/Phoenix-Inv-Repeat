@@ -7,10 +7,10 @@
 gnuplot <<- EOF
 set terminal $PIX_FORMAT enhanced color #size 4,3
 set output "$REF_SPECIES-$TAR_SPECIES.$PIX_FORMAT"
-set multiplot layout 1,2 #columnsfirst margins 0.08,0.98,0.06,0.98 spacing 0.013,0.0
-#set offset 0
+set multiplot layout 1,2 columnsfirst margins 0.04,0.88,0.06,0.98 spacing 0.04,0
+#set offset 0,0,graph 0.1, graph 0.1
 xticsOffset=0.2 #-1.2
-yticsOffset=0.2 #-2.3
+yticsOffset=-0.4 #-2.3
 xlabelOffset=1 #-1.2
 ylabelOffset=0 #-2.3
 #set size ratio .9 #0.85
@@ -74,7 +74,7 @@ YTICS="`awk -v start_ind="$REF_SPECIES_LEN_IND" 'BEGIN{getline}{printf "%s ",sub
         "$FLD_dat/tot-${IR_LBL}0-$REF_SPECIES-$TAR_SPECIES.$INF_FILE_TYPE"`"
 XTICS="`head -1 "$FLD_dat/tot-${IR_LBL}1-$REF_SPECIES-$TAR_SPECIES.$INF_FILE_TYPE"`"
 set for [i=1:words(XTICS)] xtics ( word(XTICS,i) i-1 ) font ",9" rotate by 90 offset 0,xticsOffset
-set for [i=1:words(YTICS)] ytics ( word(YTICS,i) i-1 ) font ",9" offset yticsOffset,0
+set for [i=1:words(YTICS)] ytics ( word(YTICS,i) i-1 ) font ",9" center offset yticsOffset,0
 unset ylabel
 
 plot "<awk 'NR>1' '$FLD_dat/tot-${IR_LBL}1-$REF_SPECIES-$TAR_SPECIES.$INF_FILE_TYPE' | cut -f2-" matrix with image
