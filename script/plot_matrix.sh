@@ -11,7 +11,7 @@ set multiplot layout 1,2 columnsfirst margins 0.04,0.88,0.15,0.98 spacing 0.039,
 #set offset 0,0,graph 0.1, graph 0.1
 xticsOffset=0.2 #-1.2
 yticsOffset=-0.4 #-2.3
-xlabelOffset=1 #-1.2
+xlabelOffset=0.8 #-1.2
 ylabelOffset=0 #-2.3
 #set size ratio .9 #0.85
 set key off
@@ -22,6 +22,8 @@ set key off
 #set lmargin 5
 #set rmargin 1.35
 #set pm3d map
+labelFont="Latin Modern Math"
+ticsFont=""
 
 #set nocbtics
 set cblabel "NRC" font ",11" offset -0.25,0     # works for some files
@@ -55,8 +57,8 @@ XTICS="`head -1 "$FLD_dat/tot-${IR_LBL}0-$REF_SPECIES-$TAR_SPECIES.$INF_FILE_TYP
         | awk -v start_ind="$TAR_SPECIES_LEN_IND" '{for(i=1;i<=NF;i++) printf "%s\t",substr($i,start_ind);}'`"
 set for [i=1:words(XTICS)] xtics ( word(XTICS,i) i-1 ) right font ",9" rotate by 90 offset 0,xticsOffset
 #set for [i=1:words(YTICS)] ytics ( word(YTICS,i) i-1 ) #right font ",9" offset yticsOffset,0
-set xlabel "$TAR_SPECIES_NAME" offset 0,xlabelOffset
-set ylabel "$REF_SPECIES_NAME" offset ylabelOffset,0
+set xlabel "$TAR_SPECIES_NAME" offset 0,xlabelOffset font labelFont
+set ylabel "$REF_SPECIES_NAME" offset ylabelOffset,0 font labelFont
 unset ytics
 
 plot "<awk 'NR>1' '$FLD_dat/tot-${IR_LBL}0-$REF_SPECIES-$TAR_SPECIES.$INF_FILE_TYPE' | cut -f2-" matrix with image
