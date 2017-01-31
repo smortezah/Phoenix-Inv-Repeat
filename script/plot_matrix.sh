@@ -11,12 +11,14 @@ set multiplot layout 1,2 #columnsfirst margins 0.08,0.98,0.06,0.98 spacing 0.013
 #set offset 0
 xticsOffset=0.2 #-1.2
 yticsOffset=0.2 #-2.3
+xlabelOffset=1 #-1.2
+ylabelOffset=1 #-2.3
 #set size ratio .9 #0.85
 set key off
 ##set tmargin 2.1    ### with title
 #set tmargin 0.5     ### without title
 #set bmargin 2.7 #4
-set bmargin 7
+#set bmargin 7
 #set lmargin 5
 #set rmargin 1.35
 #set pm3d map
@@ -52,8 +54,8 @@ unset colorbox      # remove color palette
 XTICS="`head -1 "$FLD_dat/tot-${IR_LBL}0-$REF_SPECIES-$TAR_SPECIES.$INF_FILE_TYPE"`"
 set for [i=1:words(XTICS)] xtics ( word(XTICS,i) i-1 ) right font ",9" rotate by 90 offset 0,xticsOffset
 #set for [i=1:words(YTICS)] ytics ( word(YTICS,i) i-1 ) #right font ",9" offset yticsOffset,0
-set xlabel "$TAR_SPECIES_NAME"
-set ylabel "$REF_SPECIES_NAME"
+set xlabel "$TAR_SPECIES_NAME" offset 0,xlabelOffset
+set ylabel "$REF_SPECIES_NAME" offset ylabelOffset,0
 unset ytics
 
 plot "<awk 'NR>1' '$FLD_dat/tot-${IR_LBL}0-$REF_SPECIES-$TAR_SPECIES.$INF_FILE_TYPE' | cut -f2-" matrix with image
