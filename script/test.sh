@@ -17,7 +17,7 @@ FLD_archive_datasets="archive_datasets"
 FLD_chromosomes="chromosomes"
 FLD_dat="dat"
 FLD_datasets="datasets"
-FLD_GOOSE="GOOSE"
+FLD_GOOSE="goose"
 FLD_GULL="GULL"
 FLD_XS="XS"
 FLD_src="src"
@@ -29,7 +29,7 @@ GET_GORILLA=0           # download Gorilla choromosomes and make SEQ out of FAST
 GET_CHICKEN=0           # download Chicken choromosomes and make SEQ out of FASTA
 GET_TURKEY=0            # download Turkey choromosomes and make SEQ out of FASTA
 INSTALL_XS=0            # install "XS" from Github
-INSTALL_goose=0         # install "GOOSE" from Github
+INSTALL_GOOSE=0         # install "GOOSE" from Github
 INSTALL_GULL=0          # install "GULL" from Github
 GEN_DATASETS=0          # generate datasets using "XS"
 GEN_MUTATIONS=0         # generate mutations using "GOOSE"
@@ -153,31 +153,10 @@ if [[ $INSTALL_GULL -eq 1 ]]; then . $FLD_script/install_GULL.sh; fi
 #>>>>>  generate datasets using "XS"
 if [[ $GEN_DATASETS -eq 1 ]]; then . $FLD_script/generate_dataset.sh; fi
 
+#>>>>>  generate mutations using "GOOSE"
+if [[ $GEN_MUTATIONS -eq 1 ]]; then . $FLD_script/generate_mutation.sh; fi
 
 
-
-#***********************************************************
-#   generate mutations using "GOOSE"
-#***********************************************************
-if [[ $GEN_MUTATIONS -eq 1 ]]; then
-
-for c in $chromosomes; do
- for x in $MUT_LIST; do      #((x=1; x<$NUM_MUTATIONS; x+=1));
- MRATE=`echo "scale=3;$x/100" | bc -l`;      # handle transition 0.09 -> 0.10
- goose/src/goose-mutatefasta -s $x -a5 -mr $MRATE " " < $FLD_chromosomes/$c.$FILE_TYPE > temp;
- cat temp | grep -v ">" > $HUMAN_CHR${CURR_CHR}_$x      # remove the header line
- done
-done
-rm -f temp*    # remove temporary files
-
-#-----------------------------------
-#   move all generated mutations files to "datasets" folder
-#-----------------------------------
-##rm -fr $FLD_datasets
-#mkdir -p $FLD_datasets
-mv ${HUMAN_CHR}* $FLD_datasets
-
-fi  # end of $GEN_MUTATIONS
 
 
 #***********************************************************
