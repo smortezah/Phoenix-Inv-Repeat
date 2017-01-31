@@ -18,7 +18,7 @@ GEN_ARCHAEA=0           # generate archea dataset using "GOOSE" -- output: out#.
 RUN_PHOENIX=0           # run Phoenix
 PLOT_RESULT=0           # plot results using "gnuplot"
 BUILD_MATRIX=0          # build matrix from datasets
-PLOT_MATRIX=0           # plot matrix from datasets
+PLOT_MATRIX=1           # plot matrix from datasets
 
 ### reference parameters
 REF_SPECIES=$HUMAN_CHR
@@ -33,8 +33,8 @@ tempRefSeqRun=${REF_SPECIES}_SEQ_RUN;    REF_SEQ_RUN=${!tempRefSeqRun}
 REF_DATASET="";  for i in 24; do REF_DATASET+=$REF_SPECIES${i}" "; done
 #REF_DATASET="";  for i in $REF_SEQ_RUN; do REF_DATASET+=$REF_SPECIES${i}" "; done
 
-REF_SPECIES_LEN=${#REF_SPECIES};        # length of string REF_SPECIES
-
+REF_SPECIES_LEN=${#REF_SPECIES};            # length of string REF_SPECIES
+((REF_SPECIES_LEN_IND=REF_SPECIES_LEN+1));  # index of length of string REF_SPECIES
 
 ### target parameters
 #TAR_SPECIES=$HUMAN_CHR
@@ -48,7 +48,8 @@ tempTarSeqRun=${TAR_SPECIES}_SEQ_RUN;    TAR_SEQ_RUN=${!tempTarSeqRun}
 
 TAR_DATASET="";  for i in $TAR_SEQ_RUN; do TAR_DATASET+=$TAR_SPECIES${i}" "; done
 
-TAR_SPECIES_LEN=${#TAR_SPECIES};        # length of string TAR_SPECIES
+TAR_SPECIES_LEN=${#TAR_SPECIES};            # length of string TAR_SPECIES
+((TAR_SPECIES_LEN_IND=TAR_SPECIES_LEN+1));  # index of length of string TAR_SPECIES
 
 
 INV_REPEATS="0 1"         # list of inverted repeats
