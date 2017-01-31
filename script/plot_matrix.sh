@@ -48,8 +48,8 @@ set palette defined (0 "red", 0.5 "green", 1 "white")
 #set label 2 '$TAR_SPECIES_NAME' at screen 0.01,0.5 rotate by 90     # y vertex label
 #set label 1 '$REF_SPECIES_NAME' at screen 0.47,0.015                # x vertex label
 #set ylabel '$REF_SPECIES_NAME'                 # x vertex label
-
 unset colorbox      # remove color palette
+set rmargin 47
 
 #YTICS="`awk -v start_ind="$REF_SPECIES_LEN_IND" 'BEGIN{getline}{printf "%s ",substr($1,start_ind)}' \
 #        "$FLD_dat/tot-${IR_LBL}0-$REF_SPECIES-$TAR_SPECIES.$INF_FILE_TYPE"`"
@@ -72,6 +72,7 @@ plot "<awk 'NR>1' '$FLD_dat/tot-${IR_LBL}0-$REF_SPECIES-$TAR_SPECIES.$INF_FILE_T
 #set title "Inverted repeats not considered"
 #set title "Relative compression: HS-PT\nReference: HS, Target: PT, inverted repeats: considered"
 set colorbox        # draw color palette
+set lmargin 44
 
 YTICS="`awk -v start_ind="$REF_SPECIES_LEN_IND" 'BEGIN{getline}{printf "%s ",substr($1,start_ind)}' \
         "$FLD_dat/tot-${IR_LBL}0-$REF_SPECIES-$TAR_SPECIES.$INF_FILE_TYPE"`"
