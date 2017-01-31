@@ -34,7 +34,7 @@ set cbtics scale 0.5 @fontTics offset -0.6,0
 #set cbrange [ 0.2 : 1 ] noreverse nowriteback
 
 #set palette defined (0 "red", 1 "yellow", 2 "green", 3 "white")
-set palette defined (0.2 "red", 0.6 "green", 1 "white")     # HS-PT
+set palette defined (0.2 "red", 0.6 "green", 1 "white")     # HS-PT, PT-HS
 
 #AxisNumScale=0.35   # axis numbers scale
 #
@@ -86,21 +86,23 @@ unset ylabel
 plot "<awk 'NR>1' '$FLD_dat/tot-${IR_LBL}1-$REF_SPECIES-$TAR_SPECIES.$INF_FILE_TYPE' | cut -f2-" matrix with image
 
 
-#set palette defined (0 "white", 1 "green", 2 "red")
-##set tmargin 4.5
-#set cblabel "The difference between NRCs (NRC_{IR=0} - NRC_{IR=1})" font ",11" offset -1.5,0
-#
-#### reference-target, difference between i0 and i1
-#set output "diff-$REF_SPECIES-$TAR_SPECIES.$PIX_FORMAT"
-##set title "The difference"
-##set title "Relative compression: HS-PT\nDifference between considering and not considering inverted repeats\nReference: HS, Target: PT"
-#
-#YTICS="`awk 'BEGIN{getline}{printf "%s ",$1}' "$FLD_dat/diff-$REF_SPECIES-$TAR_SPECIES.$INF_FILE_TYPE"`"
-#XTICS="`head -1 "$FLD_dat/diff-$REF_SPECIES-$TAR_SPECIES.$INF_FILE_TYPE"`"
-#set for [i=1:words(XTICS)] xtics ( word(XTICS,i) i-1 ) font ",9" rotate by 90 offset 0,xticsOffset
-#set for [i=1:words(YTICS)] ytics ( word(YTICS,i) i-1 ) font ",9" offset yticsOffset,0
-#
-#plot "<awk 'NR>1' '$FLD_dat/diff-$REF_SPECIES-$TAR_SPECIES.$INF_FILE_TYPE' | cut -f2-" matrix with image
+set palette defined (0 "white", 1 "green", 2 "red")
+set palette defined (0.2 "red", 0.6 "green", 1 "white")     # diff-HS-PT
+
+#set tmargin 4.5
+set cblabel "The difference between NRCs (NRC_{IR=0} - NRC_{IR=1})" font ",11" offset -1.5,0
+
+### reference-target, difference between i0 and i1
+set output "diff-$REF_SPECIES-$TAR_SPECIES.$PIX_FORMAT"
+#set title "The difference"
+#set title "Relative compression: HS-PT\nDifference between considering and not considering inverted repeats\nReference: HS, Target: PT"
+
+YTICS="`awk 'BEGIN{getline}{printf "%s ",$1}' "$FLD_dat/diff-$REF_SPECIES-$TAR_SPECIES.$INF_FILE_TYPE"`"
+XTICS="`head -1 "$FLD_dat/diff-$REF_SPECIES-$TAR_SPECIES.$INF_FILE_TYPE"`"
+set for [i=1:words(XTICS)] xtics ( word(XTICS,i) i-1 ) font ",9" rotate by 90 offset 0,xticsOffset
+set for [i=1:words(YTICS)] ytics ( word(YTICS,i) i-1 ) font ",9" offset yticsOffset,0
+
+plot "<awk 'NR>1' '$FLD_dat/diff-$REF_SPECIES-$TAR_SPECIES.$INF_FILE_TYPE' | cut -f2-" matrix with image
 
 unset multiplot; set output
 
