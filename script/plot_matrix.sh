@@ -44,7 +44,8 @@ set palette defined (0 "red", 1 "green", 2 "white")
 #set output "$REF_SPECIES-$TAR_SPECIES.$PIX_FORMAT"
 #set title "Inverted repeats considered"
 #set title "Relative compression: HS-PT\nReference: HS, Target: PT, inverted repeats: not considered"
-set label 2 '$REF_SPECIES_NAME' at screen 0.01,0.5 rotate by 90
+set label 2 '$TAR_SPECIES_NAME' at screen 0.01,0.5 rotate by 90     # y vertex label
+set label 1 '$REF_SPECIES_NAME' at screen 0.47,0.015                # x vertex label
 
 unset colorbox      # remove color palette
 
