@@ -32,8 +32,8 @@ set cbtics scale 0.5 @fontTics offset -0.6,0
 #set cbtics
 #set cbrange [ 0.2 : 1 ] noreverse nowriteback
 
-set palette defined (0 "red", 1 "yellow", 2 "green", 3 "white")
-
+#set palette defined (0 "red", 1 "yellow", 2 "green", 3 "white")
+set palette defined (0 "red", 1 "green", 2 "white")
 
 #AxisNumScale=0.35   # axis numbers scale
 #
