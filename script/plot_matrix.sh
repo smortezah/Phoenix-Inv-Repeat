@@ -23,7 +23,7 @@ set key off
 #set rmargin 1.35
 #set pm3d map
 set macros
-fontLabel='font "Latin Modern Math, 12"'
+fontLabel='font "Latin Modern Math-Italic, 13"'
 fontTics='font "Latin Modern Sans, 10"'
 
 #set nocbtics
