@@ -18,15 +18,15 @@ GEN_ARCHAEA=0           # generate archea dataset using "GOOSE" -- output: out#.
 RUN_PHOENIX=0           # run Phoenix
 PLOT_RESULT=0           # plot results using "gnuplot"
 BUILD_MATRIX=0          # build matrix from datasets
-PLOT_MATRIX=0           # plot matrix from datasets
+PLOT_MATRIX=1           # plot matrix from datasets
 
 ### reference parameters
-#REF_SPECIES=$HUMAN_CHR
+REF_SPECIES=$HUMAN_CHR
 #REF_SPECIES=$CHIMPANZEE_CHR
 #REF_SPECIES=$GORILLA_CHR
 #REF_SPECIES=$CHICKEN_CHR
 #REF_SPECIES=$TURKEY_CHR
-REF_SPECIES=$ARCHAEA_CHR
+#REF_SPECIES=$ARCHAEA_CHR
 ### all chromosomes for that species, e.g. HS_SEQ_RUN
 tempRefSeqRun=${REF_SPECIES}_SEQ_RUN;    REF_SEQ_RUN=${!tempRefSeqRun}
 
@@ -35,11 +35,11 @@ REF_DATASET="";  for i in 24; do REF_DATASET+=$REF_SPECIES${i}" "; done
 
 ### target parameters
 #TAR_SPECIES=$HUMAN_CHR
-#TAR_SPECIES=$CHIMPANZEE_CHR
+TAR_SPECIES=$CHIMPANZEE_CHR
 #TAR_SPECIES=$GORILLA_CHR
 #TAR_SPECIES=$CHICKEN_CHR
 #TAR_SPECIES=$TURKEY_CHR
-TAR_SPECIES=$ARCHAEA_CHR
+#TAR_SPECIES=$ARCHAEA_CHR
 ### all chromosomes for that species, e.g. HS_SEQ_RUN
 tempTarSeqRun=${TAR_SPECIES}_SEQ_RUN;    TAR_SEQ_RUN=${!tempTarSeqRun}
 
