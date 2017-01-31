@@ -7,7 +7,7 @@
 gnuplot <<- EOF
 set terminal $PIX_FORMAT enhanced color size 6.25,2.7
 set output "$REF_SPECIES-$TAR_SPECIES.$PIX_FORMAT"
-set multiplot layout 1,2 columnsfirst margins 0.03,0.909,0.11,0.98 spacing 0.03,0
+set multiplot layout 1,2 columnsfirst margins 0.03,0.913,0.11,0.98 spacing 0.03,0
 #set offset 0,0,graph 0.1, graph 0.1
 xticsOffset=0.2 #-1.2
 yticsOffset=-0.4 #-2.3
@@ -49,7 +49,7 @@ set palette defined (0 "red", 0.5 "green", 1 "white")
 #set label 1 '$REF_SPECIES_NAME' at screen 0.47,0.015                # x vertex label
 #set ylabel '$REF_SPECIES_NAME'                 # x vertex label
 unset colorbox      # remove color palette
-set rmargin 47
+set rmargin 47.1
 
 #YTICS="`awk -v start_ind="$REF_SPECIES_LEN_IND" 'BEGIN{getline}{printf "%s ",substr($1,start_ind)}' \
 #        "$FLD_dat/tot-${IR_LBL}0-$REF_SPECIES-$TAR_SPECIES.$INF_FILE_TYPE"`"
