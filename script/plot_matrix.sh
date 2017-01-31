@@ -24,7 +24,7 @@ set key off
 #set pm3d map
 set macros
 fontLabel='font "Latin Modern Math, 11"'
-fontTics='font ", 9"'
+fontTics='font "Latin Modern Sans, 9"'
 
 #set nocbtics
 set cblabel "NRC" @fontLabel offset -1.5,0     #-0.25 or -1.5
