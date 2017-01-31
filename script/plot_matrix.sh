@@ -97,13 +97,13 @@ set output "diff-$REF_SPECIES-$TAR_SPECIES.$PIX_FORMAT"
 #set offset 0,0,graph 0.1, graph 0.1
 xticsOffset=0.2 #-1.2
 yticsOffset=0 #-2.3
-xlabelOffset=0.99 #-1.2
+xlabelOffset=0.78 #-1.2
 ylabelOffset=0.81 #-2.3
 #set size ratio .9 #0.85
 set key off
 ##set tmargin 2.1    ### with title
-set tmargin 0.4     ### without title
-set bmargin 4 #4 7
+set tmargin 0.2     ### without title
+set bmargin 2.4 #4 7
 set lmargin 4.5
 set rmargin 2
 #set pm3d map
