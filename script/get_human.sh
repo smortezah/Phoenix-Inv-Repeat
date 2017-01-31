@@ -21,5 +21,5 @@ mv $FLD_chromosomes/$HUMAN_CHR"unplaced".$FILE_TYPE $FLD_chromosomes/$HUMAN_CHR"
 
 ### FASTA -> SEQ
 for i in $HS_SEQ_RUN; do
- grep -v ">" $FLD_chromosomes/$HUMAN_CHR$i.$FILE_TYPE > $FLD_datasets/$HUMAN_CHR$i;
+ grep -v ">" $FLD_chromosomes/$HUMAN_CHR$i.$FILE_TYPE > $FLD_dataset/$HUMAN_CHR$i;
 done

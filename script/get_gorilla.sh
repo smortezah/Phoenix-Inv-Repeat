@@ -20,5 +20,5 @@ mv $FLD_chromosomes/$GORILLA_CHR"unplaced".$FILE_TYPE $FLD_chromosomes/$GORILLA_
 
 ### FASTA -> SEQ
 for i in $GG_SEQ_RUN; do
- grep -v ">" $FLD_chromosomes/$GORILLA_CHR$i.$FILE_TYPE > $FLD_datasets/$GORILLA_CHR$i;
+ grep -v ">" $FLD_chromosomes/$GORILLA_CHR$i.$FILE_TYPE > $FLD_dataset/$GORILLA_CHR$i;
 done

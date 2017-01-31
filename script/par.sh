@@ -2,10 +2,9 @@
 
 ### folders to be used
 FLD_archive_dat="archive_dat"
-FLD_archive_datasets="archive_datasets"
 FLD_chromosomes="chromosomes"
 FLD_dat="dat"
-FLD_datasets="datasets"
+FLD_dataset="dataset"
 FLD_GOOSE="goose"
 FLD_GULL="GULL"
 FLD_XS="XS"

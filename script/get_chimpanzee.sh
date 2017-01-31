@@ -20,5 +20,5 @@ mv $FLD_chromosomes/$CHIMPANZEE_CHR"unplaced".$FILE_TYPE $FLD_chromosomes/$CHIMP
 
 ### FASTA -> SEQ
 for i in $PT_SEQ_RUN; do
- grep -v ">" $FLD_chromosomes/$CHIMPANZEE_CHR$i.$FILE_TYPE > $FLD_datasets/$CHIMPANZEE_CHR$i;
+ grep -v ">" $FLD_chromosomes/$CHIMPANZEE_CHR$i.$FILE_TYPE > $FLD_dataset/$CHIMPANZEE_CHR$i;
 done

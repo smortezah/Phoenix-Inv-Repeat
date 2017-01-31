@@ -10,4 +10,4 @@ for c in $chromosomes; do
 done
 rm -f temp*
 
-mv ${HUMAN_CHR}* $FLD_datasets
+mv ${HUMAN_CHR}* $FLD_dataset
