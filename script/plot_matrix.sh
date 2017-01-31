@@ -23,13 +23,11 @@ set key off
 #set rmargin 1.35
 #set pm3d map
 set macros
-labelFont="Latin Modern Math"
 fontLabel='font "Latin Modern Math, 11"'
 fontTics='font ", 9"'
-ticsFont=""
 
 #set nocbtics
-set cblabel "NRC" @fontLabel offset -1.3,0     #-0.25 or -1.1
+set cblabel "NRC" @fontLabel offset -1.5,0     #-0.25 or -1.1
 set cbtics scale 0.5 @fontTics offset -0.6,0
 #set cbtics
 #set cbrange [ 0.2 : 1 ] noreverse nowriteback
