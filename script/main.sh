@@ -4,6 +4,9 @@ cd ..
 cmake src
 make
 
+### include par.sh
+. $FLD_script/par.sh;
+
 GET_HUMAN=0             # download Human choromosomes and make SEQ out of FASTA
 GET_CHIMPANZEE=0        # download Chimpanzee choromosomes and make SEQ out of FASTA
 GET_GORILLA=0           # download Gorilla choromosomes and make SEQ out of FASTA
