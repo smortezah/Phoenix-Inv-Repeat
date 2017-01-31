@@ -27,8 +27,8 @@ labelFont="Latin Modern Math"
 ticsFont=""
 
 #set nocbtics
-set cblabel "NRC" font ",11" offset paletteLabelOffset,0     # works for some files
-set cbtics scale 1 font ",9.5"
+set cblabel "NRC" font ",11" offset paletteLabelOffset,0
+set cbtics scale 0.5 font ",9.5" offset -0.6,0
 #set cbtics
 #set cbrange [ 0.2 : 1 ] noreverse nowriteback
 
