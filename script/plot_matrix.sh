@@ -12,7 +12,7 @@ set multiplot layout 1,2 #columnsfirst margins 0.08,0.98,0.06,0.98 spacing 0.013
 xticsOffset=0.2 #-1.2
 yticsOffset=0.2 #-2.3
 xlabelOffset=1 #-1.2
-ylabelOffset=1 #-2.3
+ylabelOffset=0 #-2.3
 #set size ratio .9 #0.85
 set key off
 ##set tmargin 2.1    ### with title
