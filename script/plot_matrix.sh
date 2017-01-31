@@ -13,12 +13,12 @@ xticsOffset=0.2 #-1.2
 yticsOffset=0.2 #-2.3
 #set size ratio .9 #0.85
 set key off
-#set tmargin 2.1    ### with title
-set tmargin 0.5     ### without title
-set bmargin 2.7 #4
-set lmargin 5
-set rmargin 1.35
-set pm3d map
+##set tmargin 2.1    ### with title
+#set tmargin 0.5     ### without title
+#set bmargin 2.7 #4
+#set lmargin 5
+#set rmargin 1.35
+#set pm3d map
 
 #set nocbtics
 set cblabel "NRC" font ",11" offset -0.25,0     # works for some files
@@ -44,6 +44,8 @@ set palette defined (0 "red", 1 "green", 2 "white")
 #set output "$REF_SPECIES-$TAR_SPECIES.$PIX_FORMAT"
 #set title "Inverted repeats considered"
 #set title "Relative compression: HS-PT\nReference: HS, Target: PT, inverted repeats: not considered"
+set label 2 '$REF_SPECIES_NAME' at screen 0.01,0.5 rotate by 90
+
 unset colorbox      # remove color palette
 
 YTICS="`awk -v start_ind="$REF_SPECIES_LEN_IND" 'BEGIN{getline}{printf "%s ",substr($1,start_ind)}' \
