@@ -5,7 +5,7 @@ for ir in $INV_REPEATS; do
  for alphaDen in $ALPHA_DENS; do
   for refDataset in $REF_DATASET; do
    echo -e "ref\ttar\tir\talpha\tctx\tbpb\tNRC\ttime(s)" \
-        >> $IR_LBL$ir-$refDataset-$TAR_SPECIE.$INF_FILE_TYPE
+        >> $IR_LBL$ir-$refDataset-$TAR_SPECIES.$INF_FILE_TYPE
    for tarDataset in $TAR_DATASET; do
 ##   rm -f $IR_LBL$ir-$a_LBL$alphaDen-${dataset}.$INF_FILE_TYPE
 #   touch $IR_LBL$ir-$a_LBL$alphaDen-$dataset.$INF_FILE_TYPE
@@ -17,7 +17,7 @@ for ir in $INV_REPEATS; do
      for((ctx=$MIN_CTX; ctx<=$MAX_CTX; ctx+=1)); do
 #     for ctx in {2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20}; do
      ./phoenix -m r,$ctx,$alphaDen,$ir -t $FLD_datasets/$tarDataset -r $FLD_datasets/$refDataset \
-               >> $IR_LBL$ir-$refDataset-$TAR_SPECIE.$INF_FILE_TYPE
+               >> $IR_LBL$ir-$refDataset-$TAR_SPECIES.$INF_FILE_TYPE
      done
 #    done
    done
