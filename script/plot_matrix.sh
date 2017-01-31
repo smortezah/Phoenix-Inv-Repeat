@@ -34,10 +34,6 @@ set palette defined (0 "red", 1 "green", 2 "white")
 #AxisNumScale=0.35   # axis numbers scale
 #
 #set grid
-#set label 1 '%mutation' at screen 0.47,0.015
-#set label 2 'context-order size' at screen 0.02,0.47 rotate by 90
-##set xtics 5,5,50 scale 0.35                             # set steps for x axis
-##set ytics 2,2,10 scale 0.5 offset 0.4,0 font ",10"      # set steps for y axis
 ##set yrange [2:10]
 ##
 
@@ -76,8 +72,8 @@ XTICS="`head -1 "$FLD_dat/tot-${IR_LBL}1-$REF_SPECIES-$TAR_SPECIES.$INF_FILE_TYP
 set for [i=1:words(XTICS)] xtics ( word(XTICS,i) i-1 ) font ",9" rotate by 90 offset 0,xticsOffset
 set for [i=1:words(YTICS)] ytics ( word(YTICS,i) i-1 ) font ",9" offset yticsOffset,0
 
-set xlabel sprintf("%s",$REF_SPECIES_NAME)
-#set xlabel sprintf("%s","hi")
+#eval('set xlabel sprintf("%s",${REF_SPECIES_NAME})')
+set xlabel sprintf("%s","hi")
 
 plot "<awk 'NR>1' '$FLD_dat/tot-${IR_LBL}1-$REF_SPECIES-$TAR_SPECIES.$INF_FILE_TYPE' | cut -f2-" matrix with image
 
