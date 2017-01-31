@@ -141,21 +141,11 @@ if [[ $GET_CHICKEN -eq 1 ]]; then . $FLD_script/get_chicken.sh; fi
 #>>>>>  download Turkey choromosomes and make SEQ out of FASTA
 if [[ $GET_TURKEY -eq 1 ]]; then . $FLD_script/get_turkey.sh; fi
 
+#>>>>>  install "XS" from Github
+if [[ $INSTALL_XS -eq 1 ]]; then . $FLD_script/install_XS.sh; fi
 
 
 
-#***********************************************************
-#   install "XS" from Github
-#***********************************************************
-if [[ $INSTALL_XS -eq 1 ]]; then
-
-rm -fr XS
-git clone https://github.com/pratas/XS.git
-cd $FLD_XS
-make
-cd ..
-
-fi  # end of $INSTALL_XS
 
 
 #***********************************************************
