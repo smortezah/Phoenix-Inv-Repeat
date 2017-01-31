@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-###*** folders to be used
+### folders to be used
 FLD_archive_dat="archive_dat"
 FLD_archive_datasets="archive_datasets"
 FLD_chromosomes="chromosomes"

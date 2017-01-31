@@ -33,7 +33,7 @@ tempRefSeqRun=${REF_SPECIES}_SEQ_RUN;    REF_SEQ_RUN=${!tempRefSeqRun}
 REF_DATASET="";  for i in 24; do REF_DATASET+=$REF_SPECIES${i}" "; done
 #REF_DATASET="";  for i in $REF_SEQ_RUN; do REF_DATASET+=$REF_SPECIES${i}" "; done
 
-###*** target parameters
+### target parameters
 #TAR_SPECIES=$HUMAN_CHR
 #TAR_SPECIES=$CHIMPANZEE_CHR
 #TAR_SPECIES=$GORILLA_CHR

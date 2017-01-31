@@ -16,7 +16,7 @@ for alphaDen in $ALPHA_DENS; do
    echo >> "tot-$IR_LBL$i-$REF_SPECIES-$TAR_SPECIES.$INF_FILE_TYPE"
   done
 
- ###*** filter NRC values greater than 1
+ ### filter NRC values greater than 1
   awk 'NR>1 ' tot-$IR_LBL$i-$REF_SPECIES-$TAR_SPECIES.dat \
    | awk '{for (i=1;i<=NF;i++) if($i!=$i+0) printf "%s\t", $i; \
 			              else if($i==$i+0 && $i>1) printf "%.5f\t", 1; \
