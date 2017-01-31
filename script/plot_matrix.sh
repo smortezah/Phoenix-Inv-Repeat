@@ -5,9 +5,11 @@
  for alphaDen in $ALPHA_DENS; do
 
 gnuplot <<- EOF
+set terminal $PIX_FORMAT enhanced color #size 4,3
+set output "$REF_SPECIES-$TAR_SPECIES.$PIX_FORMAT"
+set multiplot layout 1,2 #columnsfirst margins 0.08,0.98,0.06,0.98 spacing 0.013,0.0
 xticsOffset=0.2 #-1.2
 yticsOffset=0.2 #-2.3
-set terminal $PIX_FORMAT enhanced color size 4,3
 #set size ratio .9 #0.85
 set key off
 #set tmargin 2.1    ### with title
@@ -32,42 +34,41 @@ set palette defined (0 "red", 1 "green", 2 "white")
 
 
 
-set multiplot layout 12,2 columnsfirst margins 0.08,0.98,0.06,0.98 spacing 0.013,0.0
-set offset 0,0,graph 0.1, graph 0.1
-set key top right samplen 2 spacing 1.5 font ",11"
-
-LT=7                # linetype
-LW=2.0              # linewidth
-AxisNumScale=0.35   # axis numbers scale
-
-set grid
-set label 1 '%mutation' at screen 0.47,0.015
-set label 2 'context-order size' at screen 0.02,0.47 rotate by 90
-#set xtics 5,5,50 scale 0.35                             # set steps for x axis
-#set ytics 2,2,10 scale 0.5 offset 0.4,0 font ",10"      # set steps for y axis
-#set yrange [2:10]
+#set multiplot layout 2,1 columnsfirst margins 0.08,0.98,0.06,0.98 spacing 0.013,0.0
+#set offset 0,0,graph 0.1, graph 0.1
+#set key top right samplen 2 spacing 1.5 font ",11"
 #
-######   first column   #####
-#do for [i=1:11] {
-#set xtics format ''
-#plot "$FLD_archive_dat/$IR_LBL$ir-$a_LBL$alphaDen-HS".i.".$INF_FILE_TYPE" using 1:3 \
-#     with lines linetype LT linewidth LW title "".i.""
-#}
+#LT=7                # linetype
+#LW=2.0              # linewidth
+#AxisNumScale=0.35   # axis numbers scale
 #
-######   second column   #####
-#do for [i=13:22] {
-#set xtics 5,5,50 scale AxisNumScale
-#set xtics format ''
-#set ytics format ''
-#plot "$FLD_archive_dat/$IR_LBL$ir-$a_LBL$alphaDen-HS".i.".$INF_FILE_TYPE" using 1:3 \
-#     with lines linetype LT linewidth LW title "".i.""
-#}
-
+#set grid
+#set label 1 '%mutation' at screen 0.47,0.015
+#set label 2 'context-order size' at screen 0.02,0.47 rotate by 90
+##set xtics 5,5,50 scale 0.35                             # set steps for x axis
+##set ytics 2,2,10 scale 0.5 offset 0.4,0 font ",10"      # set steps for y axis
+##set yrange [2:10]
+##
+#######   first column   #####
+##do for [i=1:11] {
+##set xtics format ''
+##plot "$FLD_archive_dat/$IR_LBL$ir-$a_LBL$alphaDen-HS".i.".$INF_FILE_TYPE" using 1:3 \
+##     with lines linetype LT linewidth LW title "".i.""
+##}
+##
+#######   second column   #####
+##do for [i=13:22] {
+##set xtics 5,5,50 scale AxisNumScale
+##set xtics format ''
+##set ytics format ''
+##plot "$FLD_archive_dat/$IR_LBL$ir-$a_LBL$alphaDen-HS".i.".$INF_FILE_TYPE" using 1:3 \
+##     with lines linetype LT linewidth LW title "".i.""
+##}
 
 
 
 ### reference-target, i0
-set output "${IR_LBL}0-$REF_SPECIES-$TAR_SPECIES.$PIX_FORMAT"
+#set output "$REF_SPECIES-$TAR_SPECIES.$PIX_FORMAT"
 #set title "Inverted repeats considered"
 #set title "Relative compression: HS-PT\nReference: HS, Target: PT, inverted repeats: not considered"
 
@@ -83,7 +84,7 @@ plot "<awk 'NR>1' '$FLD_dat/tot-${IR_LBL}0-$REF_SPECIES-$TAR_SPECIES.$INF_FILE_T
 ##!rm temp
 
 ### reference-target, i1
-set output "${IR_LBL}1-$REF_SPECIES-$TAR_SPECIES.$PIX_FORMAT"
+#set output "${IR_LBL}1-$REF_SPECIES-$TAR_SPECIES.$PIX_FORMAT"
 #set title "Inverted repeats not considered"
 #set title "Relative compression: HS-PT\nReference: HS, Target: PT, inverted repeats: considered"
 
