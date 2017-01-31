@@ -23,7 +23,8 @@ set key off
 #set rmargin 1.35
 #set pm3d map
 set macros
-fontLabel='font "Latin Modern Math-Italic, 13"'
+fontLabelSpecies='font "Latin Modern Math-Italic, 13"'
+fontLabel='font "Latin Modern Math, 13"'
 fontTics='font "Latin Modern Sans, 10"'
 
 #set nocbtics
@@ -57,8 +58,8 @@ XTICS="`head -1 "$FLD_dat/tot-${IR_LBL}0-$REF_SPECIES-$TAR_SPECIES.$INF_FILE_TYP
         | awk -v start_ind="$TAR_SPECIES_LEN_IND" '{for(i=1;i<=NF;i++) printf "%s\t",substr($i,start_ind);}'`"
 set for [i=1:words(XTICS)] xtics ( word(XTICS,i) i-1 ) right @fontTics rotate by 90 offset 0,xticsOffset
 #set for [i=1:words(YTICS)] ytics ( word(YTICS,i) i-1 ) #right font ",9" offset yticsOffset,0
-set xlabel "$TAR_SPECIES_NAME" offset 0,xlabelOffset @fontLabel
-set ylabel "$REF_SPECIES_NAME" offset ylabelOffset,0 @fontLabel
+set xlabel "$TAR_SPECIES_NAME" offset 0,xlabelOffset @fontLabelSpecies
+set ylabel "$REF_SPECIES_NAME" offset ylabelOffset,0 @fontLabelSpecies
 unset ytics
 
 plot "<awk 'NR>1' '$FLD_dat/tot-${IR_LBL}0-$REF_SPECIES-$TAR_SPECIES.$INF_FILE_TYPE' | cut -f2-" matrix with image
