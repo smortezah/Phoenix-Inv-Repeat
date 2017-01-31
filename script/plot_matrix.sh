@@ -73,7 +73,7 @@ YTICS="`awk -v start_ind="$REF_SPECIES_LEN_IND" 'BEGIN{getline}{printf "%s ",sub
 XTICS="`head -1 "$FLD_dat/tot-${IR_LBL}1-$REF_SPECIES-$TAR_SPECIES.$INF_FILE_TYPE" \
         | awk -v start_ind="$TAR_SPECIES_LEN_IND" '{for(i=1;i<=NF;i++) printf "%s\t",substr($i,start_ind);}'`"
 set for [i=1:words(XTICS)] xtics ( word(XTICS,i) i-1 ) @fontTics rotate by 90 offset 0,xticsOffset
-set for [i=1:words(YTICS)] ytics ( word(YTICS,i) i-1 ) @fontTics center offset yticsOffset,0
+set for [i=1:words(YTICS)] ytics ( word(YTICS,i) i-1 ) center @fontTics offset yticsOffset,0
 unset ylabel
 
 plot "<awk 'NR>1' '$FLD_dat/tot-${IR_LBL}1-$REF_SPECIES-$TAR_SPECIES.$INF_FILE_TYPE' | cut -f2-" matrix with image
@@ -91,22 +91,21 @@ EOF
  for alphaDen in $ALPHA_DENS; do
 
 gnuplot <<- EOF
-set terminal $PIX_FORMAT enhanced color #size 6.25,2.65
+set terminal $PIX_FORMAT enhanced color size 4,3
 set output "diff-$REF_SPECIES-$TAR_SPECIES.$PIX_FORMAT"
 #set multiplot layout 1,1 columnsfirst #margins 0.0255,0.9147,0.105,0.992 spacing 0.03,0
 #set offset 0,0,graph 0.1, graph 0.1
 xticsOffset=0.2 #-1.2
-yticsOffset=-0.4 #-2.3
+yticsOffset=0 #-2.3
 xlabelOffset=0.99 #-1.2
-ylabelOffset=0 #-2.3
+ylabelOffset=0.81 #-2.3
 #set size ratio .9 #0.85
 set key off
 ##set tmargin 2.1    ### with title
-set tmargin 0.5     ### without title
-#set bmargin 2.7 #4
-#set bmargin 7
-#set lmargin 5
-#set rmargin 1.35
+set tmargin 0.4     ### without title
+set bmargin 4 #4 7
+set lmargin 4.5
+set rmargin 2
 #set pm3d map
 set macros
 fontLabelSpecies='font "Latin Modern Math-Italic, 13"'
@@ -132,8 +131,10 @@ YTICS="`awk -v start_ind="$REF_SPECIES_LEN_IND" 'BEGIN{getline}{printf "%s ",sub
         "$FLD_dat/diff-$REF_SPECIES-$TAR_SPECIES.$INF_FILE_TYPE"`"
 XTICS="`head -1 "$FLD_dat/diff-$REF_SPECIES-$TAR_SPECIES.$INF_FILE_TYPE" \
         | awk -v start_ind="$TAR_SPECIES_LEN_IND" '{for(i=1;i<=NF;i++) printf "%s\t",substr($i,start_ind);}'`"
-set for [i=1:words(XTICS)] xtics ( word(XTICS,i) i-1 ) @fontTics rotate by 90 offset 0,xticsOffset
+set for [i=1:words(XTICS)] xtics ( word(XTICS,i) i-1 ) right @fontTics rotate by 90 offset 0,xticsOffset
 set for [i=1:words(YTICS)] ytics ( word(YTICS,i) i-1 ) @fontTics offset yticsOffset,0
+set xlabel "$TAR_SPECIES_NAME" offset 0,xlabelOffset @fontLabelSpecies
+set ylabel "$REF_SPECIES_NAME" offset ylabelOffset,0 @fontLabelSpecies
 
 plot "<awk 'NR>1' '$FLD_dat/diff-$REF_SPECIES-$TAR_SPECIES.$INF_FILE_TYPE' | cut -f2-" matrix with image
 
