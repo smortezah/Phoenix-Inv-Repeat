@@ -44,16 +44,17 @@ set palette defined (0 "red", 1 "green", 2 "white")
 #set output "$REF_SPECIES-$TAR_SPECIES.$PIX_FORMAT"
 #set title "Inverted repeats considered"
 #set title "Relative compression: HS-PT\nReference: HS, Target: PT, inverted repeats: not considered"
-set label 2 '$TAR_SPECIES_NAME' at screen 0.01,0.5 rotate by 90     # y vertex label
-set label 1 '$REF_SPECIES_NAME' at screen 0.47,0.015                # x vertex label
+#set label 2 '$TAR_SPECIES_NAME' at screen 0.01,0.5 rotate by 90     # y vertex label
+#set label 1 '$REF_SPECIES_NAME' at screen 0.47,0.015                # x vertex label
+set label 1 '$REF_SPECIES_NAME'                 # x vertex label
 
 unset colorbox      # remove color palette
 
-YTICS="`awk -v start_ind="$REF_SPECIES_LEN_IND" 'BEGIN{getline}{printf "%s ",substr($1,start_ind)}' \
-        "$FLD_dat/tot-${IR_LBL}0-$REF_SPECIES-$TAR_SPECIES.$INF_FILE_TYPE"`"
+#YTICS="`awk -v start_ind="$REF_SPECIES_LEN_IND" 'BEGIN{getline}{printf "%s ",substr($1,start_ind)}' \
+#        "$FLD_dat/tot-${IR_LBL}0-$REF_SPECIES-$TAR_SPECIES.$INF_FILE_TYPE"`"
 XTICS="`head -1 "$FLD_dat/tot-${IR_LBL}0-$REF_SPECIES-$TAR_SPECIES.$INF_FILE_TYPE"`"
 set for [i=1:words(XTICS)] xtics ( word(XTICS,i) i-1 ) right font ",9" rotate by 90 offset 0,xticsOffset
-set for [i=1:words(YTICS)] ytics ( word(YTICS,i) i-1 ) #right font ",9" offset yticsOffset,0
+#set for [i=1:words(YTICS)] ytics ( word(YTICS,i) i-1 ) #right font ",9" offset yticsOffset,0
 unset ytics
 
 plot "<awk 'NR>1' '$FLD_dat/tot-${IR_LBL}0-$REF_SPECIES-$TAR_SPECIES.$INF_FILE_TYPE' | cut -f2-" matrix with image
