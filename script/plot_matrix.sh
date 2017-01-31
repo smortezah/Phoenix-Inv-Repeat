@@ -13,6 +13,7 @@ xticsOffset=0.2 #-1.2
 yticsOffset=-0.4 #-2.3
 xlabelOffset=0.8 #-1.2
 ylabelOffset=0 #-2.3
+paletteLabelOffset=-0.25    #-1.1
 #set size ratio .9 #0.85
 set key off
 ##set tmargin 2.1    ### with title
@@ -26,8 +27,7 @@ labelFont="Latin Modern Math"
 ticsFont=""
 
 #set nocbtics
-set cblabel "NRC" font ",11" offset -0.25,0     # works for some files
-#set cblabel "NRC" font ",11" offset -1.1,0     # works for some other files
+set cblabel "NRC" font ",11" offset paletteLabelOffset,0     # works for some files
 set cbtics scale 1 font ",9.5"
 #set cbtics
 #set cbrange [ 0.2 : 1 ] noreverse nowriteback
