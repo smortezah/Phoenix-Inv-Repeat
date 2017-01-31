@@ -7,7 +7,7 @@
 gnuplot <<- EOF
 set terminal $PIX_FORMAT enhanced color size 6.25,2.7
 set output "$REF_SPECIES-$TAR_SPECIES.$PIX_FORMAT"
-set multiplot layout 1,2 columnsfirst margins 0.03,0.913,0.11,0.98 spacing 0.03,0
+set multiplot layout 1,2 columnsfirst margins 0.026,0.913,0.11,0.98 spacing 0.03,0
 #set offset 0,0,graph 0.1, graph 0.1
 xticsOffset=0.2 #-1.2
 yticsOffset=-0.4 #-2.3
