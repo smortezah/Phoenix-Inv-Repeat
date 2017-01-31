@@ -54,3 +54,13 @@ MGA_SEQ_RUN=`seq -s' ' 1 30`; MGA_SEQ_RUN+=" MT W Z UL UP"
 
 datasets="$HUMAN_CHR$CURR_CHR"
 #datasets="";   for i in $HS_SEQ_RUN; do datasets+=$HUMAN_CHR${i}" "; done
+
+
+FILE_TYPE="fa"          # file type
+COMP_FILE_TYPE="gz"     # compressed file type
+INF_FILE_TYPE="dat"     # information (data) file type
+#INF_FILE_TYPE="csv"     # information (data) file type
+
+PIX_FORMAT=pdf          # output format: pdf, png, svg, eps, epslatex (set output x.y)
+IR_LBL=i                # label for inverted repeat
+a_LBL=a                 # label for alpha denominator

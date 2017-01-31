@@ -1,10 +1,8 @@
 #!/usr/bin/env bash
 
-
 cd ..
 cmake src
 make
-
 
 GET_HUMAN=0             # download Human choromosomes and make SEQ out of FASTA
 GET_CHIMPANZEE=0        # download Chimpanzee choromosomes and make SEQ out of FASTA
@@ -47,15 +45,6 @@ tempTarSeqRun=${TAR_SPECIE}_SEQ_RUN
 TAR_SEQ_RUN=${!tempTarSeqRun}     # all chromosomes for that specie, e.g. HS_SEQ_RUN
 TAR_DATASET="";  for i in $TAR_SEQ_RUN; do TAR_DATASET+=$TAR_SPECIE${i}" "; done
 
-
-FILE_TYPE="fa"          # file type
-COMP_FILE_TYPE="gz"     # compressed file type
-INF_FILE_TYPE="dat"     # information (data) file type
-#INF_FILE_TYPE="csv"     # information (data) file type
-
-PIX_FORMAT=pdf          # output format: pdf, png, svg, eps, epslatex (set output x.y)
-IR_LBL=i                # label for inverted repeat
-a_LBL=a                 # label for alpha denominator
 
 INV_REPEATS="0 1"         # list of inverted repeats
 ALPHA_DENS="100"        # list of alpha denominators
