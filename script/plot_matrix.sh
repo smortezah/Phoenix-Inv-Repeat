@@ -6,10 +6,9 @@
 
 gnuplot <<- EOF
 #set terminal $PIX_FORMAT enhanced color size 6.25,2.65      # HS-PT, PT-HS, HS-GG
-set terminal $PIX_FORMAT enhanced color size 40cm,10cm      # GGA-MGA
+set terminal $PIX_FORMAT enhanced color size 16cm,9cm      # GGA-MGA
 set output "$REF_SPECIES-$TAR_SPECIES.$PIX_FORMAT"
-#set multiplot layout 1,2 columnsfirst margins 0.0255,0.9148,0.1065,0.992 spacing 0.03,0
-set multiplot layout 1,2 columnsfirst
+set multiplot layout 1,2 columnsfirst margins 0.0255,0.9148,0.1065,0.992 spacing 0.03,0
 
 #set offset 0,0,graph 0.1, graph 0.1
 xticsOffset=0.2 #-1.2
@@ -19,11 +18,11 @@ ylabelOffset=0 #-2.3
 #set size ratio .9 #0.85
 set key off
 ##set tmargin 2.1    ### with title
-set tmargin 0.5     ### without title
+#set tmargin 0.5     ### without title
 #set bmargin 2.7 #4
-set bmargin 7
-set lmargin 5
-set rmargin 1.35
+##set bmargin 7
+#set lmargin 5
+#set rmargin 1.35
 #set pm3d map
 set macros
 fontLabelSpecies='font "Latin Modern Math-Italic, 13"'
