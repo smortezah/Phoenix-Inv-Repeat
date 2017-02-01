@@ -1,15 +1,5 @@
 #!/usr/bin/env bash
 
-### folders to be used
-FLD_archive_dat="archive_dat"
-FLD_chromosomes="chromosomes"
-FLD_dat="dat"
-FLD_dataset="dataset"
-FLD_GOOSE="goose"
-FLD_GULL="GULL"
-FLD_XS="XS"
-FLD_src="src"
-FLD_script="script"
 
 # mutations list:   `seq -s' ' 1 10`
 #MUT_LIST="1 2 3 4 5 6 7 8 9 10 12 14 16 18 20 25 30 35 40 45 50"
