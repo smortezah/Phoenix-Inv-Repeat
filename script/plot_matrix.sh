@@ -6,17 +6,17 @@
 
 gnuplot <<- EOF
 #set terminal $PIX_FORMAT enhanced color size 6.25,2.65      # HS-PT, PT-HS, HS-GG
-set terminal $PIX_FORMAT enhanced color size 8.3,3.7      # GGA-MGA
+set terminal $PIX_FORMAT enhanced color size 8.3,3.7      # GGA-MGA, MGA-GGA
 
 set output "$REF_SPECIES-$TAR_SPECIES.$PIX_FORMAT"
 #set multiplot layout 1,2 columnsfirst margins 0.0255,0.9148,0.1065,0.992 spacing 0.03,0
-set multiplot layout 1,2 columnsfirst margins 0.02,0.918,0.1065,0.992 spacing 0.03,0 # GGA-MGA
+set multiplot layout 1,2 columnsfirst margins 0.02,0.918,0.1065,0.992 spacing 0.03,0 # GGA-MGA, MGA-GGA
 
 #set offset 0,0,graph 0.1, graph 0.1
 xticsOffset=0.2 #-1.2
 yticsOffset=-0.875 #-2.3
 #xlabelOffset=0.99 #-1.2
-xlabelOffset=0.9   # GGA-MGA
+xlabelOffset=0.9   # GGA-MGA, MGA-GGA
 ylabelOffset=0 #-2.3
 #set size ratio .9 #0.85
 set key off
@@ -40,7 +40,7 @@ set cbrange [ 0.65 : 1 ] noreverse nowriteback
 
 #set palette defined (0 "red", 1 "yellow", 2 "green", 3 "white")
 #set palette defined (0.2 "red", 0.6 "green", 1 "white")     # HS-PT, PT-HS, HS-GG
-set palette defined (0.65 "red", 0.825 "green", 1 "white")  # GGA-MGA
+set palette defined (0.65 "red", 0.825 "green", 1 "white")  # GGA-MGA, MGA-GGA
 
 ##set yrange [2:10]
 
@@ -73,7 +73,7 @@ plot "<awk 'NR>1' '$FLD_dat/tot-${IR_LBL}0-$REF_SPECIES-$TAR_SPECIES.$INF_FILE_T
 #set title "Relative compression: HS-PT\nReference: HS, Target: PT, inverted repeats: considered"
 set colorbox        # draw color palette
 #set lmargin 44.5
-set lmargin 57    # GGA-MGA
+set lmargin 57    # GGA-MGA, MGA-GGA
 
 YTICS="`awk -v start_ind="$REF_SPECIES_LEN_IND" 'BEGIN{getline}{printf "%s ",substr($1,start_ind)}' \
         "$FLD_dat/tot-${IR_LBL}0-$REF_SPECIES-$TAR_SPECIES.$INF_FILE_TYPE"`"
