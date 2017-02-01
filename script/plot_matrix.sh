@@ -91,7 +91,7 @@ EOF
  for alphaDen in $ALPHA_DENS; do
 
 gnuplot <<- EOF
-set terminal $PIX_FORMAT enhanced color size 3.55,2.8
+set terminal $PIX_FORMAT enhanced color size 3.0,2.8   #size 3.55,2.8
 set output "diff-$REF_SPECIES-$TAR_SPECIES.$PIX_FORMAT"
 #set multiplot layout 1,1 columnsfirst #margins 0.0255,0.9147,0.105,0.992 spacing 0.03,0
 #set offset 0,0,graph 0.1, graph 0.1
@@ -116,12 +116,9 @@ fontTics='font "Latin Modern Sans, 10"'
 #set cblabel "NRC_{IR=0} - NRC_{IR=1}" @fontLabel offset -1.6,0     #-0.25 or -1.5
 #set cbtics scale 0.5 @fontTics offset -0.65,0
 #set cbtics
-#set cbrange [ -0.05 : 1 ] noreverse nowriteback
-#unset colorbox
-
-set palette defined (-0.05 "white", 0.125 "green", 0.3 "red")     # diff-HS-PT
 unset colorbox
-##set yrange [2:10]
+set cbrange [ -0.05 : 0.3 ] noreverse nowriteback
+set palette defined (-0.05 "white", 0.125 "green", 0.3 "red")     # diff-HS-PT
 
 #set title "The difference"
 #set title "Relative compression: HS-PT\nDifference between considering and not considering inverted repeats\nReference: HS, Target: PT"
