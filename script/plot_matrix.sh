@@ -91,7 +91,7 @@ EOF
  for alphaDen in $ALPHA_DENS; do
 
 gnuplot <<- EOF
-set terminal $PIX_FORMAT enhanced color size 3.7,2.93
+set terminal $PIX_FORMAT enhanced color size 3.55,2.8
 set output "diff-$REF_SPECIES-$TAR_SPECIES.$PIX_FORMAT"
 #set multiplot layout 1,1 columnsfirst #margins 0.0255,0.9147,0.105,0.992 spacing 0.03,0
 #set offset 0,0,graph 0.1, graph 0.1
@@ -102,7 +102,7 @@ ylabelOffset=0.81 #-2.3
 #set size ratio .9 #0.85
 set key off
 ##set tmargin 2.1    ### with title
-set tmargin 0.2     ### without title
+set tmargin 0.18     ### without title
 set bmargin 2.6 #4 7
 set lmargin 4.5
 set rmargin 1.37
@@ -113,8 +113,8 @@ fontLabel='font "Latin Modern Math, 13"'
 fontTics='font "Latin Modern Sans, 10"'
 
 #set nocbtics
-set cblabel "The difference between NRCs (NRC_{IR=0} - NRC_{IR=1})" @fontLabel offset -1.5,0     #-0.25 or -1.5
-set cbtics scale 0.5 @fontTics offset -0.6,0
+set cblabel "NRC_{IR=0} - NRC_{IR=1}" @fontLabel offset -1.6,0     #-0.25 or -1.5
+set cbtics scale 0.5 @fontTics offset -0.65,0
 #set cbtics
 #set cbrange [ 0.2 : 1 ] noreverse nowriteback
 
