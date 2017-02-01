@@ -6,7 +6,7 @@
 
 gnuplot <<- EOF
 #set terminal $PIX_FORMAT enhanced color size 6.25,2.65      # HS-PT, PT-HS, HS-GG
-set terminal $PIX_FORMAT enhanced color size 6.35,3.6      # GGA-MGA
+set terminal $PIX_FORMAT enhanced color size 20cm,10cm      # GGA-MGA
 set output "$REF_SPECIES-$TAR_SPECIES.$PIX_FORMAT"
 #set multiplot layout 1,2 columnsfirst margins 0.0255,0.9148,0.1065,0.992 spacing 0.03,0
 set multiplot layout 1,2 columnsfirst margins 0.0255,0.9148,0.1065,0.992 spacing 0.03,0
