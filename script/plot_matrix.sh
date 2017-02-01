@@ -6,7 +6,7 @@
 
 gnuplot <<- EOF
 #set terminal $PIX_FORMAT enhanced color size 6.25,2.65      # HS-PT, PT-HS, HS-GG
-set terminal $PIX_FORMAT enhanced color size 6.3,3.6      # GGA-MGA
+set terminal $PIX_FORMAT enhanced color size 6.35,3.6      # GGA-MGA
 set output "$REF_SPECIES-$TAR_SPECIES.$PIX_FORMAT"
 #set multiplot layout 1,2 columnsfirst margins 0.0255,0.9148,0.1065,0.992 spacing 0.03,0
 set multiplot layout 1,2 columnsfirst margins 0.0255,0.9148,0.1065,0.992 spacing 0.03,0
@@ -96,8 +96,8 @@ EOF
 
 gnuplot <<- EOF
 #set terminal $PIX_FORMAT enhanced color size 3.05,2.8   # diff-PT-HS, diff-HS-GG
-set terminal $PIX_FORMAT enhanced color size 3.0,2.8   # diff-HS-PT
-#set terminal $PIX_FORMAT enhanced color size 3.75,3.6   # diff-GGA-MGA
+#set terminal $PIX_FORMAT enhanced color size 3.0,2.8   # diff-HS-PT
+set terminal $PIX_FORMAT enhanced color size 3.65,3.65   # diff-GGA-MGA
 #set terminal $PIX_FORMAT enhanced color size 4.45,3.6   # diff-MGA-GGA
 set output "diff-$REF_SPECIES-$TAR_SPECIES.$PIX_FORMAT"
 #set multiplot layout 1,1 columnsfirst #margins 0.0255,0.9147,0.105,0.992 spacing 0.03,0
@@ -111,7 +111,7 @@ set key off
 ##set tmargin 2.1    ### with title
 set tmargin 0.18     ### without title
 set bmargin 2.6 #4 7
-set lmargin 4.5
+set lmargin 4.55
 #set rmargin 1.37
 set rmargin 0.2    # diff-HS-PT, diff-GGA-MGA
 #set rmargin 1.0    # diff-MGA-GGA
@@ -126,8 +126,8 @@ set cblabel "NRC_{IR=0} - NRC_{IR=1}" @fontLabel offset -1.6,0     #-0.25 or -1.
 set cbtics scale 0.5 @fontTics offset -0.65,0
 #set cbtics
 unset colorbox
-set cbrange [ -0.05 : 0.3 ] noreverse nowriteback       # diff-HS-PT
-#set cbrange [ -0.01 : 0.09 ] noreverse nowriteback     # diff-GGA-MGA
+#set cbrange [ -0.05 : 0.3 ] noreverse nowriteback       # diff-HS-PT
+set cbrange [ -0.01 : 0.09 ] noreverse nowriteback     # diff-GGA-MGA
 set palette defined (-0.05 "white", 0.125 "green", 0.3 "red")     # diff-HS-PT, diff-HS-PT
 #set palette defined (-0.05 "white", 0.225 "green", 0.3 "red")     # diff-HS-GG
 #set palette defined (-0.01 "white", 0.04 "green", 0.09 "red")     # diff-GGA-MGA
