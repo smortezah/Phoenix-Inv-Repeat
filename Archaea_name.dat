@@ -13,7 +13,7 @@ M. mazei_WWM610	Methanosarcina_mazei_WWM610
 M. mazei_S-6	Methanosarcina_mazei_S-6
 M. mazei_SarPi	Methanosarcina_mazei_SarPi
 M. mazei_LYC	Methanosarcina_mazei_LYC
-Th. litoralis_DSM_5473	Thermococcus_litoralis_DSM_5473
+Th. litoralis	Thermococcus_litoralis_DSM_5473
 S. islandicus_LAL14/1	Sulfolobus_islandicus_LAL14/1
 P. furiosus_COM1	Pyrococcus_furiosus_COM1
 S. islandicus_M.16.27	Sulfolobus_islandicus_M.16.27
@@ -30,5 +30,5 @@ M. maripaludis_C7	Methanococcus_maripaludis_C7
 M. maripaludis_C5	Methanococcus_maripaludis_C5
 M. mazei_strain_Goe1	Methanosarcina_mazei_strain_Goe1
 P. furiosus_DSM_3638	Pyrococcus_furiosus_DSM_3638
-S. solfataricus_P2	Sulfolobus_solfataricus_P2
-H. sp._NRC-1_plasmid_pNRC200	Halobacterium_sp._NRC-1_plasmid_pNRC200
+S. solfataricus	Sulfolobus_solfataricus_P2
+H. sp._NRC-1	Halobacterium_sp._NRC-1_plasmid_pNRC200
