@@ -6,14 +6,17 @@
 
 gnuplot <<- EOF
 #set terminal $PIX_FORMAT enhanced color size 6.25,2.65      # HS-PT, PT-HS, HS-GG
-set terminal $PIX_FORMAT enhanced color size 16cm,9cm      # GGA-MGA
+set terminal $PIX_FORMAT enhanced color size 8.3,3.7      # GGA-MGA
+
 set output "$REF_SPECIES-$TAR_SPECIES.$PIX_FORMAT"
-set multiplot layout 1,2 columnsfirst margins 0.0255,0.9148,0.1065,0.992 spacing 0.03,0
+#set multiplot layout 1,2 columnsfirst margins 0.0255,0.9148,0.1065,0.992 spacing 0.03,0
+set multiplot layout 1,2 columnsfirst margins 0.02,0.918,0.1065,0.992 spacing 0.03,0 # GGA-MGA
 
 #set offset 0,0,graph 0.1, graph 0.1
 xticsOffset=0.2 #-1.2
 yticsOffset=-0.875 #-2.3
-xlabelOffset=0.99 #-1.2
+#xlabelOffset=0.99 #-1.2
+xlabelOffset=0.9   # GGA-MGA
 ylabelOffset=0 #-2.3
 #set size ratio .9 #0.85
 set key off
@@ -46,7 +49,7 @@ set palette defined (0.65 "red", 0.825 "green", 1 "white")  # GGA-MGA
 #set title "Inverted repeats considered"
 #set title "Relative compression: HS-PT\nReference: HS, Target: PT, inverted repeats: not considered"
 unset colorbox      # remove color palette
-set rmargin 47.5
+#set rmargin 47.5
 
 #YTICS="`awk -v start_ind="$REF_SPECIES_LEN_IND" 'BEGIN{getline}{printf "%s ",substr($1,start_ind)}' \
 #        "$FLD_dat/tot-${IR_LBL}0-$REF_SPECIES-$TAR_SPECIES.$INF_FILE_TYPE"`"
@@ -69,7 +72,8 @@ plot "<awk 'NR>1' '$FLD_dat/tot-${IR_LBL}0-$REF_SPECIES-$TAR_SPECIES.$INF_FILE_T
 #set title "Inverted repeats not considered"
 #set title "Relative compression: HS-PT\nReference: HS, Target: PT, inverted repeats: considered"
 set colorbox        # draw color palette
-set lmargin 44.5
+#set lmargin 44.5
+set lmargin 57    # GGA-MGA
 
 YTICS="`awk -v start_ind="$REF_SPECIES_LEN_IND" 'BEGIN{getline}{printf "%s ",substr($1,start_ind)}' \
         "$FLD_dat/tot-${IR_LBL}0-$REF_SPECIES-$TAR_SPECIES.$INF_FILE_TYPE"`"
