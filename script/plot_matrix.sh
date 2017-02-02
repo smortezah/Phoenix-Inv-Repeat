@@ -29,6 +29,7 @@ set key off
 #set lmargin 5
 #set rmargin 1.35
 #set pm3d map
+
 set macros
 fontLabelSpecies='font "Latin Modern Math-Italic, 13"'
 fontLabel='font "Latin Modern Math, 13"'
