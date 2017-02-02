@@ -21,6 +21,7 @@ xlabelOffset=0.9   # GGA-MGA, MGA-GGA
 ylabelOffset=0 #-2.3
 #set size ratio .9 #0.85
 set key off
+
 ##set tmargin 2.1    ### with title
 #set tmargin 0.5     ### without title
 #set bmargin 2.7 #4
