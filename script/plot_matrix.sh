@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 
-
-#for ir in $INV_REPEATS; do
- for alphaDen in $ALPHA_DENS; do
-
-gnuplot <<- EOF
-
+#
+##for ir in $INV_REPEATS; do
+# for alphaDen in $ALPHA_DENS; do
+#
+#gnuplot <<- EOF
+#
 #set terminal $PIX_FORMAT enhanced color size 6.25,2.65      # HS-PT, PT-HS, HS-GG
 #set terminal $PIX_FORMAT enhanced color size 8.3,3.7      # GGA-MGA, MGA-GGA
-
+#
 #set output "$REF_SPECIES-$TAR_SPECIES.$PIX_FORMAT"
 ##set multiplot layout 1,2 columnsfirst margins 0.0255,0.9148,0.1065,0.992 spacing 0.03,0
 #set multiplot layout 1,2 columnsfirst margins 0.02,0.918,0.1065,0.992 spacing 0.03,0 # GGA-MGA, MGA-GGA
@@ -94,11 +94,11 @@ gnuplot <<- EOF
 #plot "<awk 'NR>1' '$FLD_dat/tot-${IR_LBL}1-$REF_SPECIES-$TAR_SPECIES.$INF_FILE_TYPE' | cut -f2-" matrix with image
 #
 #unset multiplot; set output
-
-EOF
-
- done
-#done
+#
+#EOF
+#
+# done
+##done
 
 
 #
