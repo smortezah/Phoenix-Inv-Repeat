@@ -6,13 +6,13 @@
  for alphaDen in $ALPHA_DENS; do
 
 gnuplot <<- EOF
-set terminal $PIX_FORMAT enhanced color size 8.3,4.3
+set terminal $PIX_FORMAT enhanced color size 8.3,4.15
 set output "$REF_SPECIES-$TAR_SPECIES.$PIX_FORMAT"
 set multiplot layout 1,2 columnsfirst margins 0.02,0.928,0.20,0.992 spacing 0.03,0
 
 #set offset 0,0,graph 0.1, graph 0.1
 xticsOffset=0.2
-yticsOffset=-4.4
+yticsOffset=-3.85
 xlabelOffset=2.75
 ylabelOffset=0 #-2.3
 #set size ratio .9 #0.85
@@ -45,7 +45,7 @@ set palette defined (0 "red", 0.5 "green", 1 "white")
 #set title "Inverted repeats considered"
 #set title "Relative compression: HS-PT\nReference: HS, Target: PT, inverted repeats: not considered"
 unset colorbox      # remove color palette
-set rmargin 67
+set rmargin 66
 
 set xtics( "Th. sp." 0, "Th. bar. s." 1, "S. is. M.16." 2, "M. brk. CM1" 3, "M. maz. C16" 4, \
            "S. is. HVE." 5, "M. sp. WWM." 6, "M. brk. MS" 7, "M. brk. s. W." 8, "M. sp. WH1" 9, "M. brk. 227" 10, \
