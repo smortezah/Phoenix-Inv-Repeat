@@ -115,17 +115,20 @@ set output "diff-$REF_SPECIES-$TAR_SPECIES.$PIX_FORMAT"
 #set offset 0,0,graph 0.1, graph 0.1
 
 xticsOffset=0.2 #-1.2
-yticsOffset=0 #-2.3
+#yticsOffset=0 #-2.3
+yticsOffset=0.2   # diff-A-A
 xlabelOffset=0.8 #-1.2
-ylabelOffset=0.81 #-2.3
+#ylabelOffset=0.81 #-2.3
+ylabelOffset=3  # diff-A-A
 #set size ratio .9 #0.85
 set key off
 
 ##set tmargin 2.1    ### with title
 set tmargin 0.18     ### without title
 #set bmargin 2.6 #4 7
-set bmargin 7   # diff-A-A
-set lmargin 4.55
+set bmargin 9   # diff-A-A
+#set lmargin 4.55
+set lmargin 16   # diff-A-A
 #set rmargin 1.37
 set rmargin 0.2    # diff-HS-PT, diff-GGA-MGA
 #set rmargin 1.0    # diff-MGA-GGA
