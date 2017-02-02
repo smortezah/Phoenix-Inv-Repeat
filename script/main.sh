@@ -27,13 +27,14 @@ GET_TURKEY=0            # download Turkey choromosomes and make SEQ out of FASTA
 INSTALL_XS=0            # install "XS" from Github
 INSTALL_GOOSE=0         # install "GOOSE" from Github
 INSTALL_GULL=0          # install "GULL" from Github
-GEN_DATASET=0          # generate datasets using "XS"
+GEN_DATASET=0           # generate datasets using "XS"
 GEN_MUTATIONS=0         # generate mutations using "GOOSE"
 GEN_ARCHAEA=0           # generate archea dataset using "GOOSE" -- output: out#.fa
 RUN_PHOENIX=0           # run Phoenix
 PLOT_RESULT=0           # plot results using "gnuplot"
 BUILD_MATRIX=0          # build matrix from datasets
 PLOT_MATRIX=1           # plot matrix from datasets
+PLOT_MATRIX_ARCHEA=0    # plot matrix Archaea from datasets
 
 ### reference parameters
 #REF_SPECIES=$HUMAN_CHR; REF_SPECIES_NAME=$HUMAN_LBL;
@@ -118,6 +119,8 @@ if [[ $BUILD_MATRIX -eq 1 ]]; then . $FLD_script/build_matrix.sh; fi
 #>>>>>  plot matrix from Reference Target correspondence
 if [[ $PLOT_MATRIX -eq 1 ]]; then . $FLD_script/plot_matrix.sh; fi
 
+#>>>>>  plot matrix Archaea from Reference Target correspondence
+if [[ $PLOT_MATRIX_ARCHEA -eq 1 ]]; then . $FLD_script/plot_matrix_archaea.sh; fi
 
 ########################
 cd $FLD_script
