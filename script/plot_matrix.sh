@@ -190,11 +190,6 @@ plot "<awk 'NR>1' '$FLD_dat/tot-${IR_LBL}0-$REF_SPECIES-$TAR_SPECIES.$INF_FILE_T
 set colorbox        # draw color palette
 #set lmargin 44.5
 set lmargin 57    # GGA-MGA, MGA-GGA
-
-#YTICS="`awk -v start_ind="$REF_SPECIES_LEN_IND" 'BEGIN{getline}{printf "%s ",substr($1,start_ind)}' \
-#        "$FLD_dat/tot-${IR_LBL}0-$REF_SPECIES-$TAR_SPECIES.$INF_FILE_TYPE"`"
-#set for [i=1:words(XTICS)] xtics ( word(XTICS,i) i-1 ) @fontTics rotate by 90 offset 0,xticsOffset
-#set for [i=1:words(YTICS)] ytics ( word(YTICS,i) i-1 ) center @fontTics offset yticsOffset,0
 ### Archaea
 set ytics( "Th. sp." 0, "Th. bar. s." 1, "Th. bar. s." 2, "S. is. M.16." 3, "M. brk. CM1" 4, "M. maz. C16" 5, \
            "S. is. HVE." 6, "M. sp. WWM." 7, "M. brk. MS" 8, "M. brk. s. W." 9, "M. sp. WH1" 10, "M. brk. 227" 11, \
@@ -204,6 +199,12 @@ set ytics( "Th. sp." 0, "Th. bar. s." 1, "Th. bar. s." 2, "S. is. M.16." 3, "M. 
            "S. is. M.14." 27, "M. marip. C6" 28, "M. marip. C7" 29, "M. marip. C5" 30, "M. maz. s. G." 31, \
            "P. fu. DSM" 32, "S. solf." 33, "H. sp." 34 \
          ) @fontTics offset yticsOffset,0
+
+# YTICS="`awk -v start_ind="$REF_SPECIES_LEN_IND" 'BEGIN{getline}{printf "%s ",substr($1,start_ind)}' \
+#       "$FLD_dat/tot-${IR_LBL}0-$REF_SPECIES-$TAR_SPECIES.$INF_FILE_TYPE"`"
+# set for [i=1:words(XTICS)] xtics ( word(XTICS,i) i-1 ) @fontTics rotate by 90 offset 0,xticsOffset
+# set for [i=1:words(YTICS)] ytics ( word(YTICS,i) i-1 ) center @fontTics offset yticsOffset,0
+
 unset ylabel
 
 plot "<awk 'NR>1' '$FLD_dat/tot-${IR_LBL}1-$REF_SPECIES-$TAR_SPECIES.$INF_FILE_TYPE' | cut -f2-" matrix with image
