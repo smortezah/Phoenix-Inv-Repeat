@@ -106,10 +106,11 @@
  for alphaDen in $ALPHA_DENS; do
 
 gnuplot <<- EOF
-set terminal $PIX_FORMAT enhanced color size 3.05,2.8   # diff-PT-HS, diff-HS-GG
+#set terminal $PIX_FORMAT enhanced color size 3.05,2.8   # diff-PT-HS, diff-HS-GG
 #set terminal $PIX_FORMAT enhanced color size 3.0,2.8   # diff-HS-PT
 #set terminal $PIX_FORMAT enhanced color size 3.65,3.65   # diff-GGA-MGA
 #set terminal $PIX_FORMAT enhanced color size 4.45,3.6   # diff-MGA-GGA
+set terminal $PIX_FORMAT enhanced color size 4.9,4.4   # diff-A-A
 set output "diff-$REF_SPECIES-$TAR_SPECIES.$PIX_FORMAT"
 #set multiplot layout 1,1 columnsfirst #margins 0.0255,0.9147,0.105,0.992 spacing 0.03,0
 #set offset 0,0,graph 0.1, graph 0.1
@@ -117,18 +118,19 @@ set output "diff-$REF_SPECIES-$TAR_SPECIES.$PIX_FORMAT"
 xticsOffset=0.2 #-1.2
 #yticsOffset=0 #-2.3
 yticsOffset=0.2   # diff-A-A
-xlabelOffset=0.8 #-1.2
+#xlabelOffset=0.8 #-1.2
+xlabelOffset=2.5  # diff-A-A
 #ylabelOffset=0.81 #-2.3
-ylabelOffset=3  # diff-A-A
+ylabelOffset=4.1  # diff-A-A
 #set size ratio .9 #0.85
 set key off
 
 ##set tmargin 2.1    ### with title
 set tmargin 0.18     ### without title
 #set bmargin 2.6 #4 7
-set bmargin 9   # diff-A-A
+set bmargin 6.8   # diff-A-A
 #set lmargin 4.55
-set lmargin 16   # diff-A-A
+set lmargin 12.3   # diff-A-A
 #set rmargin 1.37
 set rmargin 0.2    # diff-HS-PT, diff-GGA-MGA
 #set rmargin 1.0    # diff-MGA-GGA
