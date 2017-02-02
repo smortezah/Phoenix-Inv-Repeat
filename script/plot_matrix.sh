@@ -6,8 +6,7 @@
 
 gnuplot <<- EOF
 #set terminal $PIX_FORMAT enhanced color size 6.25,2.65      # HS-PT, PT-HS, HS-GG
-#set terminal $PIX_FORMAT enhanced color size 8.3,3.7      # GGA-MGA, MGA-GGA
-set terminal $PIX_FORMAT enhanced color size 8.3,3.7      # A-A
+set terminal $PIX_FORMAT enhanced color size 8.3,3.7      # GGA-MGA, MGA-GGA
 
 set output "$REF_SPECIES-$TAR_SPECIES.$PIX_FORMAT"
 #set multiplot layout 1,2 columnsfirst margins 0.0255,0.9148,0.1065,0.992 spacing 0.03,0
@@ -42,8 +41,7 @@ set cbtics scale 0.5 @fontTics offset -0.8,0
 
 #set palette defined (0 "red", 1 "yellow", 2 "green", 3 "white")
 #set palette defined (0.2 "red", 0.6 "green", 1 "white")     # HS-PT, PT-HS, HS-GG
-#set palette defined (0.65 "red", 0.825 "green", 1 "white")  # GGA-MGA, MGA-GGA
-set palette defined (0 "red", 0.5 "green", 1 "white")  # A-A
+set palette defined (0.65 "red", 0.825 "green", 1 "white")  # GGA-MGA, MGA-GGA
 
 ##set yrange [2:10]
 
@@ -76,7 +74,6 @@ set lmargin 57    # GGA-MGA, MGA-GGA
 
 YTICS="`awk -v start_ind="$REF_SPECIES_LEN_IND" 'BEGIN{getline}{printf "%s ",substr($1,start_ind)}' \
        "$FLD_dat/tot-${IR_LBL}0-$REF_SPECIES-$TAR_SPECIES.$INF_FILE_TYPE"`"
-# set for [i=1:words(XTICS)] xtics ( word(XTICS,i) i-1 ) @fontTics rotate by 90 offset 0,xticsOffset
 set for [i=1:words(YTICS)] ytics ( word(YTICS,i) i-1 ) center @fontTics offset yticsOffset,0
 
 unset ylabel
