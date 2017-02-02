@@ -114,7 +114,8 @@ set output "diff-$REF_SPECIES-$TAR_SPECIES.$PIX_FORMAT"
 #set multiplot layout 1,1 columnsfirst #margins 0.0255,0.9147,0.105,0.992 spacing 0.03,0
 #set offset 0,0,graph 0.1, graph 0.1
 
-xticsOffset=0.2 #-1.2
+#xticsOffset=0.2 #-1.2
+xticsOffset=-1.2    # diff-A-A
 yticsOffset=0 #-2.3
 xlabelOffset=0.8 #-1.2
 ylabelOffset=0.81 #-2.3
@@ -123,7 +124,8 @@ set key off
 
 ##set tmargin 2.1    ### with title
 set tmargin 0.18     ### without title
-set bmargin 2.6 #4 7
+#set bmargin 2.6 #4 7
+set bmargin 7   # diff-A-A
 set lmargin 4.55
 #set rmargin 1.37
 set rmargin 0.2    # diff-HS-PT, diff-GGA-MGA
@@ -152,9 +154,14 @@ set palette defined (-0.1 "white", 0.45 "green", 1 "red")     # diff-A-A
 
 YTICS="`awk -v start_ind="$REF_SPECIES_LEN_IND" 'BEGIN{getline}{printf "%s ",substr($1,start_ind)}' \
         "$FLD_dat/diff-$REF_SPECIES-$TAR_SPECIES.$INF_FILE_TYPE"`"
+#XTICS="`head -1 "$FLD_dat/diff-$REF_SPECIES-$TAR_SPECIES.$INF_FILE_TYPE" \
+#        | awk -v start_ind="$TAR_SPECIES_LEN_IND" '{for(i=1;i<=NF;i++) printf "%s\t",substr($i,start_ind);}'`"
+#### Archaea
 XTICS="`head -1 "$FLD_dat/diff-$REF_SPECIES-$TAR_SPECIES.$INF_FILE_TYPE" \
-        | awk -v start_ind="$TAR_SPECIES_LEN_IND" '{for(i=1;i<=NF;i++) printf "%s\t",substr($i,start_ind);}'`"
+        | awk '{for(i=1;i<=NF;i++) printf "%s\t",$i;}'`"
+
 set for [i=1:words(XTICS)] xtics ( word(XTICS,i) i-1 ) right @fontTics rotate by 90 offset 0,xticsOffset
+#set xtics( "Th. sp." 0, "Th. bar. s." 1 ) right @fontTics rotate by 90 offset 0,xticsOffset
 set for [i=1:words(YTICS)] ytics ( word(YTICS,i) i-1 ) @fontTics offset yticsOffset,0
 set xlabel "$TAR_SPECIES_NAME" offset 0,xlabelOffset @fontLabelSpecies
 set ylabel "$REF_SPECIES_NAME" offset ylabelOffset,0 @fontLabelSpecies
