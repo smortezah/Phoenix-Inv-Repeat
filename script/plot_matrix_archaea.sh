@@ -42,7 +42,7 @@ set palette defined (0 "red", 0.5 "green", 1 "white")
 
 ### reference-target, i0
 #set output "$REF_SPECIES-$TAR_SPECIES.$PIX_FORMAT"
-#set title "Inverted repeats considered"
+#set title "Inverted repeats not considered"
 #set title "Relative compression: HS-PT\nReference: HS, Target: PT, inverted repeats: not considered"
 unset colorbox      # remove color palette
 set rmargin 66

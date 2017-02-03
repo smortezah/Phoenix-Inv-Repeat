@@ -10,11 +10,11 @@ set terminal $PIX_FORMAT enhanced color size 8.3,3.7      # GGA-MGA, MGA-GGA
 
 set output "$REF_SPECIES-$TAR_SPECIES.$PIX_FORMAT"
 #set multiplot layout 1,2 columnsfirst margins 0.0255,0.9148,0.1065,0.992 spacing 0.03,0
-set multiplot layout 1,2 columnsfirst margins 0.02,0.918,0.1065,0.992 spacing 0.03,0 # GGA-MGA, MGA-GGA
+set multiplot layout 1,2 columnsfirst margins 0.02,0.918,0.08,0.992 spacing 0.03,0 # GGA-MGA, MGA-GGA
 
 #set offset 0,0,graph 0.1, graph 0.1
-#xticsOffset=0.2 #-1.2
-xticsOffset=-1.2
+#xticsOffset=-1.2
+xticsOffset=0.2 # GGA-MGA, MGA-GGA
 yticsOffset=-0.875 #-2.3
 #xlabelOffset=0.99 #-1.2
 xlabelOffset=0.9   # GGA-MGA, MGA-GGA
@@ -49,10 +49,11 @@ set palette defined (0.65 "red", 0.825 "green", 1 "white")  # GGA-MGA, MGA-GGA
 
 ### reference-target, i0
 #set output "$REF_SPECIES-$TAR_SPECIES.$PIX_FORMAT"
-#set title "Inverted repeats considered"
+#set title "Inverted repeats not considered"
 #set title "Relative compression: HS-PT\nReference: HS, Target: PT, inverted repeats: not considered"
 unset colorbox      # remove color palette
 #set rmargin 47.5
+
 XTICS="`head -1 "$FLD_dat/tot-${IR_LBL}0-$REF_SPECIES-$TAR_SPECIES.$INF_FILE_TYPE" \
         | awk -v start_ind="$TAR_SPECIES_LEN_IND" '{for(i=1;i<=NF;i++) printf "%s\t",substr($i,start_ind);}'`"
 set for [i=1:words(XTICS)] xtics ( word(XTICS,i) i-1 ) right @fontTics rotate by 90 offset 0,xticsOffset
@@ -68,7 +69,7 @@ plot "<awk 'NR>1' '$FLD_dat/tot-${IR_LBL}0-$REF_SPECIES-$TAR_SPECIES.$INF_FILE_T
 
 ### reference-target, i1
 #set output "${IR_LBL}1-$REF_SPECIES-$TAR_SPECIES.$PIX_FORMAT"
-#set title "Inverted repeats not considered"
+#set title "Inverted repeats considered"
 #set title "Relative compression: HS-PT\nReference: HS, Target: PT, inverted repeats: considered"
 set colorbox        # draw color palette
 #set lmargin 44.5
@@ -98,8 +99,8 @@ EOF
 gnuplot <<- EOF
 #set terminal $PIX_FORMAT enhanced color size 3.05,2.8   # diff-PT-HS, diff-HS-GG
 #set terminal $PIX_FORMAT enhanced color size 3.0,2.8   # diff-HS-PT
-#set terminal $PIX_FORMAT enhanced color size 3.65,3.65   # diff-GGA-MGA
-set terminal $PIX_FORMAT enhanced color size 4.45,3.6   # diff-MGA-GGA
+#set terminal $PIX_FORMAT enhanced color size 3.75,3.65   # diff-GGA-MGA
+set terminal $PIX_FORMAT enhanced color size 4.3,3.6   # diff-MGA-GGA
 set output "diff-$REF_SPECIES-$TAR_SPECIES.$PIX_FORMAT"
 #set multiplot layout 1,1 columnsfirst #margins 0.0255,0.9147,0.105,0.992 spacing 0.03,0
 #set offset 0,0,graph 0.1, graph 0.1
@@ -113,11 +114,12 @@ set key off
 
 ##set tmargin 2.1    ### with title
 set tmargin 0.18     ### without title
-set bmargin 2.6 #4 7
+#set bmargin 2.6 #4 7
+set bmargin 2.42 # diff-GGA-MGA
 set lmargin 4.55
 #set rmargin 1.37
 #set rmargin 0.2    # diff-HS-PT, diff-GGA-MGA
-set rmargin 1.0    # diff-MGA-GGA
+set rmargin 1.6    # diff-MGA-GGA
 #set pm3d map
 set macros
 fontLabelSpecies='font "Latin Modern Math-Italic, 13"'
@@ -130,11 +132,11 @@ set cbtics scale 0.5 @fontTics offset -0.65,0
 #set cbtics
 #unset colorbox
 #set cbrange [ -0.05 : 0.3 ] noreverse nowriteback       # diff-HS-PT
-#set cbrange [ -0.01 : 0.09 ] noreverse nowriteback     # diff-GGA-MGA
+set cbrange [ -0.01 : 0.09 ] noreverse nowriteback     # diff-GGA-MGA, diff-MGA-GGA
 
 #set palette defined (-0.05 "white", 0.125 "green", 0.3 "red")     # diff-HS-PT, diff-HS-PT
 #set palette defined (-0.05 "white", 0.225 "green", 0.3 "red")     # diff-HS-GG
-set palette defined (-0.01 "white", 0.04 "green", 0.09 "red")     # diff-GGA-MGA
+set palette defined (-0.01 "white", 0.04 "green", 0.09 "red")     # diff-GGA-MGA, diff-MGA-GGA
 
 #set title "The difference"
 #set title "Relative compression: HS-PT\nDifference between considering and not considering inverted repeats\nReference: HS, Target: PT"
