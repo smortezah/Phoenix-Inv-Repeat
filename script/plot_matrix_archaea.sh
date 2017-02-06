@@ -47,13 +47,50 @@ set palette defined (0 "red", 0.5 "green", 1 "white")
 unset colorbox      # remove color palette
 set rmargin 66
 
-set xtics( "Th. sp." 0, "Th. bar. s." 1, "S. is. M.16." 2, "M. brk. CM1" 3, "M. maz. C16" 4, \
-           "S. is. HVE." 5, "M. sp. WWM." 6, "M. brk. MS" 7, "M. brk. s. W." 8, "M. sp. WH1" 9, "M. brk. 227" 10, \
-           "M. maz. WWM." 11, "M. maz. S-6" 12, "M. maz. SarPi" 13, "M. maz. LYC" 14, "Th. litor." 15, \
-           "S. is. LAL." 16, "P. fu. COM1" 17, "S. is. M.16." 18, "S. is. Y.G." 19, "S. is. L.S." 20, \
-           "M. brk. s. F." 21, "S. is. REY." 22, "Th. bar. MP" 23, "S. is. L.D." 24, "S. is. Y.N." 25, \
-           "S. is. M.14." 26, "M. marip. C6" 27, "M. marip. C7" 28, "M. marip. C5" 29, "M. maz. s. G." 30, \
-           "P. fu. DSM" 31, "S. solf." 32, "H. sp." 33 \
+#set xtics( "Th. sp." 0, "Th. bar. s." 1, "S. is. M.16." 2, "M. brk. CM1" 3, "M. maz. C16" 4, \
+#           "S. is. HVE." 5, "M. sp. WWM." 6, "M. brk. MS" 7, "M. brk. s. W." 8, "M. sp. WH1" 9, "M. brk. 227" 10, \
+#           "M. maz. WWM." 11, "M. maz. S-6" 12, "M. maz. SarPi" 13, "M. maz. LYC" 14, "Th. litor." 15, \
+#           "S. is. LAL." 16, "P. fu. COM1" 17, "S. is. M.16." 18, "S. is. Y.G." 19, "S. is. L.S." 20, \
+#           "M. brk. s. F." 21, "S. is. REY." 22, "Th. bar. MP" 23, "S. is. L.D." 24, "S. is. Y.N." 25, \
+#           "S. is. M.14." 26, "M. marip. C6" 27, "M. marip. C7" 28, "M. marip. C5" 29, "M. maz. s. G." 30, \
+#           "P. fu. DSM" 31, "S. solf." 32, "H. sp." 33 \
+#         ) right @fontTics rotate by 90 offset 0,xticsOffset
+
+set xtics( \
+            "H. sp." 0, \
+            "M. brk. 227" 1, \
+            "M. brk. CM1" 2, \
+            "M. brk. MS" 3, \
+            "M. brk. s. F." 4, \
+            "M. brk. s. W." 5, \
+            "M. marip. C5" 6, \
+            "M. marip. C6" 7, \
+            "M. marip. C7" 8, \
+            "M. maz. C16" 9, \
+            "M. maz. LYC" 10, \
+            "M. maz. S-6" 11, \
+            "M. maz. s. G." 12, \
+            "M. maz. SarPi" 13, \
+            "M. maz. WWM." 14, \
+            "M. sp. WH1" 15, \
+            "M. sp. WWM." 16, \
+            "P. fu. COM1" 17, \
+            "P. fu. DSM" 18, \
+            "S. is. HVE." 19, \
+            "S. is. L.D." 20, \
+            "S. is. L.S." 21, \
+            "S. is. LAL." 22, \
+            "S. is. M.14." 23, \
+            "S. is. M.16." 24, \
+            "S. is. M.16." 25, \
+            "S. is. REY." 26, \
+            "S. is. Y.G." 27, \
+            "S. is. Y.N." 28, \
+            "S. solf." 29, \
+            "Th. bar. MP" 30, \
+            "Th. bar. s." 31, \
+            "Th. litor." 32, \
+            "Th. sp." 33 \
          ) right @fontTics rotate by 90 offset 0,xticsOffset
 set xlabel "$TAR_SPECIES_NAME" offset 0,xlabelOffset @fontLabelSpecies
 set ylabel "$REF_SPECIES_NAME" offset ylabelOffset,0 @fontLabelSpecies
@@ -72,13 +109,51 @@ plot "<awk 'NR>1' '$FLD_dat/tot-${IR_LBL}0-$REF_SPECIES-$TAR_SPECIES.$INF_FILE_T
 set colorbox        # draw color palette
 set lmargin 61
 
-set ytics( "Th. sp." 0, "Th. bar. s." 1, "S. is. M.16." 2, "M. brk. CM1" 3, "M. maz. C16" 4, \
-           "S. is. HVE." 5, "M. sp. WWM." 6, "M. brk. MS" 7, "M. brk. s. W." 8, "M. sp. WH1" 9, "M. brk. 227" 10, \
-           "M. maz. WWM." 11, "M. maz. S-6" 12, "M. maz. SarPi" 13, "M. maz. LYC" 14, "Th. litor." 15, \
-           "S. is. LAL." 16, "P. fu. COM1" 17, "S. is. M.16." 18, "S. is. Y.G." 19, "S. is. L.S." 20, \
-           "M. brk. s. F." 21, "S. is. REY." 22, "Th. bar. MP" 23, "S. is. L.D." 24, "S. is. Y.N." 25, \
-           "S. is. M.14." 26, "M. marip. C6" 27, "M. marip. C7" 28, "M. marip. C5" 29, "M. maz. s. G." 30, \
-           "P. fu. DSM" 31, "S. solf." 32, "H. sp." 33 \
+#set ytics( "Th. sp." 0, "Th. bar. s." 1, "S. is. M.16." 2, "M. brk. CM1" 3, "M. maz. C16" 4, \
+#           "S. is. HVE." 5, "M. sp. WWM." 6, "M. brk. MS" 7, "M. brk. s. W." 8, "M. sp. WH1" 9, "M. brk. 227" 10, \
+#           "M. maz. WWM." 11, "M. maz. S-6" 12, "M. maz. SarPi" 13, "M. maz. LYC" 14, "Th. litor." 15, \
+#           "S. is. LAL." 16, "P. fu. COM1" 17, "S. is. M.16." 18, "S. is. Y.G." 19, "S. is. L.S." 20, \
+#           "M. brk. s. F." 21, "S. is. REY." 22, "Th. bar. MP" 23, "S. is. L.D." 24, "S. is. Y.N." 25, \
+#           "S. is. M.14." 26, "M. marip. C6" 27, "M. marip. C7" 28, "M. marip. C5" 29, "M. maz. s. G." 30, \
+#           "P. fu. DSM" 31, "S. solf." 32, "H. sp." 33 \
+#         ) center @fontTics offset yticsOffset,0
+
+
+set ytics( \
+            "H. sp." 0, \
+            "M. brk. 227" 1, \
+            "M. brk. CM1" 2, \
+            "M. brk. MS" 3, \
+            "M. brk. s. F." 4, \
+            "M. brk. s. W." 5, \
+            "M. marip. C5" 6, \
+            "M. marip. C6" 7, \
+            "M. marip. C7" 8, \
+            "M. maz. C16" 9, \
+            "M. maz. LYC" 10, \
+            "M. maz. S-6" 11, \
+            "M. maz. s. G." 12, \
+            "M. maz. SarPi" 13, \
+            "M. maz. WWM." 14, \
+            "M. sp. WH1" 15, \
+            "M. sp. WWM." 16, \
+            "P. fu. COM1" 17, \
+            "P. fu. DSM" 18, \
+            "S. is. HVE." 19, \
+            "S. is. L.D." 20, \
+            "S. is. L.S." 21, \
+            "S. is. LAL." 22, \
+            "S. is. M.14." 23, \
+            "S. is. M.16." 24, \
+            "S. is. M.16." 25, \
+            "S. is. REY." 26, \
+            "S. is. Y.G." 27, \
+            "S. is. Y.N." 28, \
+            "S. solf." 29, \
+            "Th. bar. MP" 30, \
+            "Th. bar. s." 31, \
+            "Th. litor." 32, \
+            "Th. sp." 33 \
          ) center @fontTics offset yticsOffset,0
 
 unset ylabel
