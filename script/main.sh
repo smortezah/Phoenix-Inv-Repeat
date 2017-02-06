@@ -33,8 +33,8 @@ GEN_ARCHAEA=0           # generate archea dataset using "GOOSE" -- output: out#.
 RUN_PHOENIX=0           # run Phoenix
 PLOT_RESULT=0           # plot results using "gnuplot"
 BUILD_MATRIX=0          # build matrix from datasets
-PLOT_MATRIX=1           # plot matrix from datasets
-PLOT_MATRIX_ARCHEA=0    # plot matrix Archaea from datasets
+PLOT_MATRIX=0           # plot matrix from datasets
+PLOT_MATRIX_ARCHEA=1    # plot matrix Archaea from datasets
 
 ### reference parameters
 #REF_SPECIES=$HUMAN_CHR; REF_SPECIES_NAME=$HUMAN_LBL;
