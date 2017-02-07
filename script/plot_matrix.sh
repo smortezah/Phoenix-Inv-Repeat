@@ -132,11 +132,12 @@ set cbtics scale 0.5 @fontTics offset -0.65,0
 #set cbtics
 #unset colorbox
 #set cbrange [ -0.05 : 0.3 ] noreverse nowriteback       # diff-HS-PT
-set cbrange [ -0.01 : 0.09 ] noreverse nowriteback     # diff-GGA-MGA, diff-MGA-GGA
+#set cbrange [ -0.05 : 0.5 ] noreverse nowriteback       # diff-HS-GG
+#set cbrange [ -0.01 : 0.09 ] noreverse nowriteback     # diff-GGA-MGA, diff-MGA-GGA
 
 #set palette defined (-0.05 "white", 0.125 "green", 0.3 "red")     # diff-HS-PT, diff-HS-PT
-#set palette defined (-0.05 "white", 0.225 "green", 0.3 "red")     # diff-HS-GG
-set palette defined (-0.01 "white", 0.04 "green", 0.09 "red")     # diff-GGA-MGA, diff-MGA-GGA
+set palette defined (-0.05 "white", 0.225 "green", 0.5 "red")     # diff-HS-GG
+#set palette defined (-0.01 "white", 0.04 "green", 0.09 "red")     # diff-GGA-MGA, diff-MGA-GGA
 
 #set title "The difference"
 #set title "Relative compression: HS-PT\nDifference between considering and not considering inverted repeats\nReference: HS, Target: PT"
