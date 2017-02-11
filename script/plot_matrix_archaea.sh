@@ -13,7 +13,7 @@ set multiplot layout 1,2 columnsfirst margins 0.02,0.928,0.20,0.992 spacing 0.03
 #set offset 0,0,graph 0.1, graph 0.1
 xticsOffset=0.2
 yticsOffset=-3.85
-xlabelOffset=2.75
+xlabelOffset=3.4
 ylabelOffset=0 #-2.3
 #set size ratio .9 #0.85
 set key off
@@ -181,8 +181,8 @@ set output "diff-$REF_SPECIES-$TAR_SPECIES.$PIX_FORMAT"
 
 xticsOffset=0.2
 yticsOffset=0.2
-xlabelOffset=2.7
-ylabelOffset=4.4
+xlabelOffset=3.4
+ylabelOffset=5.4
 #set size ratio .9 #0.85
 set key off
 
