@@ -84,7 +84,6 @@ unset ylabel
 plot "<awk 'NR>1' '$FLD_dat/tot-${IR_LBL}1-$REF_SPECIES-$TAR_SPECIES.$INF_FILE_TYPE' | cut -f2-" matrix with image
 
 unset multiplot; set output
-
 EOF
 
  done
