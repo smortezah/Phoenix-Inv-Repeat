@@ -74,52 +74,52 @@ MIN_CTX=20              # min context-order size
 MAX_CTX=20              # max context-order size
 
 
-#>>>>>  download Human choromosomes and make SEQ out of FASTA
+#>>>>  download Human choromosomes and make SEQ out of FASTA
 if [[ $GET_HUMAN -eq 1 ]]; then . $FLD_script/get_human.sh; fi
 
-#>>>>>  download Chimpanzee choromosomes and make SEQ out of FASTA
+#>>>>  download Chimpanzee choromosomes and make SEQ out of FASTA
 if [[ $GET_CHIMPANZEE -eq 1 ]]; then . $FLD_script/get_chimpanzee.sh; fi
 
-#>>>>>  download Gorilla choromosomes and make SEQ out of FASTA
+#>>>>  download Gorilla choromosomes and make SEQ out of FASTA
 if [[ $GET_GORILLA -eq 1 ]]; then . $FLD_script/get_gorilla.sh; fi
 
-#>>>>>  download Chicken choromosomes and make SEQ out of FASTA
+#>>>>  download Chicken choromosomes and make SEQ out of FASTA
 if [[ $GET_CHICKEN -eq 1 ]]; then . $FLD_script/get_chicken.sh; fi
 
-#>>>>>  download Turkey choromosomes and make SEQ out of FASTA
+#>>>>  download Turkey choromosomes and make SEQ out of FASTA
 if [[ $GET_TURKEY -eq 1 ]]; then . $FLD_script/get_turkey.sh; fi
 
-#>>>>>  install "XS" from Github
+#>>>>  install "XS" from Github
 if [[ $INSTALL_XS -eq 1 ]]; then . $FLD_script/install_XS.sh; fi
 
-#>>>>>  install "GOOSE" from Github
+#>>>>  install "GOOSE" from Github
 if [[ $INSTALL_GOOSE -eq 1 ]]; then . $FLD_script/install_GOOSE.sh; fi
 
-#>>>>>  install "GULL" from Github
+#>>>>  install "GULL" from Github
 if [[ $INSTALL_GULL -eq 1 ]]; then . $FLD_script/install_GULL.sh; fi
 
-#>>>>>  generate datasets using "XS"
+#>>>>  generate datasets using "XS"
 if [[ $GEN_DATASET -eq 1 ]]; then . $FLD_script/generate_dataset.sh; fi
 
-#>>>>>  generate mutations using "GOOSE"
+#>>>>  generate mutations using "GOOSE"
 if [[ $GEN_MUTATIONS -eq 1 ]]; then . $FLD_script/generate_mutation.sh; fi
 
-#>>>>>  generate archaea dataset using "GOOSE" -- output: out#.fa
+#>>>>  generate archaea dataset using "GOOSE" -- output: out#.fa
 if [[ $GEN_ARCHAEA -eq 1 ]]; then . $FLD_script/generate_archaea.sh; fi
 
-#>>>>>  run Phoenix
+#>>>>  run Phoenix
 if [[ $RUN_PHOENIX -eq 1 ]]; then . $FLD_script/run_phoenix.sh; fi
 
-#>>>>>  plot results using "gnuplot"
+#>>>>  plot results using "gnuplot"
 if [[ $PLOT_RESULT -eq 1 ]]; then . $FLD_script/plot_result.sh; fi
 
-#>>>>>  build matrix from Reference Target correspondence
+#>>>>  build matrix from Reference Target correspondence
 if [[ $BUILD_MATRIX -eq 1 ]]; then . $FLD_script/build_matrix.sh; fi
 
-#>>>>>  plot matrix from Reference Target correspondence
+#>>>>  plot matrix from Reference Target correspondence
 if [[ $PLOT_MATRIX -eq 1 ]]; then . $FLD_script/plot_matrix.sh; fi
 
-#>>>>>  plot matrix Archaea from Reference Target correspondence
+#>>>>  plot matrix Archaea from Reference Target correspondence
 if [[ $PLOT_MATRIX_ARCHEA -eq 1 ]]; then . $FLD_script/plot_matrix_archaea.sh; fi
 
 ########################

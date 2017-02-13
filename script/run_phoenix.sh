@@ -8,14 +8,13 @@ for ir in $INV_REPEATS; do
         >> $IR_LBL$ir-$refDataset-$TAR_SPECIES.$INF_FILE_TYPE
    for tarDataset in $TAR_DATASET; do
 ##   rm -f $IR_LBL$ir-$a_LBL$alphaDen-${dataset}.$INF_FILE_TYPE
-#   touch $IR_LBL$ir-$a_LBL$alphaDen-$dataset.$INF_FILE_TYPE
+##   touch $IR_LBL$ir-$a_LBL$alphaDen-$dataset.$INF_FILE_TYPE
 #   echo -e "mut\tmin_bpb\tmin_ctx" >> $IR_LBL$ir-$a_LBL$alphaDen-$dataset.$INF_FILE_TYPE
 #    for mut in $MUT_LIST; do
 #    rm -f $IR_LBL$ir-$a_LBL$alphaDen-${dataset}_$mut.$INF_FILE_TYPE
 #    touch $IR_LBL$ir-$a_LBL$alphaDen-${dataset}_$mut.$INF_FILE_TYPE
 #    echo -e "# ir\talpha\tctx\tbpb\ttime(s)" >> $IR_LBL$ir-$a_LBL$alphaDen-${dataset}_$mut.$INF_FILE_TYPE
      for((ctx=$MIN_CTX; ctx<=$MAX_CTX; ctx+=1)); do
-#     for ctx in {2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20}; do
      ./phoenix -m r,$ctx,$alphaDen,$ir -t $FLD_dataset/$tarDataset -r $FLD_dataset/$refDataset \
                >> $IR_LBL$ir-$refDataset-$TAR_SPECIES.$INF_FILE_TYPE
      done
@@ -30,9 +29,7 @@ for ir in $INV_REPEATS; do
  done
 done
 
-#-----------------------------------
-#   create "dat" folder and save the results
-#-----------------------------------
-###rm -fr $FLD_dat              # remove "dat" folder, if it already exists
-##mkdir -p $FLD_dat             # make "dat" folder
-#mv ${IR_LBL}*.$INF_FILE_TYPE $FLD_dat    # move all created dat files to the "dat" folder
+
+###rm -fr $FLD_dat
+mkdir -p $FLD_dat
+mv ${IR_LBL}*.$INF_FILE_TYPE $FLD_dat
