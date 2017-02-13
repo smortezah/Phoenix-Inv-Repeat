@@ -13,9 +13,11 @@ make
 ./phoenix [OPTION]... -m [MODEL(s)] -t [TARGET] -r [REFERENCE]
 </pre>
 To see the options, type:
-<pre>
+
+<code>
 ./phoenix -h
-</pre>
+</code>
+
 This will print the following:
 <pre>
 Synopsis:
