@@ -8,8 +8,48 @@ cmake src
 make
 </pre>
 
-<h2>EXECUTION</h2>
+<h2>USAGE</h2>
+<pre>
+./phoenix [OPTION]... -m [MODEL(s)] -t [TARGET] -r [REFERENCE]
+</pre>
+To see the options, type:
+<pre>
+./phoenix -h
+</pre>
+This will print the following:
+<pre>
+Synopsis:
+    ./phoenix [OPTION]... -m [MODEL(s)] -t [TARGET] -r [REFERENCE]
 
+Mandatory arguments:
+    -t [TARGET],  --target [TARGET]
+         target file address
+
+    -r [REFERENCE],  --reference [REFERENCE]
+         reference file address
+
+Options:
+    -h,  --help
+         usage guide
+
+    -V,  --version
+         version number
+
+    -v,  --verbose
+         verbose mode (more information)
+
+    -m [&lt;rt&gt;,&lt;s&gt;,&lt;a&gt;,&lt;i&gt;:...],  --model [&lt;rt&gt;,&lt;s&gt;,&lt;a&gt;,&lt;i&gt;:...]
+         context model(s). Seperate different models with :
+         &lt;rt&gt;: build a model based on reference (r) or target (t),
+         &lt;s&gt;:  context-order size,
+         &lt;a&gt;:  1/alpha,
+         &lt;i&gt;:  inverted repeat (0=don't use, 1=use).
+         EXAMPLE 1: -m r,4,1000,1
+         EXAMPLE 2: -m t,18,1,0:r,13,100,0
+</pre>
+
+<h2>CITATION</h2>
+Please cite the following papers, if you use <i>Phoenix</i>:
 
 <h2>ISSUES</h2>
 Please let me know if there is any issues, at <a href="https://github.com/smortezah/Phoenix/issues">issues</a>.
