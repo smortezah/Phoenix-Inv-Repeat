@@ -46,14 +46,6 @@ Options:
          &lt;i&gt;:  inverted repeat (0=don't use, 1=use).
          EXAMPLE 1: -m r,4,1000,1
          EXAMPLE 2: -m t,18,1,0:r,13,100,0
-
-    -n [NUMBER],  --number [NUMBER]
-         number of something.
-         requires an integer number (NUMBER)
-
-    -d [NUMBER],  --fnumber [NUMBER]
-         number of something.
-         requires a float number (NUMBER)
 </pre>
 
 <h2>CITATION</h2>
