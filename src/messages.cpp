@@ -20,7 +20,7 @@ void Messages::help () const
 {
     cout                                                                        << '\n'
          << "Synopsis:"                                                         << '\n'
-         << "    phoenix [OPTION]... -m [MODEL(s)] -t [TARGET] -r [REFERENCE]"  << '\n'
+         << "    ./phoenix [OPTION]... -m [MODEL(s)] -t [TARGET] -r [REFERENCE]"<< '\n'
                                                                                 << '\n'
          << "Mandatory arguments:"                                              << '\n'
          << "    -t [TARGET],  --target [TARGET]"                               << '\n'
