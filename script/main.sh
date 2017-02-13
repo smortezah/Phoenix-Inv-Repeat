@@ -34,7 +34,7 @@ RUN_PHOENIX=0           # run Phoenix
 PLOT_RESULT=0           # plot results using "gnuplot"
 BUILD_MATRIX=0          # build matrix from datasets
 PLOT_MATRIX=0           # plot matrix from datasets
-PLOT_MATRIX_ARCHEA=1    # plot matrix Archaea from datasets
+PLOT_MATRIX_ARCHEA=0    # plot matrix Archaea from datasets
 
 ### reference parameters
 #REF_SPECIES=$HUMAN_CHR; REF_SPECIES_NAME=$HUMAN_LBL;
@@ -68,7 +68,7 @@ TAR_SPECIES_LEN=${#TAR_SPECIES};            # length of string TAR_SPECIES
 ((TAR_SPECIES_LEN_IND=TAR_SPECIES_LEN+1));  # index of length of string TAR_SPECIES
 
 
-INV_REPEATS="0 1"         # list of inverted repeats
+INV_REPEATS="0 1"       # list of inverted repeats
 ALPHA_DENS="100"        # list of alpha denominators
 MIN_CTX=20              # min context-order size
 MAX_CTX=20              # max context-order size
