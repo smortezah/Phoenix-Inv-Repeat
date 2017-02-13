@@ -56,6 +56,9 @@ Options:
          requires a float number (NUMBER)
 </pre>
 
+<h2>CITATION</h2>
+Please cite the following papers, if you use Phoenix:
+
 <h2>ISSUES</h2>
 Please let me know if there is any issues, at <a href="https://github.com/smortezah/Phoenix/issues">issues</a>.
 
