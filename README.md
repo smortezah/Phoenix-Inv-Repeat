@@ -16,6 +16,10 @@ To see the options, type:
 <pre>
 ./phoenix -h
 </pre>
+or
+<pre>
+./phoenix --help
+</pre>
 
 <h2>ISSUES</h2>
 Please let me know if there is any issues, at <a href="https://github.com/smortezah/Phoenix/issues">issues</a>.
