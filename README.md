@@ -1,6 +1,5 @@
 <h2>INSTALLATION</h2>
 Cmake is required for the installation. Also, git is suggested for cloning the repository.
-<h3>Linux</h3>
 <pre>
 sudo apt-get install cmake git
 git clone https://github.com/smortezah/Phoenix.git
