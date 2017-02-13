@@ -38,9 +38,9 @@ Options:
     -v,  --verbose
          verbose mode (more information)
 
-    -m [&lt;rt&gt;,&lt;s&gt;,&lt;a&gt;,&lt;i&gt;:...],  --model [&lt;rt&gt;,&lt;s&gt;,&lt;a&gt;,&lt;i&gt;:...]
+    -m [&lt;r|t&gt;,&lt;s&gt;,&lt;a&gt;,&lt;i&gt;:...],  --model [&lt;r|t&gt;,&lt;s&gt;,&lt;a&gt;,&lt;i&gt;:...]
          context model(s). Seperate different models with :
-         &lt;rt&gt;: build a model based on reference (r) or target (t),
+         &lt;r|t&gt;: build a model based on reference (r) or target (t),
          &lt;s&gt;:  context-order size,
          &lt;a&gt;:  1/alpha,
          &lt;i&gt;:  inverted repeat (0=don't use, 1=use).
