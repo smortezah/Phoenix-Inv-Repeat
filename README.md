@@ -9,7 +9,13 @@ make
 </pre>
 
 <h2>EXECUTION</h2>
-
+<pre>
+./phoenix [OPTION]... -m [MODEL(s)] -t [TARGET] -r [REFERENCE]
+</pre>
+To see the options, type:
+<pre>
+./phoenix -h
+</pre>
 
 <h2>ISSUES</h2>
 Please let me know if there is any issues, at <a href="https://github.com/smortezah/Phoenix/issues">issues</a>.
