@@ -8,7 +8,7 @@ cmake src
 make
 </pre>
 
-<h2>EXECUTION</h2>
+<h2>USAGE</h2>
 <pre>
 ./phoenix [OPTION]... -m [MODEL(s)] -t [TARGET] -r [REFERENCE]
 </pre>
