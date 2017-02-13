@@ -16,10 +16,6 @@ To see the options, type:
 <pre>
 ./phoenix -h
 </pre>
-or
-<pre>
-./phoenix --help
-</pre>
 This will print the following:
 <pre>
 Synopsis:
