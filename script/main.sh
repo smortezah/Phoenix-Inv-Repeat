@@ -5,7 +5,6 @@ cmake src
 make
 
 ### folders to be used
-FLD_archive_dat="archive_dat"
 FLD_chromosomes="chromosomes"
 FLD_dat="dat"
 FLD_dataset="dataset"
