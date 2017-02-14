@@ -31,6 +31,6 @@ for ir in $INV_REPEATS; do
 done
 
 
-###rm -fr $FLD_dat
-mkdir -p $FLD_dat
-mv ${IR_LBL}*.$INF_FILE_TYPE $FLD_dat
+####rm -fr $FLD_dat
+#mkdir -p $FLD_dat
+#mv ${IR_LBL}*.$INF_FILE_TYPE $FLD_dat
