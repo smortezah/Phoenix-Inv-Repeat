@@ -2,6 +2,7 @@
 #include <fstream>
 #include <cstring>
 #include <chrono>       /// time
+#include <iomanip>      /// setw, setprecision
 #include <stdint.h>
 #define __STDC_FORMAT_MACROS
 #include <inttypes.h>
@@ -16,6 +17,7 @@
 
 using std::cout;
 using std::chrono::high_resolution_clock;
+using std::setprecision;
 
 
 ///////////////////////////////////////////////////////////
@@ -43,7 +45,7 @@ int32_t main (int argc, char *argv[])
     std::chrono::duration< double > elapsed = exeFinishTime - exeStartTime;
     
 //    cout << "   " << elapsed.count() << '\n';
-    cout << '\t' << elapsed.count() << '\n';
+    cout << '\t' << setprecision(3) << elapsed.count() << '\n';
     
     
     return 0;

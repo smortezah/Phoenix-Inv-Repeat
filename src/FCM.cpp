@@ -331,8 +331,8 @@ void FCM::compressTarget ()
          << (float) 1 / alphaDen << '\t'
          //             cout << (double) 1/alphaDen << '\t'
          << (int) contextDepth << '\t'
-         << averageEntropy << '\t'
-         << averageEntropy/LOG2_ALPHABET_SIZE;
+         << setprecision(6) << averageEntropy << '\t'
+         << setprecision(5) << averageEntropy/LOG2_ALPHABET_SIZE;
     
 //    cout.width(2);  cout << std::left << getInvertedRepeat() << "   ";
 //    cout.width(6);  cout << std::left << (float) 1/alphaDen << "   ";
