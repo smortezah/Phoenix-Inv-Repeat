@@ -29,23 +29,23 @@ INSTALL_GULL=0          # install "GULL" from Github
 GEN_DATASET=0           # generate datasets using "XS"
 GEN_MUTATIONS=0         # generate mutations using "GOOSE"
 GEN_ARCHAEA=0           # generate archea dataset using "GOOSE" -- output: out#.fa
-RUN_PHOENIX=0           # run Phoenix
+RUN_PHOENIX=1           # run Phoenix
 PLOT_RESULT=0           # plot results using "gnuplot"
 BUILD_MATRIX=0          # build matrix from datasets
 PLOT_MATRIX=0           # plot matrix from datasets
 PLOT_MATRIX_ARCHEA=0    # plot matrix Archaea from datasets
 
 ### reference parameters
-#REF_SPECIES=$HUMAN_CHR; REF_SPECIES_NAME=$HUMAN_LBL;
+REF_SPECIES=$HUMAN_CHR; REF_SPECIES_NAME=$HUMAN_LBL;
 #REF_SPECIES=$CHIMPANZEE_CHR; REF_SPECIES_NAME=$CHIMPANZEE_LBL;
 #REF_SPECIES=$GORILLA_CHR; REF_SPECIES_NAME=$GORILLA_LBL;
 #REF_SPECIES=$CHICKEN_CHR; REF_SPECIES_NAME=$CHICKEN_LBL;
 #REF_SPECIES=$TURKEY_CHR; REF_SPECIES_NAME=$TURKEY_LBL;
-REF_SPECIES=$ARCHAEA_CHR; REF_SPECIES_NAME=$ARCHAEA_LBL;
+#REF_SPECIES=$ARCHAEA_CHR; REF_SPECIES_NAME=$ARCHAEA_LBL;
 ### all chromosomes for that species, e.g. HS_SEQ_RUN
 tempRefSeqRun=${REF_SPECIES}_SEQ_RUN;    REF_SEQ_RUN=${!tempRefSeqRun}
 
-REF_DATASET="";  for i in 24; do REF_DATASET+=$REF_SPECIES${i}" "; done
+REF_DATASET="";  for i in MT; do REF_DATASET+=$REF_SPECIES${i}" "; done
 #REF_DATASET="";  for i in $REF_SEQ_RUN; do REF_DATASET+=$REF_SPECIES${i}" "; done
 
 REF_SPECIES_LEN=${#REF_SPECIES};            # length of string REF_SPECIES
@@ -53,22 +53,24 @@ REF_SPECIES_LEN=${#REF_SPECIES};            # length of string REF_SPECIES
 
 ### target parameters
 #TAR_SPECIES=$HUMAN_CHR; TAR_SPECIES_NAME=$HUMAN_LBL;
-#TAR_SPECIES=$CHIMPANZEE_CHR; TAR_SPECIES_NAME=$CHIMPANZEE_LBL;
+TAR_SPECIES=$CHIMPANZEE_CHR; TAR_SPECIES_NAME=$CHIMPANZEE_LBL;
 #TAR_SPECIES=$GORILLA_CHR; TAR_SPECIES_NAME=$GORILLA_LBL;
 #TAR_SPECIES=$CHICKEN_CHR; TAR_SPECIES_NAME=$CHICKEN_LBL;
 #TAR_SPECIES=$TURKEY_CHR; TAR_SPECIES_NAME=$TURKEY_LBL;
-TAR_SPECIES=$ARCHAEA_CHR; TAR_SPECIES_NAME=$ARCHAEA_LBL;
+#TAR_SPECIES=$ARCHAEA_CHR; TAR_SPECIES_NAME=$ARCHAEA_LBL;
 ### all chromosomes for that species, e.g. HS_SEQ_RUN
 tempTarSeqRun=${TAR_SPECIES}_SEQ_RUN;    TAR_SEQ_RUN=${!tempTarSeqRun}
 
-TAR_DATASET="";  for i in $TAR_SEQ_RUN; do TAR_DATASET+=$TAR_SPECIES${i}" "; done
+TAR_DATASET="";  for i in MT; do TAR_DATASET+=$TAR_SPECIES${i}" "; done
+#TAR_DATASET="";  for i in $TAR_SEQ_RUN; do TAR_DATASET+=$TAR_SPECIES${i}" "; done
 
 TAR_SPECIES_LEN=${#TAR_SPECIES};            # length of string TAR_SPECIES
 ((TAR_SPECIES_LEN_IND=TAR_SPECIES_LEN+1));  # index of length of string TAR_SPECIES
 
 
-INV_REPEATS="0 1"       # list of inverted repeats
+INV_REPEATS="0"       # list of inverted repeats
 ALPHA_DENS="100"        # list of alpha denominators
+CTX=4
 MIN_CTX=20              # min context-order size
 MAX_CTX=20              # max context-order size
 

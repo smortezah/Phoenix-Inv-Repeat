@@ -36,26 +36,6 @@ int32_t main (int argc, char *argv[])
     
     
     
-    
-
-//    char arr[5] = {'A', 'T', 'C', 'G', 'N'};
-//
-//    for (int i = 1; i <= 4; ++i)
-//    {
-////        if (i % 5 != 0)
-////        {
-//        for (char c : arr)
-//        {
-//            cout << ((84 - c)*i) % 5<< '\t';
-//        }
-//        cout << '\n';
-////        }
-//    }
-    
-    
-    
-    
-    
     /// Record end time
     high_resolution_clock::time_point exeFinishTime = high_resolution_clock::now();
     
