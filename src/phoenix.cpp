@@ -45,7 +45,7 @@ int32_t main (int argc, char *argv[])
     std::chrono::duration< double > elapsed = exeFinishTime - exeStartTime;
     
 //    cout << "   " << elapsed.count() << '\n';
-    cout << '\t' << setprecision(3) << elapsed.count() << '\n';
+    cout << '\t' << std::fixed << setprecision(2) << elapsed.count() << '\n';
     
     
     return 0;
