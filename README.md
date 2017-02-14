@@ -3,6 +3,7 @@ Cmake is required for the installation. Also, git is suggested for cloning the r
 <pre>
 sudo apt-get install cmake git
 git clone https://github.com/smortezah/Phoenix.git
+cd Phoenix
 cmake src
 make
 </pre>
