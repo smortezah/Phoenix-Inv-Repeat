@@ -52,7 +52,9 @@ private:
 //    htable_str_t hashTable_str;                     /// hash table (string key)
     string   tarFileAddress;                        /// target file address
     
-    string   tarFilesAddresses;                        /// target files addresses
+    vector< string > tarFilesAddresses;             /// target files addresses
+    
+    
     
     string   refFileAddress;                        /// reference file address
 };
