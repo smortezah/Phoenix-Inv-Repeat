@@ -113,10 +113,17 @@ void Functions::commandLineParser (int argc, char **argv)
                     cerr << "Option 'm' ('model') has an invalid argument.\n";
                 }
                 break;
-                
-            case 't':   /// needs target file name
-                t_flag = true;
-                targetFileName = (string) optarg;      /// keep argument = target file name
+    
+            case 't':   /// needs target files names
+                try
+                {
+                    t_flag = true;
+                    targetFileName = (string) optarg; /// keep argument = target files names
+                }
+                catch (const invalid_argument &ia)
+                {
+                    cerr << "Option 't' ('target') has an invalid argument.\n";
+                }
                 break;
     
             case 'r':   /// needs reference file name
@@ -301,13 +308,13 @@ void Functions::commandLineParser (int argc, char **argv)
 ////                model.printHashTable();
         }   /// end - else: if target or reference file addresses are entered
     }   ///  end - if '-m' (model) is entered
-    else    /// if '-m' (model) is entered but '-t' or '-r' (file addresses) are not entered
-    {
-        if (t_flag)
-            cerr << "Model(s) parameters are missing.";
-        else if (r_flag)
-            cerr << "Model(s) parameters are missing.";
-    }
+//    else    /// if '-m' (model) is entered but '-t' or '-r' (file addresses) are not entered
+//    {
+//        if (t_flag)
+//            cerr << "Model(s) parameters are missing.";
+//        else if (r_flag)
+//            cerr << "Model(s) parameters are missing.";
+//    }
     
     /// Print any remaining command line arguments (not options).
     if (optind < argc)
