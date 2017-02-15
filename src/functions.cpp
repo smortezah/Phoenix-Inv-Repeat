@@ -267,12 +267,12 @@ void Functions::commandLineParser (int argc, char **argv)
                     vecParameters.push_back(modelParameters.substr(i + 1, parIndex-1));
                     parIndex = i;
                 }
-
+            
             for (string s:vecParameters)cout << s << ' ';cout << '\n';
-
+            
 //            /// save last model parameter
 //            vecParameters.push_back(modelParameters.substr(0, parIndex));
-    
+            
             cout << (int)parIndex << '\n';
             for (string s:vecParameters)cout << s << ' ';cout << '\n';
             
