@@ -33,7 +33,7 @@ FCM::FCM () {}
 /***********************************************************
     build reference model
 ************************************************************/
-void FCM::buildRefModel ()
+void FCM::buildModel ()
 {
     const uint8_t contextDepth  = getContextDepth();    /// get context depth
     const bool isInvertedRepeat = getInvertedRepeat();  /// get inverted repeat

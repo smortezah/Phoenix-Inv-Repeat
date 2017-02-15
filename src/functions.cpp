@@ -31,6 +31,7 @@ Functions::Functions () {}
 void Functions::commandLineParser (int argc, char **argv)
 {
     Messages messageObj;    /// object for showing messages
+    FCM model;              /// model
     
     /// using these flags, if both short and long arguments
     /// are entered, just one of them is considered
@@ -178,7 +179,6 @@ void Functions::commandLineParser (int argc, char **argv)
             cerr << "Reference file(s) address(es) or model parameters is needed.";
         else
         {
-            FCM model;                      /// model
             vector< string > vecParameters; /// to save model parameters (ir, ctx_size, alpha)
             uint8_t vecParamIndex = 0;      /// to traverse vecParameters
             
@@ -202,30 +202,15 @@ void Functions::commandLineParser (int argc, char **argv)
 //                                      : model.setRefFileAddress(referenceFileName);
             model.setTarFileAddress(targetFileName);
             model.setRefFileAddress(referenceFileName);
-            /// set the alpha denominator of the model
-            model.setAlphaDenom((uint16_t) stoi(vecParameters[ vecParamIndex++ ]));
-//                model.setAlphaDenom(stod(vecParameters[ vecParamIndex++ ]));
-            /// set the context depth of the model
-            model.setContextDepth((uint8_t) stoi(vecParameters[ vecParamIndex++ ]));
-            /// set the inverted repeat condition of the model
-            !stoi(vecParameters[ vecParamIndex++ ]) ? model.setInvertedRepeat(false)
-                                                    : model.setInvertedRepeat(true);
-            
-            /// print reference and target file names in the output
-            size_t lastSlash_Ref = model.getRefFileAddress().find_last_of("/");
-            size_t lastSlash_Tar = model.getTarFileAddress().find_last_of("/");
-            
-            cout << model.getRefFileAddress().substr(lastSlash_Ref + 1) << '\t'
-                 << model.getTarFileAddress().substr(lastSlash_Tar + 1) << '\t';
-            
-            model.buildRefModel();    /// build a model for reference
-            model.compressTarget( model.getTarFileAddress() );   /// compress target using model built based on reference
-            
-            /// print the built hash table
-////                cout << "Model " << n + 1 << " parameters:\n";
-////                model.printHashTable();
-        }   /// end - else: if target or reference file addresses are entered
-    }   ///  end - if '-t' (target) is entered
+//
+//            /// print reference and target file names in the output
+//            size_t lastSlash_Ref = model.getRefFileAddress().find_last_of("/");
+//            size_t lastSlash_Tar = model.getTarFileAddress().find_last_of("/");
+//
+//            cout << model.getRefFileAddress().substr(lastSlash_Ref + 1) << '\t'
+//                 << model.getTarFileAddress().substr(lastSlash_Tar + 1) << '\t';
+        }
+    }
     
     
 //    if (m_flag)
@@ -305,7 +290,7 @@ void Functions::commandLineParser (int argc, char **argv)
 //                cout << models[ n ].getRefFileAddress().substr(lastSlash_Ref + 1) << '\t'
 //                     << models[ n ].getTarFileAddress().substr(lastSlash_Tar + 1) << '\t';
 //
-//                models[ n ].buildRefModel();    /// build a model for reference
+//                models[ n ].buildModel();    /// build a model for reference
 //                models[ n ].compressTarget();   /// compress target using model built based on reference
 //
 //                /// print the built hash table
@@ -323,7 +308,6 @@ void Functions::commandLineParser (int argc, char **argv)
             cerr << "Input file address is needed.";
         else
         {
-            FCM model;                      /// model
             vector< string > vecParameters; /// to save model parameters (ir, ctx_size, alpha)
             uint8_t vecParamIndex = 0;      /// to traverse vecParameters
             
@@ -343,9 +327,9 @@ void Functions::commandLineParser (int argc, char **argv)
             vecParameters.push_back(modelParameters.substr(0, parIndex));
             
             /// set target and/or reference file address
-//                (tarOrRefChar == 't') ? model.setTarFileAddress(targetFileName)
-//                                      : model.setRefFileAddress(referenceFileName);
-            model.setTarFileAddress(targetFileName);
+////                (tarOrRefChar == 't') ? model.setTarFileAddress(targetFileName)
+////                                      : model.setRefFileAddress(referenceFileName);
+//            model.setTarFileAddress(targetFileName);
             model.setRefFileAddress(referenceFileName);
             /// set the alpha denominator of the model
             model.setAlphaDenom((uint16_t) stoi(vecParameters[ vecParamIndex++ ]));
@@ -363,7 +347,7 @@ void Functions::commandLineParser (int argc, char **argv)
             cout << model.getRefFileAddress().substr(lastSlash_Ref + 1) << '\t'
                  << model.getTarFileAddress().substr(lastSlash_Tar + 1) << '\t';
 
-            model.buildRefModel();    /// build a model for reference
+            model.buildModel();    /// build a model for reference
             model.compressTarget( model.getTarFileAddress() );   /// compress target using model built based on reference
 
             /// print the built hash table
