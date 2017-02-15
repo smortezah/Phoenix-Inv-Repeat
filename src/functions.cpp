@@ -293,7 +293,7 @@ void Functions::commandLineParser (int argc, char **argv)
                  << model.getTarFileAddress().substr(lastSlash_Tar + 1) << '\t';
 
             model.buildRefModel();    /// build a model for reference
-            model.compressTarget();   /// compress target using model built based on reference
+            model.compressTarget( model.getTarFileAddress() );   /// compress target using model built based on reference
 
             /// print the built hash table
 ////                cout << "Model " << n + 1 << " parameters:\n";

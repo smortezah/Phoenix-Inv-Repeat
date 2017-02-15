@@ -175,12 +175,12 @@ void FCM::buildRefModel ()
 /***********************************************************
     compressing target using the model built based on reference
 ************************************************************/
-void FCM::compressTarget ()
+void FCM::compressTarget (string tarFileName)
 {
     const uint8_t contextDepth  = getContextDepth();    /// get context depth
     const uint16_t alphaDen     = getAlphaDenom();      /// get alpha denominator
-//    const double alphaDen     = getAlphaDenom();        /// get alpha denominator
-    string tarFileName          = getTarFileAddress();  /// get target file address
+////    const double alphaDen     = getAlphaDenom();        /// get alpha denominator
+//    string tarFileName          = getTarFileAddress();  /// get target file address
     
     /// mode: 't'=table, 'h'=hash table
     const char mode = (contextDepth > TABLE_MAX_CONTEXT) ? 'h' : 't';
