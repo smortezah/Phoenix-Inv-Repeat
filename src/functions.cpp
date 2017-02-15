@@ -179,13 +179,10 @@ void Functions::commandLineParser (int argc, char **argv)
             cerr << "Reference file(s) address(es) or model parameters is needed.";
         else
         {
-//            vector< string > vecParameters; /// to save model parameters (ir, ctx_size, alpha)
-//            uint8_t vecParamIndex = 0;      /// to traverse vecParameters
-            
             /// save target file(s) name(s)
             uint8_t tarIndex = (uint8_t) tarFilesNames.size();
             
-            /// save all target file(s) name(s) except the last model
+            /// save all target files names except the last one
             for (uint8_t i = tarIndex; i--;)
             {
                 if (tarFilesNames[ i ] == ',')
@@ -196,21 +193,6 @@ void Functions::commandLineParser (int argc, char **argv)
             }
             /// save last target file name
             model.pushBackTarFilesAddresses( tarFilesNames.substr(0, tarIndex) );
-            
-            
-            for(string s : model.getTarFilesAddresses())cout<<s<<' ';
-            
-            
-            
-            /// set reference file address
-            model.setRefFileAddress(referenceFileName);
-//
-//            /// print reference and target file names in the output
-//            size_t lastSlash_Ref = model.getRefFileAddress().find_last_of("/");
-//            size_t lastSlash_Tar = model.getTarFileAddress().find_last_of("/");
-//
-//            cout << model.getRefFileAddress().substr(lastSlash_Ref + 1) << '\t'
-//                 << model.getTarFileAddress().substr(lastSlash_Tar + 1) << '\t';
         }
     }
     
