@@ -195,8 +195,8 @@ void Functions::commandLineParser (int argc, char **argv)
                     tarIndex = i;
                 }
             }
-            /// save last target file name
-            vecParameters.push_back(tarFilesNames.substr(0, tarIndex));
+//            /// save last target file name
+//            vecParameters.push_back(tarFilesNames.substr(0, tarIndex));
             
             /// set target and/or reference file address
 //                (tarOrRefChar == 't') ? model.setTarFileAddress(targetFileName)
