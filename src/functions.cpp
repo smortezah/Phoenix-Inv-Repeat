@@ -13,6 +13,7 @@ using std::string;
 using std::stoi;
 using std::stof;
 using std::vector;
+using std::array;
 using std::size_t;
 using std::ifstream;
 using std::ios;
@@ -253,34 +254,10 @@ void Functions::commandLineParser (int argc, char **argv)
             cerr << "Input file address is needed.";
         else
         {
-            /// seperate and save the models in a vector of strings. each model in one string
-            vector< string > strModels;
-            uint8_t mIndex = 0;  /// index for the first character of models string
-            /// save all models except the last model
-            for (uint8_t i = 0; i != modelsParameters.size(); ++i)
-                if (modelsParameters[ i ] == ':')
-                {
-                    strModels.push_back(modelsParameters.substr(mIndex, i - mIndex));
-                    mIndex = i + 1;
-                }
-            /// save last model in multi-model input, and the only model in single-model input
-            strModels.push_back(modelsParameters.substr(mIndex, modelsParameters.size() - mIndex));
-//            uint8_t mIndex = modelsParameters.size();   /// index for the first character of models string
-//            /// save all models except the last model
-//            for (uint8_t i = mIndex; i--;)              /// = for (uint8_t i = modelsParameters.size(); i--;)
-//                if (modelsParameters[ i ] == ':')
-//                {
-//                    strModels.push_back(modelsParameters.substr(i+1, mIndex));
-//                    mIndex = i - 1;
-//                }
-//            /// save last model in multi-model input, and the only model in single-model input
-//            strModels.push_back(modelsParameters.substr(0, mIndex));
-            
-            /// create an array of models and set their parameters
-            uint8_t n_models = (uint8_t) strModels.size();  /// number of models
-            FCM *models = new FCM[ n_models ];              /// array of models
-            vector< string > vecParameters;                 /// to save models parameters
-            uint8_t vecParamIndex = 0;
+            /// set parameters for the model
+            FCM model();                        /// model
+            array< string, 3 > arrParameters;   /// to save model's parameters (ir, ctx_size, alpha)
+            uint8_t arrParamIndex = 0;
             
             /// save models parameters and process the models
 //            for (uint8_t n = n_models; n--;)
