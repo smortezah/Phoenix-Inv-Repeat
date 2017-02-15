@@ -1,7 +1,6 @@
 #include <iostream>
 #include <fstream>
 #include <cstring>
-#include <thread>
 #include <chrono>       /// time
 #include <iomanip>      /// setw, setprecision
 #include <cmath>
@@ -25,6 +24,7 @@ using std::setprecision;
 ///////////////////////////////////////////////////////////
 /////////                 M A I N                 /////////
 ///////////////////////////////////////////////////////////
+#include <thread>
 void foo(){cout<<"foo";}
 void bar(int i){cout<<"bar "<<i;}
 
