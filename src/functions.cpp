@@ -253,12 +253,13 @@ void Functions::commandLineParser (int argc, char **argv)
             cerr << "Input file address is needed.";
         else
         {
-            FCM model;                    /// model
+            FCM model;                      /// model
             vector< string > vecParameters; /// to save model parameters (ir, ctx_size, alpha)
             uint8_t vecParamIndex = 0;      /// to traverse vecParameters
     
             /// save model parameters and process the model
             uint8_t parIndex = (uint8_t) modelParameters.size();
+            
             /// save all model parameters except the last model
             for (uint8_t i = parIndex; i--;)
                 if (modelParameters[ i ] == ',')
@@ -266,10 +267,15 @@ void Functions::commandLineParser (int argc, char **argv)
                     vecParameters.push_back(modelParameters.substr(i + 1, parIndex));
                     parIndex = i - 1;
                 }
-            /// save last model parameter
-            vecParameters.push_back(modelParameters.substr(0, parIndex));
 
-            for(string s:vecParameters) cout<<s<<' '; cout<<'\n';
+            cout << (int)parIndex << '\n';
+            for (string s:vecParameters)cout << s << ' ';cout << '\n';
+
+//            /// save last model parameter
+//            vecParameters.push_back(modelParameters.substr(0, parIndex));
+    
+            cout << (int)parIndex << '\n';
+            for (string s:vecParameters)cout << s << ' ';cout << '\n';
             
             
             
