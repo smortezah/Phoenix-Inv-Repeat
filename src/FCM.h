@@ -54,8 +54,8 @@ private:
     string   tarFileAddress;                  /// target file address
                                               
     vector<string> tarFilesAddresses;         /// target files addresses
-                                              
-                                              
+
+    
                                               
     string   refFileAddress;                  /// reference file address
 };
