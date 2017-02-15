@@ -266,9 +266,9 @@ void Functions::commandLineParser (int argc, char **argv)
                     vecParameters.push_back(modelParameters.substr(i + 1, parIndex));
                     parIndex = i - 1;
                 }
-//            /// save last model parameter
-//            vecParameters.push_back(modelParameters.substr(0, parIndex));
-//
+            /// save last model parameter
+            vecParameters.push_back(modelParameters.substr(0, parIndex));
+
 //            /// set target and/or reference file address
 ////                (tarOrRefChar == 't') ? model.setTarFileAddress(targetFileName)
 ////                                      : model.setRefFileAddress(referenceFileName);
