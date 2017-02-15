@@ -23,7 +23,7 @@ void Messages::help () const
          << "    ./phoenix [OPTION]... -m [MODEL(s)] -t [TARGET] -r [REFERENCE]" << '\n'
                                                                                  << '\n'
          << "Mandatory arguments:"                                               << '\n'
-         << "    -m [<i>,<a>,<k>],  --model [<i>,<a>,<k>]"                       << '\n'
+         << "    -m [<i>,<k>,<a>],  --model [<i>,<k>,<a>]"                       << '\n'
          << "         context model(s)."                                         << '\n'
          << "         <i>:  inverted repeat (0=don't use, 1=use)."               << '\n'
          << "         <k>:  context-order size,"                                 << '\n'
