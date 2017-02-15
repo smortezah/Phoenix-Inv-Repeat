@@ -173,9 +173,9 @@ void Functions::commandLineParser (int argc, char **argv)
     
     if (t_flag)
     {
-        /// check if target or reference file addresses are entered
-        if (!t_flag || !r_flag)
-            cerr << "Input file address is needed.";
+        /// check if reference file(s) address(es) and model parameters are entered
+        if (!r_flag || !m_flag)
+            cerr << "Reference file(s) address(es) or model parameters is needed.";
         else
         {
             FCM model;                      /// model
