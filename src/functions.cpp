@@ -103,7 +103,7 @@ void Functions::commandLineParser (int argc, char **argv)
                 messageObj.verbose();
                 break;
             
-            case 'm':   /// needs model(s) parameters
+            case 'm':   /// needs model parameters
                 try
                 {
                     m_flag = true;
@@ -249,20 +249,19 @@ void Functions::commandLineParser (int argc, char **argv)
 //    }   ///  end - if '-m' (model) is entered
     if (m_flag)
     {
+        uint8_t N_Parameters = 3;   /// regarding ir, ctx_size, alpha
+        
         /// check if target or reference file addresses are entered
         if (!t_flag || !r_flag)
             cerr << "Input file address is needed.";
         else
         {
-            /// set parameters for the model
             FCM model();                        /// model
-            array< string, 3 > arrParameters;   /// to save model's parameters (ir, ctx_size, alpha)
-            uint8_t arrParamIndex = 0;
+            array< string, N_Parameters > arrParameters;   /// to save model parameters (ir, ctx_size, alpha)
+            uint8_t arrParamIndex = (uint8_t) modelParameters.size();
             
-            /// save models parameters and process the models
-//            for (uint8_t n = n_models; n--;)
-            for (uint8_t n = 0; n != n_models; ++n)
-            {
+            /// save model parameters and process the model
+
                 uint8_t index = 0;
                 /// save all models parameters except the last model
                 for (uint8_t i = 0; i != strModels[ n ].size(); ++i)
@@ -305,8 +304,7 @@ void Functions::commandLineParser (int argc, char **argv)
                 
                 /// print the built hash table
 //                cout << "Model " << n + 1 << " parameters:\n";
-//                models[ n ].printHashTable();
-            }
+//                model.printHashTable();
             
             delete[] models;   /// delete all models created
         }   /// end - else: if target or reference file addresses are entered
