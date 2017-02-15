@@ -61,7 +61,6 @@ int32_t main (int argc, char *argv[])
 
 
 
-
     /// Record end time
     high_resolution_clock::time_point exeFinishTime = high_resolution_clock::now();
 
