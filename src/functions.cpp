@@ -179,23 +179,24 @@ void Functions::commandLineParser (int argc, char **argv)
             cerr << "Reference file(s) address(es) or model parameters is needed.";
         else
         {
-            vector< string > vecParameters; /// to save model parameters (ir, ctx_size, alpha)
-            uint8_t vecParamIndex = 0;      /// to traverse vecParameters
+//            vector< string > vecParameters; /// to save model parameters (ir, ctx_size, alpha)
+//            uint8_t vecParamIndex = 0;      /// to traverse vecParameters
             
-            /// save model parameters and process the model
-            uint8_t parIndex = (uint8_t) modelParameters.size();
+            /// save target file(s) name(s)
+            uint8_t tarIndex = (uint8_t) tarFilesNames.size();
             
-            /// save all model parameters except the last model
-            for (uint8_t i = parIndex; i--;)
+            /// save all target file(s) name(s) except the last model
+            for (uint8_t i = tarIndex; i--;)
             {
-                if (modelParameters[ i ] == ',')
+                if (tarFilesNames[ i ] == ',')
                 {
-                    vecParameters.push_back( modelParameters.substr(i+1, parIndex-i-1) );
-                    parIndex = i;
+//                    model.
+//                            push_back( tarFilesNames.substr(i+1, tarIndex-i-1) );
+                    tarIndex = i;
                 }
             }
-            /// save last model parameter
-            vecParameters.push_back(modelParameters.substr(0, parIndex));
+            /// save last target file name
+            vecParameters.push_back(tarFilesNames.substr(0, tarIndex));
             
             /// set target and/or reference file address
 //                (tarOrRefChar == 't') ? model.setTarFileAddress(targetFileName)

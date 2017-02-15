@@ -41,7 +41,7 @@ public:
     void setTarFileAddress (const string&);   /// setter of target file address
     const string &getRefFileAddress () const; /// getter of reference file address
     void setRefFileAddress (const string&);   /// setter of reference file address
-                                              
+    
 private:
     char     targetOrReference;               /// model built based on target or reference
     uint8_t  contextDepth;                    /// context depth (SIZE <= 255)
