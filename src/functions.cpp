@@ -269,7 +269,8 @@ void Functions::commandLineParser (int argc, char **argv)
             /// save last model parameter
             vecParameters.push_back(modelParameters.substr(0, parIndex));
 
-            for(string s:vecParameters) cout<<s<<' ';
+            for(string s:vecParameters) cout<<s<<' '; cout<<'\n';
+            
             
             
 //            /// set target and/or reference file address
