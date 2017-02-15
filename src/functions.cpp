@@ -114,7 +114,17 @@ void Functions::commandLineParser (int argc, char **argv)
                     cerr << "Option 'm' ('model') has an invalid argument.\n";
                 }
                 break;
-            
+    
+            case 't':   /// needs target file name
+                t_flag = true;
+                targetFileName = (string) optarg;      /// keep argument = target file name
+                break;
+    
+            case 'r':   /// needs reference file name
+                r_flag = true;
+                referenceFileName = (string) optarg;   /// keep argument = reference file name
+                break;
+                
             case 'n':   /// needs an integer argument
                 try
                 {
@@ -136,17 +146,7 @@ void Functions::commandLineParser (int argc, char **argv)
                     cerr << "Option 'd' ('fnumber') has an invalid argument.\n";
                 }
                 break;
-            
-            case 't':   /// needs target file name
-                t_flag = true;
-                targetFileName = (string) optarg;      /// keep argument = target file name
-                break;
-            
-            case 'r':   /// needs reference file name
-                r_flag = true;
-                referenceFileName = (string) optarg;   /// keep argument = reference file name
-                break;
-            
+                
             case ':':   /// missing option argument
                 cerr << "Option '" << (char) optopt << "' requires an argument.\n";
                 break;
