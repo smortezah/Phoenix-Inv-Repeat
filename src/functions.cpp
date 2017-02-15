@@ -334,7 +334,7 @@ void Functions::commandLineParser (int argc, char **argv)
             model.buildModel();    /// build a model for reference
             
             // TODO: a loop to call compressTarget, and pass each target to it
-            model.compressTarget( model.getTarFileAddress() );   /// compress target using model built based on reference
+            model.compressTarget( model.get() );   /// compress target using model built based on reference
 
             /// print the built hash table
 ////                cout << "Model " << n + 1 << " parameters:\n";
