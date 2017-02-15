@@ -332,6 +332,7 @@ void Functions::commandLineParser (int argc, char **argv)
 //                 << model.getTarFileAddress().substr(lastSlash_Tar + 1) << '\t';
 
             model.buildModel();    /// build a model for reference
+            
             // TODO: a loop to call compressTarget, and pass each target to it
             model.compressTarget( model.getTarFileAddress() );   /// compress target using model built based on reference
 
