@@ -113,7 +113,7 @@ void Functions::commandLineParser (int argc, char **argv)
                     cerr << "Option 'm' ('model') has an invalid argument.\n";
                 }
                 break;
-    
+                
             case 't':   /// needs target file name
                 t_flag = true;
                 targetFileName = (string) optarg;      /// keep argument = target file name
