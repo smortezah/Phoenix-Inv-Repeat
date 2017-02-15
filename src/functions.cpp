@@ -190,13 +190,12 @@ void Functions::commandLineParser (int argc, char **argv)
             {
                 if (tarFilesNames[ i ] == ',')
                 {
-//                    model.
-//                            push_back( tarFilesNames.substr(i+1, tarIndex-i-1) );
+                    model.pushBackTarFilesAddresses( substr(i+1, tarIndex-i-1) );
                     tarIndex = i;
                 }
             }
-//            /// save last target file name
-//            vecParameters.push_back(tarFilesNames.substr(0, tarIndex));
+            /// save last target file name
+            model.pushBackTarFilesAddresses( tarFilesNames.substr(0, tarIndex) );
             
             /// set target and/or reference file address
 //                (tarOrRefChar == 't') ? model.setTarFileAddress(targetFileName)
