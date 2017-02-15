@@ -190,12 +190,15 @@ void Functions::commandLineParser (int argc, char **argv)
             {
                 if (tarFilesNames[ i ] == ',')
                 {
-                    model.pushBackTarFilesAddresses( substr(i+1, tarIndex-i-1) );
+                    model.pushBackTarFilesAddresses( tarFilesNames.substr(i+1, tarIndex-i-1) );
                     tarIndex = i;
                 }
             }
             /// save last target file name
             model.pushBackTarFilesAddresses( tarFilesNames.substr(0, tarIndex) );
+            
+            cout<<'\n';
+            for(string s : model.getTarFilesAddresses())cout<<s<<' ';
             
             /// set target and/or reference file address
 //                (tarOrRefChar == 't') ? model.setTarFileAddress(targetFileName)
