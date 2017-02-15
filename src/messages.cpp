@@ -28,7 +28,7 @@ void Messages::help () const
          << "         <i>:  inverted repeat (0=don't use, 1=use)."               << '\n'
          << "         <k>:  context-order size,"                                 << '\n'
          << "         <a>:  1/alpha,"                                            << '\n'
-         << "         EXAMPLE: -m 11,100,1"                                      << '\n'
+         << "         EXAMPLE: -m 9,100,1"                                      << '\n'
                                                                                  << '\n'
          << "    -t [TARGET],  --target [TARGET]"                                << '\n'
          << "         target file address"                                       << '\n'
