@@ -255,6 +255,7 @@ void Functions::commandLineParser (int argc, char **argv)
         {
             FCM model();                    /// model
             vector< string > vecParameters; /// to save model parameters (ir, ctx_size, alpha)
+            uint8_t vecParamIndex = 0;      /// to traverse vecParameters
     
             /// save model parameters and process the model
             uint8_t parIndex = (uint8_t) modelParameters.size();
@@ -274,25 +275,23 @@ void Functions::commandLineParser (int argc, char **argv)
             models[ n ].setTarFileAddress(targetFileName);
             models[ n ].setRefFileAddress(referenceFileName);
             /// set the alpha denominator of the model
-            models[ n ].setAlphaDenom((uint16_t) stoi(vecParameters[ vecParamIndex++ ]));
+            model.setAlphaDenom((uint16_t) stoi(vecParameters[ vecParamIndex++ ]));
 //                models[ n ].setAlphaDenom(stod(vecParameters[ vecParamIndex++ ]));
             /// set the context depth of the model
-//                uint8_t ctxDepth = (uint8_t) stoi(vecParameters[ vecParamIndex++ ]);
-//                models[ n ].setContextDepth(ctxDepth);
-            models[ n ].setContextDepth((uint8_t) stoi(vecParameters[ vecParamIndex++ ]));
+            model.setContextDepth((uint8_t) stoi(vecParameters[ vecParamIndex++ ]));
             /// set the inverted repeat condition of the model
-            !stoi(vecParameters[ vecParamIndex++ ]) ? models[ n ].setInvertedRepeat(false)
-                                                    : models[ n ].setInvertedRepeat(true);
+            !stoi(vecParameters[ vecParamIndex++ ]) ? model.setInvertedRepeat(false)
+                                                    : model.setInvertedRepeat(true);
     
             /// print reference and target file names in the output
-            size_t lastSlash_Ref = models[ n ].getRefFileAddress().find_last_of("/");
-            size_t lastSlash_Tar = models[ n ].getTarFileAddress().find_last_of("/");
+            size_t lastSlash_Ref = model.getRefFileAddress().find_last_of("/");
+            size_t lastSlash_Tar = model.getTarFileAddress().find_last_of("/");
     
-            cout << models[ n ].getRefFileAddress().substr(lastSlash_Ref + 1) << '\t'
-                 << models[ n ].getTarFileAddress().substr(lastSlash_Tar + 1) << '\t';
+            cout << model.getRefFileAddress().substr(lastSlash_Ref + 1) << '\t'
+                 << model.getTarFileAddress().substr(lastSlash_Tar + 1) << '\t';
     
-            models[ n ].buildRefModel();    /// build a model for reference
-            models[ n ].compressTarget();   /// compress target using model built based on reference
+            model.buildRefModel();    /// build a model for reference
+            model.compressTarget();   /// compress target using model built based on reference
     
             /// print the built hash table
 //                cout << "Model " << n + 1 << " parameters:\n";
