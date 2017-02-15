@@ -258,13 +258,11 @@ void Functions::commandLineParser (int argc, char **argv)
         {
             FCM model();                        /// model
             array< string, N_Parameters > arrParameters;   /// to save model parameters (ir, ctx_size, alpha)
-            uint8_t arrParamIndex = (uint8_t) modelParameters.size();
             
             /// save model parameters and process the model
-
-                uint8_t index = 0;
-                /// save all models parameters except the last model
-                for (uint8_t i = 0; i != strModels[ n ].size(); ++i)
+                uint8_t param_index = (uint8_t) modelParameters.size();
+                /// save all model parameters except the last model
+                for (uint8_t i = param_index; i--;)
                     if (strModels[ n ][ i ] == ',')
                     {
                         vecParameters.push_back(strModels[ n ].substr(index, i - index));
