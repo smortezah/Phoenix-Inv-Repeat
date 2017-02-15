@@ -256,7 +256,7 @@ void Functions::commandLineParser (int argc, char **argv)
             FCM model;                      /// model
             vector< string > vecParameters; /// to save model parameters (ir, ctx_size, alpha)
             uint8_t vecParamIndex = 0;      /// to traverse vecParameters
-    
+            
             /// save model parameters and process the model
             uint8_t parIndex = (uint8_t) modelParameters.size();
             
