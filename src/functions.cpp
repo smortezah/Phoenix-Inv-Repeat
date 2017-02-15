@@ -263,19 +263,18 @@ void Functions::commandLineParser (int argc, char **argv)
             /// save all model parameters except the last model
             for (uint8_t i = parIndex; i--;)
                 if (modelParameters[ i ] == ',')
-                {cout<<(int)i<<'\t'<<(int)parIndex<<'\n';
-                    vecParameters.push_back(modelParameters.substr(i + 1, parIndex-1));
+                {
+                    cout<<(int)i<<'\t'<<(int)parIndex<<'\n';
+                    
+                    
+                    vecParameters.push_back(modelParameters.substr(i+1, parIndex-i-1));
                     parIndex = i;
                 }
-            
+
+            /// save last model parameter
+            vecParameters.push_back(modelParameters.substr(0, parIndex));
+    
             for (string s:vecParameters)cout << s << ' ';cout << '\n';
-            
-//            /// save last model parameter
-//            vecParameters.push_back(modelParameters.substr(0, parIndex));
-            
-            cout << (int)parIndex << '\n';
-            for (string s:vecParameters)cout << s << ' ';cout << '\n';
-            
             
             
 //            /// set target and/or reference file address
