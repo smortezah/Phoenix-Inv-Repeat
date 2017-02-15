@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <cstring>
+#include <thread>
 #include <chrono>       /// time
 #include <iomanip>      /// setw, setprecision
 #include <cmath>
@@ -24,8 +25,31 @@ using std::setprecision;
 ///////////////////////////////////////////////////////////
 /////////                 M A I N                 /////////
 ///////////////////////////////////////////////////////////
+void foo(){cout<<"foo";}
+void bar(int i){cout<<"bar "<<i;}
 int32_t main (int argc, char *argv[])
 {
+    
+    std::thread first(foo);
+    std::thread second(bar,2);
+    
+//    std::cout << "main, foo and bar now execute concurrently...\n";
+    
+    // synchronize threads:
+    first.join();                // pauses until first finishes
+    second.join();               // pauses until second finishes
+    
+//    std::cout << "foo and bar completed.\n";
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 //    /// Record start time
 //    high_resolution_clock::time_point exeStartTime = high_resolution_clock::now();
 //
@@ -45,10 +69,6 @@ int32_t main (int argc, char *argv[])
 //    std::chrono::duration< double > elapsed = exeFinishTime - exeStartTime;
 //
 //    cout << '\t' << std::fixed << setprecision(2) << elapsed.count() << '\n';
-    
-    
-    
-    
     
     
     return 0;
