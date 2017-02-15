@@ -177,6 +177,16 @@ void Functions::commandLineParser (int argc, char **argv)
                 }
             /// save last model in multi-model input, and the only model in single-model input
             strModels.push_back(modelsParameters.substr(mIndex, modelsParameters.size() - mIndex));
+//            uint8_t mIndex = modelsParameters.size();   /// index for the first character of models string
+//            /// save all models except the last model
+//            for (uint8_t i = mIndex; i--;)              /// = for (uint8_t i = modelsParameters.size(); i--;)
+//                if (modelsParameters[ i ] == ':')
+//                {
+//                    strModels.push_back(modelsParameters.substr(i+1, mIndex));
+//                    mIndex = i - 1;
+//                }
+//            /// save last model in multi-model input, and the only model in single-model input
+//            strModels.push_back(modelsParameters.substr(0, mIndex));
 
             /// create an array of models and set their parameters
             uint8_t n_models = (uint8_t) strModels.size();  /// number of models
@@ -185,6 +195,7 @@ void Functions::commandLineParser (int argc, char **argv)
             uint8_t vecParamIndex = 0;
             
             /// save models parameters and process the models
+//            for (uint8_t n = n_models; n--;)
             for (uint8_t n = 0; n != n_models; ++n)
             {
                 uint8_t index = 0;
