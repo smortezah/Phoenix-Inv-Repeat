@@ -41,7 +41,8 @@ public:
     void setTarFileAddress (const string&);   /// setter of target file address
     
     const vector<string> &getTarFilesAddresses () const; /// getter of target files addresses
-    void setTarFileAddress (const string&);   /// setter of target files addresses
+    void pushBackTarFilesAddresses (string tFAs);        /// pushBacker of target files addresses
+    
     
     
     const string &getRefFileAddress () const; /// getter of reference file address
