@@ -197,8 +197,10 @@ void Functions::commandLineParser (int argc, char **argv)
             /// save last target file name
             model.pushBackTarFilesAddresses( tarFilesNames.substr(0, tarIndex) );
             
-            cout<<'\n';
+            
             for(string s : model.getTarFilesAddresses())cout<<s<<' ';
+            
+            
             
             /// set reference file address
             model.setRefFileAddress(referenceFileName);
