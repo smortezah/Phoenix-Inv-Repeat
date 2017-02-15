@@ -39,6 +39,12 @@ public:
 //    void setHashTable_str (const htable_str_t&);    /// setter of hash table (string key)
     const string &getTarFileAddress () const; /// getter of target file address
     void setTarFileAddress (const string&);   /// setter of target file address
+    
+    const string &getTarFileAddress () const; /// getter of target files addresses
+    void setTarFileAddress (const string&);   /// setter of target files addresses
+    
+    
+    
     const string &getRefFileAddress () const; /// getter of reference file address
     void setRefFileAddress (const string&);   /// setter of reference file address
     
