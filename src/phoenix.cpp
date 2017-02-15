@@ -25,8 +25,8 @@ using std::setprecision;
 /////////                 M A I N                 /////////
 ///////////////////////////////////////////////////////////
 #include <thread>
-void foo(){cout<<"foo";}
-void bar(int i){cout<<"bar "<<i;}
+void foo(){cout<<"foo"<<'\n';}
+void bar(int i){cout<<"bar "<<i<<'\n';}
 
 int32_t main (int argc, char *argv[])
 {
