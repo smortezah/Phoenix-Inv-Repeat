@@ -59,8 +59,8 @@ void Functions::commandLineParser (int argc, char **argv)
                     {"model",     required_argument, 0,       'm'},         /// model
                     {"number",    required_argument, 0,       'n'},         /// number (integer)
                     {"fnumber",   required_argument, 0,       'd'},         /// number (float)
-                    {"target",    required_argument, 0,       't'},         /// target file
                     {"reference", required_argument, 0,       'r'},         /// reference file
+                    {"target",    required_argument, 0,       't'},         /// target file
                     {0, 0,                           0,       0}
             };
     
