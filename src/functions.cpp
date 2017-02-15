@@ -44,6 +44,10 @@ void Functions::commandLineParser (int argc, char **argv)
     bool t_flag = false;            /// target(s) file name entered
     bool r_flag = false;            /// reference(s) file name entered
     string targetFileName = "";     /// argument of option 't'
+    
+    vector<string> targetFilesNames;/// argument of option 't'
+    
+    
     string referenceFileName = "";  /// argument of option 'r'
     
     int c;              /// deal with getopt_long()
@@ -113,7 +117,7 @@ void Functions::commandLineParser (int argc, char **argv)
                     cerr << "Option 'm' ('model') has an invalid argument.\n";
                 }
                 break;
-    
+                
             case 't':   /// needs target files names
                 try
                 {
@@ -125,7 +129,7 @@ void Functions::commandLineParser (int argc, char **argv)
                     cerr << "Option 't' ('target') has an invalid argument.\n";
                 }
                 break;
-    
+                
             case 'r':   /// needs reference file name
                 r_flag = true;
                 referenceFileName = (string) optarg;   /// keep argument = reference file name
