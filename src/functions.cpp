@@ -253,7 +253,7 @@ void Functions::commandLineParser (int argc, char **argv)
             cerr << "Input file address is needed.";
         else
         {
-            FCM model();                    /// model
+            FCM model;                    /// model
             vector< string > vecParameters; /// to save model parameters (ir, ctx_size, alpha)
             uint8_t vecParamIndex = 0;      /// to traverse vecParameters
     
@@ -270,13 +270,13 @@ void Functions::commandLineParser (int argc, char **argv)
             vecParameters.push_back(modelParameters.substr(0, parIndex));
     
             /// set target and/or reference file address
-//                (tarOrRefChar == 't') ? models[ n ].setTarFileAddress(targetFileName)
-//                                      : models[ n ].setRefFileAddress(referenceFileName);
-            models[ n ].setTarFileAddress(targetFileName);
-            models[ n ].setRefFileAddress(referenceFileName);
+//                (tarOrRefChar == 't') ? model.setTarFileAddress(targetFileName)
+//                                      : model.setRefFileAddress(referenceFileName);
+            model.setTarFileAddress(targetFileName);
+            model.setRefFileAddress(referenceFileName);
             /// set the alpha denominator of the model
             model.setAlphaDenom((uint16_t) stoi(vecParameters[ vecParamIndex++ ]));
-//                models[ n ].setAlphaDenom(stod(vecParameters[ vecParamIndex++ ]));
+//                model.setAlphaDenom(stod(vecParameters[ vecParamIndex++ ]));
             /// set the context depth of the model
             model.setContextDepth((uint8_t) stoi(vecParameters[ vecParamIndex++ ]));
             /// set the inverted repeat condition of the model
@@ -296,8 +296,6 @@ void Functions::commandLineParser (int argc, char **argv)
             /// print the built hash table
 //                cout << "Model " << n + 1 << " parameters:\n";
 //                model.printHashTable();
-            
-            delete[] models;   /// delete all models created
         }   /// end - else: if target or reference file addresses are entered
     }   ///  end - if '-m' (model) is entered
     else    /// if '-m' (model) is entered but '-t' or '-r' (file addresses) are not entered
