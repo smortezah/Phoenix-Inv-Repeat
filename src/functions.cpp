@@ -258,14 +258,14 @@ void Functions::commandLineParser (int argc, char **argv)
             uint8_t vecParamIndex = 0;      /// to traverse vecParameters
     
             /// save model parameters and process the model
-            uint8_t parIndex = (uint8_t) modelParameters.size();cout<<modelParameters.size();
-//            /// save all model parameters except the last model
-//            for (uint8_t i = parIndex; i--;)
-//                if (modelParameters[ i ] == ',')
-//                {
-//                    vecParameters.push_back(modelParameters.substr(i + 1, parIndex));
-//                    parIndex = i - 1;
-//                }
+            uint8_t parIndex = (uint8_t) modelParameters.size();
+            /// save all model parameters except the last model
+            for (uint8_t i = parIndex; i--;)
+                if (modelParameters[ i ] == ',')
+                {
+                    vecParameters.push_back(modelParameters.substr(i + 1, parIndex));
+                    parIndex = i - 1;
+                }
 //            /// save last model parameter
 //            vecParameters.push_back(modelParameters.substr(0, parIndex));
 //
