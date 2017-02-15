@@ -38,11 +38,11 @@ void Functions::commandLineParser (int argc, char **argv)
     static int A_flag;  /// option 'A' (about)
     static int v_flag;  /// option 'v' (verbose)
     
-    bool m_flag = false;            /// model parameters entered
+    bool m_flag = false;            /// model(s) parameters entered
     string modelsParameters = "";   /// argument of option 'm'
     
-    bool t_flag = false;            /// target file name entered
-    bool r_flag = false;            /// reference file name entered
+    bool t_flag = false;            /// target(s) file name entered
+    bool r_flag = false;            /// reference(s) file name entered
     string targetFileName = "";     /// argument of option 't'
     string referenceFileName = "";  /// argument of option 'r'
     
