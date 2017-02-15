@@ -13,7 +13,6 @@ using std::string;
 using std::stoi;
 using std::stof;
 using std::vector;
-using std::array;
 using std::size_t;
 using std::ifstream;
 using std::ios;
@@ -249,24 +248,22 @@ void Functions::commandLineParser (int argc, char **argv)
 //    }   ///  end - if '-m' (model) is entered
     if (m_flag)
     {
-        uint8_t N_Parameters = 3;   /// regarding ir, ctx_size, alpha
-        
         /// check if target or reference file addresses are entered
         if (!t_flag || !r_flag)
             cerr << "Input file address is needed.";
         else
         {
-            FCM model();                        /// model
-            array< string, N_Parameters > arrParameters;   /// to save model parameters (ir, ctx_size, alpha)
+            FCM model();                    /// model
+            vector< string > vecParameters; /// to save model parameters (ir, ctx_size, alpha)
             
             /// save model parameters and process the model
-                uint8_t param_index = (uint8_t) modelParameters.size();
+                uint8_t parIndex = (uint8_t) modelParameters.size();
                 /// save all model parameters except the last model
-                for (uint8_t i = param_index; i--;)
-                    if (strModels[ n ][ i ] == ',')
+                for (uint8_t i = parIndex; i--;)
+                    if (modelParameters[ i ] == ',')
                     {
-                        vecParameters.push_back(strModels[ n ].substr(index, i - index));
-                        index = i + 1;
+                        vecParameters.push_back(modelParameters.substr(i+1, parIndex));
+                        parIndex = i - 1;
                     }
                 /// save last model parameters in multi-model input, and the only model in single model input
                 vecParameters.push_back(strModels[ n ].substr(index, strModels[ n ].size() - index));
