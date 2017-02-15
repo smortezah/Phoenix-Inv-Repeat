@@ -200,10 +200,7 @@ void Functions::commandLineParser (int argc, char **argv)
             cout<<'\n';
             for(string s : model.getTarFilesAddresses())cout<<s<<' ';
             
-            /// set target and/or reference file address
-//                (tarOrRefChar == 't') ? model.setTarFileAddress(targetFileName)
-//                                      : model.setRefFileAddress(referenceFileName);
-            model.setTarFileAddress(targetFileName);
+            /// set reference file address
             model.setRefFileAddress(referenceFileName);
 //
 //            /// print reference and target file names in the output
