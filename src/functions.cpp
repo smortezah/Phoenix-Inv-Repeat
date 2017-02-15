@@ -218,8 +218,9 @@ void Functions::commandLineParser (int argc, char **argv)
                 models[ n ].setTarFileAddress(targetFileName);
                 models[ n ].setRefFileAddress(referenceFileName);
                 /// set the context depth of the model
-                uint8_t ctxDepth = (uint8_t) stoi(vecParameters[ vecParamIndex++ ]);
-                models[ n ].setContextDepth(ctxDepth);
+//                uint8_t ctxDepth = (uint8_t) stoi(vecParameters[ vecParamIndex++ ]);
+//                models[ n ].setContextDepth(ctxDepth);
+                models[ n ].setContextDepth((uint8_t) stoi(vecParameters[ vecParamIndex++ ]));
                 /// set the alpha denominator of the model
                 models[ n ].setAlphaDenom((uint16_t) stoi(vecParameters[ vecParamIndex++ ]));
 //                models[ n ].setAlphaDenom(stod(vecParameters[ vecParamIndex++ ]));
