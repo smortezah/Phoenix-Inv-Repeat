@@ -102,11 +102,11 @@ void Functions::commandLineParser (int argc, char **argv)
                 messageObj.verbose();
                 break;
             
-            case 'm':   /// needs model parameters
+            case 'm':   /// needs model(s) parameters
                 try
                 {
                     m_flag = true;
-                    modelsParameters = (string) optarg; /// keep argument = model parameters
+                    modelsParameters = (string) optarg; /// keep argument = model(s) parameters
                 }
                 catch (const invalid_argument &ia)
                 {
