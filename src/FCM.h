@@ -40,9 +40,8 @@ public:
     const string &getTarFileAddress () const; /// getter of target file address
     void setTarFileAddress (const string&);   /// setter of target file address
     
-    const string &getTarFileAddress () const; /// getter of target files addresses
+    const vector<string> &getTarFilesAddresses () const; /// getter of target files addresses
     void setTarFileAddress (const string&);   /// setter of target files addresses
-    
     
     
     const string &getRefFileAddress () const; /// getter of reference file address
