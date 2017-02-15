@@ -885,7 +885,7 @@ void FCM::setHashTable (const htable_t &hT)           { FCM::hashTable = hT;    
 const string &FCM::getTarFileAddress () const         { return tarFileAddress;         }
 void FCM::setTarFileAddress (const string &tFA)       { FCM::tarFileAddress = tFA;     }
 
-const vector<string> &getTarFilesAddresses () const;  { return tarFilesAddresses;     }
+const vector<string> &getTarFilesAddresses () const   { return tarFilesAddresses;      }
 
 
 
