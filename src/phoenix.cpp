@@ -27,6 +27,7 @@ using std::setprecision;
 ///////////////////////////////////////////////////////////
 void foo(){cout<<"foo";}
 void bar(int i){cout<<"bar "<<i;}
+
 int32_t main (int argc, char *argv[])
 {
     
