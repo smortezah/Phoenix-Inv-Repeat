@@ -41,7 +41,7 @@ int32_t main (int argc, char *argv[])
 {
     stmm st;
     
-    std::thread first();
+    std::thread first(&stmm::foo, stmm());
 //    std::thread second(bar,3);
 //    std::thread third(mori);
 
@@ -65,10 +65,10 @@ int32_t main (int argc, char *argv[])
     /// for access to Functions (object 'function' on memory stack)
     Functions function;
 //    function.commandLineParser(argc, argv); /// parse the command line
-
     
-
-   
+    
+    
+    
     high_resolution_clock::time_point exeFinishTime = high_resolution_clock::now(); /// Record end time
     
     /// calculate and show duration in seconds
