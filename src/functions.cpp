@@ -73,7 +73,7 @@ void Functions::commandLineParser (int argc, char **argv)
         /// getopt_long() stores the option index here.
         option_index = 0;
         
-        c = getopt_long(argc, argv, ":hAvm:n:d:t:r:", long_options, &option_index);
+        c = getopt_long(argc, argv, ":hAvm:r:t:n:d:", long_options, &option_index);
         
         /// Detect the end of the options.
         if (c == -1)
@@ -107,15 +107,8 @@ void Functions::commandLineParser (int argc, char **argv)
                 break;
             
             case 'm':   /// needs model parameters
-                try
-                {
-                    m_flag = true;
-                    modelParameters = (string) optarg; /// keep argument = model parameters
-                }
-                catch (const invalid_argument &ia)
-                {
-                    cerr << "Option 'm' ('model') has an invalid argument.\n";
-                }
+                m_flag = true;
+                modelParameters = (string) optarg; /// keep argument = model parameters
                 break;
                 
             case 't':   /// needs target files names
