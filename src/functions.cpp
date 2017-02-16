@@ -2,6 +2,7 @@
 #include <getopt.h>     /// parsing command line
 #include <fstream>
 #include <vector>
+#include <thread>
 
 #include "functions.h"
 #include "messages.h"
@@ -209,6 +210,13 @@ void Functions::commandLineParser (int argc, char **argv)
         
         /// build a model for reference
         model.buildModel();
+    
+//        for (string s : model.getTarFilesAddresses())
+//        {
+//            std::thread first(&FCM::compressTarget, &model, s);
+//            first.join();
+//            cout << '\n';
+//        }
         /// compress target(s) using reference(s) model
         for (string s : model.getTarFilesAddresses())
         {
