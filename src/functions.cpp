@@ -159,180 +159,67 @@ void Functions::commandLineParser (int argc, char **argv)
     
     if (t_flag)
     {
-//        /// check if reference file(s) address(es) and model parameters are entered
-//        if (!r_flag || !m_flag)
-//            cerr << "Reference file(s) address(es) or model parameters is needed.";
-//        else
-//        {
-            /// save target file(s) name(s)
-            uint8_t tarIndex = (uint8_t) tarFilesNames.size();
-            
-            /// save all target files names except the last one
-            for (uint8_t i = tarIndex; i--;)
+        /// save target file(s) name(s)
+        uint8_t tarIndex = (uint8_t) tarFilesNames.size();
+        
+        /// save all target files names except the last one
+        for (uint8_t i = tarIndex; i--;)
+        {
+            if (tarFilesNames[ i ] == ',')
             {
-                if (tarFilesNames[ i ] == ',')
-                {
-                    model.pushBackTarFilesAddresses( tarFilesNames.substr(i+1, tarIndex-i-1) );
-                    tarIndex = i;
-                }
+                model.pushBackTarFilesAddresses(tarFilesNames.substr(i + 1, tarIndex - i - 1));
+                tarIndex = i;
             }
-            /// save last target file name
-            model.pushBackTarFilesAddresses( tarFilesNames.substr(0, tarIndex) );
-//        }
+        }
+        /// save last target file name
+        model.pushBackTarFilesAddresses(tarFilesNames.substr(0, tarIndex));
     }
     
+    if (r_flag)
+    {
+        model.setRefFileAddress(referenceFileName);
+    }
     
-//    if (m_flag)
-//    {
-//        /// check if target or reference file addresses are entered
-//        if (!t_flag || !r_flag)
-//            cerr << "Input file address is needed.";
-//        else
-//        {
-//            /// seperate and save the models in a vector of strings. each model in one string
-//            vector< string > strModels;
-//            uint8_t mIndex = 0;  /// index for the first character of models string
-//            /// save all models except the last model
-//            for (uint8_t i = 0; i != modelsParameters.size(); ++i)
-//                if (modelsParameters[ i ] == ':')
-//                {
-//                    strModels.push_back(modelsParameters.substr(mIndex, i - mIndex));
-//                    mIndex = i + 1;
-//                }
-//            /// save last model in multi-model input, and the only model in single-model input
-//            strModels.push_back(modelsParameters.substr(mIndex, modelsParameters.size() - mIndex));
-////            uint8_t mIndex = modelsParameters.size();   /// index for the first character of models string
-////            /// save all models except the last model
-////            for (uint8_t i = mIndex; i--;)              /// = for (uint8_t i = modelsParameters.size(); i--;)
-////                if (modelsParameters[ i ] == ':')
-////                {
-////                    strModels.push_back(modelsParameters.substr(i+1, mIndex));
-////                    mIndex = i - 1;
-////                }
-////            /// save last model in multi-model input, and the only model in single-model input
-////            strModels.push_back(modelsParameters.substr(0, mIndex));
-//
-//            /// create an array of models and set their parameters
-//            uint8_t n_models = (uint8_t) strModels.size();  /// number of models
-//            FCM *models = new FCM[ n_models ];              /// array of models
-//            vector< string > vecParameters;                 /// to save models parameters
-//            uint8_t vecParamIndex = 0;
-//
-//            /// save models parameters and process the models
-////            for (uint8_t n = n_models; n--;)
-//            for (uint8_t n = 0; n != n_models; ++n)
-//            {
-//                uint8_t index = 0;
-//                /// save all models parameters except the last model
-//                for (uint8_t i = 0; i != strModels[ n ].size(); ++i)
-//                    if (strModels[ n ][ i ] == ',')
-//                    {
-//                        vecParameters.push_back(strModels[ n ].substr(index, i - index));
-//                        index = i + 1;
-//                    }
-//                /// save last model parameters in multi-model input, and the only model in single model input
-//                vecParameters.push_back(strModels[ n ].substr(index, strModels[ n ].size() - index));
-//
-//                /// chack if the model is built from target or reference
-//                char tarOrRefChar = vecParameters[ vecParamIndex++ ][ 0 ];
-//                models[ n ].setTargetOrReference(tarOrRefChar);
-//                /// set target and/or reference file address
-////                (tarOrRefChar == 't') ? models[ n ].setTarFileAddress(targetFileName)
-////                                      : models[ n ].setRefFileAddress(referenceFileName);
-//                models[ n ].setTarFileAddress(targetFileName);
-//                models[ n ].setRefFileAddress(referenceFileName);
-//                /// set the context depth of the model
-////                uint8_t ctxDepth = (uint8_t) stoi(vecParameters[ vecParamIndex++ ]);
-////                models[ n ].setContextDepth(ctxDepth);
-//                models[ n ].setContextDepth((uint8_t) stoi(vecParameters[ vecParamIndex++ ]));
-//                /// set the alpha denominator of the model
-//                models[ n ].setAlphaDenom((uint16_t) stoi(vecParameters[ vecParamIndex++ ]));
-////                models[ n ].setAlphaDenom(stod(vecParameters[ vecParamIndex++ ]));
-//                /// set the inverted repeat condition of the model
-//                !stoi(vecParameters[ vecParamIndex++ ]) ? models[ n ].setInvertedRepeat(false)
-//                                                        : models[ n ].setInvertedRepeat(true);
-//
-//                /// print reference and target file names in the output
-//                size_t lastSlash_Ref = models[ n ].getRefFileAddress().find_last_of("/");
-//                size_t lastSlash_Tar = models[ n ].getTarFileAddress().find_last_of("/");
-//
-//                cout << models[ n ].getRefFileAddress().substr(lastSlash_Ref + 1) << '\t'
-//                     << models[ n ].getTarFileAddress().substr(lastSlash_Tar + 1) << '\t';
-//
-//                models[ n ].buildModel();    /// build a model for reference
-//                models[ n ].compressTarget();   /// compress target using model built based on reference
-//
-//                /// print the built hash table
-////                cout << "Model " << n + 1 << " parameters:\n";
-////                models[ n ].printHashTable();
-//            }
-//
-//            delete[] models;   /// delete all models created
-//        }   /// end - else: if target or reference file addresses are entered
-//    }   ///  end - if '-m' (model) is entered
+    /// save model parameters and process the model
     if (m_flag)
     {
-//        /// check if target or reference file addresses are entered
-//        if (!t_flag || !r_flag)
-//            cerr << "Input file address is needed.";
-//        else
-//        {
-            vector< string > vecParameters; /// to save model parameters (ir, ctx_size, alpha)
-            uint8_t vecParamIndex = 0;      /// to traverse vecParameters
-            
-            /// save model parameters and process the model
-            uint8_t parIndex = (uint8_t) modelParameters.size();
-            
-            /// save all model parameters except the last model
-            for (uint8_t i = parIndex; i--;)
+        vector <string> vecParameters; /// to save model parameters (ir, ctx_size, alpha)
+        uint8_t vecParamIndex = 0;     /// to traverse vecParameters
+        
+        uint8_t parIndex = (uint8_t) modelParameters.size();
+        /// save all model parameters except the last model
+        for (uint8_t i = parIndex; i--;)
+        {
+            if (modelParameters[ i ] == ',')
             {
-                if (modelParameters[ i ] == ',')
-                {
-                    vecParameters.push_back( modelParameters.substr(i+1, parIndex-i-1) );
-                    parIndex = i;
-                }
+                vecParameters.push_back(modelParameters.substr(i + 1, parIndex - i - 1));
+                parIndex = i;
             }
-            /// save last model parameter
-            vecParameters.push_back(modelParameters.substr(0, parIndex));
-            
-            /// set target and/or reference file address
-////                (tarOrRefChar == 't') ? model.setTarFileAddress(targetFileName)
-////                                      : model.setRefFileAddress(referenceFileName);
-//            model.setTarFileAddress(targetFileName);
-            model.setRefFileAddress(referenceFileName);
-            /// set the alpha denominator of the model
-            model.setAlphaDenom((uint16_t) stoi(vecParameters[ vecParamIndex++ ]));
-//                model.setAlphaDenom(stod(vecParameters[ vecParamIndex++ ]));
-            /// set the context depth of the model
-            model.setContextDepth((uint8_t) stoi(vecParameters[ vecParamIndex++ ]));
-            /// set the inverted repeat condition of the model
-            !stoi(vecParameters[ vecParamIndex++ ]) ? model.setInvertedRepeat(false)
-                                                    : model.setInvertedRepeat(true);
-
-//            /// print reference and target file names in the output
-//            size_t lastSlash_Ref = model.getRefFileAddress().find_last_of("/");
-//            size_t lastSlash_Tar = model.getTarFileAddress().find_last_of("/");
+        }
+        /// save last model parameter
+        vecParameters.push_back( modelParameters.substr(0, parIndex) );
+    
+        /// set the alpha denominator of the model
+        model.setAlphaDenom( (uint16_t) stoi(vecParameters[ vecParamIndex++ ]) );
+//        model.setAlphaDenom(stod(vecParameters[ vecParamIndex++ ]));
+        /// set the context depth of the model
+        model.setContextDepth( (uint8_t) stoi(vecParameters[ vecParamIndex++ ]) );
+        /// set the inverted repeat condition of the model
+        !stoi(vecParameters[ vecParamIndex++ ]) ? model.setInvertedRepeat(false)
+                                                : model.setInvertedRepeat(true);
+    
+//        /// print reference and target file names in the output
+//        size_t lastSlash_Ref = model.getRefFileAddress().find_last_of("/");
+//        size_t lastSlash_Tar = model.getTarFileAddress().find_last_of("/");
 //
-//            cout << model.getRefFileAddress().substr(lastSlash_Ref + 1) << '\t'
-//                 << model.getTarFileAddress().substr(lastSlash_Tar + 1) << '\t';
+//        cout << model.getRefFileAddress().substr(lastSlash_Ref + 1) << '\t'
+//             << model.getTarFileAddress().substr(lastSlash_Tar + 1) << '\t';
 
-            model.buildModel();    /// build a model for reference
-            
-            // TODO: a loop to call compressTarget, and pass each target to it
+        model.buildModel();    /// build a model for reference
+    
+        // TODO: a loop to call compressTarget, and pass each target to it
 //            model.compressTarget( model.get() );   /// compress target using model built based on reference
-
-            /// print the built hash table
-////                cout << "Model " << n + 1 << " parameters:\n";
-////                model.printHashTable();
-        }   /// end - else: if target or reference file addresses are entered
-//    }   ///  end - if '-m' (model) is entered
-//    else    /// if '-m' (model) is entered but '-t' or '-r' (file addresses) are not entered
-//    {
-//        if (t_flag)
-//            cerr << "Model(s) parameters are missing.";
-//        else if (r_flag)
-//            cerr << "Model(s) parameters are missing.";
-//    }
+    }
     
     /// Print any remaining command line arguments (not options).
     if (optind < argc)
