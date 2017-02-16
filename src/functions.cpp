@@ -120,17 +120,10 @@ void Functions::commandLineParser (int argc, char **argv)
                 break;
                 
             case 't':   /// needs target files names
-                try
-                {
-                    t_flag = true;
-                    targetFileName = (string) optarg; /// keep argument = target file name
-                    
-                    tarFilesNames = (string) optarg; /// keep argument = target files names
-                }
-                catch (const invalid_argument &ia)
-                {
-                    cerr << "Option 't' ('target') has an invalid argument.\n";
-                }
+                t_flag = true;
+                targetFileName = (string) optarg; /// keep argument = target file name
+        
+                tarFilesNames = (string) optarg; /// keep argument = target files names
                 break;
                 
             case 'r':   /// needs reference file name
@@ -174,11 +167,11 @@ void Functions::commandLineParser (int argc, char **argv)
     
     if (t_flag)
     {
-        /// check if reference file(s) address(es) and model parameters are entered
-        if (!r_flag || !m_flag)
-            cerr << "Reference file(s) address(es) or model parameters is needed.";
-        else
-        {
+//        /// check if reference file(s) address(es) and model parameters are entered
+//        if (!r_flag || !m_flag)
+//            cerr << "Reference file(s) address(es) or model parameters is needed.";
+//        else
+//        {
             /// save target file(s) name(s)
             uint8_t tarIndex = (uint8_t) tarFilesNames.size();
             
@@ -193,7 +186,7 @@ void Functions::commandLineParser (int argc, char **argv)
             }
             /// save last target file name
             model.pushBackTarFilesAddresses( tarFilesNames.substr(0, tarIndex) );
-        }
+//        }
     }
     
     
@@ -287,11 +280,11 @@ void Functions::commandLineParser (int argc, char **argv)
 //    }   ///  end - if '-m' (model) is entered
     if (m_flag)
     {
-        /// check if target or reference file addresses are entered
-        if (!t_flag || !r_flag)
-            cerr << "Input file address is needed.";
-        else
-        {
+//        /// check if target or reference file addresses are entered
+//        if (!t_flag || !r_flag)
+//            cerr << "Input file address is needed.";
+//        else
+//        {
             vector< string > vecParameters; /// to save model parameters (ir, ctx_size, alpha)
             uint8_t vecParamIndex = 0;      /// to traverse vecParameters
             
@@ -340,7 +333,7 @@ void Functions::commandLineParser (int argc, char **argv)
 ////                cout << "Model " << n + 1 << " parameters:\n";
 ////                model.printHashTable();
         }   /// end - else: if target or reference file addresses are entered
-    }   ///  end - if '-m' (model) is entered
+//    }   ///  end - if '-m' (model) is entered
 //    else    /// if '-m' (model) is entered but '-t' or '-r' (file addresses) are not entered
 //    {
 //        if (t_flag)
