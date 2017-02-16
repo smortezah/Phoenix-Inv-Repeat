@@ -44,7 +44,7 @@ public:
     
     const    string &getRefFileAddress () const;            /// getter of reference file address
     void     setRefFileAddress (const string&);             /// setter of reference file address
-                                                         
+    
 private:
     std::mutex mut;                                         /// mutex
     
