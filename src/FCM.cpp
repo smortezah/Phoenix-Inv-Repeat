@@ -819,7 +819,6 @@ void FCM::printHashTable () const
          << " >>> " << Tar_or_Ref << " file address:\t"
          /// TODO: this line must be changed
          // << ( tar_or_ref == "target" ? this->getTarFileAddress() : this->getRefFileAddress() )
-         << ( tar_or_ref == "target" ? this->getTarFileAddress() : this->getTarFileAddress() )
          << "\n\n";
     
     cout << "\tA\tC\tN\tG\tT"
@@ -859,13 +858,8 @@ const htable_t &FCM::getHashTable () const               { return hashTable;    
 void FCM::setHashTable (const htable_t &hT)              { FCM::hashTable = hT;                   }
 //const htable_str_t &FCM::getHashTable_str () const    { return hashTable_str;          }
 //void FCM::setHashTable_str (const htable_str_t &hT_s) { FCM::hashTable_str = hT_s;     }
-const string &FCM::getTarFileAddress () const            { return tarFileAddress;                 }
-void FCM::setTarFileAddress (const string &tFA)          { FCM::tarFileAddress = tFA;             }
-
 const vector<string> &FCM::getTarFilesAddresses () const { return tarFilesAddresses;              }
 void FCM::pushBackTarFilesAddresses (string tFA)         { FCM::tarFilesAddresses.push_back(tFA); }
-
-
 
 const string &FCM::getRefFileAddress () const            { return refFileAddress;                 }
 void FCM::setRefFileAddress (const string &rFA)          { FCM::refFileAddress = rFA;             }
