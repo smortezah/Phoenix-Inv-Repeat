@@ -35,8 +35,8 @@ int32_t main (int argc, char *argv[])
     std::thread second(bar,3);
 
 //    std::cout << "main, foo and bar now execute concurrently...\n";
-
-cout<<first.get_id();
+    
+    std::thread::hardware_concurrency();
 
     // synchronize threads:
     first.join();                // pauses until first finishes
