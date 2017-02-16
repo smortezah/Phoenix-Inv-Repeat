@@ -27,22 +27,23 @@ using std::setprecision;
 #include <thread>
 
 #include <mutex>
-std::mutex mu;
-//class stmm
-//{
-//public:
+
+class stmm
+{
+    std::mutex mu;
+public:
     void foo(){ mu.lock();  cout<<"a b"<<'\n';  mu.unlock(); }
     void bar(int i){ mu.lock(); cout<<"x y"<<'\n';  mu.unlock(); }
     void mori(){ mu.lock();  cout<<"1 2"<<'\n';  mu.unlock(); }
-//};
+};
 
 int32_t main (int argc, char *argv[])
 {
-//    stmm st;
+    stmm st;
     
-    std::thread first(foo);
-    std::thread second(bar,3);
-    std::thread third(mori);
+    std::thread first(&st::foo);
+//    std::thread second(bar,3);
+//    std::thread third(mori);
 
 //    std::cout << "main, foo and bar now execute concurrently...\n";
     
