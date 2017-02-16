@@ -25,11 +25,16 @@ using std::setprecision;
 /////////                 M A I N                 /////////
 ///////////////////////////////////////////////////////////
 #include <thread>
+
 #include <mutex>
 std::mutex mu;
-void foo(){ mu.lock();  cout<<"a b"<<'\n';  mu.unlock(); }
-void bar(int i){ mu.lock(); cout<<"x y"<<'\n';  mu.unlock(); }
-void mori(){ mu.lock();  cout<<"1 2"<<'\n';  mu.unlock(); }
+class stmm
+{
+public:
+    void foo(){ mu.lock();  cout<<"a b"<<'\n';  mu.unlock(); }
+    void bar(int i){ mu.lock(); cout<<"x y"<<'\n';  mu.unlock(); }
+    void mori(){ mu.lock();  cout<<"1 2"<<'\n';  mu.unlock(); }
+};
 
 int32_t main (int argc, char *argv[])
 {
