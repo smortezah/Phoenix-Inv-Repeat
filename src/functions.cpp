@@ -207,13 +207,6 @@ void Functions::commandLineParser (int argc, char **argv)
         !stoi(vecParameters[ vecParamIndex++ ]) ? model.setInvertedRepeat(false)
                                                 : model.setInvertedRepeat(true);
     
-//        /// print reference and target file names in the output
-//        size_t lastSlash_Ref = model.getRefFileAddress().find_last_of("/");
-//        size_t lastSlash_Tar = model.getTarFileAddress().find_last_of("/");
-//
-//        cout << model.getRefFileAddress().substr(lastSlash_Ref + 1) << '\t'
-//             << model.getTarFileAddress().substr(lastSlash_Tar + 1) << '\t';
-
         model.buildModel();    /// build a model for reference
         // TODO: a loop to call compressTarget, and pass each target to it
 //            model.compressTarget( model.get() );   /// compress target using model built based on reference
