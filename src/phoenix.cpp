@@ -48,8 +48,7 @@ int32_t main (int argc, char *argv[])
     
     
     
-    /// Record start time
-    high_resolution_clock::time_point exeStartTime = high_resolution_clock::now();
+    high_resolution_clock::time_point exeStartTime = high_resolution_clock::now();  /// Record start time
 
     /// for access to Functions (object 'function' on memory stack)
     Functions function;
@@ -57,8 +56,8 @@ int32_t main (int argc, char *argv[])
 
     
 
-    /// Record end time
-    high_resolution_clock::time_point exeFinishTime = high_resolution_clock::now();
+   
+    high_resolution_clock::time_point exeFinishTime = high_resolution_clock::now(); /// Record end time
 
     /// calculate and show duration in seconds
     std::chrono::duration< double > elapsed = exeFinishTime - exeStartTime;
