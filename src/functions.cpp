@@ -40,10 +40,9 @@ void Functions::commandLineParser (int argc, char **argv)
     static int v_flag;              /// option 'v' (verbose)
     
     bool m_flag = false;            /// model parameters entered
-    string modelParameters = "";    /// argument of option 'm'
-    
     bool t_flag = false;            /// target(s) file name entered
     bool r_flag = false;            /// reference(s) file name entered
+    string modelParameters = "";    /// argument of option 'm'
     string targetFileName = "";     /// argument of option 't'
     
     string tarFilesNames = "";      /// argument of option 't'
