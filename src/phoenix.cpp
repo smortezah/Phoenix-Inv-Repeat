@@ -58,8 +58,7 @@ int32_t main (int argc, char *argv[])
     Functions function;
     function.commandLineParser(argc, argv); /// parse the command line
 
-
-
+    
 
     /// Record end time
     high_resolution_clock::time_point exeFinishTime = high_resolution_clock::now();
