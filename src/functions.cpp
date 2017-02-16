@@ -157,17 +157,16 @@ void Functions::commandLineParser (int argc, char **argv)
     }
     
     
+    /// save target file(s) name(s)
     if (t_flag)
     {
-        /// save target file(s) name(s)
         uint8_t tarIndex = (uint8_t) tarFilesNames.size();
-        
         /// save all target files names except the last one
         for (uint8_t i = tarIndex; i--;)
         {
             if (tarFilesNames[ i ] == ',')
             {
-                model.pushBackTarFilesAddresses(tarFilesNames.substr(i + 1, tarIndex - i - 1));
+                model.pushBackTarFilesAddresses( tarFilesNames.substr(i+1, tarIndex-i-1) );
                 tarIndex = i;
             }
         }
@@ -216,7 +215,6 @@ void Functions::commandLineParser (int argc, char **argv)
 //             << model.getTarFileAddress().substr(lastSlash_Tar + 1) << '\t';
 
         model.buildModel();    /// build a model for reference
-    
         // TODO: a loop to call compressTarget, and pass each target to it
 //            model.compressTarget( model.get() );   /// compress target using model built based on reference
     }
