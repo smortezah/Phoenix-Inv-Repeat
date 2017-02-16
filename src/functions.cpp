@@ -65,7 +65,7 @@ void Functions::commandLineParser (int argc, char **argv)
                     {"target",    required_argument, 0,             't'},   /// target file
                     {"number",    required_argument, 0,             'n'},   /// number (integer)
                     {"fnumber",   required_argument, 0,             'd'},   /// number (float)
-                    {0, 0,                           0,             0}
+                    {0,           0,                 0,               0}
             };
     
     while (1)
