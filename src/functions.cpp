@@ -60,12 +60,12 @@ void Functions::commandLineParser (int argc, char **argv)
                     {"help",      no_argument,       &h_flag, (int) 'h'},   /// help
                     {"about",     no_argument,       &A_flag, (int) 'A'},   /// About
                     {"verbose",   no_argument,       &v_flag, (int) 'v'},   /// verbose
-                    {"model",     required_argument, 0,       'm'},         /// model
-                    {"reference", required_argument, 0,       'r'},         /// reference file
-                    {"target",    required_argument, 0,       't'},         /// target file
-                    {"number",    required_argument, 0,       'n'},         /// number (integer)
-                    {"fnumber",   required_argument, 0,       'd'},         /// number (float)
-                    {0, 0,                           0,       0}
+                    {"model",     required_argument, 0,             'm'},   /// model
+                    {"reference", required_argument, 0,             'r'},   /// reference file
+                    {"target",    required_argument, 0,             't'},   /// target file
+                    {"number",    required_argument, 0,             'n'},   /// number (integer)
+                    {"fnumber",   required_argument, 0,             'd'},   /// number (float)
+                    {0, 0,                           0,             0}
             };
     
     while (1)
