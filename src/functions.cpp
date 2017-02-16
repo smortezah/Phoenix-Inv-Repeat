@@ -19,7 +19,7 @@ using std::ifstream;
 using std::ios;
 using std::invalid_argument;
 
-
+#include <functional>
 /***********************************************************
     constructor
 ************************************************************/
@@ -192,7 +192,7 @@ void Functions::commandLineParser (int argc, char **argv)
         {
             if (modelParameters[ i ] == ',')
             {
-                vecParameters.push_back(modelParameters.substr(i + 1, parIndex - i - 1));
+                vecParameters.push_back(modelParameters.substr(i+1, parIndex-i-1));
                 parIndex = i;
             }
         }
@@ -218,8 +218,9 @@ void Functions::commandLineParser (int argc, char **argv)
 ////        std::thread fourth(&FCM::compressTarget, &model, model.getTarFilesAddresses()[ 3 ]);
 //        first.join();
 //        second.join();
-//        third.join();
-//        fourth.join();
+////        third.join();
+////        fourth.join();
+//
         for (string s : model.getTarFilesAddresses())
         {
             model.compressTarget(s);
