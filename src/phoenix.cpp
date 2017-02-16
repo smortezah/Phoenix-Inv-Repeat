@@ -36,6 +36,8 @@ int32_t main (int argc, char *argv[])
 
 //    std::cout << "main, foo and bar now execute concurrently...\n";
 
+    
+    
     // synchronize threads:
     first.join();                // pauses until first finishes
     second.join();               // pauses until second finishes
