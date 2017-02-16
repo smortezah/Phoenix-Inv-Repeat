@@ -33,27 +33,18 @@ FCM::FCM () {}
 
 
 /***********************************************************
-    build reference model
+    build reference(s) model
 ************************************************************/
 void FCM::buildModel ()
 {
     const uint8_t contextDepth  = getContextDepth();    /// get context depth
     const bool isInvertedRepeat = getInvertedRepeat();  /// get inverted repeat
-//    string tarFileName          = getTarFileAddress();  /// get target file address
     string refFileName          = getRefFileAddress();  /// get reference file address
     /// mode: 't'=table, 'h'=hash table
     const char mode = (contextDepth > TABLE_MAX_CONTEXT) ? 'h' : 't';
     
-//    ifstream tarFileIn(tarFileName, ios::in);   /// open target file located in fileName
     ifstream refFileIn(refFileName, ios::in);   /// open reference file located in 'refFileName'
     
-//    if (!tarFileIn)                             /// error occurred while opening file
-//    {
-//        cerr << "The file '" << tarFileName << "' cannot be opened, or it is empty.\n";
-//        refFileIn.close();                      /// close file
-//        return;                                 /// exit this function
-//    }
-//    else
     if (!refFileIn)                             /// error occurred while opening file
     {
         cerr << "The file '" << refFileName << "' cannot be opened, or it is empty.\n";
@@ -154,35 +145,16 @@ void FCM::buildModel ()
     }   /// end of switch
     
     refFileIn.close();                  /// close file
-
-    
-//    ///***************************************************************
-//    /// print table
-//    ///***************************************************************
-//    cout << "\tA\tC\tN\tG\tT\tSUM"
-//         //              << "\tP_A\tP_C\tP_N\tP_G\tP_T"
-//         << '\n'
-//         << "\t--------------------------------------------"
-//         //              << "---------------------------------------------------"
-//         << '\n';
-//    for (int i = 0; i < tableSize; ++i)
-//    {
-//        if (i % 6 == 0) cout << i / 6 << ":\t";
-//        cout << table[ i ] << '\t';
-//        if ((i + 1) % 6 == 0) cout << '\n';
-//    }
-    
 }
 
 /***********************************************************
-    compressing target using the model built based on reference
+    compress target(s) based on reference(s) model
 ************************************************************/
 void FCM::compressTarget (string tarFileName)
 {
     const uint8_t contextDepth  = getContextDepth();    /// get context depth
     const uint16_t alphaDen     = getAlphaDenom();      /// get alpha denominator
 ////    const double alphaDen     = getAlphaDenom();        /// get alpha denominator
-//    string tarFileName          = getTarFileAddress();  /// get target file address
     
     /// mode: 't'=table, 'h'=hash table
     const char mode = (contextDepth > TABLE_MAX_CONTEXT) ? 'h' : 't';
@@ -210,7 +182,7 @@ void FCM::compressTarget (string tarFileName)
     double   averageEntropy = 0;                /// average entropy (H)
     //////////////////////////////////
     
-//--------------------------------------------------
+////--------------------------------------------------
 ////    /// using macros make this code slower
 ////    htable_t hTable = getHashTable();
 //////#define X \
@@ -227,7 +199,7 @@ void FCM::compressTarget (string tarFileName)
 ////                ? in = table[ tarContext * ALPH_SUM_SIZE + ALPHABET_SIZE ] \
 ////                : in = 0; for (uint64_t u : hTable[ tarContext ]) in += u; \
 ////              } while ( 0 )
-//--------------------------------------------------
+////--------------------------------------------------
     
     switch (mode)
     {
