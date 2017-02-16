@@ -25,8 +25,10 @@ using std::setprecision;
 /////////                 M A I N                 /////////
 ///////////////////////////////////////////////////////////
 #include <thread>
-void foo(){ cout<<"foo"<<'\n';  }
-void bar(int i){    cout<<"bar "<<i<<'\n';  }
+#include <mutex>
+std::mutex mu;
+void foo(){ mu.lock();  cout<<"foo"<<'\n';  mu.unlock; }
+void bar(int i){ mu.lock(); cout<<"bar "<<i<<'\n';  mu.unlock; }
 
 int32_t main (int argc, char *argv[])
 {
