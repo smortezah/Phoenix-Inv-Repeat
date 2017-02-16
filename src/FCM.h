@@ -38,13 +38,8 @@ public:
     void setHashTable (const htable_t&);                 /// setter of hash table (int key)
 //    const htable_str_t &getHashTable_str () const;  /// getter of hash table (string key)
 //    void setHashTable_str (const htable_str_t&);    /// setter of hash table (string key)
-    const string &getTarFileAddress () const;            /// getter of target file address
-    void setTarFileAddress (const string&);              /// setter of target file address
-    
     const vector<string> &getTarFilesAddresses () const; /// getter of target files addresses
     void pushBackTarFilesAddresses (string tFA);         /// pushBacker of target files addresses
-    
-    
     
     const string &getRefFileAddress () const;            /// getter of reference file address
     void setRefFileAddress (const string&);              /// setter of reference file address
@@ -58,12 +53,8 @@ private:
     uint64_t *table;                                     /// table
     htable_t hashTable;                                  /// hash table (int key)
 //    htable_str_t hashTable_str;                          /// hash table (string key)
-    string   tarFileAddress;                             /// target file address
-                                                         
     vector<string> tarFilesAddresses;                    /// target files addresses
-                                                         
-                                                         
-                                                         
+    
     string   refFileAddress;                             /// reference file address
 };
 
