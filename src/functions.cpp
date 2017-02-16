@@ -206,12 +206,11 @@ void Functions::commandLineParser (int argc, char **argv)
         /// set the inverted repeat condition of the model
         !stoi(vecParameters[ vecParamIndex++ ]) ? model.setInvertedRepeat(false)
                                                 : model.setInvertedRepeat(true);
-    
-        model.buildModel();    /// build a model for reference
-        // TODO: a loop to call compressTarget, and pass each target to it
-//            model.compressTarget( model.get() );   /// compress target using model built based on reference
-    
-        for (string s:model.getTarFilesAddresses())
+        
+        /// build a model for reference
+        model.buildModel();
+        /// compress target(s) using reference(s) model
+        for (string s : model.getTarFilesAddresses())
         {
             model.compressTarget(s);
             cout << '\n';
