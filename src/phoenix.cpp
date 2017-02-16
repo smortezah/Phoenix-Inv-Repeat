@@ -41,17 +41,17 @@ int32_t main (int argc, char *argv[])
 {
     stmm st;
     
-    std::thread first(&st::foo);
+    std::thread first();
 //    std::thread second(bar,3);
 //    std::thread third(mori);
 
 //    std::cout << "main, foo and bar now execute concurrently...\n";
     
-
+    
     // synchronize threads:
     first.join();                // pauses until first finishes
-    second.join();               // pauses until second finishes
-    third.join();
+//    second.join();               // pauses until second finishes
+//    third.join();
     
 //    std::cout << "foo and bar completed.\n";
     
