@@ -306,6 +306,7 @@ void FCM::compressTarget (string tarFileName)
     size_t lastSlash_Ref = getRefFileAddress().find_last_of("/");
     size_t lastSlash_Tar = tarFileName.find_last_of("/");
     
+    mut.lock();
     cout << getRefFileAddress().substr(lastSlash_Ref + 1) << '\t'
          << tarFileName.substr(lastSlash_Tar + 1) << '\t';
     
@@ -317,6 +318,9 @@ void FCM::compressTarget (string tarFileName)
          << std::fixed << setprecision(5) << averageEntropy/LOG2_ALPHABET_SIZE;
     
 //    cout.width(2);  cout << std::left << getInvertedRepeat() << "   ";
+    
+    cout<<'\n';
+    mut.unlock();
     ////////////////////////////////
     
 }

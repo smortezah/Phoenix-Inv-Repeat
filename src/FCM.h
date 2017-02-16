@@ -46,9 +46,11 @@ public:
     void     setRefFileAddress (const string&);             /// setter of reference file address
                                                          
 private:
+    std::mutex mut;                                         /// mutex
+    
     char     targetOrReference;                             /// model built based on target or reference
     uint8_t  contextDepth;                                  /// context depth (SIZE <= 255)
-//    double alphaDenom;                                    /// alpha denominator
+//    double alphaDenom;                                      /// alpha denominator
     uint16_t alphaDenom;                                    /// alpha denominator
     bool     invertedRepeat;                                /// inverted repeat
     uint64_t *table;                                        /// table
