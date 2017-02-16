@@ -217,8 +217,13 @@ void Functions::commandLineParser (int argc, char **argv)
         model.buildModel();    /// build a model for reference
         // TODO: a loop to call compressTarget, and pass each target to it
 //            model.compressTarget( model.get() );   /// compress target using model built based on reference
+    
+        for (string s:model.getTarFilesAddresses())
+        {
+            model.compressTarget(s);
+            cout << '\n';
+        }
         
-        for(string s:model.getTarFilesAddresses())cout<<s<<' ';
     }
     
     /// Print any remaining command line arguments (not options).
