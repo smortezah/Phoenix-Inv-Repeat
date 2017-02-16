@@ -29,7 +29,7 @@ using std::array;
 /***********************************************************
     typedef
 ************************************************************/
-/// TODO: vaghti bishtar az 65,535 (uint16_t max) shod, hameye adad ha nesf mishan.
+/// vaghti bishtar az 65,535 (uint16_t max) shod, hameye adad ha nesf mishan.
 /// ye variable ro ham tanzim kon ke maloom she chand bar nesf kardim
 //typedef unordered_map< string, array< uint64_t, ALPHABET_SIZE > > htable_str_t;
 typedef unordered_map< uint64_t , array< uint64_t, ALPHABET_SIZE > > htable_t;
