@@ -238,9 +238,9 @@ void FCM::compressTarget (string tarFileName)
         
                     /// update context
                     tarContext = (uint64_t) (tarContext * ALPHABET_SIZE + currSymInt) % maxPlaceValue;
-                }   /// end of for
-            }   /// end of while
-        }   /// end of case
+                }   /// end for
+            }   /// end while
+        }   /// end case
         break;
         
         case 'h':
@@ -267,7 +267,7 @@ void FCM::compressTarget (string tarFileName)
                         nSym = hTable[ tarContext ][ currSymInt ];
 //                    nSym = X;
 //                    X(nSym);
-        
+                    
                         /// the idea of adding 'sum' column, makes hash table slower
                         /// sum(n_a)
                         sumNSyms = 0; for (uint64_t u : hTable[ tarContext ])   sumNSyms = sumNSyms + u;
@@ -283,9 +283,9 @@ void FCM::compressTarget (string tarFileName)
         
                     /// update context
                     tarContext = (uint64_t) (tarContext * ALPHABET_SIZE + currSymInt) % maxPlaceValue;
-                }   /// end of for
-            }   /// end of while
-        }   /// end of case
+                }   /// end for
+            }   /// end while
+        }   /// end case
         break;
         
         default: break;
