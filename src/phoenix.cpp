@@ -38,10 +38,11 @@ public:
 
 int32_t main (int argc, char *argv[])
 {
+    stmm st;
     
-    std::thread first(foo);
-    std::thread second(bar,3);
-    std::thread third(mori);
+    std::thread first(stmm::foo);
+    std::thread second(st.bar,3);
+    std::thread third(st.mori);
 
 //    std::cout << "main, foo and bar now execute concurrently...\n";
     
