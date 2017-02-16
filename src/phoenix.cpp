@@ -66,7 +66,7 @@ int32_t main (int argc, char *argv[])
     /// calculate and show duration in seconds
     std::chrono::duration< double > elapsed = exeFinishTime - exeStartTime;
 
-    cout << '\t' << std::fixed << setprecision(2) << elapsed.count() << '\n';
+    cout << "Elapsed time: " << std::fixed << setprecision(3) << elapsed.count() << '\n';
     
     
     return 0;
