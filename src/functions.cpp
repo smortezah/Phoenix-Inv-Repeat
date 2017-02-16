@@ -156,7 +156,6 @@ void Functions::commandLineParser (int argc, char **argv)
         }
     }
     
-    
     /// save target file(s) name(s)
     if (t_flag)
     {
@@ -174,6 +173,7 @@ void Functions::commandLineParser (int argc, char **argv)
         model.pushBackTarFilesAddresses(tarFilesNames.substr(0, tarIndex));
     }
     
+    /// save reference file(s) name(s)
     if (r_flag)
     {
         model.setRefFileAddress(referenceFileName);
@@ -217,6 +217,8 @@ void Functions::commandLineParser (int argc, char **argv)
         model.buildModel();    /// build a model for reference
         // TODO: a loop to call compressTarget, and pass each target to it
 //            model.compressTarget( model.get() );   /// compress target using model built based on reference
+        
+        for(string s:model.getTarFilesAddresses())cout<<s<<' ';
     }
     
     /// Print any remaining command line arguments (not options).
