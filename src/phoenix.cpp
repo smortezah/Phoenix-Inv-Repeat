@@ -25,7 +25,6 @@ using std::setprecision;
 /////////                 M A I N                 /////////
 ///////////////////////////////////////////////////////////
 #include <thread>
-
 #include <mutex>
 
 class stmm
