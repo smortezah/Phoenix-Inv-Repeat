@@ -311,7 +311,7 @@ void FCM::compressTarget (string tarFileName)
     
     cout << getInvertedRepeat() << '\t'
          << setprecision(5) << (float) 1 / alphaDen << '\t'
-         //             cout << (double) 1/alphaDen << '\t'
+         //            cout << (double) 1/alphaDen << '\t'
          << (int) contextDepth << '\t'
          << std::fixed << setprecision(5) << averageEntropy << '\t'
          << std::fixed << setprecision(5) << averageEntropy/LOG2_ALPHABET_SIZE;
