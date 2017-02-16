@@ -25,25 +25,22 @@ using std::setprecision;
 /////////                 M A I N                 /////////
 ///////////////////////////////////////////////////////////
 #include <thread>
-void foo(){cout<<"foo"<<'\n';}
-void bar(int i){cout<<"bar "<<i<<'\n';}
+void foo(){ cout<<"foo"<<'\n';  }
+void bar(int i){    cout<<"bar "<<i<<'\n';  }
 
 int32_t main (int argc, char *argv[])
 {
     
-//    std::thread first(foo);
-//    std::thread second(bar,2);
-//
-////    std::cout << "main, foo and bar now execute concurrently...\n";
-//
-//    // synchronize threads:
-//    first.join();                // pauses until first finishes
-//    second.join();               // pauses until second finishes
-//
-////    std::cout << "foo and bar completed.\n";
-//
-//
-//
+    std::thread first(foo);
+    std::thread second(bar,3);
+
+//    std::cout << "main, foo and bar now execute concurrently...\n";
+
+    // synchronize threads:
+    first.join();                // pauses until first finishes
+    second.join();               // pauses until second finishes
+
+//    std::cout << "foo and bar completed.\n";
     
     
     
@@ -56,7 +53,7 @@ int32_t main (int argc, char *argv[])
 
     /// for access to Functions (object 'function' on memory stack)
     Functions function;
-    function.commandLineParser(argc, argv); /// parse the command line
+//    function.commandLineParser(argc, argv); /// parse the command line
 
     
 
