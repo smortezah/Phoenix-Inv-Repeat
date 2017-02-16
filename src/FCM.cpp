@@ -300,6 +300,8 @@ void FCM::compressTarget (string tarFileName)
 //    cout << sumOfEntropies << '\n';
 //    cout << totalNOfSyms << '\n';
 //    cout << ' ';
+    cout << getRefFileAddress() << '\t'
+         << tarFileName << '\t';
     
     cout << getInvertedRepeat() << '\t'
          << (float) 1 / alphaDen << '\t'
