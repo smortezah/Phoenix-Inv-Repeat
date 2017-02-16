@@ -35,9 +35,9 @@ void Functions::commandLineParser (int argc, char **argv)
     
     /// using these flags, if both short and long arguments
     /// are entered, just one of them is considered
-    static int h_flag;  /// option 'h' (help)
-    static int A_flag;  /// option 'A' (about)
-    static int v_flag;  /// option 'v' (verbose)
+    static int h_flag;              /// option 'h' (help)
+    static int A_flag;              /// option 'A' (about)
+    static int v_flag;              /// option 'v' (verbose)
     
     bool m_flag = false;            /// model parameters entered
     string modelParameters = "";    /// argument of option 'm'
@@ -51,10 +51,10 @@ void Functions::commandLineParser (int argc, char **argv)
     
     string referenceFileName = "";  /// argument of option 'r'
     
-    int c;              /// deal with getopt_long()
-    int option_index;   /// option index stored by getopt_long()
-    
-    opterr = 0;         /// force getopt_long() to remain silent when it finds a problem
+    int c;                          /// deal with getopt_long()
+    int option_index;               /// option index stored by getopt_long()
+                                    
+    opterr = 0;                     /// force getopt_long() to remain silent when it finds a problem
     
     static struct option long_options[] =
             {
@@ -62,10 +62,10 @@ void Functions::commandLineParser (int argc, char **argv)
                     {"about",     no_argument,       &A_flag, (int) 'A'},   /// About
                     {"verbose",   no_argument,       &v_flag, (int) 'v'},   /// verbose
                     {"model",     required_argument, 0,       'm'},         /// model
-                    {"number",    required_argument, 0,       'n'},         /// number (integer)
-                    {"fnumber",   required_argument, 0,       'd'},         /// number (float)
                     {"reference", required_argument, 0,       'r'},         /// reference file
                     {"target",    required_argument, 0,       't'},         /// target file
+                    {"number",    required_argument, 0,       'n'},         /// number (integer)
+                    {"fnumber",   required_argument, 0,       'd'},         /// number (float)
                     {0, 0,                           0,       0}
             };
     
