@@ -300,8 +300,14 @@ void FCM::compressTarget (string tarFileName)
 //    cout << sumOfEntropies << '\n';
 //    cout << totalNOfSyms << '\n';
 //    cout << ' ';
-    cout << getRefFileAddress() << '\t'
-         << tarFileName << '\t';
+    
+    
+    /// print reference and target file names in the output
+    size_t lastSlash_Ref = getRefFileAddress().find_last_of("/");
+    size_t lastSlash_Tar = tarFileName.find_last_of("/");
+    
+    cout << getRefFileAddress().substr(lastSlash_Ref + 1) << '\t'
+         << tarFileName.substr(lastSlash_Tar + 1) << '\t';
     
     cout << getInvertedRepeat() << '\t'
          << (float) 1 / alphaDen << '\t'
