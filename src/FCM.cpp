@@ -842,24 +842,24 @@ void FCM::printHashTable () const
 /***********************************************************
     getters and setters
 ************************************************************/
-char FCM::getTargetOrReference () const                  { return targetOrReference;              }
-void FCM::setTargetOrReference (char tOrR)               { FCM::targetOrReference = tOrR;         }
-uint8_t FCM::getContextDepth () const                    { return contextDepth;                   }
-void FCM::setContextDepth (uint8_t ctxDp)                { FCM::contextDepth = ctxDp;             }
-uint16_t FCM::getAlphaDenom () const                     { return alphaDenom;                     }
-void FCM::setAlphaDenom (uint16_t alphaDen)              { FCM::alphaDenom = alphaDen;            }
+char     FCM::getTargetOrReference () const                  { return targetOrReference;              }
+void     FCM::setTargetOrReference (char tOrR)               { FCM::targetOrReference = tOrR;         }
+uint8_t  FCM::getContextDepth () const                       { return contextDepth;                   }
+void     FCM::setContextDepth (uint8_t ctxDp)                { FCM::contextDepth = ctxDp;             }
+uint16_t FCM::getAlphaDenom () const                         { return alphaDenom;                     }
+void     FCM::setAlphaDenom (uint16_t alphaDen)              { FCM::alphaDenom = alphaDen;            }
 //double FCM::getAlphaDenom () const                       { return alphaDenom;             }
 //void FCM::setAlphaDenom (double alphaDen)                { FCM::alphaDenom = alphaDen;    }
-bool FCM::getInvertedRepeat () const                     { return invertedRepeat;                 }
-void FCM::setInvertedRepeat (bool invRep)                { FCM::invertedRepeat = invRep;          }
-uint64_t *FCM::getTable () const                         { return table;                          }
-void FCM::setTable (uint64_t *tbl)                       { FCM::table = tbl;                      }
-const htable_t &FCM::getHashTable () const               { return hashTable;                      }
-void FCM::setHashTable (const htable_t &hT)              { FCM::hashTable = hT;                   }
+bool     FCM::getInvertedRepeat () const                     { return invertedRepeat;                 }
+void     FCM::setInvertedRepeat (bool invRep)                { FCM::invertedRepeat = invRep;          }
+uint64_t *FCM::getTable () const                             { return table;                          }
+void     FCM::setTable (uint64_t *tbl)                       { FCM::table = tbl;                      }
+const    htable_t &FCM::getHashTable () const                { return hashTable;                      }
+void     FCM::setHashTable (const htable_t &hT)              { FCM::hashTable = hT;                   }
 //const htable_str_t &FCM::getHashTable_str () const    { return hashTable_str;          }
 //void FCM::setHashTable_str (const htable_str_t &hT_s) { FCM::hashTable_str = hT_s;     }
-const vector<string> &FCM::getTarFilesAddresses () const { return tarFilesAddresses;              }
-void FCM::pushBackTarFilesAddresses (string tFA)         { FCM::tarFilesAddresses.push_back(tFA); }
+const    vector<string> &FCM::getTarFilesAddresses () const { return tarFilesAddresses;              }
+void     FCM::pushBackTarFilesAddresses (string tFA)        { FCM::tarFilesAddresses.push_back(tFA); }
 
-const string &FCM::getRefFileAddress () const            { return refFileAddress;                 }
-void FCM::setRefFileAddress (const string &rFA)          { FCM::refFileAddress = rFA;             }
+const    string &FCM::getRefFileAddress () const            { return refFileAddress;                 }
+void     FCM::setRefFileAddress (const string &rFA)         { FCM::refFileAddress = rFA;             }
