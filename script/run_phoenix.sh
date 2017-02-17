@@ -16,7 +16,7 @@ for ir in $INV_REPEATS; do
 #    echo -e "# ir\talpha\tctx\tbpb\ttime(s)" >> $IR_LBL$ir-$a_LBL$alphaDen-${dataset}_$mut.$INF_FILE_TYPE
      for ctx in $CTX; do
 #     for((ctx=$MIN_CTX; ctx<=$MAX_CTX; ctx+=1)); do
-     ./phoenix -n 7 -m $ir,$ctx,$alphaDen -r $FLD_dataset/$refDataset -t dataset/PT21,dataset/HS21,dataset/GG21 \
+     ./phoenix -n 7 -m $ir,$ctx,$alphaDen -r dataset/HS21 -t dataset/PT21,dataset/HS21,dataset/GG21 \
 #     ./phoenix -m $ir,$ctx,$alphaDen -t $FLD_dataset/$tarDataset -r $FLD_dataset/$refDataset \
 #               >> $IR_LBL$ir-$refDataset-$TAR_SPECIES.$INF_FILE_TYPE
      done
