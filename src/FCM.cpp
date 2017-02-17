@@ -37,11 +37,13 @@ FCM::FCM () {}
 ************************************************************/
 void FCM::buildModel ()
 {
-    const uint8_t contextDepth  = getContextDepth();    /// get context depth
-    const bool isInvertedRepeat = getInvertedRepeat();  /// get inverted repeat
+    const uint8_t contextDepth     = getContextDepth();         /// context depth
+    const bool isInvertedRepeat    = getInvertedRepeat();       /// inverted repeat
+    
+    vector< string > refFilesNames = getRefFilesAddresses();    /// reference file(s) address(es)
+    string refFileName = refFilesNames[ 0 ];
     
     
-    string refFileName          = getRefFileAddress();  /// get reference file address
     /// mode: 't'=table, 'h'=hash table
     const char mode = (contextDepth > TABLE_MAX_CONTEXT) ? 'h' : 't';
     
