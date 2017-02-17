@@ -215,7 +215,7 @@ void FCM::compressTarget (string tarFileName)
             {
         
                 //////////////////////////////////
-                totalNOfSyms = totalNOfSyms + tarLine.size();       /// number of symbols in each line of dataset
+                totalNOfSyms = totalNOfSyms + tarLine.size();   /// number of symbols in each line of dataset
                 //////////////////////////////////
         
                 /// table includes the number of occurrences of symbols A, C, N, G, T
@@ -255,7 +255,7 @@ void FCM::compressTarget (string tarFileName)
             {
         
                 //////////////////////////////////
-                totalNOfSyms = totalNOfSyms + tarLine.size();       /// number of symbols in each line of dataset
+                totalNOfSyms = totalNOfSyms + tarLine.size();   /// number of symbols in each line of dataset
                 //////////////////////////////////
         
                 /// hash table includes the number of occurrences of symbols A, C, N, G, T
@@ -307,11 +307,19 @@ void FCM::compressTarget (string tarFileName)
     
     
     /// print reference and target file names in the output
-    size_t lastSlash_Ref = getRefFileAddress().find_last_of("/");
+    uint8_t refsAdressesSize = (uint8_t) getRefFilesAddresses().size();
+    size_t lastSlash_Ref[ refsAdressesSize ];
+    for (int i = refsAdressesSize; i--;)
+        lastSlash_Ref[ i ] = getRefFilesAddresses()[ i ].find_last_of("/");
     size_t lastSlash_Tar = tarFileName.find_last_of("/");
     
+    
+    /// mutex lock ========================================================
     mut.lock();
-    cout << getRefFileAddress().substr(lastSlash_Ref + 1) << '\t'
+    
+    for (int i = refsAdressesSize - 1; i; i--)
+        cout << getRefFilesAddresses()[ i ].substr(lastSlash_Ref[ i ] + 1) << ',';
+    cout << getRefFilesAddresses()[ 0 ].substr(lastSlash_Ref[ 0 ] + 1) << '\t'
          << tarFileName.substr(lastSlash_Tar + 1) << '\t';
     
     cout << getInvertedRepeat() << '\t'
@@ -324,6 +332,8 @@ void FCM::compressTarget (string tarFileName)
 //    cout.width(2);  cout << std::left << getInvertedRepeat() << "   ";
     
     cout<<'\n';
+    
+    /// mutex unlock ======================================================
     mut.unlock();
     ////////////////////////////////
     
