@@ -810,19 +810,13 @@ void FCM::printHashTable () const
     htable_t hTable = this->getHashTable();
 //    htable_t hTable = getHashTable();
     
-    string tar_or_ref = (this->getTargetOrReference() == 't' ? "target" : "reference");
-    string Tar_or_Ref = (this->getTargetOrReference() == 't' ? "Target" : "Reference");
-    
     cout
-         << " >>> Context model:\t\tBuilt from "  << tar_or_ref << '\n'
          << " >>> Context order size:\t" << (uint16_t) this->getContextDepth() << '\n'
          << " >>> Alpha denominator:\t\t" << (uint16_t) this->getAlphaDenom() << '\n'
          << " >>> Inverted repeat:\t\t" << (this->getInvertedRepeat() ? "Considered"
                                                                       : "Not considered")
          << '\n'
-         << " >>> " << Tar_or_Ref << " file address:\t"
-         /// TODO: this line must be changed
-         // << ( tar_or_ref == "target" ? this->getTarFileAddress() : this->getRefFileAddress() )
+         << " >>> file address:\t"
          << "\n\n";
     
     cout << "\tA\tC\tN\tG\tT"
@@ -846,8 +840,6 @@ void FCM::printHashTable () const
 /***********************************************************
     getters and setters
 ************************************************************/
-char     FCM::getTargetOrReference () const                  { return targetOrReference;              }
-void     FCM::setTargetOrReference (char tOrR)               { FCM::targetOrReference = tOrR;         }
 uint8_t  FCM::getContextDepth () const                       { return contextDepth;                   }
 void     FCM::setContextDepth (uint8_t ctxDp)                { FCM::contextDepth = ctxDp;             }
 uint16_t FCM::getAlphaDenom () const                         { return alphaDenom;                     }

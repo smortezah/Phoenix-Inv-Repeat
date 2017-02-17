@@ -23,8 +23,6 @@ public:
 //    void buildHashTable_str ();                                    /// build hash table (string key)
     void     printHashTable () const;                       /// print hash table
                                                                
-    char     getTargetOrReference () const;                 /// getter of target or reference
-    void     setTargetOrReference (char);                   /// setter of target or reference
     uint8_t  getContextDepth () const;                      /// getter of context depth
     void     setContextDepth (uint8_t);                     /// setter of context depth
     uint16_t getAlphaDenom () const;                        /// getter of alpha denominator
@@ -47,8 +45,7 @@ public:
     
 private:
     std::mutex mut;                     /// mutex
-                                               
-    char     targetOrReference;         /// model built based on target or reference
+
     uint8_t  contextDepth;              /// context depth (SIZE <= 255)
 //    double alphaDenom;                  /// alpha denominator
     uint16_t alphaDenom;                /// alpha denominator
@@ -57,7 +54,7 @@ private:
     htable_t hashTable;                 /// hash table (int key)
 //    htable_str_t hashTable_str;                /// hash table (string key)
     vector<string> tarFilesAddresses;   /// target files addresses
-                                               
+    
     string   refFileAddress;            /// reference file address
 };
 
