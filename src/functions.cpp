@@ -167,7 +167,7 @@ void Functions::commandLineParser (int argc, char **argv)
         {
             if (tarFilesNames[ i ] == ',')
             {
-                model.pushBackTarFilesAddresses(tarFilesNames.substr(i + 1, tarIndex - i - 1));
+                model.pushBackTarFilesAddresses( tarFilesNames.substr(i+1, tarIndex-i-1) );
                 tarIndex = i;
             }
         }
