@@ -21,6 +21,7 @@ void Messages::help () const
     cout                                                                            << '\n'
          << "Synopsis:"                                                             << '\n'
          << "    ./phoenix [OPTION]... -m [MODEL] -r [REFERENCE(S)] -t [TARGET(S)]" << '\n'
+         << "         EXAMPLE: ./phoenix -n 6 -m 0,11,100 -r HS21 -t PT21,PT22"     << '\n'
                                                                                     << '\n'
          << "Mandatory arguments:"                                                  << '\n'
          << "    -m [<i>,<k>,<a>],   --model [<i>,<k>,<a>]"                         << '\n'

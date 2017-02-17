@@ -26,7 +26,7 @@ using std::array;
 #define TABLE_MAX_CONTEXT   11
 
 #define DEFAULT_N_THREADS   2
-#define N_FREE_THREADS      2
+#define N_FREE_THREADS      1
 
 
 /***********************************************************

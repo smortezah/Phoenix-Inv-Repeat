@@ -126,21 +126,7 @@ void Functions::commandLineParser (int argc, char **argv)
                 try
                 {
                     n_threads = (uint8_t) stoi((string) optarg);
-    
-    
-                    uint8_t MAX_N_THREADS = (uint8_t) thread::hardware_concurrency();   /// max # threads in current machine
-                    
-                    if (MAX_N_THREADS)
-                    {
-                        if (n_threads < 1 || n_threads > MAX_N_THREADS)
-                            n_threads = DEFAULT_N_THREADS;
-                    }
-                    else
-                    {
-        
-                    }
-                    
-    
+                    if (n_threads < 1)  n_threads = DEFAULT_N_THREADS;
                 }
                 catch (const invalid_argument &ia)
                 {
