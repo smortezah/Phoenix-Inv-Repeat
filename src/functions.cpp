@@ -220,24 +220,24 @@ void Functions::commandLineParser (int argc, char **argv)
 //        thread *arrThread = new thread[arrThrSize];   /// array of threads
         
         /// compress target(s) using reference(s) model -- multithreaded
-        uint8_t MAX_N_THREADS = (uint8_t) thread::hardware_concurrency();   /// max cores in current machine
-        /// N_FREE_THREADS considered for other jobs in current system
-        uint8_t n_threads_available = (uint8_t) (!MAX_N_THREADS ? DEFAULT_N_THREADS - N_FREE_THREADS
-                                                                : MAX_N_THREADS - N_FREE_THREADS);
+//        uint8_t MAX_N_THREADS = (uint8_t) thread::hardware_concurrency();   /// max cores in current machine
+//        /// N_FREE_THREADS considered for other jobs in current system
+//        uint8_t n_threads_available = (uint8_t) (!MAX_N_THREADS ? DEFAULT_N_THREADS - N_FREE_THREADS
+//                                                                : MAX_N_THREADS - N_FREE_THREADS);
         uint8_t n_targets = (uint8_t) model.getTarFilesAddresses().size();  /// up to 2^8=256 targets
     
-        uint8_t arrThrSize = (n_targets > n_threads_available) ? n_threads_available : n_targets;
-        thread *arrThread = new thread[ n_threads ];   /// array of threads
-        
+        uint8_t arrThrSize = (n_targets > n_threads) ? n_threads : n_targets;
+        thread *arrThread = new thread[ arrThrSize ];   /// array of threads
+
         for (uint8_t i = 0; i < n_targets; i += arrThrSize)
         {
             for (uint8_t j = 0; j < arrThrSize && i + j < n_targets; j++)
                 arrThread[ j ] = thread(&FCM::compressTarget, &model, model.getTarFilesAddresses()[ i + j ]);
-            
+
             for (uint8_t j = 0; j < arrThrSize && i + j < n_targets; j++)
                 arrThread[ j ].join();
         }
-        
+
         delete[] arrThread;
     }
     
