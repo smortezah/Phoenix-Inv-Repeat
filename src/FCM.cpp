@@ -856,6 +856,6 @@ void     FCM::setHashTable (const htable_t &hT)             { FCM::hashTable = h
 //void FCM::setHashTable_str (const htable_str_t &hT_s) { FCM::hashTable_str = hT_s;     }
 const    vector<string> &FCM::getTarFilesAddresses () const { return tarFilesAddresses;              }
 void     FCM::pushBackTarFilesAddresses (string tFA)        { FCM::tarFilesAddresses.push_back(tFA); }
-                                                            
+
 const    string &FCM::getRefFileAddress () const            { return refFileAddress;                 }
 void     FCM::setRefFileAddress (const string &rFA)         { FCM::refFileAddress = rFA;             }
