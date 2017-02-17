@@ -223,9 +223,8 @@ void Functions::commandLineParser (int argc, char **argv)
         thread *arrThread = new thread[ arrThrSize ];   /// array of threads
     
         for (uint8_t i = arrThrSize; i--;)
-            arrThread[ i ] = thread(&FCM::compressTarget, &model, model.getTarFilesAddresses()[ i ]);
-        for (uint8_t i = arrThrSize; i--;)
-            arrThread[ i ].join();
+            arrThread[ i ] = thread( &FCM::compressTarget, &model, model.getTarFilesAddresses()[ i ] );
+        for (uint8_t i = arrThrSize; i--;)  arrThread[ i ].join();
         delete[] arrThread;
         
         

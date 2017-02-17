@@ -45,26 +45,6 @@ int32_t main (int argc, char *argv[])
     function.commandLineParser(argc, argv); /// parse the command line
     
     
-    //    stmm st;
-//
-//    std::thread first(&stmm::foo, &st);
-//    std::thread second(&stmm::bar,&st,3);
-//    std::thread third(&stmm::mori,&st);
-//
-////    std::cout << "main, foo and bar now execute concurrently...\n";
-//
-//
-//    // synchronize threads:
-//    first.join();                // pauses until first finishes
-//    second.join();               // pauses until second finishes
-//    third.join();
-//
-////    std::cout << "foo and bar completed.\n";
-
-
-//    cout << std::thread::hardware_concurrency();  // number of threads supported by the current machine
-    
-    
     
     
     
