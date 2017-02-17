@@ -36,8 +36,8 @@ PLOT_MATRIX=0           # plot matrix from datasets
 PLOT_MATRIX_ARCHEA=0    # plot matrix Archaea from datasets
 
 ### reference parameters
-#REF_SPECIES=$HUMAN_CHR; REF_SPECIES_NAME=$HUMAN_LBL;
-REF_SPECIES=$CHIMPANZEE_CHR; REF_SPECIES_NAME=$CHIMPANZEE_LBL;
+REF_SPECIES=$HUMAN_CHR; REF_SPECIES_NAME=$HUMAN_LBL;
+#REF_SPECIES=$CHIMPANZEE_CHR; REF_SPECIES_NAME=$CHIMPANZEE_LBL;
 #REF_SPECIES=$GORILLA_CHR; REF_SPECIES_NAME=$GORILLA_LBL;
 #REF_SPECIES=$CHICKEN_CHR; REF_SPECIES_NAME=$CHICKEN_LBL;
 #REF_SPECIES=$TURKEY_CHR; REF_SPECIES_NAME=$TURKEY_LBL;
@@ -45,7 +45,7 @@ REF_SPECIES=$CHIMPANZEE_CHR; REF_SPECIES_NAME=$CHIMPANZEE_LBL;
 ### all chromosomes for that species, e.g. HS_SEQ_RUN
 tempRefSeqRun=${REF_SPECIES}_SEQ_RUN;    REF_SEQ_RUN=${!tempRefSeqRun}
 
-REF_DATASET="";  for i in MT; do REF_DATASET+=$REF_SPECIES${i}" "; done
+REF_DATASET="";  for i in 21; do REF_DATASET+=$REF_SPECIES${i}" "; done
 #REF_DATASET="";  for i in $REF_SEQ_RUN; do REF_DATASET+=$REF_SPECIES${i}" "; done
 
 REF_SPECIES_LEN=${#REF_SPECIES};            # length of string REF_SPECIES
@@ -70,7 +70,7 @@ TAR_SPECIES_LEN=${#TAR_SPECIES};            # length of string TAR_SPECIES
 
 INV_REPEATS="0"       # list of inverted repeats
 ALPHA_DENS="100"        # list of alpha denominators
-CTX=20
+CTX=15
 MIN_CTX=10              # min context-order size
 MAX_CTX=11              # max context-order size
 
