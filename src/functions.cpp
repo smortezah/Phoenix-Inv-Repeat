@@ -46,6 +46,7 @@ void Functions::commandLineParser (int argc, char **argv)
     bool r_flag = false;            /// reference(s) file name entered
     string modelParameters = "";    /// argument of option 'm'
     string tarFilesNames = "";      /// argument of option 't'
+    string refFilesNames = "";      /// argument of option 'r'
                                             
     string referenceFileName = "";  /// argument of option 'r'
     
@@ -109,17 +110,21 @@ void Functions::commandLineParser (int argc, char **argv)
             
             case 'm':   /// needs model parameters
                 m_flag = true;
-                modelParameters = (string) optarg; /// keep argument = model parameters
+                modelParameters = (string) optarg;  /// keep argument = model parameters
                 break;
-    
+                
             case 'r':   /// needs reference file name
                 r_flag = true;
+                refFilesNames = (string) optarg;    /// keep argument = reference files names
+        
+                
+                
                 referenceFileName = (string) optarg;   /// keep argument = reference file name
                 break;
                 
             case 't':   /// needs target files names
                 t_flag = true;
-                tarFilesNames = (string) optarg; /// keep argument = target files names
+                tarFilesNames = (string) optarg;    /// keep argument = target files names
                 break;
                 
             case 'n':   /// needs an integer argument
@@ -178,6 +183,22 @@ void Functions::commandLineParser (int argc, char **argv)
     /// save reference file(s) name(s)
     if (r_flag)
     {
+        uint8_t refIndex = (uint8_t) refFilesNames.size();
+        /// save all reference files names except the last one
+        for (uint8_t i = refIndex; i--;)
+        {
+            if (refFilesNames[ i ] == ',')
+            {
+                model.pushBackRefFilesAddresses( refFilesNames.substr(i+1, refIndex-i-1) );
+                refIndex = i;
+            }
+        }
+        /// save last reference file name
+        model.pushBackRefFilesAddresses( refFilesNames.substr(0, refIndex) );
+    
+        
+        
+        
         model.setRefFileAddress(referenceFileName);
     }
     

@@ -39,6 +39,8 @@ void FCM::buildModel ()
 {
     const uint8_t contextDepth  = getContextDepth();    /// get context depth
     const bool isInvertedRepeat = getInvertedRepeat();  /// get inverted repeat
+    
+    
     string refFileName          = getRefFileAddress();  /// get reference file address
     /// mode: 't'=table, 'h'=hash table
     const char mode = (contextDepth > TABLE_MAX_CONTEXT) ? 'h' : 't';
@@ -835,22 +837,24 @@ void FCM::printHashTable () const
 /***********************************************************
     getters and setters
 ************************************************************/
-uint8_t  FCM::getContextDepth () const                      { return contextDepth;                   }
-void     FCM::setContextDepth (uint8_t ctxDp)               { FCM::contextDepth = ctxDp;             }
-uint16_t FCM::getAlphaDenom () const                        { return alphaDenom;                     }
-void     FCM::setAlphaDenom (uint16_t alphaDen)             { FCM::alphaDenom = alphaDen;            }
+uint8_t  FCM::getContextDepth () const                      { return contextDepth;                    }
+void     FCM::setContextDepth (uint8_t ctxDp)               { FCM::contextDepth = ctxDp;              }
+uint16_t FCM::getAlphaDenom () const                        { return alphaDenom;                      }
+void     FCM::setAlphaDenom (uint16_t alphaDen)             { FCM::alphaDenom = alphaDen;             }
 //double FCM::getAlphaDenom () const                       { return alphaDenom;             }
 //void FCM::setAlphaDenom (double alphaDen)                { FCM::alphaDenom = alphaDen;    }
-bool     FCM::getInvertedRepeat () const                    { return invertedRepeat;                 }
-void     FCM::setInvertedRepeat (bool invRep)               { FCM::invertedRepeat = invRep;          }
-uint64_t *FCM::getTable () const                            { return table;                          }
-void     FCM::setTable (uint64_t *tbl)                      { FCM::table = tbl;                      }
-const    htable_t &FCM::getHashTable () const               { return hashTable;                      }
-void     FCM::setHashTable (const htable_t &hT)             { FCM::hashTable = hT;                   }
+bool     FCM::getInvertedRepeat () const                    { return invertedRepeat;                  }
+void     FCM::setInvertedRepeat (bool invRep)               { FCM::invertedRepeat = invRep;           }
+uint64_t *FCM::getTable () const                            { return table;                           }
+void     FCM::setTable (uint64_t *tbl)                      { FCM::table = tbl;                       }
+const    htable_t &FCM::getHashTable () const               { return hashTable;                       }
+void     FCM::setHashTable (const htable_t &hT)             { FCM::hashTable = hT;                    }
 //const htable_str_t &FCM::getHashTable_str () const    { return hashTable_str;          }
 //void FCM::setHashTable_str (const htable_str_t &hT_s) { FCM::hashTable_str = hT_s;     }
-const    vector<string> &FCM::getTarFilesAddresses () const { return tarFilesAddresses;              }
-void     FCM::pushBackTarFilesAddresses (string tFA)        { FCM::tarFilesAddresses.push_back(tFA); }
+const    vector<string> &FCM::getTarFilesAddresses () const { return tarFilesAddresses;               }
+void     FCM::pushBackTarFilesAddresses (string tFAs)       { FCM::tarFilesAddresses.push_back(tFAs); }
+const    vector<string> &FCM::getRefFilesAddresses () const { return refFilesAddresses;               }
+void     FCM::pushBackRefFilesAddresses (string rFAs)       { FCM::refFilesAddresses.push_back(rFAs); }
 
-const    string &FCM::getRefFileAddress () const            { return refFileAddress;                 }
-void     FCM::setRefFileAddress (const string &rFA)         { FCM::refFileAddress = rFA;             }
+const    string &FCM::getRefFileAddress () const            { return refFileAddress;                  }
+void     FCM::setRefFileAddress (const string &rFA)         { FCM::refFileAddress = rFA;              }
