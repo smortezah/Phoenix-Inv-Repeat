@@ -90,15 +90,6 @@ void Messages::verbose () const
 
 
 /***********************************************************
-    show integer number mode
-************************************************************/
-void Messages::number (int num) const
-{
-    cout << "integer number mode (n=" << num << ")\n"; /// TODO for test
-}
-
-
-/***********************************************************
     show float number mode
 ************************************************************/
 void Messages::fnumber (float num) const
