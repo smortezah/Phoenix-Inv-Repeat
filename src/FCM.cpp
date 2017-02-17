@@ -857,6 +857,3 @@ const    vector<string> &FCM::getTarFilesAddresses () const { return tarFilesAdd
 void     FCM::pushBackTarFilesAddresses (string tFAs)       { FCM::tarFilesAddresses.push_back(tFAs); }
 const    vector<string> &FCM::getRefFilesAddresses () const { return refFilesAddresses;               }
 void     FCM::pushBackRefFilesAddresses (string rFAs)       { FCM::refFilesAddresses.push_back(rFAs); }
-
-const    string &FCM::getRefFileAddress () const            { return refFileAddress;                  }
-void     FCM::setRefFileAddress (const string &rFA)         { FCM::refFileAddress = rFA;              }

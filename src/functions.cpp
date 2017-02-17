@@ -195,11 +195,6 @@ void Functions::commandLineParser (int argc, char **argv)
         }
         /// save last reference file name
         model.pushBackRefFilesAddresses( refFilesNames.substr(0, refIndex) );
-    
-        
-        
-        
-        model.setRefFileAddress(referenceFileName);
     }
     
     /// save model parameters and process the model
