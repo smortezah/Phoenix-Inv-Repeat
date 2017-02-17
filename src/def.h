@@ -24,6 +24,7 @@ using std::array;
 #define LOG2_ALPHABET_SIZE  2.321928095 /// log2 of 5 (ALPHABET_SIZE)
 /// max context depth for building table. 12 is possible but not cost effective
 #define TABLE_MAX_CONTEXT   11
+
 #define DEFAULT_N_THREADS   4
 #define N_FREE_THREADS      2
 

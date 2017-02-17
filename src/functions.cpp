@@ -215,10 +215,10 @@ void Functions::commandLineParser (int argc, char **argv)
         /// compress target(s) using reference(s) model -- multithreaded
         uint8_t MAX_N_THREADS = (uint8_t) thread::hardware_concurrency();   /// max cores in current machine
         /// N_FREE_THREADS considered for other jobs in current system
-        uint8_t n_threads = (uint8_t) (!MAX_N_THREADS ? DEFAULT_N_THREADS - N_FREE_THREADS
-                                                      : MAX_N_THREADS - N_FREE_THREADS);
+        uint8_t n_thr_avail = (uint8_t) (!MAX_N_THREADS ? DEFAULT_N_THREADS - N_FREE_THREADS
+                                                        : MAX_N_THREADS - N_FREE_THREADS);
         
-        cout<<(int)n_threads;
+        cout<<(int)n_thr_avail;
         
 //        thread first(&FCM::compressTarget, &model, model.getTarFilesAddresses()[ 0 ]);
 //        thread second(&FCM::compressTarget, &model, model.getTarFilesAddresses()[ 1 ]);
