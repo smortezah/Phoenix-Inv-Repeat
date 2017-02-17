@@ -222,20 +222,16 @@ void Functions::commandLineParser (int argc, char **argv)
         uint8_t arrThrSize = (n_targets > n_threads_available) ? n_threads_available : n_targets;
         thread *arrThread = new thread[ arrThrSize ];   /// array of threads
         
-//        for (uint8_t i = 0; i < n_targets; i += arrThrSize)
-//        {
-//            for (uint8_t j = 0; j < arrThrSize && i + j < n_targets; j++)
-//                arrThread[ j ] = thread(&FCM::compressTarget, &model, model.getTarFilesAddresses()[ i + j ]);
-//
-//            for (uint8_t j = 0; j < arrThrSize && i + j < n_targets; j++)
-//                arrThread[ j ].join();
-//        }
-//
-//        delete[] arrThread;
-        
-        
-        for(string s: model.getTarFilesAddresses())
-            model.compressTarget(s);
+        for (uint8_t i = 0; i < n_targets; i += arrThrSize)
+        {
+            for (uint8_t j = 0; j < arrThrSize && i + j < n_targets; j++)
+                arrThread[ j ] = thread(&FCM::compressTarget, &model, model.getTarFilesAddresses()[ i + j ]);
+
+            for (uint8_t j = 0; j < arrThrSize && i + j < n_targets; j++)
+                arrThread[ j ].join();
+        }
+
+        delete[] arrThread;
     }
     
     /// Print any remaining command line arguments (not options).
