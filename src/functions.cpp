@@ -208,7 +208,7 @@ void Functions::commandLineParser (int argc, char **argv)
         !stoi(vecParameters[ vecParamIndex++ ]) ? model.setInvertedRepeat(false)
                                                 : model.setInvertedRepeat(true);
         
-        /// build a model for reference
+        /// build a model based on reference(s)
         model.buildModel();
     
         // compress target(s) using reference(s) model

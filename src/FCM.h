@@ -16,21 +16,21 @@ class FCM
 {
 public:
     FCM ();                                                 /// constructor
-                                                            
+                                                                   
     void     buildModel ();                                 /// build model (table / hash table) for reference
     void     compressTarget (string);                       /// compress target file
     inline   uint8_t symCharToInt (char) const;             /// ACNGT -> 01234
-//    void buildHashTable_str ();                             /// build hash table (string key)
+//    void buildHashTable_str ();                                    /// build hash table (string key)
     void     printHashTable () const;                       /// print hash table
-                                                            
+                                                               
     char     getTargetOrReference () const;                 /// getter of target or reference
     void     setTargetOrReference (char);                   /// setter of target or reference
     uint8_t  getContextDepth () const;                      /// getter of context depth
     void     setContextDepth (uint8_t);                     /// setter of context depth
     uint16_t getAlphaDenom () const;                        /// getter of alpha denominator
     void     setAlphaDenom (uint16_t);                      /// setter of alpha denominator
-//    double getAlphaDenom () const;                        /// getter of alpha denominator
-//    void setAlphaDenom (double);                          /// setter of alpha denominator
+//    double getAlphaDenom () const;                               /// getter of alpha denominator
+//    void setAlphaDenom (double);                                 /// setter of alpha denominator
     bool     getInvertedRepeat () const;                    /// getter of inverted repeat
     void     setInvertedRepeat (bool);                      /// setter of inverted repeat
     uint64_t *getTable () const;                            /// getter of table
@@ -41,24 +41,24 @@ public:
 //    void setHashTable_str (const htable_str_t&);    /// setter of hash table (string key)
     const    vector<string> &getTarFilesAddresses () const; /// getter of target files addresses
     void     pushBackTarFilesAddresses (string tFA);        /// pushBacker of target files addresses
-    
+                                                     
     const    string &getRefFileAddress () const;            /// getter of reference file address
     void     setRefFileAddress (const string&);             /// setter of reference file address
     
 private:
-    std::mutex mut;                                         /// mutex
-    
-    char     targetOrReference;                             /// model built based on target or reference
-    uint8_t  contextDepth;                                  /// context depth (SIZE <= 255)
-//    double alphaDenom;                                      /// alpha denominator
-    uint16_t alphaDenom;                                    /// alpha denominator
-    bool     invertedRepeat;                                /// inverted repeat
-    uint64_t *table;                                        /// table
-    htable_t hashTable;                                     /// hash table (int key)
-//    htable_str_t hashTable_str;                             /// hash table (string key)
-    vector<string> tarFilesAddresses;                       /// target files addresses
-                                                            
-    string   refFileAddress;                                /// reference file address
+    std::mutex mut;                     /// mutex
+                                               
+    char     targetOrReference;         /// model built based on target or reference
+    uint8_t  contextDepth;              /// context depth (SIZE <= 255)
+//    double alphaDenom;                  /// alpha denominator
+    uint16_t alphaDenom;                /// alpha denominator
+    bool     invertedRepeat;            /// inverted repeat
+    uint64_t *table;                    /// table
+    htable_t hashTable;                 /// hash table (int key)
+//    htable_str_t hashTable_str;                /// hash table (string key)
+    vector<string> tarFilesAddresses;   /// target files addresses
+                                               
+    string   refFileAddress;            /// reference file address
 };
 
 
