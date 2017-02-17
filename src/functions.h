@@ -4,7 +4,7 @@
 
 #include <iostream>
 
-using std::string;
+//using std::string;
 using std::ifstream;
 
 
