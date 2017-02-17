@@ -32,29 +32,29 @@ Functions::Functions () {}
 ************************************************************/
 void Functions::commandLineParser (int argc, char **argv)
 {
-    Messages messageObj;    /// object for showing messages
-    FCM model;              /// model
+    Messages messageObj;            /// object for showing messages
+    FCM model;                      /// model
     
     /// using these flags, if both short and long arguments
     /// are entered, just one of them is considered
     static int h_flag;              /// option 'h' (help)
     static int A_flag;              /// option 'A' (about)
     static int v_flag;              /// option 'v' (verbose)
-    
+                                    
     bool m_flag = false;            /// model parameters entered
     bool t_flag = false;            /// target(s) file name entered
     bool r_flag = false;            /// reference(s) file name entered
     string modelParameters = "";    /// argument of option 'm'
     string tarFilesNames = "";      /// argument of option 't'
-    
+                                            
     string referenceFileName = "";  /// argument of option 'r'
     
-    uint8_t n_threads = 1;          /// number of threads
+    uint8_t n_threads = DEFAULT_N_THREADS;  /// number of threads
     
-    int c;                          /// deal with getopt_long()
-    int option_index;               /// option index stored by getopt_long()
-                                    
-    opterr = 0;                     /// force getopt_long() to remain silent when it finds a problem
+    int c;                         /// deal with getopt_long()
+    int option_index;              /// option index stored by getopt_long()
+                                   
+    opterr = 0;                    /// force getopt_long() to remain silent when it finds a problem
     
     static struct option long_options[] =
             {
@@ -220,15 +220,11 @@ void Functions::commandLineParser (int argc, char **argv)
 //        thread *arrThread = new thread[arrThrSize];   /// array of threads
         
         /// compress target(s) using reference(s) model -- multithreaded
-//        uint8_t MAX_N_THREADS = (uint8_t) thread::hardware_concurrency();   /// max cores in current machine
-//        /// N_FREE_THREADS considered for other jobs in current system
-//        uint8_t n_threads_available = (uint8_t) (!MAX_N_THREADS ? DEFAULT_N_THREADS - N_FREE_THREADS
-//                                                                : MAX_N_THREADS - N_FREE_THREADS);
         uint8_t n_targets = (uint8_t) model.getTarFilesAddresses().size();  /// up to 2^8=256 targets
     
         uint8_t arrThrSize = (n_targets > n_threads) ? n_threads : n_targets;
         thread *arrThread = new thread[ arrThrSize ];   /// array of threads
-
+        
         for (uint8_t i = 0; i < n_targets; i += arrThrSize)
         {
             for (uint8_t j = 0; j < arrThrSize && i + j < n_targets; j++)

@@ -25,7 +25,7 @@ using std::array;
 /// max context depth for building table. 12 is possible but not cost effective
 #define TABLE_MAX_CONTEXT   11
 
-#define DEFAULT_N_THREADS   4
+#define DEFAULT_N_THREADS   2
 #define N_FREE_THREADS      2
 
 
