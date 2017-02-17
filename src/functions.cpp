@@ -221,23 +221,24 @@ void Functions::commandLineParser (int argc, char **argv)
         
         uint8_t arrThrSize = (n_targets > n_threads_available) ? n_threads_available : n_targets;
         thread *arrThread = new thread[ arrThrSize ];   /// array of threads
-    
-//        for (uint8_t i = n_targets; i--;)
-//        {
-//            for (uint8_t j = arrThrSize; j--;)
-//                arrThread[ j ] = thread(&FCM::compressTarget, &model, model.getTarFilesAddresses()[ j % arrThrSize ]);
-//            for (uint8_t j = arrThrSize; j--;)
-//                arrThread[ j ].join();
-//        }
-    
-        for (uint8_t i = 0; i < n_targets; i+=arrThrSize)
+        
+        for (uint8_t i = n_targets; i -= arrThrSize;)
         {
-            for (uint8_t j = 0; j < arrThrSize && i + j < n_targets; j++)
+            for (uint8_t j = arrThrSize; j-- && i + j < n_targets;)
                 arrThread[ j ] = thread(&FCM::compressTarget, &model, model.getTarFilesAddresses()[ i + j ]);
-
-            for (uint8_t j = 0; j < arrThrSize && i + j < n_targets; j++)
+            
+            for (uint8_t j = arrThrSize; j-- && i + j < n_targets;)
                 arrThread[ j ].join();
         }
+    
+//        for (uint8_t i = 0; i < n_targets; i += arrThrSize)
+//        {
+//            for (uint8_t j = 0; j < arrThrSize && i + j < n_targets; j++)
+//                arrThread[ j ] = thread(&FCM::compressTarget, &model, model.getTarFilesAddresses()[ i + j ]);
+//
+//            for (uint8_t j = 0; j < arrThrSize && i + j < n_targets; j++)
+//                arrThread[ j ].join();
+//        }
         delete[] arrThread;
     }
     
