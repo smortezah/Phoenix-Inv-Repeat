@@ -55,6 +55,7 @@ int32_t main (int argc, char *argv[])
 ////    std::cout << "foo and bar completed.\n";
     
     
+//    cout << std::thread::hardware_concurrency();  // number of threads supported by the current machine
     
     
     
@@ -63,7 +64,7 @@ int32_t main (int argc, char *argv[])
 
     /// for access to Functions (object 'function' on memory stack)
     Functions function;
-    function.commandLineParser(argc, argv); /// parse the command line
+//    function.commandLineParser(argc, argv); /// parse the command line
     
     
     

@@ -211,21 +211,20 @@ void Functions::commandLineParser (int argc, char **argv)
         /// build a model for reference
         model.buildModel();
     
-        /// compress target(s) using reference(s) model
-//        std::thread first(&FCM::compressTarget, &model, model.getTarFilesAddresses()[ 0 ]);
-//        std::thread second(&FCM::compressTarget, &model, model.getTarFilesAddresses()[ 1 ]);
-////        std::thread third(&FCM::compressTarget, &model, model.getTarFilesAddresses()[ 2 ]);
-////        std::thread fourth(&FCM::compressTarget, &model, model.getTarFilesAddresses()[ 3 ]);
-//        first.join();
-//        second.join();
-////        third.join();
-////        fourth.join();
-//
-        for (string s : model.getTarFilesAddresses())
-        {
-            model.compressTarget(s);
-        }
-        
+        // compress target(s) using reference(s) model
+        std::thread first(&FCM::compressTarget, &model, model.getTarFilesAddresses()[ 0 ]);
+        std::thread second(&FCM::compressTarget, &model, model.getTarFilesAddresses()[ 1 ]);
+//        std::thread third(&FCM::compressTarget, &model, model.getTarFilesAddresses()[ 2 ]);
+//        std::thread fourth(&FCM::compressTarget, &model, model.getTarFilesAddresses()[ 3 ]);
+        first.join();
+        second.join();
+//        third.join();
+//        fourth.join();
+
+//        for (string s : model.getTarFilesAddresses())
+//        {
+//            model.compressTarget(s);
+//        }
     }
     
     /// Print any remaining command line arguments (not options).
