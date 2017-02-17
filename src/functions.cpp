@@ -218,10 +218,13 @@ void Functions::commandLineParser (int argc, char **argv)
         uint8_t n_threads_available = (uint8_t) (!MAX_N_THREADS ? DEFAULT_N_THREADS - N_FREE_THREADS
                                                                 : MAX_N_THREADS - N_FREE_THREADS);
         uint8_t n_targets = (uint8_t) model.getTarFilesAddresses().size();  /// up to 2^8=256 targets
+        
         uint8_t arrThrSize = (n_targets > n_threads_available) ? n_threads_available : n_targets;
-    
-//        array< thread, arrThrSize > arrThread;
-        thread *arrThread = new thread[ arrThrSize ];
+        thread *arrThread = new thread[ arrThrSize ];   /// array of threads
+        
+        
+        
+        delete[] arrThread;
         
 //    cout<<arrThread;
         
