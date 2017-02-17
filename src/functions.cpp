@@ -193,7 +193,7 @@ void Functions::commandLineParser (int argc, char **argv)
         {
             if (modelParameters[ i ] == ',')
             {
-                vecParameters.push_back(modelParameters.substr(i + 1, parIndex - i - 1));
+                vecParameters.push_back(modelParameters.substr(i+1, parIndex-i-1));
                 parIndex = i;
             }
         }
