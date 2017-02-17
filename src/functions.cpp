@@ -220,8 +220,10 @@ void Functions::commandLineParser (int argc, char **argv)
         uint8_t n_targets = (uint8_t) model.getTarFilesAddresses().size();    /// up to 2^8=256 targets
         uint8_t arrThrSize = (n_targets > n_threads_available) ? n_threads_available : n_targets;
     
-        array< thread, arrThrSize > arrThread;
-    cout<<arrThread.size();
+//        array< thread, arrThrSize > arrThread;
+        thread *arrThread = new thread[ arrThrSize ];
+        
+//    cout<<arrThread;
         
 //        thread first(&FCM::compressTarget, &model, model.getTarFilesAddresses()[ 0 ]);
 //        thread second(&FCM::compressTarget, &model, model.getTarFilesAddresses()[ 1 ]);
