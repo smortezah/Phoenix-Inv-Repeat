@@ -172,7 +172,7 @@ void Functions::commandLineParser (int argc, char **argv)
             }
         }
         /// save last target file name
-        model.pushBackTarFilesAddresses(tarFilesNames.substr(0, tarIndex));
+        model.pushBackTarFilesAddresses( tarFilesNames.substr(0, tarIndex) );
     }
     
     /// save reference file(s) name(s)
@@ -193,7 +193,7 @@ void Functions::commandLineParser (int argc, char **argv)
         {
             if (modelParameters[ i ] == ',')
             {
-                vecParameters.push_back(modelParameters.substr(i+1, parIndex-i-1));
+                vecParameters.push_back( modelParameters.substr(i+1, parIndex-i-1) );
                 parIndex = i;
             }
         }
