@@ -5,6 +5,7 @@
 #include <cstring>      /// memset, memcpy
 #include <stdlib.h>
 #include <vector>
+#include <thread>
 
 #include "FCM.h"
 #include "functions.h"
@@ -318,6 +319,8 @@ void FCM::compressTarget (string tarFileName)
          << std::fixed << setprecision(5) << averageEntropy/LOG2_ALPHABET_SIZE;
     
 //    cout.width(2);  cout << std::left << getInvertedRepeat() << "   ";
+    
+    cout<<'\t'<<std::this_thread::get_id();
     
     cout<<'\n';
     mut.unlock();
