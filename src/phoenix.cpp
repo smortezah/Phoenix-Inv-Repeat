@@ -38,7 +38,14 @@ public:
 
 int32_t main (int argc, char *argv[])
 {
-//    stmm st;
+    high_resolution_clock::time_point exeStartTime = high_resolution_clock::now();  /// Record start time
+
+    /// for access to Functions (object 'function' on memory stack)
+    Functions function;
+    function.commandLineParser(argc, argv); /// parse the command line
+    
+    
+    //    stmm st;
 //
 //    std::thread first(&stmm::foo, &st);
 //    std::thread second(&stmm::bar,&st,3);
@@ -53,18 +60,11 @@ int32_t main (int argc, char *argv[])
 //    third.join();
 //
 ////    std::cout << "foo and bar completed.\n";
-    
-    
+
+
 //    cout << std::thread::hardware_concurrency();  // number of threads supported by the current machine
     
     
-    
-    
-    high_resolution_clock::time_point exeStartTime = high_resolution_clock::now();  /// Record start time
-
-    /// for access to Functions (object 'function' on memory stack)
-    Functions function;
-//    function.commandLineParser(argc, argv); /// parse the command line
     
     
     
