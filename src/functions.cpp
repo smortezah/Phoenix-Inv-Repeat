@@ -45,10 +45,7 @@ void Functions::commandLineParser (int argc, char **argv)
     bool t_flag = false;            /// target(s) file name entered
     bool r_flag = false;            /// reference(s) file name entered
     string modelParameters = "";    /// argument of option 'm'
-    string targetFileName = "";     /// argument of option 't'
-    
     string tarFilesNames = "";      /// argument of option 't'
-    
     
     string referenceFileName = "";  /// argument of option 'r'
     
@@ -115,8 +112,6 @@ void Functions::commandLineParser (int argc, char **argv)
                 
             case 't':   /// needs target files names
                 t_flag = true;
-                targetFileName = (string) optarg; /// keep argument = target file name
-        
                 tarFilesNames = (string) optarg; /// keep argument = target files names
                 break;
                 
