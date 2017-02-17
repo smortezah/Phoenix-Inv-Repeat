@@ -230,14 +230,14 @@ void Functions::commandLineParser (int argc, char **argv)
 //                arrThread[ j ].join();
 //        }
     
-        cout << (int) n_targets;
+//        cout << (int) arrThrSize;
         for (uint8_t i = 0; i < n_targets; i+=arrThrSize)
         {
-//            for (uint8_t j = 0; j < arrThrSize; j++)
-//                arrThread[ j ] = thread(&FCM::compressTarget, &model, model.getTarFilesAddresses()[ i + j ]);
-//
-//            for (uint8_t j = 0; j < arrThrSize; j++)
-//                arrThread[ j ].join();
+            for (uint8_t j = 0; j < arrThrSize && i + j < n_targets; j++)
+                arrThread[ j ] = thread(&FCM::compressTarget, &model, model.getTarFilesAddresses()[ i + j ]);
+
+            for (uint8_t j = 0; j < arrThrSize; j++)
+                arrThread[ j ].join();
         }
         delete[] arrThread;
     }
