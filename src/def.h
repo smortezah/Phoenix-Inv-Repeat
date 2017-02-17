@@ -17,13 +17,15 @@ using std::array;
 
 
 /***********************************************************
-    constant
+    constants
 ************************************************************/
-#define ALPHABET_SIZE       5               /// alphabet {A, C, N, G, T}
-#define ALPH_SUM_SIZE       6               /// ALPHABET_SIZE+1: one more column for 'sum'
-#define LOG2_ALPHABET_SIZE  2.321928095     /// log2 of 5 (ALPHABET_SIZE)
-/// TODO: max context depth for building table. 12 = possible but not cost effective
+#define ALPHABET_SIZE       5           /// alphabet {A, C, N, G, T}
+#define ALPH_SUM_SIZE       6           /// ALPHABET_SIZE+1: one more column for 'sum'
+#define LOG2_ALPHABET_SIZE  2.321928095 /// log2 of 5 (ALPHABET_SIZE)
+/// max context depth for building table. 12 is possible but not cost effective
 #define TABLE_MAX_CONTEXT   11
+#define DEFAULT_N_THREADS   4
+#define N_FREE_THREADS      2
 
 
 /***********************************************************

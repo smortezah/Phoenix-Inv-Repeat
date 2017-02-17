@@ -18,6 +18,7 @@ using std::size_t;
 using std::ifstream;
 using std::ios;
 using std::invalid_argument;
+using std::thread;
 
 #include <functional>
 /***********************************************************
@@ -210,16 +211,23 @@ void Functions::commandLineParser (int argc, char **argv)
         
         /// build a model based on reference(s)
         model.buildModel();
-    
-        // compress target(s) using reference(s) model
-        std::thread first(&FCM::compressTarget, &model, model.getTarFilesAddresses()[ 0 ]);
-        std::thread second(&FCM::compressTarget, &model, model.getTarFilesAddresses()[ 1 ]);
-//        std::thread third(&FCM::compressTarget, &model, model.getTarFilesAddresses()[ 2 ]);
-//        std::thread fourth(&FCM::compressTarget, &model, model.getTarFilesAddresses()[ 3 ]);
-        first.join();
-        second.join();
-//        third.join();
-//        fourth.join();
+        
+        /// compress target(s) using reference(s) model -- multithreaded
+        uint8_t max_n_threads = (uint8_t) thread::hardware_concurrency();   /// max cores in current machine
+        /// N_FREE_THREADS considered for other jobs in current system
+        uint8_t n_threads = (uint8_t) (!max_n_threads ? DEFAULT_N_THREADS - N_FREE_THREADS
+                                                      : max_n_threads - N_FREE_THREADS);
+        
+        cout<<(int)n_threads;
+        
+//        thread first(&FCM::compressTarget, &model, model.getTarFilesAddresses()[ 0 ]);
+//        thread second(&FCM::compressTarget, &model, model.getTarFilesAddresses()[ 1 ]);
+////        thread third(&FCM::compressTarget, &model, model.getTarFilesAddresses()[ 2 ]);
+////        thread fourth(&FCM::compressTarget, &model, model.getTarFilesAddresses()[ 3 ]);
+//        first.join();
+//        second.join();
+////        third.join();
+////        fourth.join();
 
 //        for (string s : model.getTarFilesAddresses())
 //        {
