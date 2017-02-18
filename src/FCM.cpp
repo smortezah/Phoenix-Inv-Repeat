@@ -102,11 +102,11 @@ void FCM::buildModel ()
                 
                     /// update context
                     context = (uint64_t) (context * ALPHABET_SIZE + currSymInt) % maxPlaceValue;
-                }   /// end of for
-            }   /// end of while
+                }   /// end for
+            }   /// end while
         
             FCM::setTable(table);   /// save the built table
-        }   /// end of case
+        }   /// end case
         break;
     
         case 'h':
@@ -138,15 +138,15 @@ void FCM::buildModel ()
                 
                     /// update context
                     context = (uint64_t) (context * ALPHABET_SIZE + currSymInt) % maxPlaceValue;
-                }   /// end of for
-            }   /// end of while
+                }   /// end for
+            }   /// end while
             
             FCM::setHashTable(hTable);  /// save the built hash table
-        }   /// end of case
+        }   /// end case
         break;
     
         default: break;
-    }   /// end of switch
+    }   /// end switch
     
     refFileIn.close();                  /// close file
 }
@@ -314,8 +314,8 @@ void FCM::compressTarget (string tarFileName)
     size_t lastSlash_Tar = tarFileName.find_last_of("/");
     
     
-    /// mutex lock ========================================================
     mut.lock();
+    /// mutex lock ========================================================
     
     for (int i = refsAdressesSize - 1; i; i--)
         cout << getRefFilesAddresses()[ i ].substr(lastSlash_Ref[ i ] + 1) << ',';
