@@ -47,6 +47,7 @@ tempRefSeqRun=${REF_SPECIES}_SEQ_RUN;    REF_SEQ_RUN=${!tempRefSeqRun}
 
 REF_DATASET="";  for i in 21; do REF_DATASET+=$REF_SPECIES${i}" "; done
 #REF_DATASET="";  for i in $REF_SEQ_RUN; do REF_DATASET+=$REF_SPECIES${i}" "; done
+MULTIREF_DATASET="y,x"
 
 REF_SPECIES_LEN=${#REF_SPECIES};            # length of string REF_SPECIES
 ((REF_SPECIES_LEN_IND=REF_SPECIES_LEN+1));  # index of length of string REF_SPECIES
@@ -67,7 +68,7 @@ TAR_DATASET="";  for i in MT; do TAR_DATASET+=$TAR_SPECIES${i}" "; done
 TAR_SPECIES_LEN=${#TAR_SPECIES};            # length of string TAR_SPECIES
 ((TAR_SPECIES_LEN_IND=TAR_SPECIES_LEN+1));  # index of length of string TAR_SPECIES
 
-
+N_THREADS=7
 INV_REPEATS="0"       # list of inverted repeats
 ALPHA_DENS="100"        # list of alpha denominators
 CTX=2

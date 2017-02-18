@@ -39,145 +39,24 @@ void FCM::buildModel ()
 {
     const uint8_t contextDepth     = getContextDepth();         /// context depth
     const bool isInvertedRepeat    = getInvertedRepeat();       /// inverted repeat
-    
     vector< string > refFilesNames = getRefFilesAddresses();    /// reference file(s) address(es)
-    string refFileName = refFilesNames[ 0 ];
     
+    uint8_t refsNumber = (uint8_t) refFilesNames.size();        /// number of references
     
     /// mode: 't'=table, 'h'=hash table
     const char mode = (contextDepth > TABLE_MAX_CONTEXT) ? 'h' : 't';
     
-    ifstream refFileIn(refFileName, ios::in);   /// open reference file located in 'refFileName'
+    /// check if reference(s) file(s) cannot be opened, or are empty
+    ifstream refFilesIn[ refsNumber ];
     
-    if (!refFileIn)                             /// error occurred while opening file
+    for (uint8_t i = refsNumber; i--;)
     {
-        cerr << "The file '" << refFileName << "' cannot be opened, or it is empty.\n";
-        refFileIn.close();                      /// close file
-        return;                                 /// exit this function
-    }
-    
-    uint64_t context = 0;                       /// context (integer), that slides in the dataset
-    uint64_t maxPlaceValue = (uint64_t) pow(ALPHABET_SIZE, contextDepth);
-    uint64_t invRepContext = maxPlaceValue - 1; /// inverted repeat context (integer)
-    
-    string refLine;                             /// keep each line of the file
-    
-    /// build model based on 't'=table, or 'h'=hash table
-    switch (mode)
-    {
-        case 't':
-        {
-            uint64_t tableSize = maxPlaceValue * ALPH_SUM_SIZE; /// create table
-            uint64_t *table = new uint64_t[tableSize];          /// already initialized with 0's
-////            /// initialize table with 0's
-////            memset(table, 0, sizeof(table[ 0 ]) * tableSize);
-        
-            while (getline(refFileIn, refLine))
-            {
-                /// fill table by number of occurrences of symbols A, C, N, G, T
-                for (string::iterator lineIter = refLine.begin(); lineIter != refLine.end(); ++lineIter)
-                {
-                    uint8_t currSymInt = symCharToInt(*lineIter);
-                    
-                    /// update table
-                    ++table[ context * ALPH_SUM_SIZE + currSymInt ];
-                
-                    /// considering inverted repeats to update hash table
-                    if (isInvertedRepeat)
-                    {
-                        /// concatenation of inverted repeat context and current symbol
-                        uint64_t iRCtxCurrSym = (4 - currSymInt) * maxPlaceValue + invRepContext;
-                    
-                        /// update inverted repeat context (integer)
-                        invRepContext = (uint64_t) iRCtxCurrSym / ALPHABET_SIZE;
-                    
-                        /// update table considering inverted repeats
-                        ++table[ invRepContext * ALPH_SUM_SIZE + iRCtxCurrSym % ALPHABET_SIZE ];
-                        /// update column 'sum' of the table
-                        ++table[ invRepContext * ALPH_SUM_SIZE + ALPHABET_SIZE ];
-                    }
-                
-                    /// update column 'sum' of the table
-                    ++table[ context * ALPH_SUM_SIZE + ALPHABET_SIZE ];
-                
-                    /// update context
-                    context = (uint64_t) (context * ALPHABET_SIZE + currSymInt) % maxPlaceValue;
-                }   /// end for
-            }   /// end while
-        
-            FCM::setTable(table);   /// save the built table
-        }   /// end case
-        break;
-    
-        case 'h':
-        {
-            htable_t hTable;        /// create hash table
-        
-            while (getline(refFileIn, refLine))
-            {
-                /// fill hash table by number of occurrences of symbols A, C, N, G, T
-                for (string::iterator lineIter = refLine.begin(); lineIter != refLine.end(); ++lineIter)
-                {
-                    uint8_t currSymInt = symCharToInt(*lineIter);
-                    
-                    /// update hash table
-                    ++hTable[ context ][ currSymInt ];
-                
-                    /// considering inverted repeats to update hash table
-                    if (isInvertedRepeat)
-                    {
-                        /// concatenation of inverted repeat context and current symbol
-                        uint64_t iRCtxCurrSym = (4 - currSymInt) * maxPlaceValue + invRepContext;
-                    
-                        /// update inverted repeat context (integer)
-                        invRepContext = (uint64_t) iRCtxCurrSym / ALPHABET_SIZE;
-                    
-                        /// update hash table considering inverted repeats
-                        ++hTable[ invRepContext ][ iRCtxCurrSym % ALPHABET_SIZE ];
-                    }
-                
-                    /// update context
-                    context = (uint64_t) (context * ALPHABET_SIZE + currSymInt) % maxPlaceValue;
-                }   /// end for
-            }   /// end while
-            
-            FCM::setHashTable(hTable);  /// save the built hash table
-        }   /// end case
-        break;
-    
-        default: break;
-    }   /// end switch
-    
-    refFileIn.close();                  /// close file
-}
-
-void FCM::buildSuperModel ()
-{
-    const uint8_t contextDepth     = getContextDepth();         /// context depth
-    const bool isInvertedRepeat    = getInvertedRepeat();       /// inverted repeat
-    vector< string > refFilesNames = getRefFilesAddresses();    /// reference file(s) address(es)
-    
-    uint8_t refsNumber = (uint8_t) refFilesNames.size();
-    
-    string refFileName = refFilesNames[ 0 ];
-    
-    
-    /// mode: 't'=table, 'h'=hash table
-    const char mode = (contextDepth > TABLE_MAX_CONTEXT) ? 'h' : 't';
-    
-    ifstream refFileIn(refFileName, ios::in);   /// open reference file located in 'refFileName'
-    
-    
-    ifstream refFilesIn[refsNumber];   /// open reference file located in 'refFileName'
-    for (int i = 0; i < refsNumber; i++)
-    {
-        refFilesIn[ i ].open(refFilesNames[ i ], ios::in);
-        
-        if (!refFilesIn[ i ])                             /// error occurred while opening file
+        refFilesIn[ i ].open( refFilesNames[ i ], ios::in );
+        if (!refFilesIn[ i ])                   /// error occurred while opening file(s)
         {
             cerr << "The file '" << refFilesNames[ i ] << "' cannot be opened, or it is empty.\n";
-            refFilesIn[ i ].close();                      /// close file
-            return;                                 /// exit this function
+            refFilesIn[ i ].close();            /// close file(s)
+            return;                             /// exit this function
         }
     }
     
@@ -185,92 +64,97 @@ void FCM::buildSuperModel ()
     uint64_t maxPlaceValue = (uint64_t) pow(ALPHABET_SIZE, contextDepth);
     uint64_t invRepContext = maxPlaceValue - 1; /// inverted repeat context (integer)
     
-    string refLine;                             /// keep each line of the file
+    string refLine;                             /// keep each line of a file
     
     /// build model based on 't'=table, or 'h'=hash table
     switch (mode)
     {
         case 't':
         {
-            uint64_t tableSize = maxPlaceValue * ALPH_SUM_SIZE; /// create table
-            uint64_t *table = new uint64_t[tableSize];          /// already initialized with 0's
+            uint64_t tableSize = refsNumber * maxPlaceValue * ALPH_SUM_SIZE;    /// create table
+            uint64_t *table = new uint64_t[ tableSize ];                        /// already initialized with 0's
 ////            /// initialize table with 0's
 ////            memset(table, 0, sizeof(table[ 0 ]) * tableSize);
             
-            
-            
-            //TODO for
-            context = 0;
-            
-            
-            while (getline(refFileIn, refLine))
+            for (uint8_t i = refsNumber; i--;)
             {
-                /// fill table by number of occurrences of symbols A, C, N, G, T
-                for (string::iterator lineIter = refLine.begin(); lineIter != refLine.end(); ++lineIter)
-                {
-                    uint8_t currSymInt = symCharToInt(*lineIter);
-                    
-                    /// update table
-                    ++table[ context * ALPH_SUM_SIZE + currSymInt ];
-                    
-                    /// considering inverted repeats to update hash table
-                    if (isInvertedRepeat)
-                    {
-                        /// concatenation of inverted repeat context and current symbol
-                        uint64_t iRCtxCurrSym = (4 - currSymInt) * maxPlaceValue + invRepContext;
-                        
-                        /// update inverted repeat context (integer)
-                        invRepContext = (uint64_t) iRCtxCurrSym / ALPHABET_SIZE;
-                        
-                        /// update table considering inverted repeats
-                        ++table[ invRepContext * ALPH_SUM_SIZE + iRCtxCurrSym % ALPHABET_SIZE ];
-                        /// update column 'sum' of the table
-                        ++table[ invRepContext * ALPH_SUM_SIZE + ALPHABET_SIZE ];
-                    }
-                    
-                    /// update column 'sum' of the table
-                    ++table[ context * ALPH_SUM_SIZE + ALPHABET_SIZE ];
-                    
-                    /// update context
-                    context = (uint64_t) (context * ALPHABET_SIZE + currSymInt) % maxPlaceValue;
-                }   /// end for
-            }   /// end while
+                context = 0;    /// reset in the beginning of each reference file
             
+                while (getline(refFilesIn[ i ], refLine))
+                {
+                    /// fill table by number of occurrences of symbols A, C, N, G, T
+                    for (string::iterator lineIter = refLine.begin(); lineIter != refLine.end(); ++lineIter)
+                    {
+                        uint8_t currSymInt = symCharToInt(*lineIter);
+                        
+                        /// update table
+                        ++table[ context * ALPH_SUM_SIZE + currSymInt ];
+                        
+                        /// considering inverted repeats to update hash table
+                        if (isInvertedRepeat)
+                        {
+                            /// concatenation of inverted repeat context and current symbol
+                            uint64_t iRCtxCurrSym = (4 - currSymInt) * maxPlaceValue + invRepContext;
+                            
+                            /// update inverted repeat context (integer)
+                            invRepContext = (uint64_t) iRCtxCurrSym / ALPHABET_SIZE;
+                            
+                            /// update table considering inverted repeats
+                            ++table[ invRepContext * ALPH_SUM_SIZE + iRCtxCurrSym % ALPHABET_SIZE ];
+                            /// update column 'sum' of the table
+                            ++table[ invRepContext * ALPH_SUM_SIZE + ALPHABET_SIZE ];
+                        }
+                        
+                        /// update column 'sum' of the table
+                        ++table[ context * ALPH_SUM_SIZE + ALPHABET_SIZE ];
+                        
+                        /// update context
+                        context = (uint64_t) (context * ALPHABET_SIZE + currSymInt) % maxPlaceValue;
+                    }   /// end for
+                }   /// end while
+            }   /// end for
+    
             FCM::setTable(table);   /// save the built table
         }   /// end case
             break;
         
         case 'h':
         {
-            htable_t hTable;        /// create hash table
+            htable_t hTable;    /// create hash table
             
-            while (getline(refFileIn, refLine))
+            for (int i = refsNumber; i--;)
             {
-                /// fill hash table by number of occurrences of symbols A, C, N, G, T
-                for (string::iterator lineIter = refLine.begin(); lineIter != refLine.end(); ++lineIter)
+                context = 0;    /// reset in the beginning of each reference file
+            
+        
+                while (getline(refFilesIn[i], refLine))
                 {
-                    uint8_t currSymInt = symCharToInt(*lineIter);
-                    
-                    /// update hash table
-                    ++hTable[ context ][ currSymInt ];
-                    
-                    /// considering inverted repeats to update hash table
-                    if (isInvertedRepeat)
+                    /// fill hash table by number of occurrences of symbols A, C, N, G, T
+                    for (string::iterator lineIter = refLine.begin(); lineIter != refLine.end(); ++lineIter)
                     {
-                        /// concatenation of inverted repeat context and current symbol
-                        uint64_t iRCtxCurrSym = (4 - currSymInt) * maxPlaceValue + invRepContext;
+                        uint8_t currSymInt = symCharToInt(*lineIter);
                         
-                        /// update inverted repeat context (integer)
-                        invRepContext = (uint64_t) iRCtxCurrSym / ALPHABET_SIZE;
+                        /// update hash table
+                        ++hTable[ context ][ currSymInt ];
                         
-                        /// update hash table considering inverted repeats
-                        ++hTable[ invRepContext ][ iRCtxCurrSym % ALPHABET_SIZE ];
-                    }
-                    
-                    /// update context
-                    context = (uint64_t) (context * ALPHABET_SIZE + currSymInt) % maxPlaceValue;
-                }   /// end for
-            }   /// end while
+                        /// considering inverted repeats to update hash table
+                        if (isInvertedRepeat)
+                        {
+                            /// concatenation of inverted repeat context and current symbol
+                            uint64_t iRCtxCurrSym = (4 - currSymInt) * maxPlaceValue + invRepContext;
+                            
+                            /// update inverted repeat context (integer)
+                            invRepContext = (uint64_t) iRCtxCurrSym / ALPHABET_SIZE;
+                            
+                            /// update hash table considering inverted repeats
+                            ++hTable[ invRepContext ][ iRCtxCurrSym % ALPHABET_SIZE ];
+                        }
+                        
+                        /// update context
+                        context = (uint64_t) (context * ALPHABET_SIZE + currSymInt) % maxPlaceValue;
+                    }   /// end for
+                }   /// end while
+            }
             
             FCM::setHashTable(hTable);  /// save the built hash table
         }   /// end case
@@ -279,7 +163,7 @@ void FCM::buildSuperModel ()
         default: break;
     }   /// end switch
     
-    refFileIn.close();                  /// close file
+    for (uint8_t i = refsNumber; i--;)  refFilesIn[i].close();      /// close file(s)
 }
 
 

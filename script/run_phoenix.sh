@@ -17,7 +17,7 @@ for ir in $INV_REPEATS; do
      for ctx in $CTX; do
 #     for((ctx=$MIN_CTX; ctx<=$MAX_CTX; ctx+=1)); do
 #     ./phoenix -m $ir,$ctx,$alphaDen -t $FLD_dataset/$tarDataset -r $FLD_dataset/$refDataset \
-     ./phoenix -n 7 -m $ir,$ctx,$alphaDen -r dataset/HS21,dataset/PT21 -t dataset/PT21 \
+     ./phoenix -n $N_THREADS -m $ir,$ctx,$alphaDen -r $MULTIREF_DATASET -t x \
 #               >> $IR_LBL$ir-$refDataset-$TAR_SPECIES.$INF_FILE_TYPE
      done
 #    done

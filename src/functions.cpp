@@ -227,7 +227,7 @@ void Functions::commandLineParser (int argc, char **argv)
         
         /// build a model based on reference(s)
         model.buildModel();
-        //if ref>1 model.buildModelRestRefs();
+        
         
 ////        /// compress target(s) using reference(s) model -- multithreaded
 ////        uint8_t MAX_N_THREADS = (uint8_t) thread::hardware_concurrency();   /// max cores in current machine
