@@ -18,6 +18,13 @@ public:
     FCM ();                                                 /// constructor
                                                                    
     void     buildModel ();                                 /// build model (table / hash table) for reference
+    
+    
+    void     buildSuperModel ();                                 /// build model (table / hash table) for reference
+    
+    
+    
+    
     void     compressTarget (string);                       /// compress target file
     inline   uint8_t symCharToInt (char) const;             /// ACNGT -> 01234
 //    void buildHashTable_str ();                                    /// build hash table (string key)

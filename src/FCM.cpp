@@ -151,6 +151,138 @@ void FCM::buildModel ()
     refFileIn.close();                  /// close file
 }
 
+void FCM::buildSuperModel ()
+{
+    const uint8_t contextDepth     = getContextDepth();         /// context depth
+    const bool isInvertedRepeat    = getInvertedRepeat();       /// inverted repeat
+    vector< string > refFilesNames = getRefFilesAddresses();    /// reference file(s) address(es)
+    
+    uint8_t refsNumber = (uint8_t) refFilesNames.size();
+    
+    string refFileName = refFilesNames[ 0 ];
+    
+    
+    /// mode: 't'=table, 'h'=hash table
+    const char mode = (contextDepth > TABLE_MAX_CONTEXT) ? 'h' : 't';
+    
+    ifstream refFileIn(refFileName, ios::in);   /// open reference file located in 'refFileName'
+    
+    
+    ifstream refFilesIn[refsNumber];   /// open reference file located in 'refFileName'
+    for (int i = 0; i < refsNumber; i++)
+    {
+        refFilesIn[ i ].open(refFilesNames[ i ], ios::in);
+        
+        if (!refFilesIn[ i ])                             /// error occurred while opening file
+        {
+            cerr << "The file '" << refFilesNames[ i ] << "' cannot be opened, or it is empty.\n";
+            refFilesIn[ i ].close();                      /// close file
+            return;                                 /// exit this function
+        }
+    }
+    
+    uint64_t context = 0;                       /// context (integer), that slides in the dataset
+    uint64_t maxPlaceValue = (uint64_t) pow(ALPHABET_SIZE, contextDepth);
+    uint64_t invRepContext = maxPlaceValue - 1; /// inverted repeat context (integer)
+    
+    string refLine;                             /// keep each line of the file
+    
+    /// build model based on 't'=table, or 'h'=hash table
+    switch (mode)
+    {
+        case 't':
+        {
+            uint64_t tableSize = maxPlaceValue * ALPH_SUM_SIZE; /// create table
+            uint64_t *table = new uint64_t[tableSize];          /// already initialized with 0's
+////            /// initialize table with 0's
+////            memset(table, 0, sizeof(table[ 0 ]) * tableSize);
+            
+            
+            
+            //TODO for
+            context = 0;
+            
+            
+            while (getline(refFileIn, refLine))
+            {
+                /// fill table by number of occurrences of symbols A, C, N, G, T
+                for (string::iterator lineIter = refLine.begin(); lineIter != refLine.end(); ++lineIter)
+                {
+                    uint8_t currSymInt = symCharToInt(*lineIter);
+                    
+                    /// update table
+                    ++table[ context * ALPH_SUM_SIZE + currSymInt ];
+                    
+                    /// considering inverted repeats to update hash table
+                    if (isInvertedRepeat)
+                    {
+                        /// concatenation of inverted repeat context and current symbol
+                        uint64_t iRCtxCurrSym = (4 - currSymInt) * maxPlaceValue + invRepContext;
+                        
+                        /// update inverted repeat context (integer)
+                        invRepContext = (uint64_t) iRCtxCurrSym / ALPHABET_SIZE;
+                        
+                        /// update table considering inverted repeats
+                        ++table[ invRepContext * ALPH_SUM_SIZE + iRCtxCurrSym % ALPHABET_SIZE ];
+                        /// update column 'sum' of the table
+                        ++table[ invRepContext * ALPH_SUM_SIZE + ALPHABET_SIZE ];
+                    }
+                    
+                    /// update column 'sum' of the table
+                    ++table[ context * ALPH_SUM_SIZE + ALPHABET_SIZE ];
+                    
+                    /// update context
+                    context = (uint64_t) (context * ALPHABET_SIZE + currSymInt) % maxPlaceValue;
+                }   /// end for
+            }   /// end while
+            
+            FCM::setTable(table);   /// save the built table
+        }   /// end case
+            break;
+        
+        case 'h':
+        {
+            htable_t hTable;        /// create hash table
+            
+            while (getline(refFileIn, refLine))
+            {
+                /// fill hash table by number of occurrences of symbols A, C, N, G, T
+                for (string::iterator lineIter = refLine.begin(); lineIter != refLine.end(); ++lineIter)
+                {
+                    uint8_t currSymInt = symCharToInt(*lineIter);
+                    
+                    /// update hash table
+                    ++hTable[ context ][ currSymInt ];
+                    
+                    /// considering inverted repeats to update hash table
+                    if (isInvertedRepeat)
+                    {
+                        /// concatenation of inverted repeat context and current symbol
+                        uint64_t iRCtxCurrSym = (4 - currSymInt) * maxPlaceValue + invRepContext;
+                        
+                        /// update inverted repeat context (integer)
+                        invRepContext = (uint64_t) iRCtxCurrSym / ALPHABET_SIZE;
+                        
+                        /// update hash table considering inverted repeats
+                        ++hTable[ invRepContext ][ iRCtxCurrSym % ALPHABET_SIZE ];
+                    }
+                    
+                    /// update context
+                    context = (uint64_t) (context * ALPHABET_SIZE + currSymInt) % maxPlaceValue;
+                }   /// end for
+            }   /// end while
+            
+            FCM::setHashTable(hTable);  /// save the built hash table
+        }   /// end case
+            break;
+        
+        default: break;
+    }   /// end switch
+    
+    refFileIn.close();                  /// close file
+}
+
+
 /***********************************************************
     compress target(s) based on reference(s) model
 ************************************************************/
