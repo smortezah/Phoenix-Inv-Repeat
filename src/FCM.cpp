@@ -44,7 +44,11 @@ void FCM::buildModel ()
     uint8_t refsNumber = (uint8_t) refFilesNames.size();        /// number of references
     
     /// mode: 't'=table, 'h'=hash table
-    const char mode = (contextDepth > TABLE_MAX_CONTEXT) ? 'h' : 't';
+//    const char mode = (contextDepth > TABLE_MAX_CONTEXT) ? 'h' : 't';
+    if ( (uint64_t) refsNumber > (uint64_t) pow(ALPHABET_SIZE, TABLE_MAX_CONTEXT-contextDepth) ) setCompMode('h');
+    else                                                                                         setCompMode('t');
+    
+    const char mode = getCompMode();
     
     /// check if reference(s) file(s) cannot be opened, or are empty
     ifstream refFilesIn[ refsNumber ];
@@ -177,7 +181,8 @@ void FCM::compressTarget (string tarFileName)
 ////    const double alphaDen     = getAlphaDenom();        /// get alpha denominator
     
     /// mode: 't'=table, 'h'=hash table
-    const char mode = (contextDepth > TABLE_MAX_CONTEXT) ? 'h' : 't';
+//    const char mode = (contextDepth > TABLE_MAX_CONTEXT) ? 'h' : 't';
+    const char mode = getCompMode();
     
     ifstream tarFileIn(tarFileName, ios::in);   /// open target file
     
@@ -865,20 +870,22 @@ void FCM::printHashTable () const
 /***********************************************************
     getters and setters
 ************************************************************/
+char     FCM::getCompMode () const                          { return compMode;                        }
+void     FCM::setCompMode (char cM)                         { FCM::compMode = cM;                     }
 uint8_t  FCM::getContextDepth () const                      { return contextDepth;                    }
 void     FCM::setContextDepth (uint8_t ctxDp)               { FCM::contextDepth = ctxDp;              }
 uint16_t FCM::getAlphaDenom () const                        { return alphaDenom;                      }
 void     FCM::setAlphaDenom (uint16_t alphaDen)             { FCM::alphaDenom = alphaDen;             }
-//double FCM::getAlphaDenom () const                       { return alphaDenom;             }
-//void FCM::setAlphaDenom (double alphaDen)                { FCM::alphaDenom = alphaDen;    }
+//double FCM::getAlphaDenom () const                            { return alphaDenom;             }
+//void FCM::setAlphaDenom (double alphaDen)                     { FCM::alphaDenom = alphaDen;    }
 bool     FCM::getInvertedRepeat () const                    { return invertedRepeat;                  }
 void     FCM::setInvertedRepeat (bool invRep)               { FCM::invertedRepeat = invRep;           }
 uint64_t *FCM::getTable () const                            { return table;                           }
 void     FCM::setTable (uint64_t *tbl)                      { FCM::table = tbl;                       }
 const    htable_t &FCM::getHashTable () const               { return hashTable;                       }
 void     FCM::setHashTable (const htable_t &hT)             { FCM::hashTable = hT;                    }
-//const htable_str_t &FCM::getHashTable_str () const    { return hashTable_str;          }
-//void FCM::setHashTable_str (const htable_str_t &hT_s) { FCM::hashTable_str = hT_s;     }
+//const htable_str_t &FCM::getHashTable_str () const            { return hashTable_str;          }
+//void FCM::setHashTable_str (const htable_str_t &hT_s)         { FCM::hashTable_str = hT_s;     }
 const    vector<string> &FCM::getTarFilesAddresses () const { return tarFilesAddresses;               }
 void     FCM::pushBackTarFilesAddresses (string tFAs)       { FCM::tarFilesAddresses.push_back(tFAs); }
 const    vector<string> &FCM::getRefFilesAddresses () const { return refFilesAddresses;               }

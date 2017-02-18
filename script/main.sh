@@ -48,8 +48,8 @@ tempRefSeqRun=${REF_SPECIES}_SEQ_RUN;    REF_SEQ_RUN=${!tempRefSeqRun}
 REF_DATASET="";  for i in 21; do REF_DATASET+=$REF_SPECIES${i}" "; done
 #REF_DATASET="";  for i in $REF_SEQ_RUN; do REF_DATASET+=$REF_SPECIES${i}" "; done
 
-MULTIREF_DATASET="dataset/HS21,dataset/PT21,dataset/PT21,dataset/PT21,dataset/PT21"
-#MULTIREF_DATASET="x,y"
+#MULTIREF_DATASET="dataset/HS21,dataset/PT21,dataset/PT21,dataset/PT21,dataset/PT21,dataset/PT21"
+MULTIREF_DATASET="x,y,x,y,x,y"
 
 
 REF_SPECIES_LEN=${#REF_SPECIES};            # length of string REF_SPECIES

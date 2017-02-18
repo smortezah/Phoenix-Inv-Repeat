@@ -17,12 +17,14 @@ class FCM
 public:
     FCM ();                                                 /// constructor
                                                                    
-    void     buildModel ();                                 /// build model (table / hash table) for reference(s)
+    void     buildModel ();                                 /// build reference(s) model
     void     compressTarget (string);                       /// compress target file
     inline   uint8_t symCharToInt (char) const;             /// ACNGT -> 01234
 //    void buildHashTable_str ();                                    /// build hash table (string key)
     void     printHashTable () const;                       /// print hash table
-                                                               
+    
+    char     getCompMode () const;                          /// getter of compression mode
+    void     setCompMode (char);                            /// setter of compression mode
     uint8_t  getContextDepth () const;                      /// getter of context depth
     void     setContextDepth (uint8_t);                     /// setter of context depth
     uint16_t getAlphaDenom () const;                        /// getter of alpha denominator
@@ -45,6 +47,7 @@ public:
 private:
     std::mutex mut;                     /// mutex
 
+    char     compMode;                  /// compression mode (table / hash table)
     uint8_t  contextDepth;              /// context depth (SIZE <= 255)
 //    double alphaDenom;                  /// alpha denominator
     uint16_t alphaDenom;                /// alpha denominator
