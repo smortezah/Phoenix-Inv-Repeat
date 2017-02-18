@@ -45,10 +45,9 @@ void FCM::buildModel ()
     
     /// mode: 't'=table, 'h'=hash table
 //    const char mode = (contextDepth > TABLE_MAX_CONTEXT) ? 'h' : 't';
+    /// supports multi-references case
     if ( (uint64_t) refsNumber > (uint64_t) pow(ALPHABET_SIZE, TABLE_MAX_CONTEXT-contextDepth) ) setCompMode('h');
     else                                                                                         setCompMode('t');
-    
-    const char mode = getCompMode();
     
     /// check if reference(s) file(s) cannot be opened, or are empty
     ifstream refFilesIn[ refsNumber ];
@@ -71,7 +70,7 @@ void FCM::buildModel ()
     string refLine;                             /// keep each line of a file
     
     /// build model based on 't'=table, or 'h'=hash table
-    switch (mode)
+    switch ( getCompMode() )
     {
         case 't':
         {
@@ -182,7 +181,6 @@ void FCM::compressTarget (string tarFileName)
     
     /// mode: 't'=table, 'h'=hash table
 //    const char mode = (contextDepth > TABLE_MAX_CONTEXT) ? 'h' : 't';
-    const char mode = getCompMode();
     
     ifstream tarFileIn(tarFileName, ios::in);   /// open target file
     
@@ -226,7 +224,7 @@ void FCM::compressTarget (string tarFileName)
 ////              } while ( 0 )
 ////--------------------------------------------------
     
-    switch (mode)
+    switch ( getCompMode() )
     {
         case 't':
         {
