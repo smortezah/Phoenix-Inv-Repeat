@@ -20,7 +20,7 @@ using std::ios;
 using std::invalid_argument;
 using std::thread;
 
-#include <functional>
+
 /***********************************************************
     constructor
 ************************************************************/
@@ -47,8 +47,6 @@ void Functions::commandLineParser (int argc, char **argv)
     string modelParameters = "";    /// argument of option 'm'
     string tarFilesNames = "";      /// argument of option 't'
     string refFilesNames = "";      /// argument of option 'r'
-                                            
-    string referenceFileName = "";  /// argument of option 'r'
     
     uint8_t n_threads = DEFAULT_N_THREADS;  /// number of threads
     
@@ -116,10 +114,6 @@ void Functions::commandLineParser (int argc, char **argv)
             case 'r':   /// needs reference file name
                 r_flag = true;
                 refFilesNames = (string) optarg;    /// keep argument = reference files names
-        
-                
-                
-                referenceFileName = (string) optarg;   /// keep argument = reference file name
                 break;
                 
             case 't':   /// needs target files names
@@ -222,8 +216,8 @@ void Functions::commandLineParser (int argc, char **argv)
         /// set the context depth of the model
         model.setContextDepth((uint8_t) stoi(vecParameters[ vecParamIndex++ ]));
         /// set the inverted repeat condition of the model
-        !stoi(vecParameters[ vecParamIndex++ ]) ? model.setInvertedRepeat(false)
-                                                : model.setInvertedRepeat(true);
+        !stoi(vecParameters[ vecParamIndex ]) ? model.setInvertedRepeat(false)
+                                              : model.setInvertedRepeat(true);
         
         /// build a model based on reference(s)
         model.buildModel();

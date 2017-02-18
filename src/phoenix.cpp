@@ -24,18 +24,6 @@ using std::setprecision;
 ///////////////////////////////////////////////////////////
 /////////                 M A I N                 /////////
 ///////////////////////////////////////////////////////////
-#include <thread>
-#include <mutex>
-
-class stmm
-{
-    std::mutex mu;
-public:
-    void foo(){ mu.lock();  cout<<"a b"<<'\n';  mu.unlock(); }
-    void bar(int i){ mu.lock(); cout<<"x y"<<'\n';  mu.unlock(); }
-    void mori(){ mu.lock();  cout<<"1 2"<<'\n';  mu.unlock(); }
-};
-
 int32_t main (int argc, char *argv[])
 {
     high_resolution_clock::time_point exeStartTime = high_resolution_clock::now();  /// Record start time
