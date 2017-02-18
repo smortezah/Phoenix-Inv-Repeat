@@ -46,8 +46,10 @@ void FCM::buildModel ()
     /// mode: 't'=table, 'h'=hash table
 //    const char mode = (contextDepth > TABLE_MAX_CONTEXT) ? 'h' : 't';
     /// supports multi-references case
-    if ( (uint64_t) refsNumber > (uint64_t) pow(ALPHABET_SIZE, TABLE_MAX_CONTEXT-contextDepth) ) setCompressionMode('h');
-    else                                                                                         setCompressionMode('t');
+    if ( (uint64_t) refsNumber > (uint64_t) pow(ALPHABET_SIZE, TABLE_MAX_CONTEXT-contextDepth) )
+        setCompressionMode('h');
+    else
+        setCompressionMode('t');
     
     /// check if reference(s) file(s) cannot be opened, or are empty
     ifstream refFilesIn[ refsNumber ];
