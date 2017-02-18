@@ -43,7 +43,9 @@ void FCM::buildModel ()
     uint8_t refsNumber = (uint8_t) refFilesNames.size();        /// number of references
     
     /// set compression mode: 't'=table, 'h'=hash table
-//    const char mode = (contextDepth > TABLE_MAX_CONTEXT) ? 'h' : 't';
+    /*
+    const char mode = (contextDepth > TABLE_MAX_CONTEXT) ? 'h' : 't';
+     */
     /// supports multi-references case
     if ( (uint64_t) refsNumber > (uint64_t) pow(ALPHABET_SIZE, TABLE_MAX_CONTEXT-contextDepth) )
         setCompressionMode('h');
@@ -77,13 +79,15 @@ void FCM::buildModel ()
         {
             uint64_t tableSize = refsNumber * maxPlaceValue * ALPH_SUM_SIZE;    /// create table
             uint64_t *table = new uint64_t[ tableSize ];                        /// already initialized with 0's
-////            /// initialize table with 0's
-////            memset(table, 0, sizeof(table[ 0 ]) * tableSize);
+            /*
+            /// initialize table with 0's
+            memset(table, 0, sizeof(table[ 0 ]) * tableSize);
+            */
             
             for (uint8_t i = refsNumber; i--;)
             {
                 context = 0;    /// reset in the beginning of each reference file
-            
+                
                 while (getline(refFilesIn[ i ], refLine))
                 {
                     /// fill table by number of occurrences of symbols A, C, N, G, T
@@ -129,7 +133,6 @@ void FCM::buildModel ()
             for (int i = refsNumber; i--;)
             {
                 context = 0;    /// reset in the beginning of each reference file
-            
         
                 while (getline(refFilesIn[i], refLine))
                 {
@@ -180,7 +183,7 @@ void FCM::compressTarget (string tarFileName)
     const uint16_t alphaDen     = getAlphaDenom();      /// get alpha denominator
 ////    const double alphaDen     = getAlphaDenom();        /// get alpha denominator
     
-    ifstream tarFileIn(tarFileName, ios::in);   /// open target file
+    ifstream tarFileIn( tarFileName, ios::in ); /// open target file
     
     if (!tarFileIn)                             /// error occurred while opening file
     {
@@ -203,24 +206,24 @@ void FCM::compressTarget (string tarFileName)
     double   averageEntropy = 0;                /// average entropy (H)
     //////////////////////////////////
     
-////--------------------------------------------------
-////    /// using macros make this code slower
-////    htable_t hTable = getHashTable();
-//////#define X \
-////         ((mode == 'h') ? (hTable[ tarContext ][ currSymInt ]) : (table[ tarContext * ALPH_SUM_SIZE + currSymInt ]))
-////
-////#define X(in) do { \
-////                (mode == 'h') \
-////                ? in = hTable[ tarContext ][ currSymInt ] \
-////                : in = table[ tarContext * ALPH_SUM_SIZE + currSymInt ]; \
-////              } while ( 0 )
-////
-////#define Y(in) do { \
-////                (mode == 't') \
-////                ? in = table[ tarContext * ALPH_SUM_SIZE + ALPHABET_SIZE ] \
-////                : in = 0; for (uint64_t u : hTable[ tarContext ]) in += u; \
-////              } while ( 0 )
-////--------------------------------------------------
+    /*
+    /// using macros make this code slower
+    htable_t hTable = getHashTable();
+//#define X \
+         ((mode == 'h') ? (hTable[ tarContext ][ currSymInt ]) : (table[ tarContext * ALPH_SUM_SIZE + currSymInt ]))
+
+#define X(in) do { \
+                (mode == 'h') \
+                ? in = hTable[ tarContext ][ currSymInt ] \
+                : in = table[ tarContext * ALPH_SUM_SIZE + currSymInt ]; \
+              } while ( 0 )
+
+#define Y(in) do { \
+                (mode == 't') \
+                ? in = table[ tarContext * ALPH_SUM_SIZE + ALPHABET_SIZE ] \
+                : in = 0; for (uint64_t u : hTable[ tarContext ]) in += u; \
+              } while ( 0 )
+    */
     
     switch ( getCompressionMode() )
     {
@@ -243,13 +246,17 @@ void FCM::compressTarget (string tarFileName)
                     //////////////////////////////////
                     /// number of symbols
                     nSym = table[ tarContext * ALPH_SUM_SIZE + currSymInt ];
-//                    nSym = X;
-//                    X(nSym);
-        
+                    /*
+                    nSym = X;
+                    X(nSym);
+                    */
+                    
                     /// sum of number of symbols
                     sumNSyms = table[ tarContext * ALPH_SUM_SIZE + ALPHABET_SIZE ];
-//                    Y(sumNSyms);
-        
+                    /*
+                    Y(sumNSyms);
+                    */
+                    
                     /// P(s|c^t)
                     probability = (double) (alphaDen * nSym + 1) / (alphaDen * sumNSyms + ALPHABET_SIZE);
         
@@ -286,13 +293,17 @@ void FCM::compressTarget (string tarFileName)
 //                    {
                         /// number of symbols
                         nSym = hTable[ tarContext ][ currSymInt ];
-//                    nSym = X;
-//                    X(nSym);
+                        /*
+                        nSym = X;
+                        X(nSym);
+                        */
                     
                         /// the idea of adding 'sum' column, makes hash table slower
                         /// sum(n_a)
                         sumNSyms = 0; for (uint64_t u : hTable[ tarContext ])   sumNSyms = sumNSyms + u;
-//                    Y(sumNSyms);
+                        /*
+                        Y(sumNSyms);
+                        */
 //                    }
                     
                     /// P(s|c^t)
@@ -310,7 +321,7 @@ void FCM::compressTarget (string tarFileName)
         break;
         
         default: break;
-    }   /// end of switch
+    }   /// end switch
     
     tarFileIn.close();          /// close file
     
@@ -322,17 +333,15 @@ void FCM::compressTarget (string tarFileName)
 //    cout << totalNOfSyms << '\n';
 //    cout << ' ';
     
-    
     /// print reference and target file names in the output
     uint8_t refsAdressesSize = (uint8_t) getRefFilesAddresses().size();
     size_t lastSlash_Ref[ refsAdressesSize ];
-    for (int i = refsAdressesSize; i--;)
+    for (uint8_t i = refsAdressesSize; i--;)
         lastSlash_Ref[ i ] = getRefFilesAddresses()[ i ].find_last_of("/");
     size_t lastSlash_Tar = tarFileName.find_last_of("/");
     
-    
-    mut.lock();
     /// mutex lock ========================================================
+    mut.lock();
     
     for (int i = refsAdressesSize - 1; i; i--)
         cout << getRefFilesAddresses()[ i ].substr(lastSlash_Ref[ i ] + 1) << ',';
@@ -350,8 +359,8 @@ void FCM::compressTarget (string tarFileName)
     
     cout<<'\n';
     
-    /// mutex unlock ======================================================
     mut.unlock();
+    /// mutex unlock ======================================================
     ////////////////////////////////
     
 }
