@@ -42,9 +42,9 @@ int32_t main (int argc, char *argv[])
 
     /// for access to Functions (object 'function' on memory stack)
     Functions function;
-    function.commandLineParser(argc, argv); /// parse the command line
+//    function.commandLineParser(argc, argv); /// parse the command line
     
-    
+    int* a;a=new int[2];a[0]=1;a[1]=2;cout<<a[1];
     
     
     
