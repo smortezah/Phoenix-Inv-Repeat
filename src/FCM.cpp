@@ -46,8 +46,8 @@ void FCM::buildModel ()
     /// mode: 't'=table, 'h'=hash table
 //    const char mode = (contextDepth > TABLE_MAX_CONTEXT) ? 'h' : 't';
     /// supports multi-references case
-    if ( (uint64_t) refsNumber > (uint64_t) pow(ALPHABET_SIZE, TABLE_MAX_CONTEXT-contextDepth) ) setCompMode('h');
-    else                                                                                         setCompMode('t');
+    if ( (uint64_t) refsNumber > (uint64_t) pow(ALPHABET_SIZE, TABLE_MAX_CONTEXT-contextDepth) ) setCompressionMode('h');
+    else                                                                                         setCompressionMode('t');
     
     /// check if reference(s) file(s) cannot be opened, or are empty
     ifstream refFilesIn[ refsNumber ];
@@ -70,7 +70,7 @@ void FCM::buildModel ()
     string refLine;                             /// keep each line of a file
     
     /// build model based on 't'=table, or 'h'=hash table
-    switch ( getCompMode() )
+    switch ( getCompressionMode() )
     {
         case 't':
         {
@@ -224,7 +224,7 @@ void FCM::compressTarget (string tarFileName)
 ////              } while ( 0 )
 ////--------------------------------------------------
     
-    switch ( getCompMode() )
+    switch ( getCompressionMode() )
     {
         case 't':
         {
@@ -868,8 +868,8 @@ void FCM::printHashTable () const
 /***********************************************************
     getters and setters
 ************************************************************/
-char     FCM::getCompMode () const                          { return compMode;                        }
-void     FCM::setCompMode (char cM)                         { FCM::compMode = cM;                     }
+char     FCM::getCompressionMode () const                   { return compressionMode;                        }
+void     FCM::setCompressionMode (char cM)                  { FCM::compressionMode = cM;                     }
 uint8_t  FCM::getContextDepth () const                      { return contextDepth;                    }
 void     FCM::setContextDepth (uint8_t ctxDp)               { FCM::contextDepth = ctxDp;              }
 uint16_t FCM::getAlphaDenom () const                        { return alphaDenom;                      }

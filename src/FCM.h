@@ -23,8 +23,8 @@ public:
 //    void buildHashTable_str ();                                    /// build hash table (string key)
     void     printHashTable () const;                       /// print hash table
     
-    char     getCompMode () const;                          /// getter of compression mode
-    void     setCompMode (char);                            /// setter of compression mode
+    char     getCompressionMode () const;                   /// getter of compression mode
+    void     setCompressionMode (char);                     /// setter of compression mode
     uint8_t  getContextDepth () const;                      /// getter of context depth
     void     setContextDepth (uint8_t);                     /// setter of context depth
     uint16_t getAlphaDenom () const;                        /// getter of alpha denominator
@@ -47,7 +47,7 @@ public:
 private:
     std::mutex mut;                     /// mutex
 
-    char     compMode;                  /// compression mode (table / hash table)
+    char     compressionMode;           /// compression mode (table / hash table)
     uint8_t  contextDepth;              /// context depth (SIZE <= 255)
 //    double alphaDenom;                  /// alpha denominator
     uint16_t alphaDenom;                /// alpha denominator
