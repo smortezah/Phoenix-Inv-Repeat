@@ -43,7 +43,7 @@ void FCM::buildModel ()
     
     uint8_t refsNumber = (uint8_t) refFilesNames.size();        /// number of references
     
-    /// mode: 't'=table, 'h'=hash table
+    /// set compression mode: 't'=table, 'h'=hash table
 //    const char mode = (contextDepth > TABLE_MAX_CONTEXT) ? 'h' : 't';
     /// supports multi-references case
     if ( (uint64_t) refsNumber > (uint64_t) pow(ALPHABET_SIZE, TABLE_MAX_CONTEXT-contextDepth) )
@@ -180,9 +180,6 @@ void FCM::compressTarget (string tarFileName)
     const uint8_t contextDepth  = getContextDepth();    /// get context depth
     const uint16_t alphaDen     = getAlphaDenom();      /// get alpha denominator
 ////    const double alphaDen     = getAlphaDenom();        /// get alpha denominator
-    
-    /// mode: 't'=table, 'h'=hash table
-//    const char mode = (contextDepth > TABLE_MAX_CONTEXT) ? 'h' : 't';
     
     ifstream tarFileIn(tarFileName, ios::in);   /// open target file
     
