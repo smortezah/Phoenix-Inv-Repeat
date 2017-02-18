@@ -68,7 +68,7 @@ tempTarSeqRun=${TAR_SPECIES}_SEQ_RUN;    TAR_SEQ_RUN=${!tempTarSeqRun}
 TAR_DATASET="";  for i in 21; do TAR_DATASET+=$TAR_SPECIES${i}" "; done
 #TAR_DATASET="";  for i in $TAR_SEQ_RUN; do TAR_DATASET+=$TAR_SPECIES${i}" "; done
 
-multiTar="";  for i in MT; do multiTar+=$FLD_dataset/$TAR_SPECIES${i}" "; done
+multiTar="";  for i in 21; do multiTar+=$FLD_dataset/$TAR_SPECIES${i}" "; done
 MULTITAR_DATASET="$(echo $multiTar | sed 's/ /,/g')"
 
 TAR_SPECIES_LEN=${#TAR_SPECIES};            # length of string TAR_SPECIES
