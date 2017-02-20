@@ -43,7 +43,8 @@ int32_t main (int argc, char *argv[])
 //            /*
     /// initialize table with 0's
 //    memset(table, 1, sizeof(table[ 0 ]) * tableSize);
-            std::fill(table,table+30,1);
+//            std::fill(table,table+30,1);
+    std::fill_n(table, 30, 1);
 //            */
 
 //            cout<<tableSize;
