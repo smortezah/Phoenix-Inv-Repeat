@@ -83,15 +83,15 @@ void FCM::buildModel ()
 //            double table[ tableSize ];                        /// already initialized with 0's
 //            /*
             /// initialize table with 0's
-            memset(table, 1, sizeof(table[ 0 ]) * tableSize);
+//            memset(table, 1, sizeof(table[ 0 ]) * tableSize);
 //            std::fill(table,table+sizeof(table[0]),1);
 //            */
 
 //            cout<<tableSize;
-            for (int j = 0; j < tableSize; ++j)
-            {
-                cout<<table[tableSize]<<' ';
-            }
+//            for (int j = 0; j < tableSize; ++j)
+//            {
+//                cout<<table[tableSize]<<' ';
+//            }
     
     
             for (uint8_t i = refsNumber; i--;)
