@@ -45,7 +45,7 @@ REF_SPECIES=$HUMAN_CHR; REF_SPECIES_NAME=$HUMAN_LBL;
 ### all chromosomes for that species, e.g. HS_SEQ_RUN
 tempRefSeqRun=${REF_SPECIES}_SEQ_RUN;    REF_SEQ_RUN=${!tempRefSeqRun}
 
-REF_DATASET="";  for i in 21; do REF_DATASET+=$REF_SPECIES${i}" "; done
+REF_DATASET="";  for i in MT; do REF_DATASET+=$REF_SPECIES${i}" "; done
 #REF_DATASET="";  for i in $REF_SEQ_RUN; do REF_DATASET+=$REF_SPECIES${i}" "; done
 
 multiRef="";  for i in MT; do multiRef+=$FLD_dataset/$REF_SPECIES${i}" "; done
@@ -66,10 +66,10 @@ TAR_SPECIES=$HUMAN_CHR; TAR_SPECIES_NAME=$HUMAN_LBL;
 ### all chromosomes for that species, e.g. HS_SEQ_RUN
 tempTarSeqRun=${TAR_SPECIES}_SEQ_RUN;    TAR_SEQ_RUN=${!tempTarSeqRun}
 
-TAR_DATASET="";  for i in 21; do TAR_DATASET+=$TAR_SPECIES${i}" "; done
+TAR_DATASET="";  for i in MT; do TAR_DATASET+=$TAR_SPECIES${i}" "; done
 #TAR_DATASET="";  for i in $TAR_SEQ_RUN; do TAR_DATASET+=$TAR_SPECIES${i}" "; done
 
-multiTar="";  for i in MT; do multiTar+=$FLD_dataset/$TAR_SPECIES${i}" "; done
+multiTar="";  for i in MT UP UL; do multiTar+=$FLD_dataset/$TAR_SPECIES${i}" "; done
 MULTITAR_DATASET="$(echo $multiTar | sed 's/ /,/g')"
 #MULTITAR_DATASET="$FLD_dataset/HS21,$FLD_dataset/PT21,"
 

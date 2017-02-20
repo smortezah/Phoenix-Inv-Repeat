@@ -50,7 +50,7 @@ void Messages::help () const
          << "         verbose mode (more information)"                                   << '\n'
                                                                                          << '\n'
          << "    -n [NUMBER],  --n_threads [NUMBER]"                                     << '\n'
-         << "         number of threads."                                                << '\n'
+         << "         number of threads (default: 2)."                                   << '\n'
          << "         requires an integer number (n >= 1)"                               << '\n'
                                                                                          << '\n'
          << "    -d [NUMBER],  --fnumber [NUMBER]"                                       << '\n'
@@ -65,19 +65,19 @@ void Messages::help () const
 ************************************************************/
 void Messages::about () const
 {
-    cout                                                                    << '\n'
-            << "PHOENIX v" << VERSION_PHOENIX << "." << RELEASE_PHOENIX     << '\n'
-            << "================"                                           << '\n'
-            << "A compression-based method"                                 << '\n'
-                                                                            << '\n'
-            << "Morteza Hosseini, Diogo Pratas, Armando J. Pinho"           << '\n'
-            << "Copyright (C) 2016-2017 University of Aveiro"               << '\n'
-                                                                            << '\n'
-            << "This is a Free software, under GPLv3. You may redistribute" << '\n'
-            << "copies of it under the terms of the GNU - General Public"   << '\n'
-            << "License v3 <http://www.gnu.org/licenses/gpl.html>. There"   << '\n'
-            << "is NOT ANY WARRANTY, to the extent permitted by law."       << '\n'
-                                                                            << '\n';
+    cout                                                                 << '\n'
+         << "PHOENIX v" << VERSION_PHOENIX << "." << RELEASE_PHOENIX     << '\n'
+         << "================"                                           << '\n'
+         << "A compression-based method"                                 << '\n'
+                                                                         << '\n'
+         << "Morteza Hosseini, Diogo Pratas, Armando J. Pinho"           << '\n'
+         << "Copyright (C) 2016-2017 University of Aveiro"               << '\n'
+                                                                         << '\n'
+         << "This is a Free software, under GPLv3. You may redistribute" << '\n'
+         << "copies of it under the terms of the GNU - General Public"   << '\n'
+         << "License v3 <http://www.gnu.org/licenses/gpl.html>. There"   << '\n'
+         << "is NOT ANY WARRANTY, to the extent permitted by law."       << '\n'
+                                                                         << '\n';
 }
 
 
