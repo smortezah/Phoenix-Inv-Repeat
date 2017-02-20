@@ -22,7 +22,8 @@ This will print the following:
 <pre>
 Synopsis:
     ./phoenix [OPTION]... -m [MODEL] -r [REFERENCE(S)] -t [TARGET(S)]
-         EXAMPLE: ./phoenix -n 6 -m 0,11,100 -r HS21 -t PT21,PT22
+    
+         EXAMPLE: ./phoenix -n 4 -m 0,11,100 -r HS21,HSY -t PT19,PT21,PT22,PTY
 
 Mandatory arguments:
     -m [&lt;i&gt;,&lt;k&gt;,&lt;a&gt;],   --model [&lt;i&gt;,&lt;k&gt;,&lt;a&gt;]
