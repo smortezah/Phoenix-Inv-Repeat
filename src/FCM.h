@@ -33,10 +33,10 @@ public:
 //    void setAlphaDenom (double);                                 /// setter of alpha denominator
     bool     getInvertedRepeat () const;                    /// getter of inverted repeat
     void     setInvertedRepeat (bool);                      /// setter of inverted repeat
-//    uint64_t *getTable () const;                            /// getter of table
-//    void     setTable (uint64_t *table);                    /// setter of table
-    double *getTable () const;                            /// getter of table
-    void     setTable (double *table);                    /// setter of table
+    uint64_t *getTable () const;                            /// getter of table
+    void     setTable (uint64_t *table);                    /// setter of table
+//    double *getTable () const;                            /// getter of table
+//    void     setTable (double *table);                    /// setter of table
     
     
     const    htable_t &getHashTable () const;               /// getter of hash table (int key)
@@ -57,8 +57,8 @@ private:
     uint16_t alphaDenom;                /// alpha denominator
     bool     invertedRepeat;            /// inverted repeat
     
-//    uint64_t *table;                    /// table
-    double *table;                    /// table
+    uint64_t *table;                    /// table
+//    double *table;                    /// table
     
     
     htable_t hashTable;                 /// hash table (int key)

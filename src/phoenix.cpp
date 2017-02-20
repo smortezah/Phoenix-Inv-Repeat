@@ -24,39 +24,37 @@ using std::setprecision;
 ///////////////////////////////////////////////////////////
 /////////                 M A I N                 /////////
 ///////////////////////////////////////////////////////////
-#include <algorithm>
-
 int32_t main (int argc, char *argv[])
 {
     high_resolution_clock::time_point exeStartTime = high_resolution_clock::now();  /// Record start time
 
     /// for access to Functions (object 'function' on memory stack)
     Functions function;
-//    function.commandLineParser(argc, argv); /// parse the command line
+    function.commandLineParser(argc, argv); /// parse the command line
     
     
-    
-    int tableSize=30;
+//
+//    int tableSize=30;
 //    double *table = new double[ tableSize ];                        /// already initialized with 0's
-//    uint64_t *table = new uint64_t[ tableSize ];                        /// already initialized with 0's
-    int table[ tableSize ];                        /// already initialized with 0's
-//            /*
-    /// initialize table with 0's
-//    memset(table, 1, sizeof(table[ 0 ]) * tableSize);
-//            std::fill(table,table+30,1);
-    std::fill_n(table, 30, 1);
-//            */
-
-//            cout<<tableSize;
-    for (int j = 0; j < tableSize; ++j)
-    {
-//        table[tableSize]=1;
-        
-        cout<<table[tableSize]<<' ';
-    }
-    
-    
-    
+////    uint64_t *table = new uint64_t[ tableSize ];                        /// already initialized with 0's
+////    double table[ tableSize ];                        /// already initialized with 0's
+////            /*
+//    /// initialize table with 0's
+////    memset(table, 1, sizeof(table[ 0 ]) * tableSize);
+////            std::fill(table,table+30,1);
+//    std::fill_n(table, 30, 0.5);
+////            */
+//
+////            cout<<tableSize;
+//    for (int j = 0; j < tableSize; ++j)
+//    {
+////        table[tableSize]=1;
+//
+//        cout<<table[j]<<' ';
+//    }
+//
+//
+//
     
     
     
@@ -65,7 +63,7 @@ int32_t main (int argc, char *argv[])
     /// calculate and show duration in seconds
     std::chrono::duration< double > elapsed = exeFinishTime - exeStartTime;
     
-//    cout << "Elapsed time: " << std::fixed << setprecision(3) << elapsed.count() << '\n';
+    cout << "Elapsed time: " << std::fixed << setprecision(3) << elapsed.count() << '\n';
     
     
     return 0;

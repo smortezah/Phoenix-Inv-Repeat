@@ -78,22 +78,14 @@ void FCM::buildModel ()
         case 't':
         {
             uint64_t tableSize = refsNumber * maxPlaceValue * ALPH_SUM_SIZE;    /// create table
-//            uint64_t *table = new uint64_t[ tableSize ];                        /// already initialized with 0's
-            double *table = new double[ tableSize ];                        /// already initialized with 0's
-//            double table[ tableSize ];                        /// already initialized with 0's
+            uint64_t *table = new uint64_t[ tableSize ];                        /// already initialized with 0's
+//            double *table = new double[ tableSize ];                        /// already initialized with 0's
 //            /*
             /// initialize table with 0's
 //            memset(table, 1, sizeof(table[ 0 ]) * tableSize);
-//            std::fill(table,table+sizeof(table[0]),1);
+//            std::fill_n(table,tableSize,(double) 1/alphaDenom);
 //            */
-
-//            cout<<tableSize;
-//            for (int j = 0; j < tableSize; ++j)
-//            {
-//                cout<<table[tableSize]<<' ';
-//            }
-    
-    
+            
             for (uint8_t i = refsNumber; i--;)
             {
                 context = 0;    /// reset in the beginning of each reference file
@@ -131,7 +123,7 @@ void FCM::buildModel ()
                     }   /// end for
                 }   /// end while
             }   /// end for
-            
+    
             FCM::setTable(table);   /// save the built table
         }   /// end case
             break;
@@ -189,6 +181,14 @@ void FCM::buildModel ()
 ************************************************************/
 void FCM::compressTarget (string tarFileName)
 {
+    
+    const double alpha = (double) 1/alphaDenom;
+    const double sumAlphas = ALPHABET_SIZE * alpha;
+    
+    
+    
+    
+    
     const uint8_t contextDepth  = getContextDepth();    /// get context depth
     const uint16_t alphaDen     = getAlphaDenom();      /// get alpha denominator
 ////    const double alphaDen     = getAlphaDenom();        /// get alpha denominator
@@ -212,8 +212,11 @@ void FCM::compressTarget (string tarFileName)
     string tarLine;                             /// keep each line of the file
     
     ////////////////////////////////
-    uint64_t nSym;                              /// number of symbols (n_s). To calculate probability
-    uint64_t sumNSyms;                          /// sum of number of symbols (sum n_a). To calculate probability
+//    uint64_t nSym;                              /// number of symbols (n_s). To calculate probability
+//    uint64_t sumNSyms;                          /// sum of number of symbols (sum n_a). To calculate probability
+    double nSym;                              /// number of symbols (n_s). To calculate probability
+    double sumNSyms;                          /// sum of number of symbols (sum n_a). To calculate probability
+    
     double   probability = 0;                   /// probability of a symbol, based on an identified context
     double   sumOfEntropies = 0;                /// sum of entropies for different symbols
     uint64_t totalNOfSyms = 0;                  /// number of all symbols in the sequence
@@ -243,12 +246,19 @@ void FCM::compressTarget (string tarFileName)
     {
         case 't':
         {
-//            uint64_t *table = getTable();
-            double *table = getTable();
+            uint64_t *table = getTable();
+//            double *table = getTable();
     
             while (getline(tarFileIn, tarLine))
             {
-        
+    
+    
+                for (int j = 0; j < 30; ++j)
+                {
+                    cout<<table[j]<<' ';
+                }
+                
+                
                 //////////////////////////////////
                 totalNOfSyms = totalNOfSyms + tarLine.size();   /// number of symbols in each line of dataset
                 //////////////////////////////////
@@ -260,21 +270,25 @@ void FCM::compressTarget (string tarFileName)
         
                     //////////////////////////////////
                     /// number of symbols
-                    nSym = table[ tarContext * ALPH_SUM_SIZE + currSymInt ];
+                    
+                    nSym = table[ tarContext * ALPH_SUM_SIZE + currSymInt ] + alpha;
+//                    nSym = table[ tarContext * ALPH_SUM_SIZE + currSymInt ];
                     /*
                     nSym = X;
                     X(nSym);
                     */
                     
                     /// sum of number of symbols
-                    sumNSyms = table[ tarContext * ALPH_SUM_SIZE + ALPHABET_SIZE ];
+                    sumNSyms = table[ tarContext * ALPH_SUM_SIZE + ALPHABET_SIZE ] + sumAlphas;
+//                    sumNSyms = table[ tarContext * ALPH_SUM_SIZE + ALPHABET_SIZE ];
                     /*
                     Y(sumNSyms);
                     */
                     
                     /// P(s|c^t)
-                    probability = (double) (alphaDen * nSym + 1) / (alphaDen * sumNSyms + ALPHABET_SIZE);
-        
+//                    probability = (double) (alphaDen * nSym + 1) / (alphaDen * sumNSyms + ALPHABET_SIZE);
+                    probability = nSym / sumNSyms;
+    
                     /// sum( log_2 P(s|c^t) )
                     sumOfEntropies = sumOfEntropies + log2(probability);
                     /////////////////////////////////
@@ -900,10 +914,10 @@ void     FCM::setAlphaDenom (uint16_t alphaDen)             { FCM::alphaDenom = 
 //void FCM::setAlphaDenom (double alphaDen)                     { FCM::alphaDenom = alphaDen;         }
 bool     FCM::getInvertedRepeat () const                    { return invertedRepeat;                  }
 void     FCM::setInvertedRepeat (bool invRep)               { FCM::invertedRepeat = invRep;           }
-//uint64_t *FCM::getTable () const                            { return table;                           }
-//void     FCM::setTable (uint64_t *tbl)                      { FCM::table = tbl;                       }
-double *FCM::getTable () const                            { return table;                           }
-void     FCM::setTable (double *tbl)                      { FCM::table = tbl;                       }
+uint64_t *FCM::getTable () const                            { return table;                           }
+void     FCM::setTable (uint64_t *tbl)                      { FCM::table = tbl;                       }
+//double *FCM::getTable () const                            { return table;                           }
+//void     FCM::setTable (double *tbl)                      { FCM::table = tbl;                       }
 
 
 const    htable_t &FCM::getHashTable () const               { return hashTable;                       }
