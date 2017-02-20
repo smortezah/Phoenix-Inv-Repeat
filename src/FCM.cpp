@@ -79,12 +79,12 @@ void FCM::buildModel ()
         {
             uint64_t tableSize = refsNumber * maxPlaceValue * ALPH_SUM_SIZE;    /// create table
 //            uint64_t *table = new uint64_t[ tableSize ];                        /// already initialized with 0's
-//            double *table = new double[ tableSize ];                        /// already initialized with 0's
-            double table[ tableSize ];                        /// already initialized with 0's
+            double *table = new double[ tableSize ];                        /// already initialized with 0's
+//            double table[ tableSize ];                        /// already initialized with 0's
 //            /*
             /// initialize table with 0's
-//            memset(table, 0, sizeof(table[ 0 ]) * tableSize);
-            std::fill(table,table+tableSize,1);
+            memset(table, 1, sizeof(table[ 0 ]) * tableSize);
+//            std::fill(table,table+sizeof(table[0]),1);
 //            */
 
 //            cout<<tableSize;

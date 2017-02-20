@@ -30,7 +30,24 @@ int32_t main (int argc, char *argv[])
 
     /// for access to Functions (object 'function' on memory stack)
     Functions function;
-    function.commandLineParser(argc, argv); /// parse the command line
+//    function.commandLineParser(argc, argv); /// parse the command line
+    
+    
+    uint64_t tableSize=30;
+//    double *table = new double[ tableSize ];                        /// already initialized with 0's
+            double table[ tableSize ];                        /// already initialized with 0's
+//            /*
+    /// initialize table with 0's
+    memset(table, 0, sizeof(table[ 0 ]) * tableSize);
+//            std::fill(table,table+sizeof(table[0]),1);
+//            */
+
+//            cout<<tableSize;
+    for (int j = 0; j < tableSize; ++j)
+    {
+        cout<<table[tableSize]<<' ';
+    }
+    
     
     
     
