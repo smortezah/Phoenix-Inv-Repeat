@@ -52,7 +52,7 @@ Options:
          verbose mode (more information)
 
     -n [NUMBER],  --n_threads [NUMBER]
-         number of threads.
+         number of threads (default: 2).
          requires an integer number (n >= 1)
 </pre>
 
