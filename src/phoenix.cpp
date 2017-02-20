@@ -36,10 +36,10 @@ int32_t main (int argc, char *argv[])
     
     
     
-    uint64_t tableSize=30;
+    int tableSize=30;
 //    double *table = new double[ tableSize ];                        /// already initialized with 0's
 //    uint64_t *table = new uint64_t[ tableSize ];                        /// already initialized with 0's
-    uint64_t table[ tableSize ];                        /// already initialized with 0's
+    int table[ tableSize ];                        /// already initialized with 0's
 //            /*
     /// initialize table with 0's
 //    memset(table, 1, sizeof(table[ 0 ]) * tableSize);
@@ -49,6 +49,8 @@ int32_t main (int argc, char *argv[])
 //            cout<<tableSize;
     for (int j = 0; j < tableSize; ++j)
     {
+//        table[tableSize]=1;
+        
         cout<<table[tableSize]<<' ';
     }
     
