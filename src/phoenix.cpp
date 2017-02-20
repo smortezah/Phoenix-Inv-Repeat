@@ -33,28 +33,7 @@ int32_t main (int argc, char *argv[])
     function.commandLineParser(argc, argv); /// parse the command line
     
     
-//
-//    int tableSize=30;
-//    double *table = new double[ tableSize ];                        /// already initialized with 0's
-////    uint64_t *table = new uint64_t[ tableSize ];                        /// already initialized with 0's
-////    double table[ tableSize ];                        /// already initialized with 0's
-////            /*
-//    /// initialize table with 0's
-////    memset(table, 1, sizeof(table[ 0 ]) * tableSize);
-////            std::fill(table,table+30,1);
-//    std::fill_n(table, 30, 0.5);
-////            */
-//
-////            cout<<tableSize;
-//    for (int j = 0; j < tableSize; ++j)
-//    {
-////        table[tableSize]=1;
-//
-//        cout<<table[j]<<' ';
-//    }
-//
-//
-//
+    
     
     
     

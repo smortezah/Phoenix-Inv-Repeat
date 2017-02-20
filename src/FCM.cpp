@@ -212,10 +212,10 @@ void FCM::compressTarget (string tarFileName)
     string tarLine;                             /// keep each line of the file
     
     ////////////////////////////////
-//    uint64_t nSym;                              /// number of symbols (n_s). To calculate probability
-//    uint64_t sumNSyms;                          /// sum of number of symbols (sum n_a). To calculate probability
-    double nSym;                              /// number of symbols (n_s). To calculate probability
-    double sumNSyms;                          /// sum of number of symbols (sum n_a). To calculate probability
+    uint64_t nSym;                              /// number of symbols (n_s). To calculate probability
+    uint64_t sumNSyms;                          /// sum of number of symbols (sum n_a). To calculate probability
+//    double nSym;                              /// number of symbols (n_s). To calculate probability
+//    double sumNSyms;                          /// sum of number of symbols (sum n_a). To calculate probability
     
     double   probability = 0;                   /// probability of a symbol, based on an identified context
     double   sumOfEntropies = 0;                /// sum of entropies for different symbols
@@ -253,10 +253,10 @@ void FCM::compressTarget (string tarFileName)
             {
     
     
-                for (int j = 0; j < 30; ++j)
-                {
-                    cout<<table[j]<<' ';
-                }
+//                for (int j = 0; j < 30; ++j)
+//                {
+//                    cout<<table[j]<<' ';
+//                }
                 
                 
                 //////////////////////////////////
@@ -271,16 +271,16 @@ void FCM::compressTarget (string tarFileName)
                     //////////////////////////////////
                     /// number of symbols
                     
-                    nSym = table[ tarContext * ALPH_SUM_SIZE + currSymInt ] + alpha;
-//                    nSym = table[ tarContext * ALPH_SUM_SIZE + currSymInt ];
+//                    nSym = table[ tarContext * ALPH_SUM_SIZE + currSymInt ] + alpha;
+                    nSym = table[ tarContext * ALPH_SUM_SIZE + currSymInt ];
                     /*
                     nSym = X;
                     X(nSym);
                     */
                     
                     /// sum of number of symbols
-                    sumNSyms = table[ tarContext * ALPH_SUM_SIZE + ALPHABET_SIZE ] + sumAlphas;
-//                    sumNSyms = table[ tarContext * ALPH_SUM_SIZE + ALPHABET_SIZE ];
+//                    sumNSyms = table[ tarContext * ALPH_SUM_SIZE + ALPHABET_SIZE ] + sumAlphas;
+                    sumNSyms = table[ tarContext * ALPH_SUM_SIZE + ALPHABET_SIZE ];
                     /*
                     Y(sumNSyms);
                     */

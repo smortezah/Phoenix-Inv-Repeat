@@ -50,8 +50,8 @@ REF_DATASET="";  for i in MT; do REF_DATASET+=$REF_SPECIES${i}" "; done
 
 #multiRef="";  for i in 21; do multiRef+=$FLD_dataset/$REF_SPECIES${i}" "; done
 #MULTIREF_DATASET="$(echo $multiRef | sed 's/ /,/g')"
-#MULTIREF_DATASET="$FLD_dataset/HS21"
-MULTIREF_DATASET="y"
+MULTIREF_DATASET="$FLD_dataset/HS10"
+#MULTIREF_DATASET="y"
 
 REF_SPECIES_LEN=${#REF_SPECIES};            # length of string REF_SPECIES
 ((REF_SPECIES_LEN_IND=REF_SPECIES_LEN+1));  # index of length of string REF_SPECIES
@@ -72,8 +72,8 @@ TAR_DATASET="";  for i in MT; do TAR_DATASET+=$TAR_SPECIES${i}" "; done
 
 #multiTar="";  for i in MT UP UL; do multiTar+=$FLD_dataset/$TAR_SPECIES${i}" "; done
 #MULTITAR_DATASET="$(echo $multiTar | sed 's/ /,/g')"
-#MULTITAR_DATASET="$FLD_dataset/HS21"
-MULTITAR_DATASET="y"
+MULTITAR_DATASET="$FLD_dataset/HS21"
+#MULTITAR_DATASET="y"
 
 TAR_SPECIES_LEN=${#TAR_SPECIES};            # length of string TAR_SPECIES
 ((TAR_SPECIES_LEN_IND=TAR_SPECIES_LEN+1));  # index of length of string TAR_SPECIES
