@@ -24,6 +24,8 @@ using std::setprecision;
 ///////////////////////////////////////////////////////////
 /////////                 M A I N                 /////////
 ///////////////////////////////////////////////////////////
+#include <algorithm>
+
 int32_t main (int argc, char *argv[])
 {
     high_resolution_clock::time_point exeStartTime = high_resolution_clock::now();  /// Record start time
@@ -33,14 +35,15 @@ int32_t main (int argc, char *argv[])
 //    function.commandLineParser(argc, argv); /// parse the command line
     
     
+    
     uint64_t tableSize=30;
 //    double *table = new double[ tableSize ];                        /// already initialized with 0's
-    uint64_t *table = new uint64_t[ tableSize ];                        /// already initialized with 0's
-//    uint64_t table[ tableSize ];                        /// already initialized with 0's
+//    uint64_t *table = new uint64_t[ tableSize ];                        /// already initialized with 0's
+    uint64_t table[ tableSize ];                        /// already initialized with 0's
 //            /*
     /// initialize table with 0's
-    memset(table, 0, sizeof(table[ 0 ]) * tableSize);
-//            std::fill(table,table+sizeof(table[0]),1);
+//    memset(table, 1, sizeof(table[ 0 ]) * tableSize);
+            std::fill(table,table+30,1);
 //            */
 
 //            cout<<tableSize;
