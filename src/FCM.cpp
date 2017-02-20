@@ -185,12 +185,16 @@ void FCM::compressTarget (string tarFileName)
     
     ifstream tarFileIn( tarFileName, ios::in ); /// open target file
     
+    /// mutex lock ========================================================
+    mut.lock();
     if (!tarFileIn)                             /// error occurred while opening file
     {
         cerr << "The file '" << tarFileName << "' cannot be opened, or it is empty.\n";
         tarFileIn.close();                      /// close file
         return;                                 /// exit this function
     }
+    mut.unlock();
+    /// mutex unlock ======================================================
     
     uint64_t maxPlaceValue = (uint64_t) pow(ALPHABET_SIZE, contextDepth);
     uint64_t tarContext = 0;                    /// context (integer), that slides in the dataset
@@ -343,7 +347,7 @@ void FCM::compressTarget (string tarFileName)
     /// mutex lock ========================================================
     mut.lock();
     
-    for (int i = refsAdressesSize - 1; i; i--)
+    for (int i = refsAdressesSize - 1; i; --i)
         cout << getRefFilesAddresses()[ i ].substr(lastSlash_Ref[ i ] + 1) << ',';
     cout << getRefFilesAddresses()[ 0 ].substr(lastSlash_Ref[ 0 ] + 1) << '\t'
          << tarFileName.substr(lastSlash_Tar + 1) << '\t';
