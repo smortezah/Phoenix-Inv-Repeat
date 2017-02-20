@@ -35,7 +35,8 @@ int32_t main (int argc, char *argv[])
     
     uint64_t tableSize=30;
 //    double *table = new double[ tableSize ];                        /// already initialized with 0's
-            double table[ tableSize ];                        /// already initialized with 0's
+    uint64_t *table = new uint64_t[ tableSize ];                        /// already initialized with 0's
+//    uint64_t table[ tableSize ];                        /// already initialized with 0's
 //            /*
     /// initialize table with 0's
     memset(table, 0, sizeof(table[ 0 ]) * tableSize);
