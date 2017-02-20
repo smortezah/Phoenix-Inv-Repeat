@@ -48,9 +48,9 @@ tempRefSeqRun=${REF_SPECIES}_SEQ_RUN;    REF_SEQ_RUN=${!tempRefSeqRun}
 REF_DATASET="";  for i in MT; do REF_DATASET+=$REF_SPECIES${i}" "; done
 #REF_DATASET="";  for i in $REF_SEQ_RUN; do REF_DATASET+=$REF_SPECIES${i}" "; done
 
-multiRef="";  for i in MT; do multiRef+=$FLD_dataset/$REF_SPECIES${i}" "; done
-MULTIREF_DATASET="$(echo $multiRef | sed 's/ /,/g')"
-#MULTIREF_DATASET="$FLD_dataset/HS21,$FLD_dataset/PT21,"
+#multiRef="";  for i in 21; do multiRef+=$FLD_dataset/$REF_SPECIES${i}" "; done
+#MULTIREF_DATASET="$(echo $multiRef | sed 's/ /,/g')"
+MULTIREF_DATASET="y"
 
 REF_SPECIES_LEN=${#REF_SPECIES};            # length of string REF_SPECIES
 ((REF_SPECIES_LEN_IND=REF_SPECIES_LEN+1));  # index of length of string REF_SPECIES
@@ -69,9 +69,9 @@ tempTarSeqRun=${TAR_SPECIES}_SEQ_RUN;    TAR_SEQ_RUN=${!tempTarSeqRun}
 TAR_DATASET="";  for i in MT; do TAR_DATASET+=$TAR_SPECIES${i}" "; done
 #TAR_DATASET="";  for i in $TAR_SEQ_RUN; do TAR_DATASET+=$TAR_SPECIES${i}" "; done
 
-multiTar="";  for i in MT UP UL; do multiTar+=$FLD_dataset/$TAR_SPECIES${i}" "; done
-MULTITAR_DATASET="$(echo $multiTar | sed 's/ /,/g')"
-#MULTITAR_DATASET="$FLD_dataset/HS21,$FLD_dataset/PT21,"
+#multiTar="";  for i in MT UP UL; do multiTar+=$FLD_dataset/$TAR_SPECIES${i}" "; done
+#MULTITAR_DATASET="$(echo $multiTar | sed 's/ /,/g')"
+MULTITAR_DATASET="y"
 
 TAR_SPECIES_LEN=${#TAR_SPECIES};            # length of string TAR_SPECIES
 ((TAR_SPECIES_LEN_IND=TAR_SPECIES_LEN+1));  # index of length of string TAR_SPECIES
@@ -79,7 +79,7 @@ TAR_SPECIES_LEN=${#TAR_SPECIES};            # length of string TAR_SPECIES
 N_THREADS=4             # number of threads
 INV_REPEATS="0"       # list of inverted repeats
 ALPHA_DENS="100"        # list of alpha denominators
-CTX=4                  # context-order size
+CTX=1                  # context-order size
 MIN_CTX=10              # min context-order size
 MAX_CTX=11              # max context-order size
 

@@ -78,12 +78,22 @@ void FCM::buildModel ()
         case 't':
         {
             uint64_t tableSize = refsNumber * maxPlaceValue * ALPH_SUM_SIZE;    /// create table
-            uint64_t *table = new uint64_t[ tableSize ];                        /// already initialized with 0's
-            /*
+//            uint64_t *table = new uint64_t[ tableSize ];                        /// already initialized with 0's
+//            double *table = new double[ tableSize ];                        /// already initialized with 0's
+            double table[ tableSize ];                        /// already initialized with 0's
+//            /*
             /// initialize table with 0's
-            memset(table, 0, sizeof(table[ 0 ]) * tableSize);
-            */
-            
+//            memset(table, 0, sizeof(table[ 0 ]) * tableSize);
+            std::fill(table,table+tableSize,1);
+//            */
+
+//            cout<<tableSize;
+            for (int j = 0; j < tableSize; ++j)
+            {
+                cout<<table[tableSize]<<' ';
+            }
+    
+    
             for (uint8_t i = refsNumber; i--;)
             {
                 context = 0;    /// reset in the beginning of each reference file
@@ -121,7 +131,7 @@ void FCM::buildModel ()
                     }   /// end for
                 }   /// end while
             }   /// end for
-    
+            
             FCM::setTable(table);   /// save the built table
         }   /// end case
             break;
@@ -233,8 +243,9 @@ void FCM::compressTarget (string tarFileName)
     {
         case 't':
         {
-            uint64_t *table = getTable();
-        
+//            uint64_t *table = getTable();
+            double *table = getTable();
+    
             while (getline(tarFileIn, tarLine))
             {
         
@@ -879,18 +890,22 @@ void FCM::printHashTable () const
 /***********************************************************
     getters and setters
 ************************************************************/
-char     FCM::getCompressionMode () const                   { return compressionMode;                        }
-void     FCM::setCompressionMode (char cM)                  { FCM::compressionMode = cM;                     }
+char     FCM::getCompressionMode () const                   { return compressionMode;                 }
+void     FCM::setCompressionMode (char cM)                  { FCM::compressionMode = cM;              }
 uint8_t  FCM::getContextDepth () const                      { return contextDepth;                    }
 void     FCM::setContextDepth (uint8_t ctxDp)               { FCM::contextDepth = ctxDp;              }
 uint16_t FCM::getAlphaDenom () const                        { return alphaDenom;                      }
 void     FCM::setAlphaDenom (uint16_t alphaDen)             { FCM::alphaDenom = alphaDen;             }
-//double FCM::getAlphaDenom () const                            { return alphaDenom;             }
-//void FCM::setAlphaDenom (double alphaDen)                     { FCM::alphaDenom = alphaDen;    }
+//double FCM::getAlphaDenom () const                            { return alphaDenom;                  }
+//void FCM::setAlphaDenom (double alphaDen)                     { FCM::alphaDenom = alphaDen;         }
 bool     FCM::getInvertedRepeat () const                    { return invertedRepeat;                  }
 void     FCM::setInvertedRepeat (bool invRep)               { FCM::invertedRepeat = invRep;           }
-uint64_t *FCM::getTable () const                            { return table;                           }
-void     FCM::setTable (uint64_t *tbl)                      { FCM::table = tbl;                       }
+//uint64_t *FCM::getTable () const                            { return table;                           }
+//void     FCM::setTable (uint64_t *tbl)                      { FCM::table = tbl;                       }
+double *FCM::getTable () const                            { return table;                           }
+void     FCM::setTable (double *tbl)                      { FCM::table = tbl;                       }
+
+
 const    htable_t &FCM::getHashTable () const               { return hashTable;                       }
 void     FCM::setHashTable (const htable_t &hT)             { FCM::hashTable = hT;                    }
 //const htable_str_t &FCM::getHashTable_str () const            { return hashTable_str;          }
