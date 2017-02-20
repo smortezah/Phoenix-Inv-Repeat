@@ -4,13 +4,13 @@ Cmake is required for the installation. Also, git is suggested for cloning the r
 sudo apt-get install cmake git
 git clone https://github.com/smortezah/Phoenix.git
 cd Phoenix/
-cmake src
+cmake .
 make
 </pre>
 
 <h2>USAGE</h2>
 <pre>
-./phoenix [OPTION]... -m [MODEL(s)] -t [TARGET] -r [REFERENCE]
+./phoenix [OPTION]... -m [MODEL] -r [REFERENCE(S)] -t [TARGET(S)]
 </pre>
 To see the options, type:
 
@@ -21,14 +21,24 @@ To see the options, type:
 This will print the following:
 <pre>
 Synopsis:
-    ./phoenix [OPTION]... -m [MODEL(s)] -t [TARGET] -r [REFERENCE]
+    ./phoenix [OPTION]... -m [MODEL] -r [REFERENCE(S)] -t [TARGET(S)]
+         EXAMPLE: ./phoenix -n 6 -m 0,11,100 -r HS21 -t PT21,PT22
 
 Mandatory arguments:
-    -t [TARGET],  --target [TARGET]
-         target file address
+    -m [&lt;i&gt;,&lt;k&gt;,&lt;a&gt;],   --model [&lt;i&gt;,&lt;k&gt;,&lt;a&gt;]
+         context model(s).
+         &lt;i&gt;:  inverted repeat (0=don't use, 1=use).
+         &lt;k&gt;:  context-order size,
+         &lt;a&gt;:  1/alpha,
+         EXAMPLE: -m 9,100,1
 
-    -r [REFERENCE],  --reference [REFERENCE]
-         reference file address
+    -r [REFERENCE(S)],   --reference [REFERENCE(S)]
+         reference file(s) address(es)
+         EXAMPLE: -r ref1,ref2
+
+    -t [TARGET(S)],   --target [TARGET(S)]
+         target file(s) address(es)
+         EXAMPLE: -t tar1,tar2,tar3
 
 Options:
     -h,  --help
@@ -40,14 +50,9 @@ Options:
     -v,  --verbose
          verbose mode (more information)
 
-    -m [&lt;r|t&gt;,&lt;s&gt;,&lt;a&gt;,&lt;i&gt;:...],  --model [&lt;r|t&gt;,&lt;s&gt;,&lt;a&gt;,&lt;i&gt;:...]
-         context model(s). Seperate different models with :
-         &lt;r|t&gt;: build a model based on reference (r) or target (t),
-         &lt;s&gt;:  context-order size,
-         &lt;a&gt;:  1/alpha,
-         &lt;i&gt;:  inverted repeat (0=don't use, 1=use).
-         EXAMPLE 1: -m r,4,1000,1
-         EXAMPLE 2: -m t,18,1,0:r,13,100,0
+    -n [NUMBER],  --n_threads [NUMBER]
+         number of threads.
+         requires an integer number (n >= 1)
 </pre>
 
 <h2>CITATION</h2>
