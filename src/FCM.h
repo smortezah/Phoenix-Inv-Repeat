@@ -16,7 +16,7 @@ class FCM
 {
 public:
     FCM ();                                                 /// constructor
-                                                                   
+    
     void     buildModel ();                                 /// build reference(s) model
     void     compressTarget (string);                       /// compress target file
     inline   uint8_t symCharToInt (char) const;             /// ACNGT -> 01234
