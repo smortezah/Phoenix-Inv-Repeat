@@ -29,8 +29,6 @@ public:
     void     setContextDepth (uint8_t);                     /// setter of context depth
     uint16_t getAlphaDenom () const;                        /// getter of alpha denominator
     void     setAlphaDenom (uint16_t);                      /// setter of alpha denominator
-//    double getAlphaDenom () const;                               /// getter of alpha denominator
-//    void setAlphaDenom (double);                                 /// setter of alpha denominator
     bool     getInvertedRepeat () const;                    /// getter of inverted repeat
     void     setInvertedRepeat (bool);                      /// setter of inverted repeat
     uint64_t *getTable () const;                            /// getter of table
@@ -49,7 +47,6 @@ private:
 
     char     compressionMode;           /// compression mode (table / hash table)
     uint8_t  contextDepth;              /// context depth (SIZE <= 255)
-//    double alphaDenom;                  /// alpha denominator
     uint16_t alphaDenom;                /// alpha denominator
     bool     invertedRepeat;            /// inverted repeat
     uint64_t *table;                    /// table

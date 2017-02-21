@@ -181,12 +181,11 @@ void FCM::buildModel ()
 void FCM::compressTarget (string tarFileName)
 {
     
-    const double alpha = (double) 1/alphaDenom;         /// alpha -- used in P denominator
+    const double alpha = (double) 1/getAlphaDenom();    /// alpha -- used in P denominator
     const double sumAlphas = ALPHABET_SIZE * alpha;     /// used in P numerator
     
     const uint8_t contextDepth  = getContextDepth();    /// get context depth
-    const uint16_t alphaDen     = getAlphaDenom();      /// get alpha denominator
-////    const double alphaDen     = getAlphaDenom();        /// get alpha denominator
+//    const uint16_t alphaDen     = getAlphaDenom();      /// get alpha denominator
     
     ifstream tarFileIn( tarFileName, ios::in ); /// open target file
     
