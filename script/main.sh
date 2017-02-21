@@ -50,7 +50,7 @@ REF_DATASET="";  for i in MT; do REF_DATASET+=$REF_SPECIES${i}" "; done
 
 #multiRef="";  for i in 21; do multiRef+=$FLD_dataset/$REF_SPECIES${i}" "; done
 #MULTIREF_DATASET="$(echo $multiRef | sed 's/ /,/g')"
-MULTIREF_DATASET="$FLD_dataset/HS10"
+MULTIREF_DATASET="$FLD_dataset/HS15"
 #MULTIREF_DATASET="y"
 
 REF_SPECIES_LEN=${#REF_SPECIES};            # length of string REF_SPECIES

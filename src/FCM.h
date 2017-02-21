@@ -35,10 +35,6 @@ public:
     void     setInvertedRepeat (bool);                      /// setter of inverted repeat
     uint64_t *getTable () const;                            /// getter of table
     void     setTable (uint64_t *table);                    /// setter of table
-//    double *getTable () const;                            /// getter of table
-//    void     setTable (double *table);                    /// setter of table
-    
-    
     const    htable_t &getHashTable () const;               /// getter of hash table (int key)
     void     setHashTable (const htable_t&);                /// setter of hash table (int key)
 //    const htable_str_t &getHashTable_str () const;  /// getter of hash table (string key)
@@ -56,11 +52,7 @@ private:
 //    double alphaDenom;                  /// alpha denominator
     uint16_t alphaDenom;                /// alpha denominator
     bool     invertedRepeat;            /// inverted repeat
-    
     uint64_t *table;                    /// table
-//    double *table;                    /// table
-    
-    
     htable_t hashTable;                 /// hash table (int key)
 //    htable_str_t hashTable_str;                /// hash table (string key)
     vector<string> tarFilesAddresses;   /// target files addresses
