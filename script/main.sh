@@ -81,7 +81,7 @@ TAR_SPECIES_LEN=${#TAR_SPECIES};            # length of string TAR_SPECIES
 N_THREADS=4             # number of threads
 INV_REPEATS="0"       # list of inverted repeats
 ALPHA_DENS="100"        # list of alpha denominators
-CTX=8                   # context-order size
+CTX=10                   # context-order size
 MIN_CTX=10              # min context-order size
 MAX_CTX=11              # max context-order size
 
