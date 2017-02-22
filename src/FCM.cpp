@@ -30,22 +30,22 @@ using std::setprecision;
 ************************************************************/
 FCM::FCM ()
 {
-    if ( (uint64_t) getRefFilesAddresses().size() > (uint64_t) pow(ALPHABET_SIZE, TABLE_MAX_CONTEXT-getContextDepth()) )
-            setCompressionMode('h');
-    else    setCompressionMode('t');
-    
-    
-    uint64_t maxPlaceValue = (uint64_t) pow(ALPHABET_SIZE, getContextDepth());
-    
-    if (getCompressionMode() == 't')
-    {
-        uint64_t tableSize = getRefFilesAddresses().size() * maxPlaceValue * ALPH_SUM_SIZE;    /// create table
-        uint64_t *table = new uint64_t[tableSize];                        /// already initialized with 0's
-    }
-    else
-    {
-        htable_t hTable;    /// create hash table
-    }
+//    if ( (uint64_t) getRefFilesAddresses().size() > (uint64_t) pow(ALPHABET_SIZE, TABLE_MAX_CONTEXT-getContextDepth()) )
+//            setCompressionMode('h');
+//    else    setCompressionMode('t');
+//
+//
+//    uint64_t maxPlaceValue = (uint64_t) pow(ALPHABET_SIZE, getContextDepth());
+//
+//    if (getCompressionMode() == 't')
+//    {
+//        uint64_t tableSize = getRefFilesAddresses().size() * maxPlaceValue * ALPH_SUM_SIZE;    /// create table
+//        uint64_t *table = new uint64_t[tableSize];                        /// already initialized with 0's
+//    }
+//    else
+//    {
+//        htable_t hTable;    /// create hash table
+//    }
 }
 
 
@@ -97,6 +97,9 @@ void FCM::buildModel ()
         {
             uint64_t tableSize = refsNumber * maxPlaceValue * ALPH_SUM_SIZE;    /// create table
             uint64_t *table = new uint64_t[ tableSize ];                        /// already initialized with 0's
+    ///********************************
+            htable_t hTable;    /// create hash table
+    
             /*
             /// initialize table with 0's
 //            memset(table, 1, sizeof(table[ 0 ]) * tableSize);
