@@ -78,11 +78,10 @@ void FCM::buildModel ()
         case 't':
         {
             U64 tableSize = refsNumber * maxPlaceValue * ALPH_SUM_SIZE; /// create table
-            U64 *table = new U64[ tableSize ];                          /// already initialized with 0's
-//            setTable(table);                                            /// initialize table
+            table = new U64[ tableSize ];                          /// already initialized with 0's
             /*
             /// initialize table with 0's
-            memset(table, 1, sizeof(table[ 0 ]) * tableSize);
+//            memset(table, 0, sizeof(table[ 0 ]) * tableSize);
 //            std::fill_n(table,tableSize,(double) 1/alphaDenom);
             */
             
@@ -105,23 +104,21 @@ void FCM::buildModel ()
                             invRepContext = (U64) iRCtxCurrSym / ALPH_SIZE;
                             
                             /// update table, including 'sum' column, considering inverted repeats
-                            updateTable( table, invRepContext * ALPH_SUM_SIZE, iRCtxCurrSym % ALPH_SIZE );
+                            updateTable( invRepContext * ALPH_SUM_SIZE, iRCtxCurrSym % ALPH_SIZE );
                         }
                         
 //                        updateTable( context * ALPH_SUM_SIZE, currSymInt ); /// update table, including 'sum' column
-                        updateTable( table, context * ALPH_SUM_SIZE, currSymInt ); /// update table, including 'sum' column
+                        updateTable( context * ALPH_SUM_SIZE, currSymInt ); /// update table, including 'sum' column
                         context = (U64) (context * ALPH_SIZE + currSymInt) % maxPlaceValue; /// update context
                     }
                 }
             }   /// end for
-            
-            FCM::setTable(table);   /// save the built table.
         }   /// end case
             break;
             
         case 'h':
         {
-            htable_t hTable;    /// create hash table
+//            htable_t hashTable;    /// create hash table
 
             for (int i = refsNumber; i--;)
             {
@@ -143,16 +140,16 @@ void FCM::buildModel ()
                             invRepContext = (U64) iRCtxCurrSym / ALPH_SIZE;
 
                             /// update hash table considering inverted repeats
-                            ++hTable[ invRepContext ][ iRCtxCurrSym % ALPH_SIZE ];
+                            ++hashTable[ invRepContext ][ iRCtxCurrSym % ALPH_SIZE ];
                         }
                         
-                        ++hTable[ context ][ currSymInt ];                                  /// update hash table
+                        ++hashTable[ context ][ currSymInt ];                                  /// update hash table
                         context = (U64) (context * ALPH_SIZE + currSymInt) % maxPlaceValue; /// update context
                     }
                 }
             }   /// end for
 
-            FCM::setHashTable(hTable);  /// save the built hash table
+//            FCM::setHashTable(hTable);  /// save the built hash table
         }   /// end case
             break;
 
@@ -224,8 +221,6 @@ void FCM::compressTarget (string tarFileName)
     {
         case 't':
         {
-            U64 *table = getTable();
-    
             while (getline(tarFileIn, tarLine))
             {
                 
@@ -269,7 +264,7 @@ void FCM::compressTarget (string tarFileName)
         
         case 'h':
         {
-            htable_t hTable = getHashTable();
+//            htable_t hTable = getHashTable();
         
             while (getline(tarFileIn, tarLine))
             {
@@ -288,7 +283,7 @@ void FCM::compressTarget (string tarFileName)
 //                    else
 //                    {
                         /// number of symbols
-                        nSym = hTable[ tarContext ][ currSymInt ];
+                        nSym = hashTable[ tarContext ][ currSymInt ];
                         /*
                         nSym = X;
                         X(nSym);
@@ -296,7 +291,7 @@ void FCM::compressTarget (string tarFileName)
                     
                         /// the idea of adding 'sum' column, makes hash table slower
                         /// sum(n_a)
-                        sumNSyms = 0; for (U64 u : hTable[ tarContext ])   sumNSyms = sumNSyms + u;
+                        sumNSyms = 0; for (U64 u : hashTable[ tarContext ])   sumNSyms = sumNSyms + u;
                         /*
                         Y(sumNSyms);
                         */
@@ -391,7 +386,7 @@ inline U8 FCM::symCharToInt (char ch) const
 /***********************************************************
     update table, including 'sum' column
 ************************************************************/
-inline void FCM::updateTable (U64 *table, U64 rowIndex, U64 column)
+inline void FCM::updateTable (U64 rowIndex, U64 column)
 {
     ++table[ rowIndex + column ];    /// update table
     ++table[ rowIndex + ALPH_SIZE ]; /// update 'sum' column
@@ -849,9 +844,8 @@ void FCM::buildHashTable_str ()
 ************************************************************/
 void FCM::printHashTable () const
 {
-    htable_t hTable = this->getHashTable();
-//    htable_t hTable = getHashTable();
-
+    htable_t hTable = hashTable;
+    
     cout
          << " >>> Context order size:\t" << (U16) this->getContextDepth() << '\n'
          << " >>> Alpha denominator:\t\t" << (U16) this->getAlphaDenom() << '\n'
@@ -890,12 +884,6 @@ void  FCM::setAlphaDenom (U16 alphaDen)             { FCM::alphaDenom = alphaDen
 //void FCM::setAlphaDenom (double alphaDen)                { FCM::alphaDenom = alphaDen;    }
 bool  FCM::getInvertedRepeat () const               { return invertedRepeat;             }
 void  FCM::setInvertedRepeat (bool invRep)          { FCM::invertedRepeat = invRep;      }
-U64   *FCM::getTable () const                       { return table;                      }
-void  FCM::setTable (U64 *tbl)                      { FCM::table = tbl;                  }
-const htable_t &FCM::getHashTable () const          { return hashTable;                  }
-void  FCM::setHashTable (const htable_t &hT)        { FCM::hashTable = hT;               }
-//const htable_str_t &FCM::getHashTable_str () const       { return hashTable_str;          }
-//void FCM::setHashTable_str (const htable_str_t &hT_s)    { FCM::hashTable_str = hT_s;     }
 const vector<string> &FCM::getTarAddresses () const { return tarAddresses;               }
 void  FCM::pushBackTarAddresses (string tFAs)       { FCM::tarAddresses.push_back(tFAs); }
 const vector<string> &FCM::getRefAddresses () const { return refAddresses;               }
