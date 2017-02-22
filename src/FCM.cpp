@@ -877,13 +877,20 @@ void FCM::printHashTable () const
     getters and setters
 ************************************************************/
 U8    FCM::getContextDepth () const                 { return contextDepth;               }
-void  FCM::setContextDepth (U8 ctxDp)               { FCM::contextDepth = ctxDp;         }
+//void  FCM::setContextDepth (U8 ctxDp)               { FCM::contextDepth = ctxDp;         }
 U16   FCM::getAlphaDenom () const                   { return alphaDenom;                 }
-void  FCM::setAlphaDenom (U16 alphaDen)             { FCM::alphaDenom = alphaDen;        }
-//double FCM::getAlphaDenom () const                       { return alphaDenom;             }
-//void FCM::setAlphaDenom (double alphaDen)                { FCM::alphaDenom = alphaDen;    }
+//void  FCM::setAlphaDenom (U16 alphaDen)             { FCM::alphaDenom = alphaDen;        }
+////double FCM::getAlphaDenom () const                       { return alphaDenom;             }
+////void FCM::setAlphaDenom (double alphaDen)                { FCM::alphaDenom = alphaDen;    }
 bool  FCM::getInvertedRepeat () const               { return invertedRepeat;             }
-void  FCM::setInvertedRepeat (bool invRep)          { FCM::invertedRepeat = invRep;      }
+//void  FCM::setInvertedRepeat (bool invRep)          { FCM::invertedRepeat = invRep;      }
+
+
+void  FCM::setParams (U16 alphaDen, U8 ctx, bool iR) { FCM::alphaDenom = alphaDen;
+                                                           FCM::contextDepth = ctx;
+                                                           FCM::invertedRepeat = iR;     }
+
+
 const vector<string> &FCM::getTarAddresses () const { return tarAddresses;               }
 void  FCM::pushBackTarAddresses (string tFAs)       { FCM::tarAddresses.push_back(tFAs); }
 const vector<string> &FCM::getRefAddresses () const { return refAddresses;               }

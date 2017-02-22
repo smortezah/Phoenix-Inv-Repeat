@@ -15,26 +15,30 @@ using std::vector;
 class FCM
 {
 public:
-    FCM ();                                          /// constructor
+    FCM ();                                             /// constructor
+                                                        
+    void   buildModel ();                               /// build reference(s) model
+    void   compressTarget (string);                     /// compress target file
+    inline U8 symCharToInt (char) const;                /// ACNGT -> 01234
+    inline void updateTable (U64, U64);                 /// update table, including 'sum' column
+                                                        
+//    void buildHashTable_str ();                                /// build hash table (string key)
+    void   printHashTable () const;                     /// print hash table
     
-    void   buildModel ();                            /// build reference(s) model
-    void   compressTarget (string);                  /// compress target file
-    inline U8 symCharToInt (char) const;             /// ACNGT -> 01234
-    inline void updateTable (U64, U64);              /// update table, including 'sum' column
+    U16    getAlphaDenom () const;                      /// getter of alpha denominator
+//    void   setAlphaDenom (const U16);                   /// setter of alpha denominator
+    U8     getContextDepth () const;                    /// getter of context depth
+//    void   setContextDepth (U8);                        /// setter of context depth
+    bool   getInvertedRepeat () const;                  /// getter of inverted repeat
+//    void   setInvertedRepeat (bool);                    /// setter of inverted repeat
     
-//    void buildHashTable_str ();                             /// build hash table (string key)
-    void   printHashTable () const;                  /// print hash table
     
-    U8     getContextDepth () const;                 /// getter of context depth
-    void   setContextDepth (U8);                     /// setter of context depth
-    U16    getAlphaDenom () const;                   /// getter of alpha denominator
-    void   setAlphaDenom (const U16);                /// setter of alpha denominator
-    bool   getInvertedRepeat () const;               /// getter of inverted repeat
-    void   setInvertedRepeat (bool);                 /// setter of inverted repeat
-    const  vector<string> &getTarAddresses () const; /// getter of target files addresses
-    void   pushBackTarAddresses (string);            /// pushBacker of target files addresses
-    const  vector<string> &getRefAddresses () const; /// getter of reference files addresses
-    void   pushBackRefAddresses (string);            /// pushBacker of reference files addresses
+    void   setParams (const U16, U8, bool);                    /// setter of inverted repeat
+    
+    const  vector<string> &getTarAddresses () const;    /// getter of target files addresses
+    void   pushBackTarAddresses (string);               /// pushBacker of target files addresses
+    const  vector<string> &getRefAddresses () const;    /// getter of reference files addresses
+    void   pushBackRefAddresses (string);               /// pushBacker of reference files addresses
     
 private:
     U8             contextDepth;                         /// context depth (SIZE <= 255)

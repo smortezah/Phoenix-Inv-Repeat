@@ -208,14 +208,21 @@ void Functions::commandLineParser (int argc, char **argv)
         /// save last model parameter
         vecParameters.push_back(modelParameters.substr(0, parIndex));
         
-        /// set the alpha denominator of the model
-        model.setAlphaDenom((U16) stoi(vecParameters[ vecParamIndex++ ]));
-//        model.setAlphaDenom(stod(vecParameters[ vecParamIndex++ ]));
-        /// set the context depth of the model
-        model.setContextDepth((U8) stoi(vecParameters[ vecParamIndex++ ]));
-        /// set the inverted repeat condition of the model
-        !stoi(vecParameters[ vecParamIndex ]) ? model.setInvertedRepeat(false)
-                                              : model.setInvertedRepeat(true);
+//        /// set the alpha denominator of the model
+//        model.setAlphaDenom((U16) stoi(vecParameters[ vecParamIndex++ ]));
+////        model.setAlphaDenom(stod(vecParameters[ vecParamIndex++ ]));
+//        /// set the context depth of the model
+//        model.setContextDepth((U8) stoi(vecParameters[ vecParamIndex++ ]));
+//        /// set the inverted repeat condition of the model
+//        !stoi(vecParameters[ vecParamIndex ]) ? model.setInvertedRepeat(false)
+//                                              : model.setInvertedRepeat(true);
+//
+         U16 alphaDen = (U16) stoi(vecParameters[ vecParamIndex++ ]);
+         U8 ctxDepth = (U8) stoi(vecParameters[ vecParamIndex++ ]);
+         bool iR = !stoi(vecParameters[ vecParamIndex ]);
+//        const bool iR = !stoi(vecParameters[ vecParamIndex ]) ? false : true;
+    
+        model.setParams(alphaDen, ctxDepth, iR);
         
         /// build a model based on reference(s)
         model.buildModel();
