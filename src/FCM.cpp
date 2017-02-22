@@ -79,6 +79,8 @@ void FCM::buildModel ()
         {
             uint64_t tableSize = refsNumber * maxPlaceValue * ALPH_SUM_SIZE;    /// create table
             uint64_t *table = new uint64_t[ tableSize ];                        /// already initialized with 0's
+            
+            setTable(table);
             /*
             /// initialize table with 0's
 //            memset(table, 1, sizeof(table[ 0 ]) * tableSize);
@@ -95,9 +97,12 @@ void FCM::buildModel ()
                     for (string::iterator lineIter = refLine.begin(); lineIter != refLine.end(); ++lineIter)
                     {
                         uint8_t currSymInt = symCharToInt(*lineIter);
-
-                        ++table[ context * ALPH_SUM_SIZE + currSymInt ];    /// update table
-
+                        
+//                        ++table[ context * ALPH_SUM_SIZE + currSymInt ];    /// update table
+//                        ++table[ context * ALPH_SUM_SIZE + ALPHABET_SIZE ]; /// update column 'sum' of the table
+updateTable(context,currSymInt);
+//updateTable(context,ALPHABET_SIZE);
+    
                         /// considering inverted repeats to update table
                         if (isIR)
                         {
@@ -111,18 +116,17 @@ void FCM::buildModel ()
                             ++table[ invRepContext * ALPH_SUM_SIZE + iRCtxCurrSym % ALPHABET_SIZE ];
                             /// update column 'sum' of the table
                             ++table[ invRepContext * ALPH_SUM_SIZE + ALPHABET_SIZE ];
+//updateTable(invRepContext,iRCtxCurrSym % ALPHABET_SIZE);
+//updateTable(invRepContext,ALPHABET_SIZE);
                         }
-
-                        /// update column 'sum' of the table
-                        ++table[ context * ALPH_SUM_SIZE + ALPHABET_SIZE ];
-
+                        
                         /// update context
                         context = (uint64_t) (context * ALPHABET_SIZE + currSymInt) % maxPlaceValue;
                     }   /// end for
                 }   /// end while
             }   /// end for
 
-            FCM::setTable(table);   /// save the built table
+//            FCM::setTable(table);   /// save the built table
         }   /// end case
             break;
 

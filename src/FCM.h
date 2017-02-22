@@ -20,6 +20,14 @@ public:
     void     buildModel ();                             /// build reference(s) model
     void     compressTarget (string);                   /// compress target file
     inline   uint8_t symCharToInt (char) const;         /// ACNGT -> 01234
+    
+    inline void updateTable(uint64_t row, uint64_t column)
+    {
+        ++table[ row * ALPH_SUM_SIZE + column ];    /// update table
+        ++table[ row * ALPH_SUM_SIZE + ALPHABET_SIZE ];    /// update update column 'sum' of the table
+    }
+    
+    
 //    void buildHashTable_str ();                                /// build hash table (string key)
     void     printHashTable () const;                   /// print hash table
     
