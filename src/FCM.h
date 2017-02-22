@@ -37,10 +37,10 @@ public:
     void     setHashTable (const htable_t&);                /// setter of hash table (int key)
 //    const htable_str_t &getHashTable_str () const;  /// getter of hash table (string key)
 //    void setHashTable_str (const htable_str_t&);    /// setter of hash table (string key)
-    const    vector<string> &getTarFilesAddresses () const; /// getter of target files addresses
-    void     pushBackTarFilesAddresses (string);            /// pushBacker of target files addresses
-    const    vector<string> &getRefFilesAddresses () const; /// getter of reference files addresses
-    void     pushBackRefFilesAddresses (string);            /// pushBacker of reference files addresses
+    const    vector<string> &getTarAddresses () const;      /// getter of target files addresses
+    void     pushBackTarAddresses (string);                 /// pushBacker of target files addresses
+    const    vector<string> &getRefAddresses () const;      /// getter of reference files addresses
+    void     pushBackRefAddresses (string);                 /// pushBacker of reference files addresses
     
 private:
     std::mutex mut;                     /// mutex
@@ -52,8 +52,8 @@ private:
     uint64_t *table;                    /// table
     htable_t hashTable;                 /// hash table (int key)
 //    htable_str_t hashTable_str;                /// hash table (string key)
-    vector<string> tarFilesAddresses;   /// target files addresses
-    vector<string> refFilesAddresses;   /// reference files addresses
+    vector<string> tarAddresses;        /// target files addresses
+    vector<string> refAddresses;        /// reference files addresses
 };
 
 

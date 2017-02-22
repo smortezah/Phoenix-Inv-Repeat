@@ -38,7 +38,7 @@ void FCM::buildModel ()
 {
     const uint8_t contextDepth     = getContextDepth();         /// context depth
     const bool isIR                = getInvertedRepeat();       /// inverted repeat
-    vector< string > refFilesNames = getRefFilesAddresses();    /// reference file(s) address(es)
+    vector< string > refFilesNames = getRefAddresses();    /// reference file(s) address(es)
 
     uint8_t refsNumber = (uint8_t) refFilesNames.size();        /// number of references
 
@@ -345,18 +345,18 @@ void FCM::compressTarget (string tarFileName)
 //    cout << ' ';
     
     /// to print reference and target file names in the output
-    uint8_t refsAdressesSize = (uint8_t) getRefFilesAddresses().size();
+    uint8_t refsAdressesSize = (uint8_t) getRefAddresses().size();
     size_t lastSlash_Ref[ refsAdressesSize ];
     for (uint8_t i = refsAdressesSize; i--;)
-        lastSlash_Ref[ i ] = getRefFilesAddresses()[ i ].find_last_of("/");
+        lastSlash_Ref[ i ] = getRefAddresses()[ i ].find_last_of("/");
     size_t lastSlash_Tar = tarFileName.find_last_of("/");
     
     /// mutex lock ========================================================
     mut.lock();
     
     for (int i = refsAdressesSize - 1; i; --i)
-        cout << getRefFilesAddresses()[ i ].substr(lastSlash_Ref[ i ] + 1) << ',';
-    cout << getRefFilesAddresses()[ 0 ].substr(lastSlash_Ref[ 0 ] + 1) << '\t'
+        cout << getRefAddresses()[ i ].substr(lastSlash_Ref[ i ] + 1) << ',';
+    cout << getRefAddresses()[ 0 ].substr(lastSlash_Ref[ 0 ] + 1) << '\t'
          << tarFileName.substr(lastSlash_Tar + 1) << '\t';
     
     cout << getInvertedRepeat() << '\t'
@@ -886,23 +886,23 @@ void FCM::printHashTable () const
 /***********************************************************
     getters and setters
 ************************************************************/
-char     FCM::getCompressionMode () const                   { return compressionMode;                 }
-void     FCM::setCompressionMode (char cM)                  { FCM::compressionMode = cM;              }
-uint8_t  FCM::getContextDepth () const                      { return contextDepth;                    }
-void     FCM::setContextDepth (uint8_t ctxDp)               { FCM::contextDepth = ctxDp;              }
-uint16_t FCM::getAlphaDenom () const                        { return alphaDenom;                      }
-void     FCM::setAlphaDenom (uint16_t alphaDen)             { FCM::alphaDenom = alphaDen;             }
-//double FCM::getAlphaDenom () const                            { return alphaDenom;                  }
-//void FCM::setAlphaDenom (double alphaDen)                     { FCM::alphaDenom = alphaDen;         }
-bool     FCM::getInvertedRepeat () const                    { return invertedRepeat;                  }
-void     FCM::setInvertedRepeat (bool invRep)               { FCM::invertedRepeat = invRep;           }
-uint64_t *FCM::getTable () const                            { return table;                           }
-void     FCM::setTable (uint64_t *tbl)                      { FCM::table = tbl;                       }
-const    htable_t &FCM::getHashTable () const               { return hashTable;                       }
-void     FCM::setHashTable (const htable_t &hT)             { FCM::hashTable = hT;                    }
-//const htable_str_t &FCM::getHashTable_str () const            { return hashTable_str;          }
-//void FCM::setHashTable_str (const htable_str_t &hT_s)         { FCM::hashTable_str = hT_s;     }
-const    vector<string> &FCM::getTarFilesAddresses () const { return tarFilesAddresses;               }
-void     FCM::pushBackTarFilesAddresses (string tFAs)       { FCM::tarFilesAddresses.push_back(tFAs); }
-const    vector<string> &FCM::getRefFilesAddresses () const { return refFilesAddresses;               }
-void     FCM::pushBackRefFilesAddresses (string rFAs)       { FCM::refFilesAddresses.push_back(rFAs); }
+char     FCM::getCompressionMode () const              { return compressionMode;            }
+void     FCM::setCompressionMode (char cM)             { FCM::compressionMode = cM;         }
+uint8_t  FCM::getContextDepth () const                 { return contextDepth;               }
+void     FCM::setContextDepth (uint8_t ctxDp)          { FCM::contextDepth = ctxDp;         }
+uint16_t FCM::getAlphaDenom () const                   { return alphaDenom;                 }
+void     FCM::setAlphaDenom (uint16_t alphaDen)        { FCM::alphaDenom = alphaDen;        }
+//double FCM::getAlphaDenom () const                       { return alphaDenom;             }
+//void FCM::setAlphaDenom (double alphaDen)                { FCM::alphaDenom = alphaDen;    }
+bool     FCM::getInvertedRepeat () const               { return invertedRepeat;             }
+void     FCM::setInvertedRepeat (bool invRep)          { FCM::invertedRepeat = invRep;      }
+uint64_t *FCM::getTable () const                       { return table;                      }
+void     FCM::setTable (uint64_t *tbl)                 { FCM::table = tbl;                  }
+const    htable_t &FCM::getHashTable () const          { return hashTable;                  }
+void     FCM::setHashTable (const htable_t &hT)        { FCM::hashTable = hT;               }
+//const htable_str_t &FCM::getHashTable_str () const       { return hashTable_str;          }
+//void FCM::setHashTable_str (const htable_str_t &hT_s)    { FCM::hashTable_str = hT_s;     }
+const    vector<string> &FCM::getTarAddresses () const { return tarAddresses;               }
+void     FCM::pushBackTarAddresses (string tFAs)       { FCM::tarAddresses.push_back(tFAs); }
+const    vector<string> &FCM::getRefAddresses () const { return refAddresses;               }
+void     FCM::pushBackRefAddresses (string rFAs)       { FCM::refAddresses.push_back(rFAs); }

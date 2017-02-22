@@ -166,12 +166,12 @@ void Functions::commandLineParser (int argc, char **argv)
         {
             if (tarFilesNames[ i ] == ',')
             {
-                model.pushBackTarFilesAddresses( tarFilesNames.substr(i+1, tarIndex-i-1) );
+                model.pushBackTarAddresses(tarFilesNames.substr(i + 1, tarIndex - i - 1));
                 tarIndex = i;
             }
         }
         /// save last target file name
-        model.pushBackTarFilesAddresses( tarFilesNames.substr(0, tarIndex) );
+        model.pushBackTarAddresses(tarFilesNames.substr(0, tarIndex));
     }
     
     /// save reference file(s) name(s)
@@ -183,12 +183,12 @@ void Functions::commandLineParser (int argc, char **argv)
         {
             if (refFilesNames[ i ] == ',')
             {
-                model.pushBackRefFilesAddresses( refFilesNames.substr(i+1, refIndex-i-1) );
+                model.pushBackRefAddresses(refFilesNames.substr(i + 1, refIndex - i - 1));
                 refIndex = i;
             }
         }
         /// save last reference file name
-        model.pushBackRefFilesAddresses( refFilesNames.substr(0, refIndex) );
+        model.pushBackRefAddresses(refFilesNames.substr(0, refIndex));
     }
     
     /// save model parameters and process the model
@@ -228,14 +228,14 @@ void Functions::commandLineParser (int argc, char **argv)
         /// N_FREE_THREADS considered for other jobs in current system
         uint8_t n_threads_available = (uint8_t) (!MAX_N_THREADS ? DEFAULT_N_THREADS - N_FREE_THREADS
                                                                 : MAX_N_THREADS - N_FREE_THREADS);
-        uint8_t n_targets = (uint8_t) model.getTarFilesAddresses().size();  /// up to 2^8=256 targets
+        uint8_t n_targets = (uint8_t) model.getTarAddresses().size();  /// up to 2^8=256 targets
 
         uint8_t arrThrSize = (n_targets > n_threads_available) ? n_threads_available : n_targets;
         thread *arrThread = new thread[arrThrSize];   /// array of threads
         */
         
         /// compress target(s) using reference(s) model -- multithreaded
-        uint8_t n_targets = (uint8_t) model.getTarFilesAddresses().size();  /// up to 2^8=256 targets
+        uint8_t n_targets = (uint8_t) model.getTarAddresses().size();  /// up to 2^8=256 targets
 
         uint8_t arrThrSize = (n_targets > n_threads) ? n_threads : n_targets;
         thread *arrThread = new thread[ arrThrSize ];   /// array of threads
@@ -243,7 +243,7 @@ void Functions::commandLineParser (int argc, char **argv)
         for (uint8_t i = 0; i < n_targets; i += arrThrSize)
         {
             for (uint8_t j = 0; j < arrThrSize && i + j < n_targets; ++j)
-                arrThread[ j ] = thread(&FCM::compressTarget, &model, model.getTarFilesAddresses()[ i + j ]);
+                arrThread[ j ] = thread(&FCM::compressTarget, &model, model.getTarAddresses()[ i + j ]);
 
             for (uint8_t j = 0; j < arrThrSize && i + j < n_targets; ++j)
                 arrThread[ j ].join();
