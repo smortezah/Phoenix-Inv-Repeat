@@ -51,9 +51,6 @@ void FCM::buildModel ()
         setCompressionMode('h');
     else
         setCompressionMode('t');
-    
-    char mode = ( (uint64_t) refsNumber > (uint64_t) pow(ALPHABET_SIZE, TABLE_MAX_CONTEXT-contextDepth) )
-                ? 'h' : 't';
 
     /// check if reference(s) file(s) cannot be opened, or are empty
     ifstream refFilesIn[ refsNumber ];
@@ -74,26 +71,16 @@ void FCM::buildModel ()
     uint64_t invRepContext = maxPlaceValue - 1; /// inverted repeat context (integer)
 
     string refLine;                             /// keep each line of a file
-    
-    if (mode == 't')
-    {
-        uint64_t tableSize = refsNumber * maxPlaceValue * ALPH_SUM_SIZE;    /// create table
-        uint64_t *table = new uint64_t[tableSize];                        /// already initialized with 0's
-        FCM::setTable(table);
-    }
-    else
-    {
-        htable_t hTable;    /// create hash table
-        FCM::setHashTable(hTable);
-    }
-    
+
     /// build model based on 't'=table, or 'h'=hash table
     switch ( getCompressionMode() )
     {
         case 't':
         {
-//            uint64_t tableSize = refsNumber * maxPlaceValue * ALPH_SUM_SIZE;    /// create table
-//            uint64_t *table = new uint64_t[ tableSize ];                        /// already initialized with 0's
+            uint64_t tableSize = refsNumber * maxPlaceValue * ALPH_SUM_SIZE;    /// create table
+            uint64_t *table = new uint64_t[ tableSize ];                        /// already initialized with 0's
+    ///********************************
+            htable_t hTable;    /// create hash table
 
             /*
             /// initialize table with 0's
@@ -119,9 +106,11 @@ void FCM::buildModel ()
                         {
                             /// concatenation of inverted repeat context and current symbol
                             uint64_t iRCtxCurrSym = (4 - currSymInt) * maxPlaceValue + invRepContext;
+
                             /// update inverted repeat context (integer)
                             invRepContext = (uint64_t) iRCtxCurrSym / ALPHABET_SIZE;
-                            /// update table considering IR
+
+                            /// update table considering inverted repeats
                             ++table[ invRepContext * ALPH_SUM_SIZE + iRCtxCurrSym % ALPHABET_SIZE ];
                             /// update column 'sum' of the table
                             ++table[ invRepContext * ALPH_SUM_SIZE + ALPHABET_SIZE ];
@@ -186,148 +175,6 @@ void FCM::buildModel ()
     for (uint8_t i = refsNumber; i--;)  refFilesIn[i].close();      /// close file(s)
 }
 
-
-//void FCM::buildModel ()
-//{
-//    const uint8_t contextDepth     = getContextDepth();         /// context depth
-//    const bool isIR                = getInvertedRepeat();       /// inverted repeat
-//    vector< string > refFilesNames = getRefFilesAddresses();    /// reference file(s) address(es)
-//
-//    uint8_t refsNumber = (uint8_t) refFilesNames.size();        /// number of references
-//
-//    /// set compression mode: 't'=table, 'h'=hash table
-//    /*
-//    const char mode = (contextDepth > TABLE_MAX_CONTEXT) ? 'h' : 't';
-//     */
-//    /// supports multi-references case
-//    if ( (uint64_t) refsNumber > (uint64_t) pow(ALPHABET_SIZE, TABLE_MAX_CONTEXT-contextDepth) )
-//        setCompressionMode('h');
-//    else
-//        setCompressionMode('t');
-//
-//    /// check if reference(s) file(s) cannot be opened, or are empty
-//    ifstream refFilesIn[ refsNumber ];
-//
-//    for (uint8_t i = refsNumber; i--;)
-//    {
-//        refFilesIn[ i ].open( refFilesNames[ i ], ios::in );
-//        if (!refFilesIn[ i ])                   /// error occurred while opening file(s)
-//        {
-//            cerr << "The file '" << refFilesNames[ i ] << "' cannot be opened, or it is empty.\n";
-//            refFilesIn[ i ].close();            /// close file(s)
-//            return;                             /// exit this function
-//        }
-//    }
-//
-//    uint64_t context;                       	/// context (integer), that slides in the dataset
-//    uint64_t maxPlaceValue = (uint64_t) pow(ALPHABET_SIZE, contextDepth);
-//    uint64_t invRepContext = maxPlaceValue - 1; /// inverted repeat context (integer)
-//
-//    string refLine;                             /// keep each line of a file
-//
-//    /// build model based on 't'=table, or 'h'=hash table
-//    switch ( getCompressionMode() )
-//    {
-//        case 't':
-//        {
-//            uint64_t tableSize = refsNumber * maxPlaceValue * ALPH_SUM_SIZE;    /// create table
-//            uint64_t *table = new uint64_t[ tableSize ];                        /// already initialized with 0's
-//    ///********************************
-//            htable_t hTable;    /// create hash table
-//
-//            /*
-//            /// initialize table with 0's
-////            memset(table, 1, sizeof(table[ 0 ]) * tableSize);
-////            std::fill_n(table,tableSize,(double) 1/alphaDenom);
-//            */
-//
-//            for (uint8_t i = refsNumber; i--;)
-//            {
-//                context = 0;    /// reset in the beginning of each reference file
-//
-//                while (getline(refFilesIn[ i ], refLine))
-//                {
-//                    /// fill table by number of occurrences of symbols A, C, N, G, T
-//                    for (string::iterator lineIter = refLine.begin(); lineIter != refLine.end(); ++lineIter)
-//                    {
-//                        uint8_t currSymInt = symCharToInt(*lineIter);
-//
-//                        ++table[ context * ALPH_SUM_SIZE + currSymInt ];    /// update table
-//
-//                        /// considering inverted repeats to update table
-//                        if (isIR)
-//                        {
-//                            /// concatenation of inverted repeat context and current symbol
-//                            uint64_t iRCtxCurrSym = (4 - currSymInt) * maxPlaceValue + invRepContext;
-//
-//                            /// update inverted repeat context (integer)
-//                            invRepContext = (uint64_t) iRCtxCurrSym / ALPHABET_SIZE;
-//
-//                            /// update table considering inverted repeats
-//                            ++table[ invRepContext * ALPH_SUM_SIZE + iRCtxCurrSym % ALPHABET_SIZE ];
-//                            /// update column 'sum' of the table
-//                            ++table[ invRepContext * ALPH_SUM_SIZE + ALPHABET_SIZE ];
-//                        }
-//
-//                        /// update column 'sum' of the table
-//                        ++table[ context * ALPH_SUM_SIZE + ALPHABET_SIZE ];
-//
-//                        /// update context
-//                        context = (uint64_t) (context * ALPHABET_SIZE + currSymInt) % maxPlaceValue;
-//                    }   /// end for
-//                }   /// end while
-//            }   /// end for
-//
-//            FCM::setTable(table);   /// save the built table
-//        }   /// end case
-//            break;
-//
-//        case 'h':
-//        {
-//            htable_t hTable;    /// create hash table
-//
-//            for (int i = refsNumber; i--;)
-//            {
-//                context = 0;    /// reset in the beginning of each reference file
-//
-//                while (getline(refFilesIn[i], refLine))
-//                {
-//                    /// fill hash table by number of occurrences of symbols A, C, N, G, T
-//                    for (string::iterator lineIter = refLine.begin(); lineIter != refLine.end(); ++lineIter)
-//                    {
-//                        uint8_t currSymInt = symCharToInt(*lineIter);
-//
-//                        ++hTable[ context ][ currSymInt ];  /// update hash table
-//
-//                        /// considering inverted repeats to update hash table
-//                        if (isIR)
-//                        {
-//                            /// concatenation of inverted repeat context and current symbol
-//                            uint64_t iRCtxCurrSym = (4 - currSymInt) * maxPlaceValue + invRepContext;
-//
-//                            /// update inverted repeat context (integer)
-//                            invRepContext = (uint64_t) iRCtxCurrSym / ALPHABET_SIZE;
-//
-//                            /// update hash table considering inverted repeats
-//                            ++hTable[ invRepContext ][ iRCtxCurrSym % ALPHABET_SIZE ];
-//                        }
-//
-//                        /// update context
-//                        context = (uint64_t) (context * ALPHABET_SIZE + currSymInt) % maxPlaceValue;
-//                    }   /// end for
-//                }   /// end while
-//            }
-//
-//            FCM::setHashTable(hTable);  /// save the built hash table
-//        }   /// end case
-//            break;
-//
-//        default: break;
-//    }   /// end switch
-//
-//    for (uint8_t i = refsNumber; i--;)  refFilesIn[i].close();      /// close file(s)
-//}
-//
 
 /***********************************************************
     compress target(s) based on reference(s) model
@@ -1008,7 +855,7 @@ void FCM::printHashTable () const
 {
     htable_t hTable = this->getHashTable();
 //    htable_t hTable = getHashTable();
-    
+
     cout
          << " >>> Context order size:\t" << (uint16_t) this->getContextDepth() << '\n'
          << " >>> Alpha denominator:\t\t" << (uint16_t) this->getAlphaDenom() << '\n'
@@ -1017,7 +864,7 @@ void FCM::printHashTable () const
          << '\n'
          << " >>> file address:\t"
          << "\n\n";
-    
+
     cout << "\tA\tC\tN\tG\tT"
          //              << "\tP_A\tP_C\tP_N\tP_G\tP_T"
          << '\n'
