@@ -79,7 +79,6 @@ void FCM::buildModel ()
         {
             uint64_t tableSize = refsNumber * maxPlaceValue * ALPH_SUM_SIZE;    /// create table
             uint64_t *table = new uint64_t[ tableSize ];                        /// already initialized with 0's
-            
             setTable(table);
             /*
             /// initialize table with 0's
@@ -100,8 +99,8 @@ void FCM::buildModel ()
                         
 //                        ++table[ context * ALPH_SUM_SIZE + currSymInt ];    /// update table
 //                        ++table[ context * ALPH_SUM_SIZE + ALPHABET_SIZE ]; /// update column 'sum' of the table
-updateTable(context,currSymInt);
-//updateTable(context,ALPHABET_SIZE);
+                        /// update table, including 'sum' column
+                        updateTable( context, currSymInt );
     
                         /// considering inverted repeats to update table
                         if (isIR)
@@ -112,12 +111,12 @@ updateTable(context,currSymInt);
                             /// update inverted repeat context (integer)
                             invRepContext = (uint64_t) iRCtxCurrSym / ALPHABET_SIZE;
 
-                            /// update table considering inverted repeats
-                            ++table[ invRepContext * ALPH_SUM_SIZE + iRCtxCurrSym % ALPHABET_SIZE ];
-                            /// update column 'sum' of the table
-                            ++table[ invRepContext * ALPH_SUM_SIZE + ALPHABET_SIZE ];
-//updateTable(invRepContext,iRCtxCurrSym % ALPHABET_SIZE);
-//updateTable(invRepContext,ALPHABET_SIZE);
+//                            /// update table considering inverted repeats
+//                            ++table[ invRepContext * ALPH_SUM_SIZE + iRCtxCurrSym % ALPHABET_SIZE ];
+//                            /// update column 'sum' of the table
+//                            ++table[ invRepContext * ALPH_SUM_SIZE + ALPHABET_SIZE ];
+                            
+                            updateTable( invRepContext, iRCtxCurrSym % ALPHABET_SIZE );
                         }
                         
                         /// update context
@@ -178,11 +177,45 @@ updateTable(context,currSymInt);
 
 
 /***********************************************************
+    update table, including 'sum' column
+************************************************************/
+inline void FCM::updateTable(uint64_t row, uint64_t column)
+{
+    ++table[ row * ALPH_SUM_SIZE + column ];        /// update table
+    ++table[ row * ALPH_SUM_SIZE + ALPHABET_SIZE ]; /// update 'sum' column
+}
+
+
+/***********************************************************
+    convert char (base) to integer (uint8_t): ACNGT -> 01234
+************************************************************/
+inline uint8_t FCM::symCharToInt (char ch) const
+{
+    switch (ch)
+    {
+        case 'A':   return (uint8_t) 0;
+        case 'C':   return (uint8_t) 1;
+        case 'G':   return (uint8_t) 3;
+        case 'T':   return (uint8_t) 4;
+        default:    return (uint8_t) 2;     /// 'N' symbol
+    }
+
+//    return (uint8_t) (ch % ALPHABET_SIZE);
+
+//    switch (ch)
+//    {
+//        case 'C':   return (uint8_t) 3;
+//        case 'N':   return (uint8_t) 2;
+//        default:    return (uint8_t) (ch % ALPHABET_SIZE);
+//    }
+}
+
+
+/***********************************************************
     compress target(s) based on reference(s) model
 ************************************************************/
 void FCM::compressTarget (string tarFileName)
 {
-    
     const double alpha = (double) 1/getAlphaDenom();    /// alpha -- used in P denominator
     const double sumAlphas = ALPHABET_SIZE * alpha;     /// used in P numerator
     
@@ -375,31 +408,6 @@ void FCM::compressTarget (string tarFileName)
     /// mutex unlock ======================================================
     ////////////////////////////////
     
-}
-
-
-/***********************************************************
-    convert char (base) to integer (uint8_t): ACNGT -> 01234
-************************************************************/
-inline uint8_t FCM::symCharToInt (char ch) const
-{
-    switch (ch)
-    {
-        case 'A':   return (uint8_t) 0;
-        case 'C':   return (uint8_t) 1;
-        case 'G':   return (uint8_t) 3;
-        case 'T':   return (uint8_t) 4;
-        default:    return (uint8_t) 2;     /// 'N' symbol
-    }
-        
-//    return (uint8_t) (ch % ALPHABET_SIZE);
-
-//    switch (ch)
-//    {
-//        case 'C':   return (uint8_t) 3;
-//        case 'N':   return (uint8_t) 2;
-//        default:    return (uint8_t) (ch % ALPHABET_SIZE);
-//    }
 }
 
 
