@@ -28,25 +28,7 @@ using std::setprecision;
 /***********************************************************
     constructor
 ************************************************************/
-FCM::FCM ()
-{
-//    if ( (uint64_t) getRefFilesAddresses().size() > (uint64_t) pow(ALPHABET_SIZE, TABLE_MAX_CONTEXT-getContextDepth()) )
-//            setCompressionMode('h');
-//    else    setCompressionMode('t');
-//
-//
-//    uint64_t maxPlaceValue = (uint64_t) pow(ALPHABET_SIZE, getContextDepth());
-//
-//    if (getCompressionMode() == 't')
-//    {
-//        uint64_t tableSize = getRefFilesAddresses().size() * maxPlaceValue * ALPH_SUM_SIZE;    /// create table
-//        uint64_t *table = new uint64_t[tableSize];                        /// already initialized with 0's
-//    }
-//    else
-//    {
-//        htable_t hTable;    /// create hash table
-//    }
-}
+FCM::FCM () {}
 
 
 /***********************************************************
@@ -69,6 +51,9 @@ void FCM::buildModel ()
         setCompressionMode('h');
     else
         setCompressionMode('t');
+    
+    char mode = ( (uint64_t) refsNumber > (uint64_t) pow(ALPHABET_SIZE, TABLE_MAX_CONTEXT-contextDepth) )
+                ? 'h' : 't';
 
     /// check if reference(s) file(s) cannot be opened, or are empty
     ifstream refFilesIn[ refsNumber ];
@@ -89,16 +74,26 @@ void FCM::buildModel ()
     uint64_t invRepContext = maxPlaceValue - 1; /// inverted repeat context (integer)
 
     string refLine;                             /// keep each line of a file
-
+    
+    if (mode == 't')
+    {
+        uint64_t tableSize = refsNumber * maxPlaceValue * ALPH_SUM_SIZE;    /// create table
+        uint64_t *table = new uint64_t[tableSize];                        /// already initialized with 0's
+        FCM::setTable(table);
+    }
+    else
+    {
+        htable_t hTable;    /// create hash table
+        FCM::setHashTable(hTable);
+    }
+    
     /// build model based on 't'=table, or 'h'=hash table
     switch ( getCompressionMode() )
     {
         case 't':
         {
-            uint64_t tableSize = refsNumber * maxPlaceValue * ALPH_SUM_SIZE;    /// create table
-            uint64_t *table = new uint64_t[ tableSize ];                        /// already initialized with 0's
-    ///********************************
-            htable_t hTable;    /// create hash table
+//            uint64_t tableSize = refsNumber * maxPlaceValue * ALPH_SUM_SIZE;    /// create table
+//            uint64_t *table = new uint64_t[ tableSize ];                        /// already initialized with 0's
 
             /*
             /// initialize table with 0's
@@ -124,11 +119,9 @@ void FCM::buildModel ()
                         {
                             /// concatenation of inverted repeat context and current symbol
                             uint64_t iRCtxCurrSym = (4 - currSymInt) * maxPlaceValue + invRepContext;
-
                             /// update inverted repeat context (integer)
                             invRepContext = (uint64_t) iRCtxCurrSym / ALPHABET_SIZE;
-
-                            /// update table considering inverted repeats
+                            /// update table considering IR
                             ++table[ invRepContext * ALPH_SUM_SIZE + iRCtxCurrSym % ALPHABET_SIZE ];
                             /// update column 'sum' of the table
                             ++table[ invRepContext * ALPH_SUM_SIZE + ALPHABET_SIZE ];
