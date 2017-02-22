@@ -66,7 +66,7 @@ void FCM::buildModel ()
         }
     }
     
-    uint64_t context = 0;                       /// context (integer), that slides in the dataset
+    uint64_t context;                       	/// context (integer), that slides in the dataset
     uint64_t maxPlaceValue = (uint64_t) pow(ALPHABET_SIZE, contextDepth);
     uint64_t invRepContext = maxPlaceValue - 1; /// inverted repeat context (integer)
     
@@ -96,10 +96,9 @@ void FCM::buildModel ()
                     {
                         uint8_t currSymInt = symCharToInt(*lineIter);
                         
-                        /// update table
-                        ++table[ context * ALPH_SUM_SIZE + currSymInt ];
+                        ++table[ context * ALPH_SUM_SIZE + currSymInt ];    /// update table
                         
-                        /// considering inverted repeats to update hash table
+                        /// considering inverted repeats to update table
                         if (isInvertedRepeat)
                         {
                             /// concatenation of inverted repeat context and current symbol
@@ -142,8 +141,7 @@ void FCM::buildModel ()
                     {
                         uint8_t currSymInt = symCharToInt(*lineIter);
                         
-                        /// update hash table
-                        ++hTable[ context ][ currSymInt ];
+                        ++hTable[ context ][ currSymInt ];  /// update hash table
                         
                         /// considering inverted repeats to update hash table
                         if (isInvertedRepeat)
