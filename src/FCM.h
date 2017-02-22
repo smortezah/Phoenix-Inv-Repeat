@@ -44,7 +44,7 @@ public:
     
 private:
     std::mutex mut;                     /// mutex
-
+    
     char     compressionMode;           /// compression mode (table / hash table)
     uint8_t  contextDepth;              /// context depth (SIZE <= 255)
     uint16_t alphaDenom;                /// alpha denominator
