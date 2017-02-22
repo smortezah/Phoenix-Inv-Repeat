@@ -37,8 +37,8 @@ FCM::FCM () {}
 void FCM::buildModel ()
 {
     const uint8_t contextDepth     = getContextDepth();         /// context depth
-    const bool isIR                = getInvertedRepeat();       /// inverted repeat
-    vector< string > refFilesNames = getRefAddresses();    /// reference file(s) address(es)
+    const bool isInvertedRepeat    = getInvertedRepeat();       /// inverted repeat
+    vector< string > refFilesNames = getRefAddresses();         /// reference file(s) address(es)
 
     uint8_t refsNumber = (uint8_t) refFilesNames.size();        /// number of references
 
@@ -96,14 +96,11 @@ void FCM::buildModel ()
                     for (string::iterator lineIter = refLine.begin(); lineIter != refLine.end(); ++lineIter)
                     {
                         uint8_t currSymInt = symCharToInt(*lineIter);
-                        
-//                        ++table[ context * ALPH_SUM_SIZE + currSymInt ];    /// update table
-//                        ++table[ context * ALPH_SUM_SIZE + ALPHABET_SIZE ]; /// update column 'sum' of the table
-                        /// update table, including 'sum' column
-                        updateTable( context, currSymInt );
+                       
+                        updateTable( context, currSymInt ); /// update table, including 'sum' column
     
                         /// considering inverted repeats to update table
-                        if (isIR)
+                        if (isInvertedRepeat)
                         {
                             /// concatenation of inverted repeat context and current symbol
                             uint64_t iRCtxCurrSym = (4 - currSymInt) * maxPlaceValue + invRepContext;
@@ -111,11 +108,7 @@ void FCM::buildModel ()
                             /// update inverted repeat context (integer)
                             invRepContext = (uint64_t) iRCtxCurrSym / ALPHABET_SIZE;
 
-//                            /// update table considering inverted repeats
-//                            ++table[ invRepContext * ALPH_SUM_SIZE + iRCtxCurrSym % ALPHABET_SIZE ];
-//                            /// update column 'sum' of the table
-//                            ++table[ invRepContext * ALPH_SUM_SIZE + ALPHABET_SIZE ];
-                            
+                            /// update table, including 'sum' column, considering inverted repeats
                             updateTable( invRepContext, iRCtxCurrSym % ALPHABET_SIZE );
                         }
                         
@@ -147,7 +140,7 @@ void FCM::buildModel ()
                         ++hTable[ context ][ currSymInt ];  /// update hash table
 
                         /// considering inverted repeats to update hash table
-                        if (isIR)
+                        if (isInvertedRepeat)
                         {
                             /// concatenation of inverted repeat context and current symbol
                             uint64_t iRCtxCurrSym = (4 - currSymInt) * maxPlaceValue + invRepContext;
@@ -179,7 +172,7 @@ void FCM::buildModel ()
 /***********************************************************
     update table, including 'sum' column
 ************************************************************/
-inline void FCM::updateTable(uint64_t row, uint64_t column)
+inline void FCM::updateTable (uint64_t row, uint64_t column)
 {
     ++table[ row * ALPH_SUM_SIZE + column ];        /// update table
     ++table[ row * ALPH_SUM_SIZE + ALPHABET_SIZE ]; /// update 'sum' column

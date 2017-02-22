@@ -18,7 +18,7 @@ public:
     FCM ();                                             /// constructor
     
     void     buildModel ();                             /// build reference(s) model
-    inline   void updateTable(uint64_t, uint64_t);      /// update table, including 'sum' column
+    inline   void updateTable (uint64_t, uint64_t);     /// update table, including 'sum' column
     void     compressTarget (string);                   /// compress target file
     inline   uint8_t symCharToInt (char) const;         /// ACNGT -> 01234
     
