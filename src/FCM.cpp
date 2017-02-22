@@ -65,7 +65,7 @@ void FCM::buildModel ()
             return;                             /// exit this function
         }
     }
-
+    
     uint64_t context;                       	/// context (integer), that slides in the dataset
     uint64_t maxPlaceValue = (uint64_t) pow(ALPHABET_SIZE, contextDepth);
     uint64_t invRepContext = maxPlaceValue - 1; /// inverted repeat context (integer)
@@ -79,9 +79,6 @@ void FCM::buildModel ()
         {
             uint64_t tableSize = refsNumber * maxPlaceValue * ALPH_SUM_SIZE;    /// create table
             uint64_t *table = new uint64_t[ tableSize ];                        /// already initialized with 0's
-    ///********************************
-            htable_t hTable;    /// create hash table
-
             /*
             /// initialize table with 0's
 //            memset(table, 1, sizeof(table[ 0 ]) * tableSize);
