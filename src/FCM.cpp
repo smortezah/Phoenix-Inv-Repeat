@@ -28,7 +28,25 @@ using std::setprecision;
 /***********************************************************
     constructor
 ************************************************************/
-FCM::FCM () {}
+FCM::FCM ()
+{
+    if ( (uint64_t) getRefFilesAddresses().size() > (uint64_t) pow(ALPHABET_SIZE, TABLE_MAX_CONTEXT-getContextDepth()) )
+            setCompressionMode('h');
+    else    setCompressionMode('t');
+    
+    
+    uint64_t maxPlaceValue = (uint64_t) pow(ALPHABET_SIZE, getContextDepth());
+    
+    if (getCompressionMode() == 't')
+    {
+        uint64_t tableSize = getRefFilesAddresses().size() * maxPlaceValue * ALPH_SUM_SIZE;    /// create table
+        uint64_t *table = new uint64_t[tableSize];                        /// already initialized with 0's
+    }
+    else
+    {
+        htable_t hTable;    /// create hash table
+    }
+}
 
 
 /***********************************************************
@@ -37,7 +55,7 @@ FCM::FCM () {}
 void FCM::buildModel ()
 {
     const uint8_t contextDepth     = getContextDepth();         /// context depth
-    const bool isInvertedRepeat    = getInvertedRepeat();       /// inverted repeat
+    const bool isIR                = getInvertedRepeat();       /// inverted repeat
     vector< string > refFilesNames = getRefFilesAddresses();    /// reference file(s) address(es)
     
     uint8_t refsNumber = (uint8_t) refFilesNames.size();        /// number of references
@@ -99,7 +117,7 @@ void FCM::buildModel ()
                         ++table[ context * ALPH_SUM_SIZE + currSymInt ];    /// update table
                         
                         /// considering inverted repeats to update table
-                        if (isInvertedRepeat)
+                        if (isIR)
                         {
                             /// concatenation of inverted repeat context and current symbol
                             uint64_t iRCtxCurrSym = (4 - currSymInt) * maxPlaceValue + invRepContext;
@@ -144,7 +162,7 @@ void FCM::buildModel ()
                         ++hTable[ context ][ currSymInt ];  /// update hash table
                         
                         /// considering inverted repeats to update hash table
-                        if (isInvertedRepeat)
+                        if (isIR)
                         {
                             /// concatenation of inverted repeat context and current symbol
                             uint64_t iRCtxCurrSym = (4 - currSymInt) * maxPlaceValue + invRepContext;
