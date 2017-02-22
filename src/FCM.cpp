@@ -97,9 +97,7 @@ void FCM::buildModel ()
                     for (string::iterator lineIter = refLine.begin(); lineIter != refLine.end(); ++lineIter)
                     {
                         uint8_t currSymInt = symCharToInt(*lineIter);
-                       
-                        updateTable( context, currSymInt ); /// update table, including 'sum' column
-    
+                        
                         /// considering inverted repeats to update table
                         if (isInvertedRepeat)
                         {
@@ -112,6 +110,8 @@ void FCM::buildModel ()
                             /// update table, including 'sum' column, considering inverted repeats
                             updateTable( invRepContext, iRCtxCurrSym % ALPHABET_SIZE );
                         }
+    
+                        updateTable( context, currSymInt ); /// update table, including 'sum' column
                         
                         /// update context
                         context = (uint64_t) (context * ALPHABET_SIZE + currSymInt) % maxPlaceValue;
