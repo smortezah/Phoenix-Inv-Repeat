@@ -32,28 +32,28 @@ Functions::Functions () {}
 ************************************************************/
 void Functions::commandLineParser (int argc, char **argv)
 {
-    Messages messageObj;            /// object for showing messages
-    FCM model;                      /// model
+    Messages messageObj;                /// object for showing messages
+    FCM model;                          /// model
     
     /// using these flags, if both short and long arguments
     /// are entered, just one of them is considered
-    static int h_flag;              /// option 'h' (help)
-    static int A_flag;              /// option 'A' (about)
-    static int v_flag;              /// option 'v' (verbose)
-                                    
-    bool m_flag = false;            /// model parameters entered
-    bool t_flag = false;            /// target(s) file name entered
-    bool r_flag = false;            /// reference(s) file name entered
-    string modelParameters = "";    /// argument of option 'm'
-    string tarFilesNames = "";      /// argument of option 't'
-    string refFilesNames = "";      /// argument of option 'r'
+    static int h_flag;                  /// option 'h' (help)
+    static int A_flag;                  /// option 'A' (about)
+    static int v_flag;                  /// option 'v' (verbose)
+                                        
+    bool m_flag = false;                /// model parameters entered
+    bool t_flag = false;                /// target(s) file name entered
+    bool r_flag = false;                /// reference(s) file name entered
+    string modelParameters = "";        /// argument of option 'm'
+    string tarFilesNames = "";          /// argument of option 't'
+    string refFilesNames = "";          /// argument of option 'r'
     
-    uint8_t n_threads = DEFAULT_N_THREADS;  /// number of threads
+    U8 n_threads = DEFAULT_N_THREADS;   /// number of threads
     
-    int c;                         /// deal with getopt_long()
-    int option_index;              /// option index stored by getopt_long()
-                                   
-    opterr = 0;                    /// force getopt_long() to remain silent when it finds a problem
+    int c;                              /// deal with getopt_long()
+    int option_index;                   /// option index stored by getopt_long()
+                                        
+    opterr = 0;                         /// force getopt_long() to remain silent when it finds a problem
     
     static struct option long_options[] =
             {
@@ -83,12 +83,10 @@ void Functions::commandLineParser (int argc, char **argv)
         {
             case 0:
                 /// If this option set a flag, do nothing else now.
-                if (long_options[ option_index ].flag != 0)
-                    break;
+                if (long_options[ option_index ].flag != 0) break;
                 
                 cout << "option '" << long_options[ option_index ].name << "'\n";
-                if (optarg)
-                    cout << " with arg " << optarg << '\n';
+                if (optarg) cout << " with arg " << optarg << '\n';
                 break;
             
             case 'h':   /// show usage guide
@@ -124,7 +122,7 @@ void Functions::commandLineParser (int argc, char **argv)
             case 'n':   /// needs an integer argument
                 try
                 {
-                    n_threads = (uint8_t) stoi((string) optarg);
+                    n_threads = (U8) stoi((string) optarg);
                     if (n_threads < 1)  n_threads = DEFAULT_N_THREADS;
                 }
                 catch (const invalid_argument &ia)
@@ -160,9 +158,9 @@ void Functions::commandLineParser (int argc, char **argv)
     /// save target file(s) name(s)
     if (t_flag)
     {
-        uint8_t tarIndex = (uint8_t) tarFilesNames.size();
+        U8 tarIndex = (U8) tarFilesNames.size();
         /// save all target files names except the last one
-        for (uint8_t i = tarIndex; i--;)
+        for (U8 i = tarIndex; i--;)
         {
             if (tarFilesNames[ i ] == ',')
             {
@@ -177,9 +175,9 @@ void Functions::commandLineParser (int argc, char **argv)
     /// save reference file(s) name(s)
     if (r_flag)
     {
-        uint8_t refIndex = (uint8_t) refFilesNames.size();
+        U8 refIndex = (U8) refFilesNames.size();
         /// save all reference files names except the last one
-        for (uint8_t i = refIndex; i--;)
+        for (U8 i = refIndex; i--;)
         {
             if (refFilesNames[ i ] == ',')
             {
@@ -195,11 +193,11 @@ void Functions::commandLineParser (int argc, char **argv)
     if (m_flag)
     {
         vector< string > vecParameters; /// to save model parameters (ir, ctx_size, alpha)
-        uint8_t vecParamIndex = 0;     /// to traverse vecParameters
+        U8 vecParamIndex = 0;           /// to traverse vecParameters
         
-        uint8_t parIndex = (uint8_t) modelParameters.size();
+        U8 parIndex = (U8) modelParameters.size();
         /// save all model parameters except the last model
-        for (uint8_t i = parIndex; i--;)
+        for (U8 i = parIndex; i--;)
         {
             if (modelParameters[ i ] == ',')
             {
@@ -211,10 +209,10 @@ void Functions::commandLineParser (int argc, char **argv)
         vecParameters.push_back(modelParameters.substr(0, parIndex));
         
         /// set the alpha denominator of the model
-        model.setAlphaDenom((uint16_t) stoi(vecParameters[ vecParamIndex++ ]));
+        model.setAlphaDenom((U16) stoi(vecParameters[ vecParamIndex++ ]));
 //        model.setAlphaDenom(stod(vecParameters[ vecParamIndex++ ]));
         /// set the context depth of the model
-        model.setContextDepth((uint8_t) stoi(vecParameters[ vecParamIndex++ ]));
+        model.setContextDepth((U8) stoi(vecParameters[ vecParamIndex++ ]));
         /// set the inverted repeat condition of the model
         !stoi(vecParameters[ vecParamIndex ]) ? model.setInvertedRepeat(false)
                                               : model.setInvertedRepeat(true);
@@ -224,28 +222,28 @@ void Functions::commandLineParser (int argc, char **argv)
         
         /*
         /// compress target(s) using reference(s) model -- multithreaded
-        uint8_t MAX_N_THREADS = (uint8_t) thread::hardware_concurrency();   /// max cores in current machine
+        U8 MAX_N_THREADS = (U8) thread::hardware_concurrency(); /// max cores in current machine
         /// N_FREE_THREADS considered for other jobs in current system
-        uint8_t n_threads_available = (uint8_t) (!MAX_N_THREADS ? DEFAULT_N_THREADS - N_FREE_THREADS
+        U8 n_threads_available = (U8) (!MAX_N_THREADS ? DEFAULT_N_THREADS - N_FREE_THREADS
                                                                 : MAX_N_THREADS - N_FREE_THREADS);
-        uint8_t n_targets = (uint8_t) model.getTarAddresses().size();  /// up to 2^8=256 targets
+        U8 n_targets = (U8) model.getTarAddresses().size();     /// up to 2^8=256 targets
 
-        uint8_t arrThrSize = (n_targets > n_threads_available) ? n_threads_available : n_targets;
-        thread *arrThread = new thread[arrThrSize];   /// array of threads
+        U8 arrThrSize = (n_targets > n_threads_available) ? n_threads_available : n_targets;
+        thread *arrThread = new thread[arrThrSize];             /// array of threads
         */
         
         /// compress target(s) using reference(s) model -- multithreaded
-        uint8_t n_targets = (uint8_t) model.getTarAddresses().size();  /// up to 2^8=256 targets
+        U8 n_targets = (U8) model.getTarAddresses().size();     /// up to 2^8=256 targets
 
-        uint8_t arrThrSize = (n_targets > n_threads) ? n_threads : n_targets;
-        thread *arrThread = new thread[ arrThrSize ];   /// array of threads
+        U8 arrThrSize = (n_targets > n_threads) ? n_threads : n_targets;
+        thread *arrThread = new thread[ arrThrSize ];           /// array of threads
 
-        for (uint8_t i = 0; i < n_targets; i += arrThrSize)
+        for (U8 i = 0; i < n_targets; i += arrThrSize)
         {
-            for (uint8_t j = 0; j < arrThrSize && i + j < n_targets; ++j)
+            for (U8 j = 0; j < arrThrSize && i + j < n_targets; ++j)
                 arrThread[ j ] = thread(&FCM::compressTarget, &model, model.getTarAddresses()[ i + j ]);
 
-            for (uint8_t j = 0; j < arrThrSize && i + j < n_targets; ++j)
+            for (U8 j = 0; j < arrThrSize && i + j < n_targets; ++j)
                 arrThread[ j ].join();
         }
 
@@ -256,8 +254,7 @@ void Functions::commandLineParser (int argc, char **argv)
     if (optind < argc)
     {
         cerr << "non-option ARGV-element(s): ";
-        while (optind < argc)
-            cerr << argv[ optind++ ] << " ";
+        while (optind < argc)   cerr << argv[ optind++ ] << " ";
         cerr << '\n';
     }
 }

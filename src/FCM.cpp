@@ -36,50 +36,49 @@ FCM::FCM () {}
 ************************************************************/
 void FCM::buildModel ()
 {
-    const uint8_t contextDepth     = getContextDepth();         /// context depth
-    const bool isInvertedRepeat    = getInvertedRepeat();       /// inverted repeat
-    vector< string > refFilesNames = getRefAddresses();         /// reference file(s) address(es)
+    const U8 contextDepth          = getContextDepth();     /// context depth
+    const bool isInvertedRepeat    = getInvertedRepeat();   /// inverted repeat
+    vector< string > refFilesNames = getRefAddresses();     /// reference file(s) address(es)
 
-    uint8_t refsNumber = (uint8_t) refFilesNames.size();        /// number of references
+    U8 refsNumber = (U8) refFilesNames.size();              /// number of references
 
     /// set compression mode: 't'=table, 'h'=hash table
     /*
     const char mode = (contextDepth > TABLE_MAX_CTX) ? 'h' : 't';
      */
     /// supports multi-references case
-    if ( (uint64_t) refsNumber > (uint64_t) pow(ALPH_SIZE, TABLE_MAX_CTX-contextDepth) )
-        setCompressionMode('h');
-    else
-        setCompressionMode('t');
+    ((U64) refsNumber > (U64) pow(ALPH_SIZE, TABLE_MAX_CTX - contextDepth)) ? setCompressionMode('h')
+                                                                            : setCompressionMode('t');
+    
 
     /// check if reference(s) file(s) cannot be opened, or are empty
     ifstream refFilesIn[ refsNumber ];
 
-    for (uint8_t i = refsNumber; i--;)
+    for (U8 i = refsNumber; i--;)
     {
         refFilesIn[ i ].open( refFilesNames[ i ], ios::in );
-        if (!refFilesIn[ i ])                   /// error occurred while opening file(s)
+        if (!refFilesIn[ i ])               /// error occurred while opening file(s)
         {
             cerr << "The file '" << refFilesNames[ i ] << "' cannot be opened, or it is empty.\n";
-            refFilesIn[ i ].close();            /// close file(s)
-            return;                             /// exit this function
+            refFilesIn[ i ].close();        /// close file(s)
+            return;                         /// exit this function
         }
     }
     
-    uint64_t context;                       	/// context (integer), that slides in the dataset
-    uint64_t maxPlaceValue = (uint64_t) pow(ALPH_SIZE, contextDepth);
-    uint64_t invRepContext = maxPlaceValue - 1; /// inverted repeat context (integer)
-    uint64_t iRCtxCurrSym;                      /// concatenation of inverted repeat context and current symbol
+    U64 context;                       	    /// context (integer), that slides in the dataset
+    U64 maxPlaceValue = (U64) pow(ALPH_SIZE, contextDepth);
+    U64 invRepContext = maxPlaceValue - 1;  /// inverted repeat context (integer)
+    U64 iRCtxCurrSym;                       /// concatenation of inverted repeat context and current symbol
     
-    string refLine;                             /// keep each line of a file
+    string refLine;                         /// keep each line of a file
 
     /// build model based on 't'=table, or 'h'=hash table
     switch ( getCompressionMode() )
     {
         case 't':
         {
-            uint64_t tableSize = refsNumber * maxPlaceValue * ALPH_SUM_SIZE;    /// create table
-            uint64_t *table = new uint64_t[ tableSize ];                        /// already initialized with 0's
+            U64 tableSize = refsNumber * maxPlaceValue * ALPH_SUM_SIZE; /// create table
+            U64 *table = new U64[ tableSize ];                          /// already initialized with 0's
             setTable(table);
             /*
             /// initialize table with 0's
@@ -87,16 +86,16 @@ void FCM::buildModel ()
 //            std::fill_n(table,tableSize,(double) 1/alphaDenom);
             */
             
-            for (uint8_t i = refsNumber; i--;)
+            for (U8 i = refsNumber; i--;)
             {
                 context = 0;    /// reset in the beginning of each reference file
                 
-                while (getline(refFilesIn[ i ], refLine))
+                while ( getline(refFilesIn[ i ], refLine) )
                 {
                     /// fill table by number of occurrences of symbols A, C, N, G, T
                     for (string::iterator lineIter = refLine.begin(); lineIter != refLine.end(); ++lineIter)
                     {
-                        uint8_t currSymInt = symCharToInt(*lineIter);
+                        U8 currSymInt = symCharToInt(*lineIter);
                         
                         /// considering inverted repeats to update table
                         if (isInvertedRepeat)
@@ -105,22 +104,18 @@ void FCM::buildModel ()
                             iRCtxCurrSym = (4 - currSymInt) * maxPlaceValue + invRepContext;
 
                             /// update inverted repeat context (integer)
-                            invRepContext = (uint64_t) iRCtxCurrSym / ALPH_SIZE;
+                            invRepContext = (U64) iRCtxCurrSym / ALPH_SIZE;
 
                             /// update table, including 'sum' column, considering inverted repeats
                             updateTable( invRepContext, iRCtxCurrSym % ALPH_SIZE );
                         }
-    
+                        U64 currSymPos = context * ALPH_SUM_SIZE + currSymInt;
+                        ++table[ currSymPos ];    /// update table
                         updateTable( context, currSymInt ); /// update table, including 'sum' column
-                        /// update context
-                        context = (uint64_t) (context * ALPH_SIZE + currSymInt) % maxPlaceValue;
+                        context = (U64) (currSymPos) % maxPlaceValue; /// update context
     
-    
-    
-    
-                        context = updateTable_Ctx(context,currSymInt,)
-                        
-                        
+//                        updateTable( context, currSymInt ); /// update table, including 'sum' column
+//                        context = (U64) (context * ALPH_SIZE + currSymInt) % maxPlaceValue; /// update context
                     }   /// end for
                 }   /// end while
             }   /// end for
@@ -137,12 +132,12 @@ void FCM::buildModel ()
             {
                 context = 0;    /// reset in the beginning of each reference file
 
-                while (getline(refFilesIn[i], refLine))
+                while ( getline(refFilesIn[ i ], refLine) )
                 {
                     /// fill hash table by number of occurrences of symbols A, C, N, G, T
                     for (string::iterator lineIter = refLine.begin(); lineIter != refLine.end(); ++lineIter)
                     {
-                        uint8_t currSymInt = symCharToInt(*lineIter);
+                        U8 currSymInt = symCharToInt(*lineIter);
                         
                         /// considering inverted repeats to update hash table
                         if (isInvertedRepeat)
@@ -151,15 +146,14 @@ void FCM::buildModel ()
                             iRCtxCurrSym = (4 - currSymInt) * maxPlaceValue + invRepContext;
 
                             /// update inverted repeat context (integer)
-                            invRepContext = (uint64_t) iRCtxCurrSym / ALPH_SIZE;
+                            invRepContext = (U64) iRCtxCurrSym / ALPH_SIZE;
 
                             /// update hash table considering inverted repeats
                             ++hTable[ invRepContext ][ iRCtxCurrSym % ALPH_SIZE ];
                         }
     
                         ++hTable[ context ][ currSymInt ];  /// update hash table
-                        /// update context
-                        context = (uint64_t) (context * ALPH_SIZE + currSymInt) % maxPlaceValue;
+                        context = (U64) (context * ALPH_SIZE + currSymInt) % maxPlaceValue; /// update context
                     }   /// end for
                 }   /// end while
             }
@@ -171,54 +165,41 @@ void FCM::buildModel ()
         default: break;
     }   /// end switch
 
-    for (uint8_t i = refsNumber; i--;)  refFilesIn[i].close();      /// close file(s)
+    for (U8 i = refsNumber; i--;)  refFilesIn[i].close();      /// close file(s)
 }
 
 
 /***********************************************************
     update table, including 'sum' column
 ************************************************************/
-inline void FCM::updateTable (uint64_t row, uint64_t column)
+inline void FCM::updateTable (U64 row, U64 column)
 {
-    ++table[ row * ALPH_SUM_SIZE + column ];    /// update table
+//    ++table[ row * ALPH_SUM_SIZE + column ];    /// update table
     ++table[ row * ALPH_SUM_SIZE + ALPH_SIZE ]; /// update 'sum' column
 }
-
-
-inline uint64_t FCM::updateTable_Ctx (UI64 row, UI64 column)
-{
-    ++table[ row * ALPH_SUM_SIZE + column ];    /// update table
-    ++table[ row * ALPH_SUM_SIZE + ALPH_SIZE ]; /// update 'sum' column
-    
-    uint64_t maxPlaceValue = (uint64_t) pow(ALPH_SIZE, getContextDepth());
-    /// update context and return it
-    return (uint64_t) (row * ALPH_SIZE + column) % maxPlaceValue;
-    
-}
-
 
 
 /***********************************************************
-    convert char (base) to integer (uint8_t): ACNGT -> 01234
+    convert char (base) to integer (U8): ACNGT -> 01234
 ************************************************************/
-inline uint8_t FCM::symCharToInt (char ch) const
+inline U8 FCM::symCharToInt (char ch) const
 {
     switch (ch)
     {
-        case 'A':   return (uint8_t) 0;
-        case 'C':   return (uint8_t) 1;
-        case 'G':   return (uint8_t) 3;
-        case 'T':   return (uint8_t) 4;
-        default:    return (uint8_t) 2;     /// 'N' symbol
+        case 'A':   return (U8) 0;
+        case 'C':   return (U8) 1;
+        case 'G':   return (U8) 3;
+        case 'T':   return (U8) 4;
+        default:    return (U8) 2;  /// 'N' symbol
     }
 
-//    return (uint8_t) (ch % ALPH_SIZE);
+//    return (U8) (ch % ALPH_SIZE);
 
 //    switch (ch)
 //    {
-//        case 'C':   return (uint8_t) 3;
-//        case 'N':   return (uint8_t) 2;
-//        default:    return (uint8_t) (ch % ALPH_SIZE);
+//        case 'C':   return (U8) 3;
+//        case 'N':   return (U8) 2;
+//        default:    return (U8) (ch % ALPH_SIZE);
 //    }
 }
 
@@ -231,8 +212,8 @@ void FCM::compressTarget (string tarFileName)
     const double alpha = (double) 1/getAlphaDenom();    /// alpha -- used in P denominator
     const double sumAlphas = ALPH_SIZE * alpha;     /// used in P numerator
     
-    const uint8_t contextDepth  = getContextDepth();    /// get context depth
-//    const uint16_t alphaDen     = getAlphaDenom();      /// get alpha denominator
+    const U8 contextDepth  = getContextDepth();    /// get context depth
+//    const U16 alphaDen     = getAlphaDenom();      /// get alpha denominator
     
     ifstream tarFileIn( tarFileName, ios::in ); /// open target file
     
@@ -247,17 +228,17 @@ void FCM::compressTarget (string tarFileName)
     mut.unlock();
     /// mutex unlock ======================================================
     
-    uint64_t maxPlaceValue = (uint64_t) pow(ALPH_SIZE, contextDepth);
-    uint64_t tarContext = 0;                    /// context (integer), that slides in the dataset
+    U64 maxPlaceValue = (U64) pow(ALPH_SIZE, contextDepth);
+    U64 tarContext = 0;                    /// context (integer), that slides in the dataset
     
     string tarLine;                             /// keep each line of the file
     
     ////////////////////////////////
-    uint64_t nSym;                              /// number of symbols (n_s). To calculate probability
-    uint64_t sumNSyms;                          /// sum of number of symbols (sum n_a). To calculate probability
+    U64 nSym;                              /// number of symbols (n_s). To calculate probability
+    U64 sumNSyms;                          /// sum of number of symbols (sum n_a). To calculate probability
     double   probability = 0;                   /// probability of a symbol, based on an identified context
     double   sumOfEntropies = 0;                /// sum of entropies for different symbols
-    uint64_t totalNOfSyms = 0;                  /// number of all symbols in the sequence
+    U64 totalNOfSyms = 0;                  /// number of all symbols in the sequence
     double   averageEntropy = 0;                /// average entropy (H)
     //////////////////////////////////
     
@@ -276,7 +257,7 @@ void FCM::compressTarget (string tarFileName)
 #define Y(in) do { \
                 (mode == 't') \
                 ? in = table[ tarContext * ALPH_SUM_SIZE + ALPH_SIZE ] \
-                : in = 0; for (uint64_t u : hTable[ tarContext ]) in += u; \
+                : in = 0; for (U64 u : hTable[ tarContext ]) in += u; \
               } while ( 0 )
     */
     
@@ -284,7 +265,7 @@ void FCM::compressTarget (string tarFileName)
     {
         case 't':
         {
-            uint64_t *table = getTable();
+            U64 *table = getTable();
     
             while (getline(tarFileIn, tarLine))
             {
@@ -296,7 +277,7 @@ void FCM::compressTarget (string tarFileName)
                 /// table includes the number of occurrences of symbols A, C, N, G, T
                 for (string::iterator lineIter = tarLine.begin(); lineIter != tarLine.end(); ++lineIter)
                 {
-                    uint8_t currSymInt = symCharToInt(*lineIter);   /// integer version of the current symbol
+                    U8 currSymInt = symCharToInt(*lineIter);   /// integer version of the current symbol
         
                     //////////////////////////////////
                     /// number of symbols
@@ -321,7 +302,7 @@ void FCM::compressTarget (string tarFileName)
                     /////////////////////////////////
         
                     /// update context
-                    tarContext = (uint64_t) (tarContext * ALPH_SIZE + currSymInt) % maxPlaceValue;
+                    tarContext = (U64) (tarContext * ALPH_SIZE + currSymInt) % maxPlaceValue;
                 }   /// end for
             }   /// end while
         }   /// end case
@@ -341,7 +322,7 @@ void FCM::compressTarget (string tarFileName)
                 /// hash table includes the number of occurrences of symbols A, C, N, G, T
                 for (string::iterator lineIter = tarLine.begin(); lineIter != tarLine.end(); ++lineIter)
                 {
-                    uint8_t currSymInt = symCharToInt(*lineIter);   /// integer version of the current symbol
+                    U8 currSymInt = symCharToInt(*lineIter);   /// integer version of the current symbol
         
                     //////////////////////////////////
 //                    if (hTable.find(tarContext) == hTable.end()) { nSym = 0;   sumNSyms = 0; }
@@ -356,7 +337,7 @@ void FCM::compressTarget (string tarFileName)
                     
                         /// the idea of adding 'sum' column, makes hash table slower
                         /// sum(n_a)
-                        sumNSyms = 0; for (uint64_t u : hTable[ tarContext ])   sumNSyms = sumNSyms + u;
+                        sumNSyms = 0; for (U64 u : hTable[ tarContext ])   sumNSyms = sumNSyms + u;
                         /*
                         Y(sumNSyms);
                         */
@@ -371,7 +352,7 @@ void FCM::compressTarget (string tarFileName)
                     /////////////////////////////////
         
                     /// update context
-                    tarContext = (uint64_t) (tarContext * ALPH_SIZE + currSymInt) % maxPlaceValue;
+                    tarContext = (U64) (tarContext * ALPH_SIZE + currSymInt) % maxPlaceValue;
                 }   /// end for
             }   /// end while
         }   /// end case
@@ -391,9 +372,9 @@ void FCM::compressTarget (string tarFileName)
 //    cout << ' ';
     
     /// to print reference and target file names in the output
-    uint8_t refsAdressesSize = (uint8_t) getRefAddresses().size();
+    U8 refsAdressesSize = (U8) getRefAddresses().size();
     size_t lastSlash_Ref[ refsAdressesSize ];
-    for (uint8_t i = refsAdressesSize; i--;)
+    for (U8 i = refsAdressesSize; i--;)
         lastSlash_Ref[ i ] = getRefAddresses()[ i ].find_last_of("/");
     size_t lastSlash_Tar = tarFileName.find_last_of("/");
     
@@ -435,8 +416,8 @@ void FCM::compressTarget (string tarFileName)
 //************************************************************/
 //void FCM::buildTable ()
 //{
-//    const uint8_t contextDepth  = getContextDepth();    /// get context depth
-//    const uint16_t alphaDen     = getAlphaDenom();      /// get alpha denominator
+//    const U8 contextDepth  = getContextDepth();    /// get context depth
+//    const U16 alphaDen     = getAlphaDenom();      /// get alpha denominator
 //    const bool isInvertedRepeat = getInvertedRepeat();  /// get inverted repeat
 //    /// TODO: supprt for both target and reference file addresses
 //    string fileName = getTarFileAddress();              /// get target file address
@@ -465,23 +446,23 @@ void FCM::compressTarget (string tarFileName)
 //    }
 //
 //    /// create table
-//    /// 5^TABLE_MAX_CTX < 2^32 => uint32_t is used, otherwise uint64_t
-//    uint32_t maxPlaceValue = (uint32_t) pow(ALPH_SIZE, contextDepth);
-//    uint64_t tableSize = maxPlaceValue * ALPH_SUM_SIZE;
-//    uint64_t *table = new uint64_t[ tableSize ];
+//    /// 5^TABLE_MAX_CTX < 2^32 => U32 is used, otherwise U64
+//    U32 maxPlaceValue = (U32) pow(ALPH_SIZE, contextDepth);
+//    U64 tableSize = maxPlaceValue * ALPH_SUM_SIZE;
+//    U64 *table = new U64[ tableSize ];
 //
 //    /// initialize table with 0's
 //    memset(table, 0, sizeof(table[0]) * tableSize);
 //
-//    uint32_t context = 0;                       /// context (integer), that slides in the dataset
-//    uint32_t invRepContext = maxPlaceValue - 1; /// inverted repeat context (integer)
+//    U32 context = 0;                       /// context (integer), that slides in the dataset
+//    U32 invRepContext = maxPlaceValue - 1; /// inverted repeat context (integer)
 //
 //    ////////////////////////////////
-//    uint64_t nSym;                      /// number of symbols (n_s). To calculate probability
-//    uint64_t sumNSyms;                  /// sum of number of symbols (sum n_a). To calculate probability
+//    U64 nSym;                      /// number of symbols (n_s). To calculate probability
+//    U64 sumNSyms;                  /// sum of number of symbols (sum n_a). To calculate probability
 //    double   probability = 0;           /// probability of a symbol, based on an identified context
 //    double   sumOfEntropies = 0;        /// sum of entropies for different symbols
-//    uint64_t totalNumberOfSymbols = 0;  /// number of all symbols in the sequence
+//    U64 totalNumberOfSymbols = 0;  /// number of all symbols in the sequence
 //    double   averageEntropy = 0;        /// average entropy (H)
 //    //////////////////////////////////
 //
@@ -497,21 +478,21 @@ void FCM::compressTarget (string tarFileName)
 //        /// fill hash table by number of occurrences of symbols A, C, N, G, T
 //        for (string::iterator lineIter = datasetLine.begin(); lineIter != datasetLine.end(); ++lineIter)
 //        {
-//            /// htable includes an array of uint64_t numbers
+//            /// htable includes an array of U64 numbers
 //            char ch = *lineIter;
-//            uint8_t currSymInt = (uint8_t) ((ch == 'A') ? 0 :
+//            U8 currSymInt = (U8) ((ch == 'A') ? 0 :
 //                                            (ch == 'C') ? 1 :
 //                                            (ch == 'G') ? 3 :
 //                                            (ch == 'T') ? 4 : 2);
 //
-////            uint8_t currSymInt = (ch == 'A') ? (uint8_t) 0 :
-////                                 (ch == 'C') ? (uint8_t) 1 :
-////                                 (ch == 'G') ? (uint8_t) 3 :
-////                                 (ch == 'T') ? (uint8_t) 4 : (uint8_t) 2;
-////            uint8_t currSymInt = ch % ALPHABET_SIZE;
-////            uint8_t currSymInt = (ch == 'C') ? (uint8_t) 3 :
-////                                 (ch == 'N') ? (uint8_t) 2 :
-////                                 (uint8_t) (ch % ALPHABET_SIZE);
+////            U8 currSymInt = (ch == 'A') ? (U8) 0 :
+////                                 (ch == 'C') ? (U8) 1 :
+////                                 (ch == 'G') ? (U8) 3 :
+////                                 (ch == 'T') ? (U8) 4 : (U8) 2;
+////            U8 currSymInt = ch % ALPHABET_SIZE;
+////            U8 currSymInt = (ch == 'C') ? (U8) 3 :
+////                                 (ch == 'N') ? (U8) 2 :
+////                                 (U8) (ch % ALPHABET_SIZE);
 //
 //            /// update table
 //            nSym = table[ context * ALPH_SUM_SIZE + currSymInt ]++;
@@ -520,15 +501,15 @@ void FCM::compressTarget (string tarFileName)
 //            if (isInvertedRepeat)
 //            {
 //                /// concatenation of inverted repeat context and current symbol
-//                uint32_t iRCtxCurrSym = (4 - currSymInt) * maxPlaceValue + invRepContext;
+//                U32 iRCtxCurrSym = (4 - currSymInt) * maxPlaceValue + invRepContext;
 //
 ////                /// to save quotient and reminder of a division
 ////                div_t iRCtxCurrSymDiv;
 ////                iRCtxCurrSymDiv = div(iRCtxCurrSym, ALPHABET_SIZE);
 //
 //                /// update inverted repeat context (integer)
-////                invRepContext = (uint32_t) iRCtxCurrSymDiv.quot;
-//                invRepContext = (uint32_t) iRCtxCurrSym / ALPH_SIZE;
+////                invRepContext = (U32) iRCtxCurrSymDiv.quot;
+//                invRepContext = (U32) iRCtxCurrSym / ALPH_SIZE;
 //
 //                /// update table considering inverted repeats
 ////                ++table[ invRepContext*ALPHABET_SIZE + iRCtxCurrSymDiv.rem ];
@@ -539,9 +520,9 @@ void FCM::compressTarget (string tarFileName)
 //
 //            //////////////////////////////////
 //            /// sum(n_a)
-////            uint64_t *pointerToTable = table;   /// pointer to the beginning of table
+////            U64 *pointerToTable = table;   /// pointer to the beginning of table
 ////            sumNSyms = 0;
-////            for (uint8_t i = 0; i < ALPHABET_SIZE; ++i)
+////            for (U8 i = 0; i < ALPHABET_SIZE; ++i)
 ////                sumNSyms += *(pointerToTable + context*ALPHABET_SIZE + i);
 //            sumNSyms = ++table[ context * ALPH_SUM_SIZE + ALPH_SIZE ];
 //
@@ -554,7 +535,7 @@ void FCM::compressTarget (string tarFileName)
 //            /////////////////////////////////
 //
 //            /// update context
-//            context = (uint32_t) (context * ALPH_SIZE + currSymInt) % maxPlaceValue;
+//            context = (U32) (context * ALPH_SIZE + currSymInt) % maxPlaceValue;
 //
 //        }   /// end of for
 //    }   /// end of while
@@ -588,8 +569,8 @@ void FCM::compressTarget (string tarFileName)
 //************************************************************/
 //void FCM::buildHashTable ()
 //{
-//    const uint8_t contextDepth  = getContextDepth();    /// get context depth
-//    const uint16_t alphaDen     = getAlphaDenom();      /// get alpha denominator
+//    const U8 contextDepth  = getContextDepth();    /// get context depth
+//    const U16 alphaDen     = getAlphaDenom();      /// get alpha denominator
 //    const bool isInvertedRepeat = getInvertedRepeat();  /// get inverted repeat
 //    /// TODO: supprt for both target and reference file addresses
 //    string fileName = getTarFileAddress();              /// get target file address
@@ -617,19 +598,19 @@ void FCM::compressTarget (string tarFileName)
 //        return;                                 /// exit this function
 //    }
 //
-//    uint64_t context = 0;                       /// context, that slides in the dataset
-//    uint64_t maxPlaceValue = (uint64_t) pow(ALPH_SIZE, contextDepth);
-//    uint64_t invRepContext = maxPlaceValue - 1; /// inverted repeat context
+//    U64 context = 0;                       /// context, that slides in the dataset
+//    U64 maxPlaceValue = (U64) pow(ALPH_SIZE, contextDepth);
+//    U64 invRepContext = maxPlaceValue - 1; /// inverted repeat context
 //
 //    htable_t hTable;                            /// create hash table
 //    hTable.insert({context, {0, 0, 0, 0, 0}});  /// initialize hash table with 0's
 //
 //    //////////////////////////////////
-//    uint64_t nSym;                     /// number of symbols (n_s). To calculate probability
-//    uint64_t sumNSyms;                 /// sum of number of symbols (sum n_a). To calculate probability
+//    U64 nSym;                     /// number of symbols (n_s). To calculate probability
+//    U64 sumNSyms;                 /// sum of number of symbols (sum n_a). To calculate probability
 //    double   probability = 0;          /// probability of a symbol, based on an identified context
 //    double   sumOfEntropies = 0;       /// sum of entropies for different symbols
-//    uint64_t totalNumberOfSymbols = 0; /// number of all symbols in the sequence
+//    U64 totalNumberOfSymbols = 0; /// number of all symbols in the sequence
 //    double   averageEntropy = 0;       /// average entropy (H)
 //    //////////////////////////////////
 //
@@ -645,21 +626,21 @@ void FCM::compressTarget (string tarFileName)
 //        /// fill hash table by number of occurrences of symbols A, C, N, G, T
 //        for (string::iterator lineIter = datasetLine.begin(); lineIter != datasetLine.end(); ++lineIter)
 //        {
-//            /// htable includes an array of uint64_t numbers
+//            /// htable includes an array of U64 numbers
 //            char ch = *lineIter;
-//            uint8_t currSymInt = (uint8_t) ((ch == 'A') ? 0 :
+//            U8 currSymInt = (U8) ((ch == 'A') ? 0 :
 //                                            (ch == 'C') ? 1 :
 //                                            (ch == 'G') ? 3 :
 //                                            (ch == 'T') ? 4 : 2);
 //
-////            uint8_t currSymInt = (ch == 'A') ? (uint8_t) 0 :
-////                                 (ch == 'C') ? (uint8_t) 1 :
-////                                 (ch == 'G') ? (uint8_t) 3 :
-////                                 (ch == 'T') ? (uint8_t) 4 : (uint8_t) 2;
-////            uint8_t currSymInt = ch % 5;
-////            uint8_t currSymInt = (ch == 'C') ? (uint8_t) 3 :
-////                                 (ch == 'N') ? (uint8_t) 2 :
-////                                 (uint8_t) (ch % ALPHABET_SIZE);
+////            U8 currSymInt = (ch == 'A') ? (U8) 0 :
+////                                 (ch == 'C') ? (U8) 1 :
+////                                 (ch == 'G') ? (U8) 3 :
+////                                 (ch == 'T') ? (U8) 4 : (U8) 2;
+////            U8 currSymInt = ch % 5;
+////            U8 currSymInt = (ch == 'C') ? (U8) 3 :
+////                                 (ch == 'N') ? (U8) 2 :
+////                                 (U8) (ch % ALPHABET_SIZE);
 //
 //            /// update hash table
 //            nSym = hTable[ context ][ currSymInt ]++;
@@ -668,7 +649,7 @@ void FCM::compressTarget (string tarFileName)
 //            if (isInvertedRepeat)
 //            {
 //                /// concatenation of inverted repeat context and current symbol
-//                uint64_t iRCtxCurrSym = (4 - currSymInt) * maxPlaceValue + invRepContext;
+//                U64 iRCtxCurrSym = (4 - currSymInt) * maxPlaceValue + invRepContext;
 //
 //                /// to save quotient and reminder of a division
 ////                div_t iRCtxCurrSymDiv;
@@ -676,7 +657,7 @@ void FCM::compressTarget (string tarFileName)
 //
 //                /// update inverted repeat context (integer)
 ////                invRepContext =  iRCtxCurrSymDiv.quot;
-//                invRepContext = (uint64_t) iRCtxCurrSym / ALPH_SIZE;
+//                invRepContext = (U64) iRCtxCurrSym / ALPH_SIZE;
 //
 //                /// update table considering inverted repeats
 ////                ++hTable[ invRepContext ][ iRCtxCurrSymDiv.rem];
@@ -687,7 +668,7 @@ void FCM::compressTarget (string tarFileName)
 //            /// the idea of adding 'sum' column, makes hash table slower
 //            /// sum(n_a)
 //            sumNSyms = 0;
-//            for (uint64_t u : hTable[ context ])    sumNSyms += u;
+//            for (U64 u : hTable[ context ])    sumNSyms += u;
 //
 //            /// P(s|c^t)
 ////            probability = (nSym + (double) 1/alphaDen) / (sumNSyms + (double) ALPHABET_SIZE/alphaDen);
@@ -698,7 +679,7 @@ void FCM::compressTarget (string tarFileName)
 //            /////////////////////////////////
 //
 //            /// update context
-//            context = (uint64_t) (context * ALPH_SIZE + currSymInt) % maxPlaceValue;
+//            context = (U64) (context * ALPH_SIZE + currSymInt) % maxPlaceValue;
 //
 //        }   /// end of for
 //    }   /// end of while
@@ -740,8 +721,8 @@ void FCM::compressTarget (string tarFileName)
 
 void FCM::buildHashTable_str ()
 {
-    const uint8_t contextDepth  = getContextDepth();    /// get context depth
-    const uint16_t alphaDen     = getAlphaDenom();      /// get alpha denominator
+    const U8 contextDepth  = getContextDepth();    /// get context depth
+    const U16 alphaDen     = getAlphaDenom();      /// get alpha denominator
     const bool isInvertedRepeat = getInvertedRepeat();  /// get inverted repeat
     /// TODO: supprt for both target and reference file addresses
     string fileName = getTarFileAddress();              /// get target file address
@@ -775,11 +756,11 @@ void FCM::buildHashTable_str ()
     hTable.insert({context, {0, 0, 0, 0, 0}});  /// initialize hash table with 0'z
 
     ////////////////////////////////
-    uint64_t nSym;                     /// number of symbols (n_s). To calculate probability
-    uint64_t sumNSyms;                 /// sum of number of symbols (sum n_a). To calculate probability
+    U64 nSym;                     /// number of symbols (n_s). To calculate probability
+    U64 sumNSyms;                 /// sum of number of symbols (sum n_a). To calculate probability
     double   probability = 0;          /// probability of a symbol, based on an identified context
     double   sumOfEntropies = 0;       /// sum of entropies for different symbols
-    uint64_t totalNumberOfSymbols = 0; /// number of all symbols in the sequence
+    U64 totalNumberOfSymbols = 0; /// number of all symbols in the sequence
     double   averageEntropy = 0;       /// average entropy (H)
     //////////////////////////////////
 
@@ -795,13 +776,13 @@ void FCM::buildHashTable_str ()
         /// fill hash table by number of occurrences of symbols A, C, N, G, T
         for (string::iterator lineIter = datasetLine.begin(); lineIter != datasetLine.end(); ++lineIter)
         {
-            /// htable includes an array of uint64_t numbers
+            /// htable includes an array of U64 numbers
             char c = *lineIter;
-            uint8_t currSymInt = (c == 'A') ? (uint8_t) 0 :
-                                 (c == 'C') ? (uint8_t) 1 :
-                                 (c == 'G') ? (uint8_t) 3 :
-                                 (c == 'T') ? (uint8_t) 4 : (uint8_t) 2;
-//            const uint8_t currSymInt = c % 5;
+            U8 currSymInt = (c == 'A') ? (U8) 0 :
+                                 (c == 'C') ? (U8) 1 :
+                                 (c == 'G') ? (U8) 3 :
+                                 (c == 'T') ? (U8) 4 : (U8) 2;
+//            const U8 currSymInt = c % 5;
 
             /// update hash table
             nSym = hTable[ context ][ currSymInt ]++;
@@ -822,7 +803,7 @@ void FCM::buildHashTable_str ()
             //////////////////////////////////
             /// sum(n_a)
             sumNSyms = 0;
-            for (uint64_t u : hTable[ context ])    sumNSyms += u;
+            for (U64 u : hTable[ context ])    sumNSyms += u;
 
             /// P(s|c^t)
 //            probability = (nSym + (double) 1/alphaDen) / (sumNSyms + (double) ALPH_SIZE/alphaDen);
@@ -878,8 +859,8 @@ void FCM::printHashTable () const
 //    htable_t hTable = getHashTable();
 
     cout
-         << " >>> Context order size:\t" << (uint16_t) this->getContextDepth() << '\n'
-         << " >>> Alpha denominator:\t\t" << (uint16_t) this->getAlphaDenom() << '\n'
+         << " >>> Context order size:\t" << (U16) this->getContextDepth() << '\n'
+         << " >>> Alpha denominator:\t\t" << (U16) this->getAlphaDenom() << '\n'
          << " >>> Inverted repeat:\t\t" << (this->getInvertedRepeat() ? "Considered"
                                                                       : "Not considered")
          << '\n'
@@ -897,7 +878,7 @@ void FCM::printHashTable () const
     {
         cout << it->first;
         cout << "\t";
-        for (uint64_t i : it->second)    cout << i << "\t";
+        for (U64 i : it->second)    cout << i << "\t";
         cout << '\n';
     }
     cout << '\n';
@@ -909,16 +890,16 @@ void FCM::printHashTable () const
 ************************************************************/
 char     FCM::getCompressionMode () const              { return compressionMode;            }
 void     FCM::setCompressionMode (char cM)             { FCM::compressionMode = cM;         }
-uint8_t  FCM::getContextDepth () const                 { return contextDepth;               }
-void     FCM::setContextDepth (uint8_t ctxDp)          { FCM::contextDepth = ctxDp;         }
-uint16_t FCM::getAlphaDenom () const                   { return alphaDenom;                 }
-void     FCM::setAlphaDenom (uint16_t alphaDen)        { FCM::alphaDenom = alphaDen;        }
+U8  FCM::getContextDepth () const                 { return contextDepth;               }
+void     FCM::setContextDepth (U8 ctxDp)          { FCM::contextDepth = ctxDp;         }
+U16 FCM::getAlphaDenom () const                   { return alphaDenom;                 }
+void     FCM::setAlphaDenom (U16 alphaDen)        { FCM::alphaDenom = alphaDen;        }
 //double FCM::getAlphaDenom () const                       { return alphaDenom;             }
 //void FCM::setAlphaDenom (double alphaDen)                { FCM::alphaDenom = alphaDen;    }
 bool     FCM::getInvertedRepeat () const               { return invertedRepeat;             }
 void     FCM::setInvertedRepeat (bool invRep)          { FCM::invertedRepeat = invRep;      }
-uint64_t *FCM::getTable () const                       { return table;                      }
-void     FCM::setTable (uint64_t *tbl)                 { FCM::table = tbl;                  }
+U64 *FCM::getTable () const                       { return table;                      }
+void     FCM::setTable (U64 *tbl)                 { FCM::table = tbl;                  }
 const    htable_t &FCM::getHashTable () const          { return hashTable;                  }
 void     FCM::setHashTable (const htable_t &hT)        { FCM::hashTable = hT;               }
 //const htable_str_t &FCM::getHashTable_str () const       { return hashTable_str;          }

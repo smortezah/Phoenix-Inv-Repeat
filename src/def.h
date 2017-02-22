@@ -31,13 +31,19 @@ using std::array;
 /***********************************************************
     typedef
 ************************************************************/
+typedef uint8_t  U8;
+typedef uint16_t U16;
+typedef uint32_t U32;
+typedef uint64_t U64;
+typedef int8_t   I8;
+typedef int16_t  I16;
+typedef int32_t  I32;
+typedef int64_t  I64;
+
 /// vaghti bishtar az 65,535 (uint16_t max) shod, hameye adad ha nesf mishan.
 /// ye variable ro ham tanzim kon ke maloom she chand bar nesf kardim
 //typedef unordered_map< string, array< uint64_t, ALPH_SIZE > > htable_str_t;
-typedef unordered_map< uint64_t , array< uint64_t, ALPH_SIZE > > htable_t;
-
-typedef uint8_t UI8;
-typedef uint64_t UI64;
+typedef unordered_map< U64 , array< U64, ALPH_SIZE > > htable_t;
 
 
 #endif //PHOENIX_DEF_H

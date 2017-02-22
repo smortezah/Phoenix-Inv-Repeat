@@ -24,12 +24,11 @@ using std::setprecision;
 ///////////////////////////////////////////////////////////
 /////////                 M A I N                 /////////
 ///////////////////////////////////////////////////////////
-int32_t main (int argc, char *argv[])
+int main (int argc, char *argv[])
 {
     high_resolution_clock::time_point exeStartTime = high_resolution_clock::now();  /// Record start time
 
-    /// for access to Functions (object 'function' on memory stack)
-    Functions function;
+    Functions function;                     /// object 'function' on memory stack
     function.commandLineParser(argc, argv); /// parse the command line
     
     
@@ -38,9 +37,7 @@ int32_t main (int argc, char *argv[])
     
     
     high_resolution_clock::time_point exeFinishTime = high_resolution_clock::now(); /// Record end time
-    
-    /// calculate and show duration in seconds
-    std::chrono::duration< double > elapsed = exeFinishTime - exeStartTime;
+    std::chrono::duration< double > elapsed = exeFinishTime - exeStartTime; /// calculate and show duration in seconds
     
     cout << "Elapsed time: " << std::fixed << setprecision(3) << elapsed.count() << '\n';
     
