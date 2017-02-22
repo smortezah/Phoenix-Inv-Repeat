@@ -69,7 +69,8 @@ void FCM::buildModel ()
     uint64_t context;                       	/// context (integer), that slides in the dataset
     uint64_t maxPlaceValue = (uint64_t) pow(ALPHABET_SIZE, contextDepth);
     uint64_t invRepContext = maxPlaceValue - 1; /// inverted repeat context (integer)
-
+    uint64_t iRCtxCurrSym;                      /// concatenation of inverted repeat context and current symbol
+    
     string refLine;                             /// keep each line of a file
 
     /// build model based on 't'=table, or 'h'=hash table
@@ -85,7 +86,7 @@ void FCM::buildModel ()
 //            memset(table, 1, sizeof(table[ 0 ]) * tableSize);
 //            std::fill_n(table,tableSize,(double) 1/alphaDenom);
             */
-
+    
             for (uint8_t i = refsNumber; i--;)
             {
                 context = 0;    /// reset in the beginning of each reference file
@@ -103,7 +104,7 @@ void FCM::buildModel ()
                         if (isInvertedRepeat)
                         {
                             /// concatenation of inverted repeat context and current symbol
-                            uint64_t iRCtxCurrSym = (4 - currSymInt) * maxPlaceValue + invRepContext;
+                            iRCtxCurrSym = (4 - currSymInt) * maxPlaceValue + invRepContext;
 
                             /// update inverted repeat context (integer)
                             invRepContext = (uint64_t) iRCtxCurrSym / ALPHABET_SIZE;
@@ -143,7 +144,7 @@ void FCM::buildModel ()
                         if (isInvertedRepeat)
                         {
                             /// concatenation of inverted repeat context and current symbol
-                            uint64_t iRCtxCurrSym = (4 - currSymInt) * maxPlaceValue + invRepContext;
+                            iRCtxCurrSym = (4 - currSymInt) * maxPlaceValue + invRepContext;
 
                             /// update inverted repeat context (integer)
                             invRepContext = (uint64_t) iRCtxCurrSym / ALPHABET_SIZE;
