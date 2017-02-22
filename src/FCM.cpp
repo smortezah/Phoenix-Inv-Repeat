@@ -112,7 +112,6 @@ void FCM::buildModel ()
                         }
     
                         updateTable( context, currSymInt ); /// update table, including 'sum' column
-                        
                         /// update context
                         context = (uint64_t) (context * ALPHABET_SIZE + currSymInt) % maxPlaceValue;
                     }   /// end for
@@ -137,9 +136,7 @@ void FCM::buildModel ()
                     for (string::iterator lineIter = refLine.begin(); lineIter != refLine.end(); ++lineIter)
                     {
                         uint8_t currSymInt = symCharToInt(*lineIter);
-
-                        ++hTable[ context ][ currSymInt ];  /// update hash table
-
+                        
                         /// considering inverted repeats to update hash table
                         if (isInvertedRepeat)
                         {
@@ -152,7 +149,8 @@ void FCM::buildModel ()
                             /// update hash table considering inverted repeats
                             ++hTable[ invRepContext ][ iRCtxCurrSym % ALPHABET_SIZE ];
                         }
-
+    
+                        ++hTable[ context ][ currSymInt ];  /// update hash table
                         /// update context
                         context = (uint64_t) (context * ALPHABET_SIZE + currSymInt) % maxPlaceValue;
                     }   /// end for
