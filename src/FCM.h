@@ -19,7 +19,7 @@ public:
     
     void     buildModel ();                             /// build reference(s) model
     inline   void updateTable (uint64_t, uint64_t);     /// update table, including 'sum' column
-    inline   void updateTable_Context (uint64_t, uint64_t);     /// update table (including 'sum' column) and context
+    inline   uint64_t updateTable_Ctx (UI64, UI64);   /// update table (including 'sum' column) and context
     
     void     compressTarget (string);                   /// compress target file
     inline   uint8_t symCharToInt (char) const;         /// ACNGT -> 01234

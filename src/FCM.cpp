@@ -114,6 +114,13 @@ void FCM::buildModel ()
                         updateTable( context, currSymInt ); /// update table, including 'sum' column
                         /// update context
                         context = (uint64_t) (context * ALPH_SIZE + currSymInt) % maxPlaceValue;
+    
+    
+    
+    
+                        context = updateTable_Ctx(context,currSymInt,)
+                        
+                        
                     }   /// end for
                 }   /// end while
             }   /// end for
@@ -173,15 +180,20 @@ void FCM::buildModel ()
 ************************************************************/
 inline void FCM::updateTable (uint64_t row, uint64_t column)
 {
-    ++table[ row * ALPH_SUM_SIZE + column ];        /// update table
+    ++table[ row * ALPH_SUM_SIZE + column ];    /// update table
     ++table[ row * ALPH_SUM_SIZE + ALPH_SIZE ]; /// update 'sum' column
 }
 
 
-inline void FCM::updateTable_Context (uint64_t row, uint64_t column)
+inline uint64_t FCM::updateTable_Ctx (UI64 row, UI64 column)
 {
-    ++table[ row * ALPH_SUM_SIZE + column ];        /// update table
+    ++table[ row * ALPH_SUM_SIZE + column ];    /// update table
     ++table[ row * ALPH_SUM_SIZE + ALPH_SIZE ]; /// update 'sum' column
+    
+    uint64_t maxPlaceValue = (uint64_t) pow(ALPH_SIZE, getContextDepth());
+    /// update context and return it
+    return (uint64_t) (row * ALPH_SIZE + column) % maxPlaceValue;
+    
 }
 
 

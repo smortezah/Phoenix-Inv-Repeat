@@ -36,5 +36,8 @@ using std::array;
 //typedef unordered_map< string, array< uint64_t, ALPH_SIZE > > htable_str_t;
 typedef unordered_map< uint64_t , array< uint64_t, ALPH_SIZE > > htable_t;
 
+typedef uint8_t UI8;
+typedef uint64_t UI64;
+
 
 #endif //PHOENIX_DEF_H
