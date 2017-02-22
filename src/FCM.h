@@ -18,20 +18,17 @@ public:
     FCM ();                                          /// constructor
     
     void   buildModel ();                            /// build reference(s) model
-    inline void updateTable (U64, U64);              /// update table, including 'sum' column
-    
     void   compressTarget (string);                  /// compress target file
     inline U8 symCharToInt (char) const;             /// ACNGT -> 01234
+    inline void updateTable (U64*, U64, U64);              /// update table, including 'sum' column
                                                      
 //    void buildHashTable_str ();                             /// build hash table (string key)
     void     printHashTable () const;                /// print hash table
                                                      
-    char   getCompressionMode () const;              /// getter of compression mode
-    void   setCompressionMode (char);                /// setter of compression mode
     U8     getContextDepth () const;                 /// getter of context depth
     void   setContextDepth (U8);                     /// setter of context depth
     U16    getAlphaDenom () const;                   /// getter of alpha denominator
-    void   setAlphaDenom (U16);                      /// setter of alpha denominator
+    void   setAlphaDenom (const U16);                      /// setter of alpha denominator
     bool   getInvertedRepeat () const;               /// getter of inverted repeat
     void   setInvertedRepeat (bool);                 /// setter of inverted repeat
     U64    *getTable () const;                       /// getter of table
@@ -47,13 +44,13 @@ public:
     
 private:
     std::mutex mut;                                  /// mutex
+    char       compressionMode;                      /// compression mode (table / hash table)
     
-    char     compressionMode;                        /// compression mode (table / hash table)
-    U8       contextDepth;                           /// context depth (SIZE <= 255)
-    U16      alphaDenom;                             /// alpha denominator
-    bool     invertedRepeat;                         /// inverted repeat
-    U64      *table;                                 /// table
-    htable_t hashTable;                              /// hash table (int key)
+    U8         contextDepth;                         /// context depth (SIZE <= 255)
+    U16        alphaDenom;                           /// alpha denominator
+    bool       invertedRepeat;                       /// inverted repeat
+    U64        *table;                               /// table
+    htable_t   hashTable;                            /// hash table (int key)
 //    htable_str_t hashTable_str;                             /// hash table (string key)
     vector<string> tarAddresses;                     /// target files addresses
     vector<string> refAddresses;                     /// reference files addresses

@@ -47,10 +47,8 @@ void FCM::buildModel ()
     const char mode = (contextDepth > TABLE_MAX_CTX) ? 'h' : 't';
      */
     /// supports multi-references case
-    ((U64) refsNumber > (U64) pow(ALPH_SIZE, TABLE_MAX_CTX - contextDepth)) ? setCompressionMode('h')
-                                                                            : setCompressionMode('t');
+    compressionMode = ((U64) refsNumber > (U64) pow(ALPH_SIZE, TABLE_MAX_CTX - contextDepth)) ? 'h' : 't';
     
-
     /// check if reference(s) file(s) cannot be opened, or are empty
     ifstream refFilesIn[ refsNumber ];
 
@@ -68,25 +66,25 @@ void FCM::buildModel ()
     U64 context;                       	    /// context (integer), that slides in the dataset
     U64 maxPlaceValue = (U64) pow(ALPH_SIZE, contextDepth);
     U64 invRepContext = maxPlaceValue - 1;  /// inverted repeat context (integer)
+    
     U64 iRCtxCurrSym;                       /// concatenation of inverted repeat context and current symbol
+    U8 currSymInt;                          /// current symbol integer
     
     string refLine;                         /// keep each line of a file
 
     /// build model based on 't'=table, or 'h'=hash table
-    switch ( getCompressionMode() )
+    switch ( compressionMode )
     {
         case 't':
         {
             U64 tableSize = refsNumber * maxPlaceValue * ALPH_SUM_SIZE; /// create table
             U64 *table = new U64[ tableSize ];                          /// already initialized with 0's
-            setTable(table);
+//            setTable(table);                                            /// initialize table
             /*
             /// initialize table with 0's
-//            memset(table, 1, sizeof(table[ 0 ]) * tableSize);
+            memset(table, 1, sizeof(table[ 0 ]) * tableSize);
 //            std::fill_n(table,tableSize,(double) 1/alphaDenom);
             */
-            
-            U8 currSymInt;      /// current symbol integer
             
             for (U8 i = refsNumber; i--;)
             {
@@ -99,27 +97,25 @@ void FCM::buildModel ()
                     {
                         currSymInt = symCharToInt(*lineIter);
                         
-                        /// considering inverted repeats to update table
-                        if (isInvertedRepeat)
+                        if (isInvertedRepeat)   /// considering inverted repeats to update table
                         {
                             /// concatenation of inverted repeat context and current symbol
                             iRCtxCurrSym = (4 - currSymInt) * maxPlaceValue + invRepContext;
-
                             /// update inverted repeat context (integer)
                             invRepContext = (U64) iRCtxCurrSym / ALPH_SIZE;
-
+                            
                             /// update table, including 'sum' column, considering inverted repeats
-                            updateTable( invRepContext * ALPH_SUM_SIZE, iRCtxCurrSym % ALPH_SIZE );
+                            updateTable( table, invRepContext * ALPH_SUM_SIZE, iRCtxCurrSym % ALPH_SIZE );
                         }
                         
-                        updateTable( context * ALPH_SUM_SIZE, currSymInt ); /// update table, including 'sum' column
-                        
+//                        updateTable( context * ALPH_SUM_SIZE, currSymInt ); /// update table, including 'sum' column
+                        updateTable( table, context * ALPH_SUM_SIZE, currSymInt ); /// update table, including 'sum' column
                         context = (U64) (context * ALPH_SIZE + currSymInt) % maxPlaceValue; /// update context
-                    }   /// end for
-                }   /// end while
+                    }
+                }
             }   /// end for
-
-//            FCM::setTable(table);   /// save the built table
+            
+            FCM::setTable(table);   /// save the built table.
         }   /// end case
             break;
             
@@ -130,32 +126,31 @@ void FCM::buildModel ()
             for (int i = refsNumber; i--;)
             {
                 context = 0;    /// reset in the beginning of each reference file
-
+                
                 while ( getline(refFilesIn[ i ], refLine) )
                 {
                     /// fill hash table by number of occurrences of symbols A, C, N, G, T
                     for (string::iterator lineIter = refLine.begin(); lineIter != refLine.end(); ++lineIter)
                     {
-                        U8 currSymInt = symCharToInt(*lineIter);
+                        currSymInt = symCharToInt(*lineIter);
                         
                         /// considering inverted repeats to update hash table
                         if (isInvertedRepeat)
                         {
                             /// concatenation of inverted repeat context and current symbol
                             iRCtxCurrSym = (4 - currSymInt) * maxPlaceValue + invRepContext;
-
                             /// update inverted repeat context (integer)
                             invRepContext = (U64) iRCtxCurrSym / ALPH_SIZE;
 
                             /// update hash table considering inverted repeats
                             ++hTable[ invRepContext ][ iRCtxCurrSym % ALPH_SIZE ];
                         }
-    
-                        ++hTable[ context ][ currSymInt ];  /// update hash table
+                        
+                        ++hTable[ context ][ currSymInt ];                                  /// update hash table
                         context = (U64) (context * ALPH_SIZE + currSymInt) % maxPlaceValue; /// update context
-                    }   /// end for
-                }   /// end while
-            }
+                    }
+                }
+            }   /// end for
 
             FCM::setHashTable(hTable);  /// save the built hash table
         }   /// end case
@@ -165,41 +160,6 @@ void FCM::buildModel ()
     }   /// end switch
 
     for (U8 i = refsNumber; i--;)  refFilesIn[i].close();      /// close file(s)
-}
-
-
-/***********************************************************
-    update table, including 'sum' column
-************************************************************/
-inline void FCM::updateTable (U64 rowIndex, U64 column)
-{
-    ++table[ rowIndex + column ];    /// update table
-    ++table[ rowIndex + ALPH_SIZE ]; /// update 'sum' column
-}
-
-
-/***********************************************************
-    convert char (base) to integer (U8): ACNGT -> 01234
-************************************************************/
-inline U8 FCM::symCharToInt (char ch) const
-{
-    switch (ch)
-    {
-        case 'A':   return (U8) 0;
-        case 'C':   return (U8) 1;
-        case 'G':   return (U8) 3;
-        case 'T':   return (U8) 4;
-        default:    return (U8) 2;  /// 'N' symbol
-    }
-
-//    return (U8) (ch % ALPH_SIZE);
-
-//    switch (ch)
-//    {
-//        case 'C':   return (U8) 3;
-//        case 'N':   return (U8) 2;
-//        default:    return (U8) (ch % ALPH_SIZE);
-//    }
 }
 
 
@@ -260,7 +220,7 @@ void FCM::compressTarget (string tarFileName)
               } while ( 0 )
     */
     
-    switch ( getCompressionMode() )
+    switch ( compressionMode )
     {
         case 't':
         {
@@ -400,6 +360,41 @@ void FCM::compressTarget (string tarFileName)
     /// mutex unlock ======================================================
     ////////////////////////////////
     
+}
+
+
+/***********************************************************
+    convert char (base) to integer (U8): ACNGT -> 01234
+************************************************************/
+inline U8 FCM::symCharToInt (char ch) const
+{
+    switch (ch)
+    {
+        case 'A':   return (U8) 0;
+        case 'C':   return (U8) 1;
+        case 'G':   return (U8) 3;
+        case 'T':   return (U8) 4;
+        default:    return (U8) 2;  /// 'N' symbol
+    }
+
+//    return (U8) (ch % ALPH_SIZE);
+
+//    switch (ch)
+//    {
+//        case 'C':   return (U8) 3;
+//        case 'N':   return (U8) 2;
+//        default:    return (U8) (ch % ALPH_SIZE);
+//    }
+}
+
+
+/***********************************************************
+    update table, including 'sum' column
+************************************************************/
+inline void FCM::updateTable (U64 *table, U64 rowIndex, U64 column)
+{
+    ++table[ rowIndex + column ];    /// update table
+    ++table[ rowIndex + ALPH_SIZE ]; /// update 'sum' column
 }
 
 
@@ -887,23 +882,21 @@ void FCM::printHashTable () const
 /***********************************************************
     getters and setters
 ************************************************************/
-char     FCM::getCompressionMode () const              { return compressionMode;            }
-void     FCM::setCompressionMode (char cM)             { FCM::compressionMode = cM;         }
-U8  FCM::getContextDepth () const                 { return contextDepth;               }
-void     FCM::setContextDepth (U8 ctxDp)          { FCM::contextDepth = ctxDp;         }
-U16 FCM::getAlphaDenom () const                   { return alphaDenom;                 }
-void     FCM::setAlphaDenom (U16 alphaDen)        { FCM::alphaDenom = alphaDen;        }
+U8    FCM::getContextDepth () const                 { return contextDepth;               }
+void  FCM::setContextDepth (U8 ctxDp)               { FCM::contextDepth = ctxDp;         }
+U16   FCM::getAlphaDenom () const                   { return alphaDenom;                 }
+void  FCM::setAlphaDenom (U16 alphaDen)             { FCM::alphaDenom = alphaDen;        }
 //double FCM::getAlphaDenom () const                       { return alphaDenom;             }
 //void FCM::setAlphaDenom (double alphaDen)                { FCM::alphaDenom = alphaDen;    }
-bool     FCM::getInvertedRepeat () const               { return invertedRepeat;             }
-void     FCM::setInvertedRepeat (bool invRep)          { FCM::invertedRepeat = invRep;      }
-U64 *FCM::getTable () const                       { return table;                      }
-void     FCM::setTable (U64 *tbl)                 { FCM::table = tbl;                  }
-const    htable_t &FCM::getHashTable () const          { return hashTable;                  }
-void     FCM::setHashTable (const htable_t &hT)        { FCM::hashTable = hT;               }
+bool  FCM::getInvertedRepeat () const               { return invertedRepeat;             }
+void  FCM::setInvertedRepeat (bool invRep)          { FCM::invertedRepeat = invRep;      }
+U64   *FCM::getTable () const                       { return table;                      }
+void  FCM::setTable (U64 *tbl)                      { FCM::table = tbl;                  }
+const htable_t &FCM::getHashTable () const          { return hashTable;                  }
+void  FCM::setHashTable (const htable_t &hT)        { FCM::hashTable = hT;               }
 //const htable_str_t &FCM::getHashTable_str () const       { return hashTable_str;          }
 //void FCM::setHashTable_str (const htable_str_t &hT_s)    { FCM::hashTable_str = hT_s;     }
-const    vector<string> &FCM::getTarAddresses () const { return tarAddresses;               }
-void     FCM::pushBackTarAddresses (string tFAs)       { FCM::tarAddresses.push_back(tFAs); }
-const    vector<string> &FCM::getRefAddresses () const { return refAddresses;               }
-void     FCM::pushBackRefAddresses (string rFAs)       { FCM::refAddresses.push_back(rFAs); }
+const vector<string> &FCM::getTarAddresses () const { return tarAddresses;               }
+void  FCM::pushBackTarAddresses (string tFAs)       { FCM::tarAddresses.push_back(tFAs); }
+const vector<string> &FCM::getRefAddresses () const { return refAddresses;               }
+void  FCM::pushBackRefAddresses (string rFAs)       { FCM::refAddresses.push_back(rFAs); }
