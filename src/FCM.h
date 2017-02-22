@@ -21,10 +21,10 @@ public:
     void   compressTarget (string);                  /// compress target file
     inline U8 symCharToInt (char) const;             /// ACNGT -> 01234
     inline void updateTable (U64, U64);              /// update table, including 'sum' column
-                                                     
+    
 //    void buildHashTable_str ();                             /// build hash table (string key)
-    void     printHashTable () const;                /// print hash table
-                                                     
+    void   printHashTable () const;                  /// print hash table
+    
     U8     getContextDepth () const;                 /// getter of context depth
     void   setContextDepth (U8);                     /// setter of context depth
     U16    getAlphaDenom () const;                   /// getter of alpha denominator
@@ -37,18 +37,17 @@ public:
     void   pushBackRefAddresses (string);            /// pushBacker of reference files addresses
     
 private:
-    U8         contextDepth;                         /// context depth (SIZE <= 255)
-    U16        alphaDenom;                           /// alpha denominator
-    bool       invertedRepeat;                       /// inverted repeat
+    U8             contextDepth;                         /// context depth (SIZE <= 255)
+    U16            alphaDenom;                           /// alpha denominator
+    bool           invertedRepeat;                       /// inverted repeat
+    vector<string> tarAddresses;                         /// target files addresses
+    vector<string> refAddresses;                         /// reference files addresses
     
-    std::mutex mut;                                  /// mutex
-    char       compressionMode;                      /// compression mode (table / hash table)
-    U64        *table;                               /// table
-    htable_t   hashTable;                            /// hash table (int key)
+    std::mutex     mut;                                  /// mutex
+    char           compressionMode;                      /// compression mode (table / hash table)
+    U64            *table;                               /// table
+    htable_t       hashTable;                            /// hash table (int key)
 //    htable_str_t hashTable_str;                             /// hash table (string key)
-
-    vector<string> tarAddresses;                     /// target files addresses
-    vector<string> refAddresses;                     /// reference files addresses
 };
 
 
