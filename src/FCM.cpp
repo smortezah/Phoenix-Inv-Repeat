@@ -86,6 +86,8 @@ void FCM::buildModel ()
 //            std::fill_n(table,tableSize,(double) 1/alphaDenom);
             */
             
+            U8 currSymInt;      /// current symbol integer
+            
             for (U8 i = refsNumber; i--;)
             {
                 context = 0;    /// reset in the beginning of each reference file
@@ -95,7 +97,7 @@ void FCM::buildModel ()
                     /// fill table by number of occurrences of symbols A, C, N, G, T
                     for (string::iterator lineIter = refLine.begin(); lineIter != refLine.end(); ++lineIter)
                     {
-                        U8 currSymInt = symCharToInt(*lineIter);
+                        currSymInt = symCharToInt(*lineIter);
                         
                         /// considering inverted repeats to update table
                         if (isInvertedRepeat)
@@ -107,15 +109,12 @@ void FCM::buildModel ()
                             invRepContext = (U64) iRCtxCurrSym / ALPH_SIZE;
 
                             /// update table, including 'sum' column, considering inverted repeats
-                            updateTable( invRepContext, iRCtxCurrSym % ALPH_SIZE );
+                            updateTable( invRepContext * ALPH_SUM_SIZE, iRCtxCurrSym % ALPH_SIZE );
                         }
-                        U64 currSymPos = context * ALPH_SUM_SIZE + currSymInt;
-                        ++table[ currSymPos ];    /// update table
-                        updateTable( context, currSymInt ); /// update table, including 'sum' column
-                        context = (U64) (currSymPos) % maxPlaceValue; /// update context
-    
-//                        updateTable( context, currSymInt ); /// update table, including 'sum' column
-//                        context = (U64) (context * ALPH_SIZE + currSymInt) % maxPlaceValue; /// update context
+                        
+                        updateTable( context * ALPH_SUM_SIZE, currSymInt ); /// update table, including 'sum' column
+                        
+                        context = (U64) (context * ALPH_SIZE + currSymInt) % maxPlaceValue; /// update context
                     }   /// end for
                 }   /// end while
             }   /// end for
@@ -123,7 +122,7 @@ void FCM::buildModel ()
 //            FCM::setTable(table);   /// save the built table
         }   /// end case
             break;
-
+            
         case 'h':
         {
             htable_t hTable;    /// create hash table
@@ -172,10 +171,10 @@ void FCM::buildModel ()
 /***********************************************************
     update table, including 'sum' column
 ************************************************************/
-inline void FCM::updateTable (U64 row, U64 column)
+inline void FCM::updateTable (U64 rowIndex, U64 column)
 {
-//    ++table[ row * ALPH_SUM_SIZE + column ];    /// update table
-    ++table[ row * ALPH_SUM_SIZE + ALPH_SIZE ]; /// update 'sum' column
+    ++table[ rowIndex + column ];    /// update table
+    ++table[ rowIndex + ALPH_SIZE ]; /// update 'sum' column
 }
 
 
