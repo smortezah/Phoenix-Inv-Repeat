@@ -44,10 +44,10 @@ void FCM::buildModel ()
 
     /// set compression mode: 't'=table, 'h'=hash table
     /*
-    const char mode = (contextDepth > TABLE_MAX_CONTEXT) ? 'h' : 't';
+    const char mode = (contextDepth > TABLE_MAX_CTX) ? 'h' : 't';
      */
     /// supports multi-references case
-    if ( (uint64_t) refsNumber > (uint64_t) pow(ALPHABET_SIZE, TABLE_MAX_CONTEXT-contextDepth) )
+    if ( (uint64_t) refsNumber > (uint64_t) pow(ALPH_SIZE, TABLE_MAX_CTX-contextDepth) )
         setCompressionMode('h');
     else
         setCompressionMode('t');
@@ -67,7 +67,7 @@ void FCM::buildModel ()
     }
     
     uint64_t context;                       	/// context (integer), that slides in the dataset
-    uint64_t maxPlaceValue = (uint64_t) pow(ALPHABET_SIZE, contextDepth);
+    uint64_t maxPlaceValue = (uint64_t) pow(ALPH_SIZE, contextDepth);
     uint64_t invRepContext = maxPlaceValue - 1; /// inverted repeat context (integer)
     uint64_t iRCtxCurrSym;                      /// concatenation of inverted repeat context and current symbol
     
@@ -86,11 +86,11 @@ void FCM::buildModel ()
 //            memset(table, 1, sizeof(table[ 0 ]) * tableSize);
 //            std::fill_n(table,tableSize,(double) 1/alphaDenom);
             */
-    
+            
             for (uint8_t i = refsNumber; i--;)
             {
                 context = 0;    /// reset in the beginning of each reference file
-
+                
                 while (getline(refFilesIn[ i ], refLine))
                 {
                     /// fill table by number of occurrences of symbols A, C, N, G, T
@@ -105,15 +105,15 @@ void FCM::buildModel ()
                             iRCtxCurrSym = (4 - currSymInt) * maxPlaceValue + invRepContext;
 
                             /// update inverted repeat context (integer)
-                            invRepContext = (uint64_t) iRCtxCurrSym / ALPHABET_SIZE;
+                            invRepContext = (uint64_t) iRCtxCurrSym / ALPH_SIZE;
 
                             /// update table, including 'sum' column, considering inverted repeats
-                            updateTable( invRepContext, iRCtxCurrSym % ALPHABET_SIZE );
+                            updateTable( invRepContext, iRCtxCurrSym % ALPH_SIZE );
                         }
     
                         updateTable( context, currSymInt ); /// update table, including 'sum' column
                         /// update context
-                        context = (uint64_t) (context * ALPHABET_SIZE + currSymInt) % maxPlaceValue;
+                        context = (uint64_t) (context * ALPH_SIZE + currSymInt) % maxPlaceValue;
                     }   /// end for
                 }   /// end while
             }   /// end for
@@ -144,15 +144,15 @@ void FCM::buildModel ()
                             iRCtxCurrSym = (4 - currSymInt) * maxPlaceValue + invRepContext;
 
                             /// update inverted repeat context (integer)
-                            invRepContext = (uint64_t) iRCtxCurrSym / ALPHABET_SIZE;
+                            invRepContext = (uint64_t) iRCtxCurrSym / ALPH_SIZE;
 
                             /// update hash table considering inverted repeats
-                            ++hTable[ invRepContext ][ iRCtxCurrSym % ALPHABET_SIZE ];
+                            ++hTable[ invRepContext ][ iRCtxCurrSym % ALPH_SIZE ];
                         }
     
                         ++hTable[ context ][ currSymInt ];  /// update hash table
                         /// update context
-                        context = (uint64_t) (context * ALPHABET_SIZE + currSymInt) % maxPlaceValue;
+                        context = (uint64_t) (context * ALPH_SIZE + currSymInt) % maxPlaceValue;
                     }   /// end for
                 }   /// end while
             }
@@ -174,8 +174,16 @@ void FCM::buildModel ()
 inline void FCM::updateTable (uint64_t row, uint64_t column)
 {
     ++table[ row * ALPH_SUM_SIZE + column ];        /// update table
-    ++table[ row * ALPH_SUM_SIZE + ALPHABET_SIZE ]; /// update 'sum' column
+    ++table[ row * ALPH_SUM_SIZE + ALPH_SIZE ]; /// update 'sum' column
 }
+
+
+inline void FCM::updateTable_Context (uint64_t row, uint64_t column)
+{
+    ++table[ row * ALPH_SUM_SIZE + column ];        /// update table
+    ++table[ row * ALPH_SUM_SIZE + ALPH_SIZE ]; /// update 'sum' column
+}
+
 
 
 /***********************************************************
@@ -192,13 +200,13 @@ inline uint8_t FCM::symCharToInt (char ch) const
         default:    return (uint8_t) 2;     /// 'N' symbol
     }
 
-//    return (uint8_t) (ch % ALPHABET_SIZE);
+//    return (uint8_t) (ch % ALPH_SIZE);
 
 //    switch (ch)
 //    {
 //        case 'C':   return (uint8_t) 3;
 //        case 'N':   return (uint8_t) 2;
-//        default:    return (uint8_t) (ch % ALPHABET_SIZE);
+//        default:    return (uint8_t) (ch % ALPH_SIZE);
 //    }
 }
 
@@ -209,7 +217,7 @@ inline uint8_t FCM::symCharToInt (char ch) const
 void FCM::compressTarget (string tarFileName)
 {
     const double alpha = (double) 1/getAlphaDenom();    /// alpha -- used in P denominator
-    const double sumAlphas = ALPHABET_SIZE * alpha;     /// used in P numerator
+    const double sumAlphas = ALPH_SIZE * alpha;     /// used in P numerator
     
     const uint8_t contextDepth  = getContextDepth();    /// get context depth
 //    const uint16_t alphaDen     = getAlphaDenom();      /// get alpha denominator
@@ -227,7 +235,7 @@ void FCM::compressTarget (string tarFileName)
     mut.unlock();
     /// mutex unlock ======================================================
     
-    uint64_t maxPlaceValue = (uint64_t) pow(ALPHABET_SIZE, contextDepth);
+    uint64_t maxPlaceValue = (uint64_t) pow(ALPH_SIZE, contextDepth);
     uint64_t tarContext = 0;                    /// context (integer), that slides in the dataset
     
     string tarLine;                             /// keep each line of the file
@@ -255,7 +263,7 @@ void FCM::compressTarget (string tarFileName)
 
 #define Y(in) do { \
                 (mode == 't') \
-                ? in = table[ tarContext * ALPH_SUM_SIZE + ALPHABET_SIZE ] \
+                ? in = table[ tarContext * ALPH_SUM_SIZE + ALPH_SIZE ] \
                 : in = 0; for (uint64_t u : hTable[ tarContext ]) in += u; \
               } while ( 0 )
     */
@@ -287,13 +295,13 @@ void FCM::compressTarget (string tarFileName)
                     */
                     
                     /// sum of number of symbols
-                    sumNSyms = table[ tarContext * ALPH_SUM_SIZE + ALPHABET_SIZE ];
+                    sumNSyms = table[ tarContext * ALPH_SUM_SIZE + ALPH_SIZE ];
                     /*
                     Y(sumNSyms);
                     */
                     
                     /// P(s|c^t)
-//                    probability = (double) (alphaDen * nSym + 1) / (alphaDen * sumNSyms + ALPHABET_SIZE);
+//                    probability = (double) (alphaDen * nSym + 1) / (alphaDen * sumNSyms + ALPH_SIZE);
                     probability = (nSym + alpha) / (sumNSyms + sumAlphas);
                     
                     /// sum( log_2 P(s|c^t) )
@@ -301,7 +309,7 @@ void FCM::compressTarget (string tarFileName)
                     /////////////////////////////////
         
                     /// update context
-                    tarContext = (uint64_t) (tarContext * ALPHABET_SIZE + currSymInt) % maxPlaceValue;
+                    tarContext = (uint64_t) (tarContext * ALPH_SIZE + currSymInt) % maxPlaceValue;
                 }   /// end for
             }   /// end while
         }   /// end case
@@ -343,7 +351,7 @@ void FCM::compressTarget (string tarFileName)
 //                    }
                     
                     /// P(s|c^t)
-//                    probability = (double) (alphaDen * nSym + 1) / (alphaDen * sumNSyms + ALPHABET_SIZE);
+//                    probability = (double) (alphaDen * nSym + 1) / (alphaDen * sumNSyms + ALPH_SIZE);
                     probability = (nSym + alpha) / (sumNSyms + sumAlphas);
                     
                     /// sum( log_2 P(s|c^t) )
@@ -351,7 +359,7 @@ void FCM::compressTarget (string tarFileName)
                     /////////////////////////////////
         
                     /// update context
-                    tarContext = (uint64_t) (tarContext * ALPHABET_SIZE + currSymInt) % maxPlaceValue;
+                    tarContext = (uint64_t) (tarContext * ALPH_SIZE + currSymInt) % maxPlaceValue;
                 }   /// end for
             }   /// end while
         }   /// end case
@@ -390,7 +398,7 @@ void FCM::compressTarget (string tarFileName)
          //            cout << (double) 1/alphaDen << '\t'
          << (int) contextDepth << '\t'
          << std::fixed << setprecision(5) << averageEntropy << '\t'
-         << std::fixed << setprecision(5) << averageEntropy/LOG2_ALPHABET_SIZE;
+         << std::fixed << setprecision(5) << averageEntropy/LOG2_ALPH_SIZE;
     
 //    cout.width(2);  cout << std::left << getInvertedRepeat() << "   ";
     
@@ -445,8 +453,8 @@ void FCM::compressTarget (string tarFileName)
 //    }
 //
 //    /// create table
-//    /// 5^TABLE_MAX_CONTEXT < 2^32 => uint32_t is used, otherwise uint64_t
-//    uint32_t maxPlaceValue = (uint32_t) pow(ALPHABET_SIZE, contextDepth);
+//    /// 5^TABLE_MAX_CTX < 2^32 => uint32_t is used, otherwise uint64_t
+//    uint32_t maxPlaceValue = (uint32_t) pow(ALPH_SIZE, contextDepth);
 //    uint64_t tableSize = maxPlaceValue * ALPH_SUM_SIZE;
 //    uint64_t *table = new uint64_t[ tableSize ];
 //
@@ -508,13 +516,13 @@ void FCM::compressTarget (string tarFileName)
 //
 //                /// update inverted repeat context (integer)
 ////                invRepContext = (uint32_t) iRCtxCurrSymDiv.quot;
-//                invRepContext = (uint32_t) iRCtxCurrSym / ALPHABET_SIZE;
+//                invRepContext = (uint32_t) iRCtxCurrSym / ALPH_SIZE;
 //
 //                /// update table considering inverted repeats
 ////                ++table[ invRepContext*ALPHABET_SIZE + iRCtxCurrSymDiv.rem ];
 ////                ++table[ invRepContext * ALPHABET_SIZE + iRCtxCurrSym % ALPHABET_SIZE ];
-//                ++table[ invRepContext * ALPH_SUM_SIZE + iRCtxCurrSym % ALPHABET_SIZE ];
-//                ++table[ invRepContext * ALPH_SUM_SIZE + ALPHABET_SIZE ];
+//                ++table[ invRepContext * ALPH_SUM_SIZE + iRCtxCurrSym % ALPH_SIZE ];
+//                ++table[ invRepContext * ALPH_SUM_SIZE + ALPH_SIZE ];
 //            }
 //
 //            //////////////////////////////////
@@ -523,18 +531,18 @@ void FCM::compressTarget (string tarFileName)
 ////            sumNSyms = 0;
 ////            for (uint8_t i = 0; i < ALPHABET_SIZE; ++i)
 ////                sumNSyms += *(pointerToTable + context*ALPHABET_SIZE + i);
-//            sumNSyms = ++table[ context * ALPH_SUM_SIZE + ALPHABET_SIZE ];
+//            sumNSyms = ++table[ context * ALPH_SUM_SIZE + ALPH_SIZE ];
 //
 //            /// P(s|c^t)
 ////            probability = (nSym + (double) 1/alphaDen) / (sumNSyms + (double) ALPHABET_SIZE/alphaDen);
-//            probability = (double) (alphaDen * nSym + 1) / (alphaDen * sumNSyms + ALPHABET_SIZE);
+//            probability = (double) (alphaDen * nSym + 1) / (alphaDen * sumNSyms + ALPH_SIZE);
 //
 //            /// sum( log_2 P(s|c^t) )
 //            sumOfEntropies += log2(probability);
 //            /////////////////////////////////
 //
 //            /// update context
-//            context = (uint32_t) (context * ALPHABET_SIZE + currSymInt) % maxPlaceValue;
+//            context = (uint32_t) (context * ALPH_SIZE + currSymInt) % maxPlaceValue;
 //
 //        }   /// end of for
 //    }   /// end of while
@@ -557,7 +565,7 @@ void FCM::compressTarget (string tarFileName)
 ////             cout.width(7);  << std::left << (double) 1/alphaDen << "   "
 //cout.width(3);  cout << std::left << (int) contextDepth << "   ";
 //cout.width(8);  cout << std::left << averageEntropy << "   ";
-//cout.width(8);  cout << std::left << averageEntropy/LOG2_ALPHABET_SIZE;
+//cout.width(8);  cout << std::left << averageEntropy/LOG2_ALPH_SIZE;
 //    ////////////////////////////////
 //
 //}
@@ -598,7 +606,7 @@ void FCM::compressTarget (string tarFileName)
 //    }
 //
 //    uint64_t context = 0;                       /// context, that slides in the dataset
-//    uint64_t maxPlaceValue = (uint64_t) pow(ALPHABET_SIZE, contextDepth);
+//    uint64_t maxPlaceValue = (uint64_t) pow(ALPH_SIZE, contextDepth);
 //    uint64_t invRepContext = maxPlaceValue - 1; /// inverted repeat context
 //
 //    htable_t hTable;                            /// create hash table
@@ -656,11 +664,11 @@ void FCM::compressTarget (string tarFileName)
 //
 //                /// update inverted repeat context (integer)
 ////                invRepContext =  iRCtxCurrSymDiv.quot;
-//                invRepContext = (uint64_t) iRCtxCurrSym / ALPHABET_SIZE;
+//                invRepContext = (uint64_t) iRCtxCurrSym / ALPH_SIZE;
 //
 //                /// update table considering inverted repeats
 ////                ++hTable[ invRepContext ][ iRCtxCurrSymDiv.rem];
-//                ++hTable[ invRepContext ][ iRCtxCurrSym % ALPHABET_SIZE ];
+//                ++hTable[ invRepContext ][ iRCtxCurrSym % ALPH_SIZE ];
 //            }
 //
 //            //////////////////////////////////
@@ -671,14 +679,14 @@ void FCM::compressTarget (string tarFileName)
 //
 //            /// P(s|c^t)
 ////            probability = (nSym + (double) 1/alphaDen) / (sumNSyms + (double) ALPHABET_SIZE/alphaDen);
-//            probability = (double) (alphaDen * nSym + 1) / (alphaDen * sumNSyms + ALPHABET_SIZE);
+//            probability = (double) (alphaDen * nSym + 1) / (alphaDen * sumNSyms + ALPH_SIZE);
 //
 //            /// sum( log_2 P(s|c^t) )
 //            sumOfEntropies += log2(probability);
 //            /////////////////////////////////
 //
 //            /// update context
-//            context = (uint64_t) (context * ALPHABET_SIZE + currSymInt) % maxPlaceValue;
+//            context = (uint64_t) (context * ALPH_SIZE + currSymInt) % maxPlaceValue;
 //
 //        }   /// end of for
 //    }   /// end of while
@@ -700,7 +708,7 @@ void FCM::compressTarget (string tarFileName)
 ////             cout.width(7);  << std::left << (double) 1/alphaDen << "   "
 //cout.width(3);  cout << std::left << (int) contextDepth << "   ";
 //cout.width(8);  cout << std::left << averageEntropy << "   ";
-//cout.width(8);  cout << std::left << averageEntropy/LOG2_ALPHABET_SIZE;
+//cout.width(8);  cout << std::left << averageEntropy/LOG2_ALPH_SIZE;
 //    ////////////////////////////////
 //
 //}
@@ -805,8 +813,8 @@ void FCM::buildHashTable_str ()
             for (uint64_t u : hTable[ context ])    sumNSyms += u;
 
             /// P(s|c^t)
-//            probability = (nSym + (double) 1/alphaDen) / (sumNSyms + (double) ALPHABET_SIZE/alphaDen);
-            probability = (double) (alphaDen * nSym + 1) / (alphaDen * sumNSyms + ALPHABET_SIZE);
+//            probability = (nSym + (double) 1/alphaDen) / (sumNSyms + (double) ALPH_SIZE/alphaDen);
+            probability = (double) (alphaDen * nSym + 1) / (alphaDen * sumNSyms + ALPH_SIZE);
 
             /// sum( log_2 P(s|c^t) )
             sumOfEntropies += log2(probability);
@@ -841,7 +849,7 @@ void FCM::buildHashTable_str ()
 //             cout.width(7);  << std::left << (double) 1/alphaDen << "   "
     cout.width(3);  cout << std::left << (int) contextDepth << "   ";
     cout.width(8);  cout << std::left << averageEntropy << "   ";
-    cout.width(8);  cout << std::left << averageEntropy/LOG2_ALPHABET_SIZE;
+    cout.width(8);  cout << std::left << averageEntropy/LOG2_ALPH_SIZE;
     ////////////////////////////////
 
 }
