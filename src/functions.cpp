@@ -216,45 +216,46 @@ void Functions::commandLineParser (int argc, char **argv)
 //        /// set the inverted repeat condition of the model
 //        !stoi(vecParameters[ vecParamIndex ]) ? model.setInvertedRepeat(false)
 //                                              : model.setInvertedRepeat(true);
-//
-         U16 alphaDen = (U16) stoi(vecParameters[ vecParamIndex++ ]);
-         U8 ctxDepth = (U8) stoi(vecParameters[ vecParamIndex++ ]);
-         bool iR = !stoi(vecParameters[ vecParamIndex ]);
+
+         const U16 alphaDen = (U16) stoi(vecParameters[ vecParamIndex++ ]);
+         const U8 ctxDepth = (U8) stoi(vecParameters[ vecParamIndex++ ]);
+         const bool iR = (bool) stoi(vecParameters[ vecParamIndex ]);
 //        const bool iR = !stoi(vecParameters[ vecParamIndex ]) ? false : true;
+        cout <<(int)alphaDen<<' '<<(int)ctxDepth<<' '<<iR;
     
-        model.setParams(alphaDen, ctxDepth, iR);
-        
-        /// build a model based on reference(s)
-        model.buildModel();
-        
-        /*
-        /// compress target(s) using reference(s) model -- multithreaded
-        U8 MAX_N_THREADS = (U8) thread::hardware_concurrency(); /// max cores in current machine
-        /// N_FREE_THREADS considered for other jobs in current system
-        U8 n_threads_available = (U8) (!MAX_N_THREADS ? DEFAULT_N_THREADS - N_FREE_THREADS
-                                                                : MAX_N_THREADS - N_FREE_THREADS);
-        U8 n_targets = (U8) model.getTarAddresses().size();     /// up to 2^8=256 targets
-
-        U8 arrThrSize = (n_targets > n_threads_available) ? n_threads_available : n_targets;
-        thread *arrThread = new thread[arrThrSize];             /// array of threads
-        */
-        
-        /// compress target(s) using reference(s) model -- multithreaded
-        U8 n_targets = (U8) model.getTarAddresses().size();     /// up to 2^8=256 targets
-
-        U8 arrThrSize = (n_targets > n_threads) ? n_threads : n_targets;
-        thread *arrThread = new thread[ arrThrSize ];           /// array of threads
-
-        for (U8 i = 0; i < n_targets; i += arrThrSize)
-        {
-            for (U8 j = 0; j < arrThrSize && i + j < n_targets; ++j)
-                arrThread[ j ] = thread(&FCM::compressTarget, &model, model.getTarAddresses()[ i + j ]);
-
-            for (U8 j = 0; j < arrThrSize && i + j < n_targets; ++j)
-                arrThread[ j ].join();
-        }
-
-        delete[] arrThread;
+//        model.setParams(alphaDen, ctxDepth, iR);
+//
+//        /// build a model based on reference(s)
+//        model.buildModel();
+//
+//        /*
+//        /// compress target(s) using reference(s) model -- multithreaded
+//        U8 MAX_N_THREADS = (U8) thread::hardware_concurrency(); /// max cores in current machine
+//        /// N_FREE_THREADS considered for other jobs in current system
+//        U8 n_threads_available = (U8) (!MAX_N_THREADS ? DEFAULT_N_THREADS - N_FREE_THREADS
+//                                                                : MAX_N_THREADS - N_FREE_THREADS);
+//        U8 n_targets = (U8) model.getTarAddresses().size();     /// up to 2^8=256 targets
+//
+//        U8 arrThrSize = (n_targets > n_threads_available) ? n_threads_available : n_targets;
+//        thread *arrThread = new thread[arrThrSize];             /// array of threads
+//        */
+//
+//        /// compress target(s) using reference(s) model -- multithreaded
+//        U8 n_targets = (U8) model.getTarAddresses().size();     /// up to 2^8=256 targets
+//
+//        U8 arrThrSize = (n_targets > n_threads) ? n_threads : n_targets;
+//        thread *arrThread = new thread[ arrThrSize ];           /// array of threads
+//
+//        for (U8 i = 0; i < n_targets; i += arrThrSize)
+//        {
+//            for (U8 j = 0; j < arrThrSize && i + j < n_targets; ++j)
+//                arrThread[ j ] = thread(&FCM::compressTarget, &model, model.getTarAddresses()[ i + j ]);
+//
+//            for (U8 j = 0; j < arrThrSize && i + j < n_targets; ++j)
+//                arrThread[ j ].join();
+//        }
+//
+//        delete[] arrThread;
     }
     
     /// Print any remaining command line arguments (not options).
