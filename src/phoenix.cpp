@@ -24,6 +24,9 @@ using std::setprecision;
 ///////////////////////////////////////////////////////////
 /////////                 M A I N                 /////////
 ///////////////////////////////////////////////////////////
+
+#include <vector>
+
 int main (int argc, char *argv[])
 {
     high_resolution_clock::time_point exeStartTime = high_resolution_clock::now();  /// Record start time
@@ -31,7 +34,9 @@ int main (int argc, char *argv[])
     Functions function;                     /// object 'function' on memory stack
     function.commandLineParser(argc, argv); /// parse the command line
     
-    
+//    std::vector<int> v;v.push_back(3);v.push_back(7);
+//    for(std::vector<int>::iterator i=v.begin();i!=v.end();++i)
+//        cout <<*i;
     
     
     

@@ -158,6 +158,16 @@ void Functions::commandLineParser (int argc, char **argv)
     /// save target file(s) name(s)
     if (t_flag)
     {
+//        U8 tarIndex = (U8) tarFilesNames.size();
+//        for (string::iterator it = tarFilesNames.begin(); it != tarFilesNames.end(); ++it)
+//            if (*it == ',')
+//            {
+//                model.pushBackTarAddresses(tarFilesNames.substr(it + 1, tarIndex - it - 1));
+//                tarIndex = it;
+//            }
+        
+        
+        
         U8 tarIndex = (U8) tarFilesNames.size();
         /// save all target files names except the last one
         for (U8 i = tarIndex; i--;)
@@ -170,6 +180,12 @@ void Functions::commandLineParser (int argc, char **argv)
         }
         /// save last target file name
         model.pushBackTarAddresses(tarFilesNames.substr(0, tarIndex));
+        
+//        //TODO: ba iterator peymayesh kon
+//        vector< string > v = model.getTarAddresses();
+//        for (std::vector< string >::iterator i = v.begin(); i != v.end(); ++i)
+//                cout<<*i;
+        
     }
     
     /// save reference file(s) name(s)
@@ -209,7 +225,8 @@ void Functions::commandLineParser (int argc, char **argv)
         const U16  alphaDen = (U16)  stoi(vecParameters[ vecParamIndex++ ]);    /// alpha denominator
         const U8   ctxDepth = (U8)   stoi(vecParameters[ vecParamIndex++ ]);    /// context depth
         const bool iR       = (bool) stoi(vecParameters[ vecParamIndex ]);      /// inverted repeat
-        model.setParams(alphaDen, ctxDepth, iR);                                /// set the model parameters
+        model.setParams(alphaDen, ctxDepth, iR);                           /// set the model parameters
+//        model.pushBackParams(alphaDen, ctxDepth, iR);                           /// set the model parameters
         
         model.buildModel(); /// build a model based on reference(s)
         
@@ -250,6 +267,8 @@ void Functions::commandLineParser (int argc, char **argv)
         while (optind < argc)   cerr << argv[ optind++ ] << " ";
         cerr << '\n';
     }
+    
+    
 }
 
 
