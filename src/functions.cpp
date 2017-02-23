@@ -196,8 +196,7 @@ void Functions::commandLineParser (int argc, char **argv)
         U8 vecParamIndex = 0;           /// to traverse vecParameters
         
         U8 parIndex = (U8) modelParameters.size();
-        /// save all model parameters except the last model
-        for (U8 i = parIndex; i--;)
+        for (U8 i = parIndex; i--;)     /// save all model parameters except the last model
         {
             if (modelParameters[ i ] == ',')
             {
@@ -205,8 +204,7 @@ void Functions::commandLineParser (int argc, char **argv)
                 parIndex = i;
             }
         }
-        /// save last model parameter
-        vecParameters.push_back(modelParameters.substr(0, parIndex));
+        vecParameters.push_back(modelParameters.substr(0, parIndex));   /// save last model parameter
         
 //        /// set the alpha denominator of the model
 //        model.setAlphaDenom((U16) stoi(vecParameters[ vecParamIndex++ ]));
@@ -216,15 +214,13 @@ void Functions::commandLineParser (int argc, char **argv)
 //        /// set the inverted repeat condition of the model
 //        !stoi(vecParameters[ vecParamIndex ]) ? model.setInvertedRepeat(false)
 //                                              : model.setInvertedRepeat(true);
-////
-         const U16 alphaDen = (U16) stoi(vecParameters[ vecParamIndex++ ]);
-         const U8 ctxDepth = (U8) stoi(vecParameters[ vecParamIndex++ ]);
-         const bool iR = (bool) stoi(vecParameters[ vecParamIndex ]);
-
-        model.setParams(alphaDen, ctxDepth, iR);
-
-        /// build a model based on reference(s)
-        model.buildModel();
+    
+        const U16  alphaDen = (U16)  stoi(vecParameters[ vecParamIndex++ ]);    /// alpha denominator
+        const U8   ctxDepth = (U8)   stoi(vecParameters[ vecParamIndex++ ]);    /// context depth
+        const bool iR       = (bool) stoi(vecParameters[ vecParamIndex ]);      /// inverted repeat
+        model.setParams(alphaDen, ctxDepth, iR);                                /// set the model parameters
+        
+        model.buildModel(); /// build a model based on reference(s)
 
         /*
         /// compress target(s) using reference(s) model -- multithreaded
@@ -239,21 +235,20 @@ void Functions::commandLineParser (int argc, char **argv)
         */
 
         /// compress target(s) using reference(s) model -- multithreaded
-        U8 n_targets = (U8) model.getTarAddresses().size();     /// up to 2^8=256 targets
-
+        U8 n_targets = (U8) model.getTarAddresses().size(); /// up to 2^8=256 targets
+        
         U8 arrThrSize = (n_targets > n_threads) ? n_threads : n_targets;
-        thread *arrThread = new thread[ arrThrSize ];           /// array of threads
-
+        thread *arrThread = new thread[ arrThrSize ];       /// array of threads
+        
         for (U8 i = 0; i < n_targets; i += arrThrSize)
         {
             for (U8 j = 0; j < arrThrSize && i + j < n_targets; ++j)
                 arrThread[ j ] = thread(&FCM::compressTarget, &model, model.getTarAddresses()[ i + j ]);
-
-            for (U8 j = 0; j < arrThrSize && i + j < n_targets; ++j)
-                arrThread[ j ].join();
+            
+            for (U8 j = 0; j < arrThrSize && i + j < n_targets; ++j)    arrThread[ j ].join();
         }
-
-        delete[] arrThread;
+        
+        delete[] arrThread; /// free the memory for array of threads
     }
     
     /// Print any remaining command line arguments (not options).
