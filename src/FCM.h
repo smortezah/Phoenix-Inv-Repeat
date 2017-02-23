@@ -26,11 +26,11 @@ public:
     void   printHashTable () const;                     /// print hash table
     
     U16    getAlphaDenom () const;                      /// getter of alpha denominator
-//    void   setAlphaDenom (const U16);                   /// setter of alpha denominator
+    void   setAlphaDenom (const U16);                   /// setter of alpha denominator
     U8     getContextDepth () const;                    /// getter of context depth
-//    void   setContextDepth (U8);                        /// setter of context depth
+    void   setContextDepth (U8);                        /// setter of context depth
     bool   getInvertedRepeat () const;                  /// getter of inverted repeat
-//    void   setInvertedRepeat (bool);                    /// setter of inverted repeat
+    void   setInvertedRepeat (bool);                    /// setter of inverted repeat
     
     
     void   setParams (const U16, U8, bool);                    /// setter of inverted repeat
