@@ -27,9 +27,9 @@ public:
     
     void   setParams (const U16, U8, bool);             /// setter of model parameters (alpha, ctx, ir)
     const  vector<string> &getTarAddresses () const;    /// getter of target files addresses
-    void   pushBackTarAddresses (string);               /// pushBacker of target files addresses
+    void   pushBackTarAddresses (const string&);        /// pushBacker of target files addresses
     const  vector<string> &getRefAddresses () const;    /// getter of reference files addresses
-    void   pushBackRefAddresses (string);               /// pushBacker of reference files addresses
+    void   pushBackRefAddresses (const string&);        /// pushBacker of reference files addresses
     
 private:
     U8             contextDepth;                        /// context depth (SIZE <= 255)

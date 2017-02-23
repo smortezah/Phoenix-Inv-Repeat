@@ -328,12 +328,21 @@ inline U8 FCM::symCharToInt (char ch) const
 {
     switch (ch)
     {
-        case 'A':   return (U8) 0;
-        case 'C':   return (U8) 1;
-        case 'G':   return (U8) 3;
-        case 'T':   return (U8) 4;
-        default:    return (U8) 2;  /// 'N' symbol
+        case 'A':   return 0;
+        case 'C':   return 1;
+        case 'G':   return 3;
+        case 'T':   return 4;
+        default:    return 2;  /// 'N' symbol
     }
+    
+//    switch (ch)
+//    {
+//        case 'A':   return (U8) 0;
+//        case 'C':   return (U8) 1;
+//        case 'G':   return (U8) 3;
+//        case 'T':   return (U8) 4;
+//        default:    return (U8) 2;  /// 'N' symbol
+//    }
 
 //    return (U8) (ch % ALPH_SIZE);
 
@@ -843,6 +852,6 @@ void  FCM::setParams (U16 aD, U8 ctx, bool iR)       { FCM::alphaDenom = aD;
                                                        FCM::contextDepth = ctx;
                                                        FCM::invertedRepeat = iR;          }
 const vector<string> &FCM::getTarAddresses () const  { return tarAddresses;               }
-void  FCM::pushBackTarAddresses (string tFAs)        { FCM::tarAddresses.push_back(tFAs); }
+void  FCM::pushBackTarAddresses (const string &tFAs) { FCM::tarAddresses.push_back(tFAs); }
 const vector<string> &FCM::getRefAddresses () const  { return refAddresses;               }
-void  FCM::pushBackRefAddresses (string rFAs)        { FCM::refAddresses.push_back(rFAs); }
+void  FCM::pushBackRefAddresses (const string &rFAs) { FCM::refAddresses.push_back(rFAs); }

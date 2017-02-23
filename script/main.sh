@@ -48,7 +48,7 @@ tempRefSeqRun=${REF_SPECIES}_SEQ_RUN;    REF_SEQ_RUN=${!tempRefSeqRun}
 REF_DATASET="";  for i in MT; do REF_DATASET+=$REF_SPECIES${i}" "; done
 #REF_DATASET="";  for i in $REF_SEQ_RUN; do REF_DATASET+=$REF_SPECIES${i}" "; done
 
-#multiRef="";  for i in 21; do multiRef+=$FLD_dataset/$REF_SPECIES${i}" "; done
+#multiRef="";  for i in 21 MT; do multiRef+=$FLD_dataset/$REF_SPECIES${i}" "; done
 #MULTIREF_DATASET="$(echo $multiRef | sed 's/ /,/g')"
 MULTIREF_DATASET="$FLD_dataset/HSMT"
 #MULTIREF_DATASET="y"
@@ -81,7 +81,7 @@ TAR_SPECIES_LEN=${#TAR_SPECIES};            # length of string TAR_SPECIES
 N_THREADS=4             # number of threads
 INV_REPEATS="0"       # list of inverted repeats
 ALPHA_DENS="100"        # list of alpha denominators
-CTX=12                   # context-order size
+CTX=2                   # context-order size
 MIN_CTX=10              # min context-order size
 MAX_CTX=11              # max context-order size
 
