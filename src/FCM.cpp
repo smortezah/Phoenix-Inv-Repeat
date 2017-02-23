@@ -36,17 +36,10 @@ FCM::FCM () {}
 ************************************************************/
 void FCM::buildModel ()
 {
-    const U8 contextDepth          = getContextDepth();     /// context depth
-    const bool isInvertedRepeat    = getInvertedRepeat();   /// inverted repeat
     vector< string > refFilesNames = getRefAddresses();     /// reference file(s) address(es)
-
     U8 refsNumber = (U8) refFilesNames.size();              /// number of references
 
-    /// set compression mode: 't'=table, 'h'=hash table
-    /*
-    const char mode = (contextDepth > TABLE_MAX_CTX) ? 'h' : 't';
-     */
-    /// supports multi-references case
+    /// set compression mode: 't'=table, 'h'=hash table. supports multi-references case
     compressionMode = ((U64) refsNumber > (U64) pow(ALPH_SIZE, TABLE_MAX_CTX - contextDepth)) ? 'h' : 't';
     
     /// check if reference(s) file(s) cannot be opened, or are empty
@@ -96,7 +89,7 @@ void FCM::buildModel ()
                     {
                         currSymInt = symCharToInt(*lineIter);
                         
-                        if (isInvertedRepeat)   /// considering inverted repeats to update table
+                        if (invertedRepeat)   /// considering inverted repeats to update table
                         {
                             /// concatenation of inverted repeat context and current symbol
                             iRCtxCurrSym = (4 - currSymInt) * maxPlaceValue + invRepContext;
@@ -107,7 +100,6 @@ void FCM::buildModel ()
                             updateTable( invRepContext * ALPH_SUM_SIZE, iRCtxCurrSym % ALPH_SIZE );
                         }
                         
-//                        updateTable( context * ALPH_SUM_SIZE, currSymInt ); /// update table, including 'sum' column
                         updateTable( context * ALPH_SUM_SIZE, currSymInt ); /// update table, including 'sum' column
                         context = (U64) (context * ALPH_SIZE + currSymInt) % maxPlaceValue; /// update context
                     }
@@ -118,8 +110,6 @@ void FCM::buildModel ()
             
         case 'h':
         {
-//            htable_t hashTable;    /// create hash table
-
             for (int i = refsNumber; i--;)
             {
                 context = 0;    /// reset in the beginning of each reference file
@@ -132,7 +122,7 @@ void FCM::buildModel ()
                         currSymInt = symCharToInt(*lineIter);
                         
                         /// considering inverted repeats to update hash table
-                        if (isInvertedRepeat)
+                        if (invertedRepeat)
                         {
                             /// concatenation of inverted repeat context and current symbol
                             iRCtxCurrSym = (4 - currSymInt) * maxPlaceValue + invRepContext;
@@ -143,20 +133,18 @@ void FCM::buildModel ()
                             ++hashTable[ invRepContext ][ iRCtxCurrSym % ALPH_SIZE ];
                         }
                         
-                        ++hashTable[ context ][ currSymInt ];                                  /// update hash table
+                        ++hashTable[ context ][ currSymInt ];                               /// update hash table
                         context = (U64) (context * ALPH_SIZE + currSymInt) % maxPlaceValue; /// update context
                     }
                 }
             }   /// end for
-
-//            FCM::setHashTable(hTable);  /// save the built hash table
         }   /// end case
             break;
 
         default: break;
     }   /// end switch
 
-    for (U8 i = refsNumber; i--;)  refFilesIn[i].close();      /// close file(s)
+    for (U8 i = refsNumber; i--;)  refFilesIn[i].close();   /// close file(s)
 }
 
 
@@ -165,11 +153,8 @@ void FCM::buildModel ()
 ************************************************************/
 void FCM::compressTarget (string tarFileName)
 {
-    const double alpha = (double) 1/getAlphaDenom();    /// alpha -- used in P denominator
-    const double sumAlphas = ALPH_SIZE * alpha;     /// used in P numerator
-    
-    const U8 contextDepth  = getContextDepth();    /// get context depth
-//    const U16 alphaDen     = getAlphaDenom();      /// get alpha denominator
+    const double alpha = (double) 1/alphaDenom; /// alpha -- used in P denominator
+    const double sumAlphas = ALPH_SIZE * alpha; /// used in P numerator
     
     ifstream tarFileIn( tarFileName, ios::in ); /// open target file
     
@@ -185,17 +170,17 @@ void FCM::compressTarget (string tarFileName)
     /// mutex unlock ======================================================
     
     U64 maxPlaceValue = (U64) pow(ALPH_SIZE, contextDepth);
-    U64 tarContext = 0;                    /// context (integer), that slides in the dataset
+    U64 tarContext = 0;                         /// context (integer), that slides in the dataset
     
     string tarLine;                             /// keep each line of the file
     
     ////////////////////////////////
-    U64 nSym;                              /// number of symbols (n_s). To calculate probability
-    U64 sumNSyms;                          /// sum of number of symbols (sum n_a). To calculate probability
-    double   probability = 0;                   /// probability of a symbol, based on an identified context
-    double   sumOfEntropies = 0;                /// sum of entropies for different symbols
-    U64 totalNOfSyms = 0;                  /// number of all symbols in the sequence
-    double   averageEntropy = 0;                /// average entropy (H)
+    U64    nSym;                                /// number of symbols (n_s). To calculate probability
+    U64    sumNSyms;                            /// sum of number of symbols (sum n_a). To calculate probability
+    double probability = 0;                     /// probability of a symbol, based on an identified context
+    double sumOfEntropies = 0;                  /// sum of entropies for different symbols
+    U64    totalNOfSyms = 0;                    /// number of all symbols in the sequence
+    double averageEntropy = 0;                  /// average entropy (H)
     //////////////////////////////////
     
     /*
@@ -264,8 +249,6 @@ void FCM::compressTarget (string tarFileName)
         
         case 'h':
         {
-//            htable_t hTable = getHashTable();
-        
             while (getline(tarFileIn, tarLine))
             {
         
@@ -340,9 +323,8 @@ void FCM::compressTarget (string tarFileName)
     cout << getRefAddresses()[ 0 ].substr(lastSlash_Ref[ 0 ] + 1) << '\t'
          << tarFileName.substr(lastSlash_Tar + 1) << '\t';
     
-    cout << getInvertedRepeat() << '\t'
+    cout << invertedRepeat << '\t'
          << std::fixed << setprecision(4) << alpha << '\t'
-         //            cout << (double) 1/alphaDen << '\t'
          << (int) contextDepth << '\t'
          << std::fixed << setprecision(5) << averageEntropy << '\t'
          << std::fixed << setprecision(5) << averageEntropy/LOG2_ALPH_SIZE;
@@ -847,10 +829,10 @@ void FCM::printHashTable () const
     htable_t hTable = hashTable;
     
     cout
-         << " >>> Context order size:\t" << (U16) this->getContextDepth() << '\n'
-         << " >>> Alpha denominator:\t\t" << (U16) this->getAlphaDenom() << '\n'
-         << " >>> Inverted repeat:\t\t" << (this->getInvertedRepeat() ? "Considered"
-                                                                      : "Not considered")
+         << " >>> Context order size:\t" << (U16) contextDepth << '\n'
+         << " >>> Alpha denominator:\t\t" << (U16) alphaDenom << '\n'
+         << " >>> Inverted repeat:\t\t" << (invertedRepeat ? "Considered"
+                                                           : "Not considered")
          << '\n'
          << " >>> file address:\t"
          << "\n\n";
@@ -876,22 +858,10 @@ void FCM::printHashTable () const
 /***********************************************************
     getters and setters
 ************************************************************/
-U8    FCM::getContextDepth () const                 { return contextDepth;               }
-void  FCM::setContextDepth (U8 ctxDp)               { FCM::contextDepth = ctxDp;         }
-U16   FCM::getAlphaDenom () const                   { return alphaDenom;                 }
-void  FCM::setAlphaDenom (U16 alphaDen)             { FCM::alphaDenom = alphaDen;        }
-////double FCM::getAlphaDenom () const                       { return alphaDenom;             }
-////void FCM::setAlphaDenom (double alphaDen)                { FCM::alphaDenom = alphaDen;    }
-bool  FCM::getInvertedRepeat () const               { return invertedRepeat;             }
-void  FCM::setInvertedRepeat (bool invRep)          { FCM::invertedRepeat = invRep;      }
-
-
-void  FCM::setParams (U16 alphaDen, U8 ctx, bool iR) { FCM::alphaDenom = alphaDen;
-                                                           FCM::contextDepth = ctx;
-                                                           FCM::invertedRepeat = iR; }
-
-
-const vector<string> &FCM::getTarAddresses () const { return tarAddresses;               }
-void  FCM::pushBackTarAddresses (string tFAs)       { FCM::tarAddresses.push_back(tFAs); }
-const vector<string> &FCM::getRefAddresses () const { return refAddresses;               }
-void  FCM::pushBackRefAddresses (string rFAs)       { FCM::refAddresses.push_back(rFAs); }
+void  FCM::setParams (U16 aD, U8 ctx, bool iR)       { FCM::alphaDenom = aD;
+                                                       FCM::contextDepth = ctx;
+                                                       FCM::invertedRepeat = iR;          }
+const vector<string> &FCM::getTarAddresses () const  { return tarAddresses;               }
+void  FCM::pushBackTarAddresses (string tFAs)        { FCM::tarAddresses.push_back(tFAs); }
+const vector<string> &FCM::getRefAddresses () const  { return refAddresses;               }
+void  FCM::pushBackRefAddresses (string rFAs)        { FCM::refAddresses.push_back(rFAs); }

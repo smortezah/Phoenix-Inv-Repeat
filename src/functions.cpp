@@ -204,24 +204,15 @@ void Functions::commandLineParser (int argc, char **argv)
                 parIndex = i;
             }
         }
-        vecParameters.push_back(modelParameters.substr(0, parIndex));   /// save last model parameter
+        vecParameters.push_back(modelParameters.substr(0, parIndex));           /// save last model parameter
         
-//        /// set the alpha denominator of the model
-//        model.setAlphaDenom((U16) stoi(vecParameters[ vecParamIndex++ ]));
-////        model.setAlphaDenom(stod(vecParameters[ vecParamIndex++ ]));
-//        /// set the context depth of the model
-//        model.setContextDepth((U8) stoi(vecParameters[ vecParamIndex++ ]));
-//        /// set the inverted repeat condition of the model
-//        !stoi(vecParameters[ vecParamIndex ]) ? model.setInvertedRepeat(false)
-//                                              : model.setInvertedRepeat(true);
-    
         const U16  alphaDen = (U16)  stoi(vecParameters[ vecParamIndex++ ]);    /// alpha denominator
         const U8   ctxDepth = (U8)   stoi(vecParameters[ vecParamIndex++ ]);    /// context depth
         const bool iR       = (bool) stoi(vecParameters[ vecParamIndex ]);      /// inverted repeat
         model.setParams(alphaDen, ctxDepth, iR);                                /// set the model parameters
         
         model.buildModel(); /// build a model based on reference(s)
-
+        
         /*
         /// compress target(s) using reference(s) model -- multithreaded
         U8 MAX_N_THREADS = (U8) thread::hardware_concurrency(); /// max cores in current machine
@@ -233,7 +224,7 @@ void Functions::commandLineParser (int argc, char **argv)
         U8 arrThrSize = (n_targets > n_threads_available) ? n_threads_available : n_targets;
         thread *arrThread = new thread[arrThrSize];             /// array of threads
         */
-
+        
         /// compress target(s) using reference(s) model -- multithreaded
         U8 n_targets = (U8) model.getTarAddresses().size(); /// up to 2^8=256 targets
         
@@ -243,9 +234,10 @@ void Functions::commandLineParser (int argc, char **argv)
         for (U8 i = 0; i < n_targets; i += arrThrSize)
         {
             for (U8 j = 0; j < arrThrSize && i + j < n_targets; ++j)
-                arrThread[ j ] = thread(&FCM::compressTarget, &model, model.getTarAddresses()[ i + j ]);
+                arrThread[ j ] = thread( &FCM::compressTarget, &model, model.getTarAddresses()[ i + j ] );
             
-            for (U8 j = 0; j < arrThrSize && i + j < n_targets; ++j)    arrThread[ j ].join();
+            for (U8 j = 0; j < arrThrSize && i + j < n_targets; ++j)
+                arrThread[ j ].join();
         }
         
         delete[] arrThread; /// free the memory for array of threads
