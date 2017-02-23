@@ -64,14 +64,13 @@ void FCM::buildModel ()
     U8 currSymInt;                          /// current symbol integer
     
     string refLine;                         /// keep each line of a file
-
-    /// build model based on 't'=table, or 'h'=hash table
-    switch ( compressionMode )
+    
+    switch ( compressionMode )              /// build model based on 't'=table, or 'h'=hash table
     {
         case 't':
         {
             U64 tableSize = refsNumber * maxPlaceValue * ALPH_SUM_SIZE; /// create table
-            table = new U64[ tableSize ];                          /// already initialized with 0's
+            table = new U64[ tableSize ];                               /// already initialized with 0's
             /*
             /// initialize table with 0's
 //            memset(table, 0, sizeof(table[ 0 ]) * tableSize);
@@ -108,7 +107,7 @@ void FCM::buildModel ()
         }   /// end case
             break;
             
-        case 'h':
+        case 'h':               /// adding 'sum' column, makes hash table slower
         {
             for (int i = refsNumber; i--;)
             {
@@ -181,7 +180,7 @@ void FCM::compressTarget (string tarFileName)
     double sumOfEntropies = 0;                  /// sum of entropies for different symbols
     U64    totalNOfSyms = 0;                    /// number of all symbols in the sequence
     double averageEntropy = 0;                  /// average entropy (H)
-    //////////////////////////////////
+    ////////////////////////////////
     
     /*
     /// using macros make this code slower
@@ -217,32 +216,24 @@ void FCM::compressTarget (string tarFileName)
                 for (string::iterator lineIter = tarLine.begin(); lineIter != tarLine.end(); ++lineIter)
                 {
                     U8 currSymInt = symCharToInt(*lineIter);   /// integer version of the current symbol
-        
+                    
                     //////////////////////////////////
-                    /// number of symbols
-                    nSym = table[ tarContext * ALPH_SUM_SIZE + currSymInt ];
+                    nSym = table[ tarContext * ALPH_SUM_SIZE + currSymInt ];    /// number of symbols
                     /*
                     nSym = X;
                     X(nSym);
                     */
-                    
-                    /// sum of number of symbols
-                    sumNSyms = table[ tarContext * ALPH_SUM_SIZE + ALPH_SIZE ];
+                    sumNSyms = table[ tarContext * ALPH_SUM_SIZE + ALPH_SIZE ]; /// sum of number of symbols
                     /*
                     Y(sumNSyms);
                     */
-                    
-                    /// P(s|c^t)
 //                    probability = (double) (alphaDen * nSym + 1) / (alphaDen * sumNSyms + ALPH_SIZE);
-                    probability = (nSym + alpha) / (sumNSyms + sumAlphas);
-                    
-                    /// sum( log_2 P(s|c^t) )
-                    sumOfEntropies = sumOfEntropies + log2(probability);
+                    probability = (nSym + alpha) / (sumNSyms + sumAlphas);      /// P(s|c^t)
+                    sumOfEntropies = sumOfEntropies + log2(probability);        /// sum( log_2 P(s|c^t) )
                     /////////////////////////////////
-        
-                    /// update context
-                    tarContext = (U64) (tarContext * ALPH_SIZE + currSymInt) % maxPlaceValue;
-                }   /// end for
+                    
+                    tarContext = (U64) (tarContext * ALPH_SIZE + currSymInt) % maxPlaceValue;   /// update context
+                }
             }   /// end while
         }   /// end case
         break;
@@ -265,32 +256,23 @@ void FCM::compressTarget (string tarFileName)
 //                    if (hTable.find(tarContext) == hTable.end()) { nSym = 0;   sumNSyms = 0; }
 //                    else
 //                    {
-                        /// number of symbols
-                        nSym = hashTable[ tarContext ][ currSymInt ];
+                        nSym = hashTable[ tarContext ][ currSymInt ];       /// number of symbols
                         /*
                         nSym = X;
                         X(nSym);
                         */
-                    
-                        /// the idea of adding 'sum' column, makes hash table slower
-                        /// sum(n_a)
-                        sumNSyms = 0; for (U64 u : hashTable[ tarContext ])   sumNSyms = sumNSyms + u;
+                        sumNSyms = 0; for (U64 u : hashTable[ tarContext ])   sumNSyms = sumNSyms + u;  /// sum(n_a)
                         /*
                         Y(sumNSyms);
                         */
 //                    }
-                    
-                    /// P(s|c^t)
 //                    probability = (double) (alphaDen * nSym + 1) / (alphaDen * sumNSyms + ALPH_SIZE);
-                    probability = (nSym + alpha) / (sumNSyms + sumAlphas);
-                    
-                    /// sum( log_2 P(s|c^t) )
-                    sumOfEntropies = sumOfEntropies + log2(probability);
+                    probability = (nSym + alpha) / (sumNSyms + sumAlphas);  /// P(s|c^t)
+                    sumOfEntropies = sumOfEntropies + log2(probability);    /// sum( log_2 P(s|c^t) )
                     /////////////////////////////////
-        
-                    /// update context
-                    tarContext = (U64) (tarContext * ALPH_SIZE + currSymInt) % maxPlaceValue;
-                }   /// end for
+                    
+                    tarContext = (U64) (tarContext * ALPH_SIZE + currSymInt) % maxPlaceValue;   /// update context
+                }
             }   /// end while
         }   /// end case
         break;
@@ -298,11 +280,10 @@ void FCM::compressTarget (string tarFileName)
         default: break;
     }   /// end switch
     
-    tarFileIn.close();          /// close file
+    tarFileIn.close();  /// close file
     
     ////////////////////////////////
-    /// H_N = -1/N sum( log_2 P(s|c^t) )
-    averageEntropy = (double) (-1) * sumOfEntropies / totalNOfSyms;
+    averageEntropy = (double) (-1) * sumOfEntropies / totalNOfSyms;     /// H_N = -1/N sum( log_2 P(s|c^t) )
 
 //    cout << sumOfEntropies << '\n';
 //    cout << totalNOfSyms << '\n';
@@ -331,7 +312,7 @@ void FCM::compressTarget (string tarFileName)
     
 //    cout.width(2);  cout << std::left << getInvertedRepeat() << "   ";
     
-    cout<<'\n';
+    cout << '\n';
     
     mut.unlock();
     /// mutex unlock ======================================================

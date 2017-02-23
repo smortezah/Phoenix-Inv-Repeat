@@ -32,17 +32,17 @@ public:
     void   pushBackRefAddresses (string);               /// pushBacker of reference files addresses
     
 private:
-    U8             contextDepth;                         /// context depth (SIZE <= 255)
-    U16            alphaDenom;                           /// alpha denominator
-    bool           invertedRepeat;                       /// inverted repeat
-    vector<string> tarAddresses;                         /// target files addresses
-    vector<string> refAddresses;                         /// reference files addresses
+    U8             contextDepth;                        /// context depth (SIZE <= 255)
+    U16            alphaDenom;                          /// alpha denominator
+    bool           invertedRepeat;                      /// inverted repeat
+    vector<string> tarAddresses;                        /// target files addresses
+    vector<string> refAddresses;                        /// reference files addresses
     
-    std::mutex     mut;                                  /// mutex
-    char           compressionMode;                      /// compression mode (table / hash table)
-    U64            *table;                               /// table
-    htable_t       hashTable;                            /// hash table (int key)
-//    htable_str_t hashTable_str;                             /// hash table (string key)
+    std::mutex     mut;                                 /// mutex
+    char           compressionMode;                     /// compression mode (table / hash table)
+    U64            *table;                              /// table
+    htable_t       hashTable;                           /// hash table (int key)
+//    htable_str_t hashTable_str;                            /// hash table (string key)
 };
 
 
