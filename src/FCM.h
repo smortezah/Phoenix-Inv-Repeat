@@ -16,10 +16,10 @@ class FCM
 {
 public:
     FCM ();                                             /// constructor
-                                                        
+    
     void   buildModel ();                               /// build reference(s) model
     void   compressTarget (string);                     /// compress target file
-    inline U8 symCharToInt (char) const;                /// ACNGT -> 01234
+    inline U8   symCharToInt (char) const;              /// ACNGT -> 01234
     inline void updateTable (U64, U64);                 /// update table, including 'sum' column
                                                         
 //    void buildHashTable_str ();                                /// build hash table (string key)

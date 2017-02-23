@@ -184,20 +184,13 @@ void FCM::compressTarget (string tarFileName)
     
     /*
     /// using macros make this code slower
-    htable_t hTable = getHashTable();
-//#define X \
-         ((mode == 'h') ? (hTable[ tarContext ][ currSymInt ]) : (table[ tarContext * ALPH_SUM_SIZE + currSymInt ]))
-
-#define X(in) do { \
-                (mode == 'h') \
-                ? in = hTable[ tarContext ][ currSymInt ] \
-                : in = table[ tarContext * ALPH_SUM_SIZE + currSymInt ]; \
-              } while ( 0 )
-
-#define Y(in) do { \
-                (mode == 't') \
+    #define X \
+         ((compressionMode == 'h') ? (hashTable[ tarContext ][ currSymInt ]) \
+                                   : (table[ tarContext * ALPH_SUM_SIZE + currSymInt ]))
+    #define Y(in) do { \
+                (compressionMode == 't') \
                 ? in = table[ tarContext * ALPH_SUM_SIZE + ALPH_SIZE ] \
-                : in = 0; for (U64 u : hTable[ tarContext ]) in += u; \
+                : in = 0; for (U64 u : hashTable[ tarContext ]) in += u; \
               } while ( 0 )
     */
     
@@ -219,14 +212,10 @@ void FCM::compressTarget (string tarFileName)
                     
                     //////////////////////////////////
                     nSym = table[ tarContext * ALPH_SUM_SIZE + currSymInt ];    /// number of symbols
-                    /*
-                    nSym = X;
-                    X(nSym);
-                    */
+//                    nSym = X;
                     sumNSyms = table[ tarContext * ALPH_SUM_SIZE + ALPH_SIZE ]; /// sum of number of symbols
-                    /*
-                    Y(sumNSyms);
-                    */
+//                    Y(sumNSyms);
+                    
 //                    probability = (double) (alphaDen * nSym + 1) / (alphaDen * sumNSyms + ALPH_SIZE);
                     probability = (nSym + alpha) / (sumNSyms + sumAlphas);      /// P(s|c^t)
                     sumOfEntropies = sumOfEntropies + log2(probability);        /// sum( log_2 P(s|c^t) )
@@ -237,21 +226,21 @@ void FCM::compressTarget (string tarFileName)
             }   /// end while
         }   /// end case
         break;
-        
+
         case 'h':
         {
             while (getline(tarFileIn, tarLine))
             {
-        
+
                 //////////////////////////////////
                 totalNOfSyms = totalNOfSyms + tarLine.size();   /// number of symbols in each line of dataset
                 //////////////////////////////////
-        
+
                 /// hash table includes the number of occurrences of symbols A, C, N, G, T
                 for (string::iterator lineIter = tarLine.begin(); lineIter != tarLine.end(); ++lineIter)
                 {
                     U8 currSymInt = symCharToInt(*lineIter);   /// integer version of the current symbol
-        
+
                     //////////////////////////////////
 //                    if (hTable.find(tarContext) == hTable.end()) { nSym = 0;   sumNSyms = 0; }
 //                    else
@@ -270,13 +259,13 @@ void FCM::compressTarget (string tarFileName)
                     probability = (nSym + alpha) / (sumNSyms + sumAlphas);  /// P(s|c^t)
                     sumOfEntropies = sumOfEntropies + log2(probability);    /// sum( log_2 P(s|c^t) )
                     /////////////////////////////////
-                    
+
                     tarContext = (U64) (tarContext * ALPH_SIZE + currSymInt) % maxPlaceValue;   /// update context
                 }
             }   /// end while
         }   /// end case
         break;
-        
+
         default: break;
     }   /// end switch
     
