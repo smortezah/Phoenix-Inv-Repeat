@@ -44,7 +44,7 @@ void Functions::commandLineParser (int argc, char **argv)
     bool m_flag = false;                /// model parameters entered
     bool t_flag = false;                /// target(s) file name entered
     bool r_flag = false;                /// reference(s) file name entered
-    string modelsParameters = "";       /// argument of option 'm'
+    string strModelsParameters = "";    /// argument of option 'm'
     string tarFilesNames = "";          /// argument of option 't'
     string refFilesNames = "";          /// argument of option 'r'
     
@@ -106,17 +106,17 @@ void Functions::commandLineParser (int argc, char **argv)
             
             case 'm':   /// needs model(s) parameters
                 m_flag = true;
-                modelsParameters = (string) optarg;  /// keep argument = model(s) parameters
+                strModelsParameters = (string) optarg;  /// keep argument = model(s) parameters
                 break;
                 
             case 'r':   /// needs reference file name
                 r_flag = true;
-                refFilesNames = (string) optarg;    /// keep argument = reference files names
+                refFilesNames = (string) optarg;        /// keep argument = reference files names
                 break;
                 
             case 't':   /// needs target files names
                 t_flag = true;
-                tarFilesNames = (string) optarg;    /// keep argument = target files names
+                tarFilesNames = (string) optarg;        /// keep argument = target files names
                 break;
                 
             case 'n':   /// needs an integer argument
@@ -216,7 +216,7 @@ void Functions::commandLineParser (int argc, char **argv)
     {
         vector< string > vecModelsParams;     /// vector of parameters for different models
         
-        string::iterator begIter = modelsParameters.begin(),   endIter = modelsParameters.end();
+        string::iterator begIter = strModelsParameters.begin(),   endIter = strModelsParameters.end();
         for (string::iterator it = begIter; it != endIter; ++it)  /// save all reference files names but the last one
             if (*it == ':')
             {
@@ -228,43 +228,69 @@ void Functions::commandLineParser (int argc, char **argv)
         /// create an array of models and set their parameters
         U8 n_models = (U8) vecModelsParams.size();  /// number of models
         FCM *models = new FCM[ n_models ];                /// array of models
-        vector< string > modelParams;                 /// to save models parameters
+        
+//        vector< string > modelParams;                 /// to save models parameters
+//
+//        /// save models parameters and process the models
+//        for (U8 n = n_models; n--;)
+//        {
+//            modelParams.clear();                    /// reset vector modelParams
+//
+//            begIter = vecModelsParams[ n ].begin(), endIter = vecModelsParams[ n ].end();
+//            for (string::iterator it = begIter; it != endIter; ++it)  /// save all reference files names but the last one
+//                if (*it == ',')
+//                {
+//                    modelParams.push_back( string(begIter, it) );
+//                    begIter = it + 1;
+//                }
+//            modelParams.push_back( string(begIter, endIter) );      /// save last reference file name
+//
+//            /// set model(s) parameters --- ir, ctx_depth, alpha_denominator
+//            models[ n ].setParams( (bool)stoi(modelParams[0]), (U8)stoi(modelParams[1]), (U16)stoi(modelParams[2]) );
+//
+//        }
+//
+////        models[ n ].buildModel();
+    
+    
+    
+        vector< vector<string> > modelsParams;                 /// to save models parameters
         
         /// save models parameters and process the models
-        for (U8 n = 0; n != n_models; ++n)
+        for (U8 n = n_models; n--;)
         {
-            modelParams.clear();                    /// reset vector modelParams
-            
-            begIter = vecModelsParams[ n ].begin(), endIter = vecModelsParams[ n ].end();
-            for (string::iterator it = begIter; it != endIter; ++it)  /// save all reference files names but the last one
-                if (*it == ',')
-                {
-                    modelParams.push_back( string(begIter, it) );
-                    begIter = it + 1;
-                }
-            modelParams.push_back( string(begIter, endIter) );      /// save last reference file name
-            /// set model(s) parameters --- ir, ctx_depth, alpha_denominator
-            models[ n ].setParams( (bool)stoi(modelParams[0]), (U8)stoi(modelParams[1]), (U16)stoi(modelParams[2]) );
-            
-            
+//            modelsParams[n].clear();                    /// reset vector modelParams
+        
+//            begIter = vecModelsParams[ n ].begin(), endIter = vecModelsParams[ n ].end();
+//            for (string::iterator it = begIter; it != endIter; ++it)  /// save all reference files names but the last one
+//                if (*it == ',')
+//                {
+//                    modelsParams[n].push_back( string(begIter, it) );
+//                    begIter = it + 1;
+//                }
+//            modelsParams[n].push_back( string(begIter, endIter) );      /// save last reference file name
+//
+////            /// set model(s) parameters --- ir, ctx_depth, alpha_denominator
+////            models[ n ].setParams( (bool)stoi(modelsParams[0]), (U8)stoi(modelsParams[1]), (U16)stoi(modelsParams[2]) );
+        
+//            for(string s:modelsParams[n])cout<<s<<' ';
         }
     
-//        models[ n ].buildModel();
-        
-        
-        
-        
+    
+    
+    
+    
         /*
-        U8 parIndex = (U8) modelsParameters.size();
+        U8 parIndex = (U8) strModelsParameters.size();
         for (U8 i = parIndex; i--;)     /// save all model parameters except the last model
         {
-            if (modelsParameters[ i ] == ',')
+            if (strModelsParameters[ i ] == ',')
             {
-                vecParameters.push_back( modelsParameters.substr(i+1, parIndex-i-1) );
+                vecParameters.push_back( strModelsParameters.substr(i+1, parIndex-i-1) );
                 parIndex = i;
             }
         }
-        vecParameters.push_back(modelsParameters.substr(0, parIndex));           /// save last model parameter
+        vecParameters.push_back(strModelsParameters.substr(0, parIndex));           /// save last model parameter
 
         const U16  alphaDen = (U16)  stoi(vecParameters[ vecParamIndex++ ]);    /// alpha denominator
         const U8   ctxDepth = (U8)   stoi(vecParameters[ vecParamIndex++ ]);    /// context depth
