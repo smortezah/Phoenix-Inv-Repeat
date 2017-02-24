@@ -44,9 +44,13 @@ void Messages::help () const
          << "    -h,  --help"                                                                       << '\n'
          << "         usage guide"                                                                  << '\n'
                                                                                                     << '\n'
-         << "    -n [NUMBER],  --n_threads [NUMBER]"                                                << '\n'
+         << "    -n [NUMBER (integer)],  --n_threads [NUMBER (integer)]"                            << '\n'
          << "         number of threads (default: 2)."                                              << '\n'
          << "         requires an integer number (n >= 1)"                                          << '\n'
+                                                                                                    << '\n'
+         << "    -g [NUMBER (float)],  --gamma [NUMBER (float)]"                                    << '\n'
+         << "         gamma (default: 0.99)."                                                       << '\n'
+         << "         requires a float number (0 <= g < 1)"                                         << '\n'
                                                                                                     << '\n'
          << "    -V,  --version"                                                                    << '\n'
          << "         version number"                                                               << '\n'
@@ -88,13 +92,4 @@ void Messages::about () const
 void Messages::verbose () const
 {
     cout << "verbose mode.\n"; /// TODO for test
-}
-
-
-/***********************************************************
-    show float number mode
-************************************************************/
-void Messages::fnumber (float num) const
-{
-    cout << "float number mode (d=" << num << ")\n"; /// TODO for test
 }

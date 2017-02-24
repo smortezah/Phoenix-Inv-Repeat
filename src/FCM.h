@@ -25,6 +25,7 @@ public:
 //    void buildHashTable_str ();                                /// build hash table (string key)
     void   printHashTable () const;                     /// print hash table
     
+    void   setGamma (double gamma);                     /// setter of gamma
     void   pushBackParams (bool, U8, U16);              /// setter of model(s) parameters (ir, ctx_depth, alpha_denom)
     const  vector<string> &getTarAddresses () const;    /// getter of target files addresses
     void   pushBackTarAddresses (const string&);        /// pushBacker of target files addresses
@@ -32,10 +33,10 @@ public:
     void   pushBackRefAddresses (const string&);        /// pushBacker of reference files addresses
     
 private:
+    double         gamma;                               /// gamma (for mixture of FCMs)
     vector<bool>   invertedRepeats;                     /// inverted repeat(s)
     vector<U8>     contextDepths;                       /// context depthe(s) (SIZE <= 255)
     vector<U16>    alphaDenoms;                         /// alpha denominator(s)
-
     vector<string> tarAddresses;                        /// target files addresses
     vector<string> refAddresses;                        /// reference files addresses
     

@@ -36,6 +36,7 @@ void Functions::commandLineParser (int argc, char **argv)
     FCM      mixModel;                  /// mixture of FCM models
     
     U8 n_threads = DEFAULT_N_THREADS;   /// number of threads
+    double gamma = DEFAULT_GAMMA;       /// gamma
     
     /// using these flags, if both short and long arguments
     /// are entered, just one of them is considered
@@ -64,8 +65,8 @@ void Functions::commandLineParser (int argc, char **argv)
                     {"model",     required_argument, 0,             'm'},   /// model(s)
                     {"reference", required_argument, 0,             'r'},   /// reference(s) file(s)
                     {"target",    required_argument, 0,             't'},   /// target(s) file(s)
-                    {"n_threads", required_argument, 0,             'n'},   /// number of threads
-                    {"fnumber",   required_argument, 0,             'd'},   /// number (float)
+                    {"n_threads", required_argument, 0,             'n'},   /// number of threads >= 1
+                    {"gamma",     required_argument, 0,             'g'},   /// 0 <= gamma (float) < 1
                     {0,           0,                 0,               0}
             };
     
@@ -74,7 +75,7 @@ void Functions::commandLineParser (int argc, char **argv)
         /// getopt_long() stores the option index here.
         option_index = 0;
         
-        c = getopt_long(argc, argv, ":hAvm:r:t:n:d:", long_options, &option_index);
+        c = getopt_long(argc, argv, ":hAvm:r:t:n:g:", long_options, &option_index);
         
         /// Detect the end of the options.
         if (c == -1)
@@ -133,14 +134,15 @@ void Functions::commandLineParser (int argc, char **argv)
                 }
                 break;
             
-            case 'd':   /// needs a float argument
+            case 'g':   /// needs a double argument
                 try
                 {
-                    messageObj.fnumber(stof((string) optarg));   /// TODO for test
+                    gamma = stod((string) optarg);
+                    if (gamma < 0 || gamma >= 1)    gamma = DEFAULT_GAMMA;
                 }
                 catch (const invalid_argument &ia)
                 {
-                    cerr << "Option 'd' ('fnumber') has an invalid argument.\n";
+                    cerr << "Option 'g' ('gamma') has an invalid argument.\n";
                     return;
                 }
                 break;
@@ -160,13 +162,13 @@ void Functions::commandLineParser (int argc, char **argv)
     if (t_flag)
     {
         string::iterator begIter = tarFilesNames.begin(),   endIter = tarFilesNames.end();
-        for (string::iterator it = begIter; it != endIter; ++it)    /// all target files names but the last one
+        for (string::iterator it = begIter; it != endIter; ++it)      /// all target files names but the last one
             if (*it == ',')
             {
                 mixModel.pushBackTarAddresses( string(begIter, it) );
                 begIter = it + 1;
             }
-        mixModel.pushBackTarAddresses( string(begIter, endIter) );  /// last target file name
+        mixModel.pushBackTarAddresses( string(begIter, endIter) );    /// last target file name
         
         /*  slower
         U8 tarIndex = (U8) tarFilesNames.size();
@@ -188,13 +190,13 @@ void Functions::commandLineParser (int argc, char **argv)
     if (r_flag)
     {
         string::iterator begIter = refFilesNames.begin(),   endIter = refFilesNames.end();
-        for (string::iterator it = begIter; it != endIter; ++it)    /// all reference files names but the last one
+        for (string::iterator it = begIter; it != endIter; ++it)      /// all reference files names but the last one
             if (*it == ',')
             {
                 mixModel.pushBackRefAddresses( string(begIter, it) );
                 begIter = it + 1;
             }
-        mixModel.pushBackRefAddresses( string(begIter, endIter) );  /// last reference file name
+        mixModel.pushBackRefAddresses( string(begIter, endIter) );    /// last reference file name
 
         /*  slower
         U8 refIndex = (U8) refFilesNames.size();
@@ -215,20 +217,20 @@ void Functions::commandLineParser (int argc, char **argv)
     /// save model(s) parameters and process the model(s)
     if (m_flag)
     {
-        vector< string > vecModelsParams;                           /// parameters for different models
+        vector< string > vecModelsParams;                             /// parameters for different models
         string::iterator begIter = strModelsParameters.begin(),   endIter = strModelsParameters.end();
-        for (string::iterator it = begIter; it != endIter; ++it)    /// all models parameters but the last one
+        for (string::iterator it = begIter; it != endIter; ++it)      /// all models parameters but the last one
             if (*it == ':')
             {
                 vecModelsParams.push_back( string(begIter, it) );
                 begIter = it + 1;
             }
-        vecModelsParams.push_back( string(begIter, endIter) );      /// last model parameters
-        
-        vector< string > modelParams;                               /// parameters for each model
-        for (U8 n = (U8) vecModelsParams.size(); n--;)              /// loop through number of models
+        vecModelsParams.push_back( string(begIter, endIter) );        /// last model parameters
+                                                                      
+        vector< string > modelParams;                                 /// parameters for each model
+        for (U8 n = (U8) vecModelsParams.size(); n--;)                /// loop through number of models
         {
-            modelParams.clear();                                    /// reset vector modelParams
+            modelParams.clear();                                      /// reset vector modelParams
 
             begIter = vecModelsParams[ n ].begin(), endIter = vecModelsParams[ n ].end();
             for (string::iterator it = begIter; it != endIter; ++it)/// all paramaeters for each model but the last one
@@ -237,14 +239,17 @@ void Functions::commandLineParser (int argc, char **argv)
                     modelParams.push_back( string(begIter, it) );
                     begIter = it + 1;
                 }
-            modelParams.push_back( string(begIter, endIter) );      /// parameters for the last model
+            modelParams.push_back( string(begIter, endIter) );        /// parameters for the last model
+            
             /// set model(s) parameters
-            mixModel.pushBackParams( (bool) stoi( modelParams[0] ), /// inverted repeat
-                                   (U8)   stoi( modelParams[1] ),   /// context depth
-                                   (U16)  stoi( modelParams[2] ) ); /// alpha denominator
+            mixModel.pushBackParams( (bool) stoi( modelParams[0] ),   /// inverted repeat
+                                     (U8)   stoi( modelParams[1] ),   /// context depth
+                                     (U16)  stoi( modelParams[2] ) ); /// alpha denominator
         }
     
-        mixModel.buildModel();                                      /// build model(s)
+        mixModel.setGamma(gamma);                                     /// set gamma
+                                                                      
+        mixModel.buildModel();                                        /// build model(s)
         
         /*
         /// compress target(s) using reference(s) model -- multithreaded
@@ -259,10 +264,10 @@ void Functions::commandLineParser (int argc, char **argv)
         */
         
         /// compress target(s) using reference(s) model(s) -- multithreaded
-        U8 n_targets = (U8) mixModel.getTarAddresses().size();      /// up to 2^8=256 targets
+        U8 n_targets = (U8) mixModel.getTarAddresses().size();        /// up to 2^8=256 targets
 
         U8 arrThrSize = (n_targets > n_threads) ? n_threads : n_targets;
-        thread *arrThread = new thread[ arrThrSize ];               /// array of threads
+        thread *arrThread = new thread[ arrThrSize ];                 /// array of threads
 
         for (U8 i = 0; i < n_targets; i += arrThrSize)
         {
@@ -273,7 +278,7 @@ void Functions::commandLineParser (int argc, char **argv)
                 arrThread[ j ].join();
         }
 
-        delete[] arrThread;                                         /// free up the memory for array of threads
+        delete[] arrThread;                                           /// free up the memory for array of threads
     }
     
     /// Print any remaining command line arguments (not options).
