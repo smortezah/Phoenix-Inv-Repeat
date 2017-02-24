@@ -229,25 +229,27 @@ void Functions::commandLineParser (int argc, char **argv)
         U8 n_models = (U8) vecModelsParams.size();  /// number of models
         FCM *models = new FCM[ n_models ];                /// array of models
         vector< string > modelParams;                 /// to save models parameters
-
+        
         /// save models parameters and process the models
-        for (uint8_t n = 0; n != n_models; ++n)
+        for (U8 n = 0; n != n_models; ++n)
         {
-            begIter = vecModelsParams[n].begin(), endIter = modelsParameters.end();
-//            for (string::iterator it = begIter; it != endIter; ++it)  /// save all reference files names but the last one
-//                if (*it == ',')
-//                {
-//                    modelParams.push_back( string(begIter, it) );
-//                    begIter = it + 1;
-//                }
-//            modelParams.push_back(string(begIter, endIter));      /// save last reference file name
-
-////            for(string s:modelParams)cout<<s<<' ';
+            modelParams.clear();                    /// reset vector modelParams
+            
+            begIter = vecModelsParams[ n ].begin(), endIter = vecModelsParams[ n ].end();
+            for (string::iterator it = begIter; it != endIter; ++it)  /// save all reference files names but the last one
+                if (*it == ',')
+                {
+                    modelParams.push_back( string(begIter, it) );
+                    begIter = it + 1;
+                }
+            modelParams.push_back( string(begIter, endIter) );      /// save last reference file name
+            /// set model(s) parameters --- ir, ctx_depth, alpha_denominator
+            models[ n ].setParams( (bool)stoi(modelParams[0]), (U8)stoi(modelParams[1]), (U16)stoi(modelParams[2]) );
+            
+            
         }
-        
-        
-        
-        
+    
+//        models[ n ].buildModel();
         
         
         
@@ -269,26 +271,22 @@ void Functions::commandLineParser (int argc, char **argv)
         const bool iR       = (bool) stoi(vecParameters[ vecParamIndex ]);      /// inverted repeat
         */
 
-//        const bool invRep   = (bool) stoi(vecParameters[ vecParamIndex++ ]);      /// inverted repeat
-//        const U8   ctxDepth = (U8)   stoi(vecParameters[ vecParamIndex++ ]);    /// context depth
-//        const U16  alphaDen = (U16)  stoi(vecParameters[ vecParamIndex ]);    /// alpha denominator
-//        objFCM.setParams(alphaDen, ctxDepth, invRep);                           /// set the model parameters
 ////        objFCM.pushBackParams(alphaDen, ctxDepth, iR);                           /// set the model parameters
 //
 //        objFCM.buildModel(); /// build a model based on reference(s)
-//
-//        /*
-//        /// compress target(s) using reference(s) model -- multithreaded
-//        U8 MAX_N_THREADS = (U8) thread::hardware_concurrency(); /// max cores in current machine
-//        /// N_FREE_THREADS considered for other jobs in current system
-//        U8 n_threads_available = (U8) (!MAX_N_THREADS ? DEFAULT_N_THREADS - N_FREE_THREADS
-//                                                                : MAX_N_THREADS - N_FREE_THREADS);
-//        U8 n_targets = (U8) model.getTarAddresses().size();     /// up to 2^8=256 targets
-//
-//        U8 arrThrSize = (n_targets > n_threads_available) ? n_threads_available : n_targets;
-//        thread *arrThread = new thread[arrThrSize];             /// array of threads
-//        */
-//
+
+        /*
+        /// compress target(s) using reference(s) model -- multithreaded
+        U8 MAX_N_THREADS = (U8) thread::hardware_concurrency(); /// max cores in current machine
+        /// N_FREE_THREADS considered for other jobs in current system
+        U8 n_threads_available = (U8) (!MAX_N_THREADS ? DEFAULT_N_THREADS - N_FREE_THREADS
+                                                                : MAX_N_THREADS - N_FREE_THREADS);
+        U8 n_targets = (U8) model.getTarAddresses().size();     /// up to 2^8=256 targets
+
+        U8 arrThrSize = (n_targets > n_threads_available) ? n_threads_available : n_targets;
+        thread *arrThread = new thread[arrThrSize];             /// array of threads
+        */
+
 //        /// compress target(s) using reference(s) model -- multithreaded
 //        U8 n_targets = (U8) objFCM.getTarAddresses().size(); /// up to 2^8=256 targets
 //

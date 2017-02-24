@@ -840,9 +840,9 @@ void FCM::printHashTable () const
 //void  FCM::pushBackParams (U16 aD, U8 ctx, bool iR)  { FCM::alphaDenom.push_back(aD);
 //                                                       FCM::contextDepth.push_back(ctx);
 //                                                       FCM::invertedRepeat.push_back(iR); }
-void  FCM::setParams (U16 aD, U8 ctx, bool iR)       { FCM::alphaDenom = aD;
+void  FCM::setParams (bool iR, U8 ctx, U16 aD)       { FCM::invertedRepeat = iR;
     FCM::contextDepth = ctx;
-    FCM::invertedRepeat = iR;          }
+     FCM::alphaDenom = aD;        }
 
 const vector<string> &FCM::getTarAddresses () const  { return tarAddresses;               }
 void  FCM::pushBackTarAddresses (const string &tFAs) { FCM::tarAddresses.push_back(tFAs); }
