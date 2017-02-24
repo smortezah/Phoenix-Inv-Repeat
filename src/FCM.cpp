@@ -36,26 +36,28 @@ FCM::FCM () {}
 ************************************************************/
 void FCM::buildModel ()
 {
-//    vector< string > refFilesNames = getRefAddresses();     /// reference file(s) address(es)
-//    U8 refsNumber = (U8) refFilesNames.size();              /// number of references
-//
-//    /// set compression mode: 't'=table, 'h'=hash table. supports multi-references case
-//    compressionMode = ((U64) refsNumber > (U64) pow(ALPH_SIZE, TABLE_MAX_CTX - contextDepth)) ? 'h' : 't';
-//
-//    /// check if reference(s) file(s) cannot be opened, or are empty
-//    ifstream refFilesIn[ refsNumber ];
-//
-//    for (U8 i = refsNumber; i--;)
-//    {
-//        refFilesIn[ i ].open( refFilesNames[ i ], ios::in );
-//        if (!refFilesIn[ i ])               /// error occurred while opening file(s)
-//        {
-//            cerr << "The file '" << refFilesNames[ i ] << "' cannot be opened, or it is empty.\n";
-//            refFilesIn[ i ].close();        /// close file(s)
-//            return;                         /// exit this function
-//        }
-//    }
-//
+    vector< string > refFilesNames = getRefAddresses();     /// reference file(s) address(es)
+    U8 refsNumber = (U8) refFilesNames.size();              /// number of references
+
+    /// set compression mode: 't'=table, 'h'=hash table.
+    /// 5^k_1 + 5^k_2 + ... > 5^12 ==> mode: hash table
+    U64 cmpModeSum = 0;     for (U8 k : contextDepths) cmpModeSum += pow(ALPH_SIZE, k);
+    compressionMode = (cmpModeSum > pow(ALPH_SIZE, TABLE_MAX_CTX)) ? 'h' : 't';
+    
+    /// check if reference(s) file(s) cannot be opened, or are empty
+    ifstream refFilesIn[ refsNumber ];
+
+    for (U8 i = refsNumber; i--;)
+    {
+        refFilesIn[ i ].open( refFilesNames[ i ], ios::in );
+        if (!refFilesIn[ i ])               /// error occurred while opening file(s)
+        {
+            cerr << "The file '" << refFilesNames[ i ] << "' cannot be opened, or it is empty.\n";
+            refFilesIn[ i ].close();        /// close file(s)
+            return;                         /// exit this function
+        }
+    }
+    
 //    U64 context;                       	    /// context (integer), that slides in the dataset
 //    U64 maxPlaceValue = (U64) pow(ALPH_SIZE, contextDepth);
 //    U64 invRepContext = maxPlaceValue - 1;  /// inverted repeat context (integer)
@@ -64,12 +66,12 @@ void FCM::buildModel ()
 //    U8 currSymInt;                          /// current symbol integer
 //
 //    string refLine;                         /// keep each line of a file
-//
+
 //    switch ( compressionMode )              /// build model based on 't'=table, or 'h'=hash table
 //    {
 //        case 't':
 //        {
-//            U64 tableSize = refsNumber * maxPlaceValue * ALPH_SUM_SIZE; /// create table
+//            U64 tableSize = maxPlaceValue * ALPH_SUM_SIZE;              /// create table
 //            table = new U64[ tableSize ];                               /// already initialized with 0's
 //            /*
 //            /// initialize table with 0's
@@ -107,38 +109,38 @@ void FCM::buildModel ()
 //        }   /// end case
 //            break;
 //
-//        case 'h':               /// adding 'sum' column, makes hash table slower
-//        {
-//            for (int i = refsNumber; i--;)
-//            {
-//                context = 0;    /// reset in the beginning of each reference file
-//
-//                while ( getline(refFilesIn[ i ], refLine) )
-//                {
-//                    /// fill hash table by number of occurrences of symbols A, C, N, G, T
-//                    for (string::iterator lineIter = refLine.begin(); lineIter != refLine.end(); ++lineIter)
-//                    {
-//                        currSymInt = symCharToInt(*lineIter);
-//
-//                        /// considering inverted repeats to update hash table
-//                        if (invertedRepeat)
-//                        {
-//                            /// concatenation of inverted repeat context and current symbol
-//                            iRCtxCurrSym = (4 - currSymInt) * maxPlaceValue + invRepContext;
-//                            /// update inverted repeat context (integer)
-//                            invRepContext = (U64) iRCtxCurrSym / ALPH_SIZE;
-//
-//                            /// update hash table considering inverted repeats
-//                            ++hashTable[ invRepContext ][ iRCtxCurrSym % ALPH_SIZE ];
-//                        }
-//
-//                        ++hashTable[ context ][ currSymInt ];                               /// update hash table
-//                        context = (U64) (context * ALPH_SIZE + currSymInt) % maxPlaceValue; /// update context
-//                    }
-//                }
-//            }   /// end for
-//        }   /// end case
-//            break;
+////        case 'h':               /// adding 'sum' column, makes hash table slower
+////        {
+////            for (int i = refsNumber; i--;)
+////            {
+////                context = 0;    /// reset in the beginning of each reference file
+////
+////                while ( getline(refFilesIn[ i ], refLine) )
+////                {
+////                    /// fill hash table by number of occurrences of symbols A, C, N, G, T
+////                    for (string::iterator lineIter = refLine.begin(); lineIter != refLine.end(); ++lineIter)
+////                    {
+////                        currSymInt = symCharToInt(*lineIter);
+////
+////                        /// considering inverted repeats to update hash table
+////                        if (invertedRepeat)
+////                        {
+////                            /// concatenation of inverted repeat context and current symbol
+////                            iRCtxCurrSym = (4 - currSymInt) * maxPlaceValue + invRepContext;
+////                            /// update inverted repeat context (integer)
+////                            invRepContext = (U64) iRCtxCurrSym / ALPH_SIZE;
+////
+////                            /// update hash table considering inverted repeats
+////                            ++hashTable[ invRepContext ][ iRCtxCurrSym % ALPH_SIZE ];
+////                        }
+////
+////                        ++hashTable[ context ][ currSymInt ];                               /// update hash table
+////                        context = (U64) (context * ALPH_SIZE + currSymInt) % maxPlaceValue; /// update context
+////                    }
+////                }
+////            }   /// end for
+////        }   /// end case
+////            break;
 //
 //        default: break;
 //    }   /// end switch

@@ -246,9 +246,11 @@ void Functions::commandLineParser (int argc, char **argv)
                                      (U8)   stoi( modelParams[1] ),   /// context depth
                                      (U16)  stoi( modelParams[2] ) ); /// alpha denominator
         }
-    
+        
         mixModel.setGamma(gamma);                                     /// set gamma
-                                                                      
+        
+        
+        // TODO: multithreaded model build
         mixModel.buildModel();                                        /// build model(s)
         
         /*
