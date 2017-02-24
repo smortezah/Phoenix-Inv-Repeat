@@ -25,9 +25,9 @@ public:
 //    void buildHashTable_str ();                                /// build hash table (string key)
     void   printHashTable () const;                     /// print hash table
     
-    void   setParams (bool, U8, const U16);          /// setter of model parameters (alpha, ctx, ir)
+    void   setParams (bool, U8, const U16);             /// setter of model parameters (alpha, ctx, ir)
     
-//    void   pushBackParams (U16, U8, bool);          /// setter of model parameters (alpha, ctx, ir)
+//    void   pushBackParams (U16, U8, bool);              /// setter of model parameters (alpha, ctx, ir)
     
     const  vector<string> &getTarAddresses () const;    /// getter of target files addresses
     void   pushBackTarAddresses (const string&);        /// pushBacker of target files addresses
@@ -35,14 +35,14 @@ public:
     void   pushBackRefAddresses (const string&);        /// pushBacker of reference files addresses
     
 private:
-    bool           invertedRepeat;                     /// inverted repeat(s)
-    U8             contextDepth;                       /// context depthe(s) (SIZE <= 255)
-    U16            alphaDenom;                         /// alpha denominator(s)
-//
+    bool           invertedRepeat;                      /// inverted repeat(s)
+    U8             contextDepth;                        /// context depthe(s) (SIZE <= 255)
+    U16            alphaDenom;                          /// alpha denominator(s)
+    
 //    vector<U8>     contextDepth;                        /// context depthe(s) (SIZE <= 255)
 //    vector<U16>    alphaDenom;                          /// alpha denominator(s)
 //    vector<bool>   invertedRepeat;                      /// inverted repeat(s)
-    
+
     vector<string> tarAddresses;                        /// target files addresses
     vector<string> refAddresses;                        /// reference files addresses
     
