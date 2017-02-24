@@ -25,23 +25,16 @@ public:
 //    void buildHashTable_str ();                                /// build hash table (string key)
     void   printHashTable () const;                     /// print hash table
     
-//    void   setParams (bool, U8, const U16);             /// setter of model parameters (alpha, ctx, ir)
-    
-    void   pushBackParams (bool, U8, U16);              /// setter of model parameters (alpha, ctx, ir)
-    
+    void   pushBackParams (bool, U8, U16);              /// setter of model(s) parameters (ir, ctx_depth, alpha_denom)
     const  vector<string> &getTarAddresses () const;    /// getter of target files addresses
     void   pushBackTarAddresses (const string&);        /// pushBacker of target files addresses
     const  vector<string> &getRefAddresses () const;    /// getter of reference files addresses
     void   pushBackRefAddresses (const string&);        /// pushBacker of reference files addresses
     
 private:
-//    bool           invertedRepeat;                      /// inverted repeat(s)
-//    U8             contextDepth;                        /// context depthe(s) (SIZE <= 255)
-//    U16            alphaDenom;                          /// alpha denominator(s)
-    
-    vector<bool>   invertedRepeats;                      /// inverted repeat(s)
-    vector<U8>     contextDepths;                        /// context depthe(s) (SIZE <= 255)
-    vector<U16>    alphaDenoms;                          /// alpha denominator(s)
+    vector<bool>   invertedRepeats;                     /// inverted repeat(s)
+    vector<U8>     contextDepths;                       /// context depthe(s) (SIZE <= 255)
+    vector<U16>    alphaDenoms;                         /// alpha denominator(s)
 
     vector<string> tarAddresses;                        /// target files addresses
     vector<string> refAddresses;                        /// reference files addresses
@@ -50,7 +43,7 @@ private:
     char           compressionMode;                     /// compression mode (table / hash table)
     U64            *table;                              /// table
     htable_t       hashTable;                           /// hash table (int key)
-//    htable_str_t hashTable_str;                            /// hash table (string key)
+//    htable_str_t hashTable_str;                                /// hash table (string key)
 };
 
 

@@ -26,7 +26,7 @@ void Messages::help () const
                                                                                                     << '\n'
          << "Mandatory arguments:"                                                                  << '\n'
          << "    -m [<i_1>,<k_1>,<a_1>:<i_2>,<k_2>,<a_2>:...],   --model [<i_1>,<k_1>,<a_1>:...]"   << '\n'
-         << "         context model(s)."                                                            << '\n'
+         << "         context model(s) (at least one)."                                             << '\n'
          << "         <i>:  inverted repeat (0=don't consider, 1=consider)."                        << '\n'
          << "         <k>:  context-order size,"                                                    << '\n'
          << "         <a>:  1/alpha,"                                                               << '\n'
