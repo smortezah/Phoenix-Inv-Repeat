@@ -215,70 +215,45 @@ void Functions::commandLineParser (int argc, char **argv)
     if (m_flag)
     {
         vector< string > vecModelsParams;     /// vector of parameters for different models
-        
         string::iterator begIter = strModelsParameters.begin(),   endIter = strModelsParameters.end();
-        for (string::iterator it = begIter; it != endIter; ++it)  /// save all reference files names but the last one
+        for (string::iterator it = begIter; it != endIter; ++it)  /// save all models parameters but the last one
             if (*it == ':')
             {
                 vecModelsParams.push_back( string(begIter, it) );
                 begIter = it + 1;
             }
-        vecModelsParams.push_back( string(begIter, endIter) );      /// save last reference file name
+        vecModelsParams.push_back( string(begIter, endIter) );      /// save last model parameters
         
         /// create an array of models and set their parameters
-        U8 n_models = (U8) vecModelsParams.size();  /// number of models
-        FCM *models = new FCM[ n_models ];                /// array of models
+//        U8 n_models = (U8) vecModelsParams.size();  /// number of models
+//        FCM *models = new FCM[ n_models ];                /// array of models
         
-//        vector< string > modelParams;                 /// to save models parameters
-//
-//        /// save models parameters and process the models
-//        for (U8 n = n_models; n--;)
-//        {
-//            modelParams.clear();                    /// reset vector modelParams
-//
-//            begIter = vecModelsParams[ n ].begin(), endIter = vecModelsParams[ n ].end();
-//            for (string::iterator it = begIter; it != endIter; ++it)  /// save all reference files names but the last one
-//                if (*it == ',')
-//                {
-//                    modelParams.push_back( string(begIter, it) );
-//                    begIter = it + 1;
-//                }
-//            modelParams.push_back( string(begIter, endIter) );      /// save last reference file name
-//
-//            /// set model(s) parameters --- ir, ctx_depth, alpha_denominator
-//            models[ n ].setParams( (bool)stoi(modelParams[0]), (U8)stoi(modelParams[1]), (U16)stoi(modelParams[2]) );
-//
-//        }
-//
-////        models[ n ].buildModel();
-    
-    
-    
-        vector< vector<string> > modelsParams;                 /// to save models parameters
+        vector< string > modelParams;                 /// to save models parameters
         
         /// save models parameters and process the models
-        for (U8 n = n_models; n--;)
+        for (U8 n = (U8) vecModelsParams.size(); n--;)
         {
-//            modelsParams[n].clear();                    /// reset vector modelParams
-        
-//            begIter = vecModelsParams[ n ].begin(), endIter = vecModelsParams[ n ].end();
-//            for (string::iterator it = begIter; it != endIter; ++it)  /// save all reference files names but the last one
-//                if (*it == ',')
-//                {
-//                    modelsParams[n].push_back( string(begIter, it) );
-//                    begIter = it + 1;
-//                }
-//            modelsParams[n].push_back( string(begIter, endIter) );      /// save last reference file name
-//
-////            /// set model(s) parameters --- ir, ctx_depth, alpha_denominator
-////            models[ n ].setParams( (bool)stoi(modelsParams[0]), (U8)stoi(modelsParams[1]), (U16)stoi(modelsParams[2]) );
-        
-//            for(string s:modelsParams[n])cout<<s<<' ';
+            modelParams.clear();                    /// reset vector modelParams
+
+            begIter = vecModelsParams[ n ].begin(), endIter = vecModelsParams[ n ].end();
+            for (string::iterator it = begIter; it != endIter; ++it)  /// save all reference files names but the last one
+                if (*it == ',')
+                {
+                    modelParams.push_back( string(begIter, it) );
+                    begIter = it + 1;
+                }
+            modelParams.push_back( string(begIter, endIter) );      /// save last reference file name
+            
+//            for(string s:modelParams)cout<<s<<' ';
+            
+            /// set model(s) parameters --- ir, ctx_depth, alpha_denominator
+            objFCM.pushBackParams( (bool) stoi( modelParams[0] ),
+                                   (U8)   stoi( modelParams[1] ),
+                                   (U16)  stoi( modelParams[2] ) );
         }
     
-    
-    
-    
+        objFCM.buildModel();    /// build model(s)
+        
     
         /*
         U8 parIndex = (U8) strModelsParameters.size();
@@ -297,10 +272,6 @@ void Functions::commandLineParser (int argc, char **argv)
         const bool iR       = (bool) stoi(vecParameters[ vecParamIndex ]);      /// inverted repeat
         */
 
-////        objFCM.pushBackParams(alphaDen, ctxDepth, iR);                           /// set the model parameters
-//
-//        objFCM.buildModel(); /// build a model based on reference(s)
-
         /*
         /// compress target(s) using reference(s) model -- multithreaded
         U8 MAX_N_THREADS = (U8) thread::hardware_concurrency(); /// max cores in current machine
@@ -313,22 +284,22 @@ void Functions::commandLineParser (int argc, char **argv)
         thread *arrThread = new thread[arrThrSize];             /// array of threads
         */
 
-//        /// compress target(s) using reference(s) model -- multithreaded
-//        U8 n_targets = (U8) objFCM.getTarAddresses().size(); /// up to 2^8=256 targets
-//
-//        U8 arrThrSize = (n_targets > n_threads) ? n_threads : n_targets;
-//        thread *arrThread = new thread[ arrThrSize ];       /// array of threads
-//
-//        for (U8 i = 0; i < n_targets; i += arrThrSize)
-//        {
-//            for (U8 j = 0; j < arrThrSize && i + j < n_targets; ++j)
-//                arrThread[ j ] = thread( &FCM::compressTarget, &objFCM, objFCM.getTarAddresses()[ i + j ] );
-//
-//            for (U8 j = 0; j < arrThrSize && i + j < n_targets; ++j)
-//                arrThread[ j ].join();
-//        }
-//
-//        delete[] arrThread; /// free the memory for array of threads
+        /// compress target(s) using reference(s) model -- multithreaded
+        U8 n_targets = (U8) objFCM.getTarAddresses().size(); /// up to 2^8=256 targets
+
+        U8 arrThrSize = (n_targets > n_threads) ? n_threads : n_targets;
+        thread *arrThread = new thread[ arrThrSize ];       /// array of threads
+
+        for (U8 i = 0; i < n_targets; i += arrThrSize)
+        {
+            for (U8 j = 0; j < arrThrSize && i + j < n_targets; ++j)
+                arrThread[ j ] = thread( &FCM::compressTarget, &objFCM, objFCM.getTarAddresses()[ i + j ] );
+
+            for (U8 j = 0; j < arrThrSize && i + j < n_targets; ++j)
+                arrThread[ j ].join();
+        }
+
+        delete[] arrThread; /// free the memory for array of threads
     }
     
     /// Print any remaining command line arguments (not options).
