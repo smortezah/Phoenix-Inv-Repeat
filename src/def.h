@@ -19,13 +19,13 @@ using std::array;
 /***********************************************************
     constants
 ************************************************************/
-#define ALPH_SIZE       5           /// alphabet {A, C, N, G, T}
-#define ALPH_SUM_SIZE   6           /// ALPHABET_SIZE+1: one more column for 'sum'
-#define LOG2_ALPH_SIZE  2.321928095 /// log2 of 5 (ALPHABET_SIZE)
-#define TABLE_MAX_CTX   12          /// max context depth for building table
+#define ALPH_SIZE         5           /// alphabet {A, C, N, G, T}
+#define ALPH_SUM_SIZE     6           /// ALPHABET_SIZE+1: one more column for 'sum'
+#define LOG2_ALPH_SIZE    2.321928095 /// log2 of 5 (ALPHABET_SIZE)
+#define TABLE_MAX_CTX     12          /// max context depth for building table
 
-#define DEFAULT_N_THREADS   2
-#define N_FREE_THREADS      1
+#define DEFAULT_N_THREADS 2
+#define N_FREE_THREADS    1
 
 
 /***********************************************************

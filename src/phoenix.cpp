@@ -32,17 +32,10 @@ int main (int argc, char *argv[])
     high_resolution_clock::time_point exeStartTime = high_resolution_clock::now();  /// Record start time
 
     Functions function;                     /// object 'function' on memory stack
-//    function.commandLineParser(argc, argv); /// parse the command line
+    function.commandLineParser(argc, argv); /// parse the command line
     
     
-//    std::vector<string> v;v.push_back("hi");v.push_back("bye");
-//    for(std::vector<string>::iterator i=v.begin();i!=v.end();++i)
-//        if (*i == 'i')
-//            {
-//                cout <<*i<<' ';
-////                model.pushBackTarAddresses(tarFilesNames.substr(i + 1, tarIndex - it - 1));
-////                tarIndex = it;
-//            }
+    
     
     
     
