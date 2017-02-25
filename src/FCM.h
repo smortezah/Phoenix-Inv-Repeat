@@ -21,7 +21,6 @@ public:
     void   buildModel (bool, U8);                       /// build reference(s) model
     void   compressTarget (string);                     /// compress target file
     inline U8   symCharToInt (char) const;              /// ACNGT -> 01234
-    inline void updateTable (U64, U64);                 /// update table, including 'sum' column
                                                         
 //    void buildHashTable_str ();                                /// build hash table (string key)
     void   printHashTable () const;                     /// print hash table
@@ -37,24 +36,24 @@ public:
     const  vector<string> &getRefAddresses () const;    /// getter of reference files addresses
     void   pushBackRefAddresses (const string&);        /// pushBacker of reference files addresses
     void   pushBackTables (U64 *);                      /// pushBacker of tables
+    void   pushBackhashTables (const htable_t&);        /// pushBacker of hash tables
     
 private:
-    std::mutex     mut;                                 /// mutex
-    
-//    U64            *table;                              /// table
-    
-    htable_t       hashTable;                           /// hash table (int key)
-//    htable_str_t hashTable_str;                                /// hash table (string key)
-    
-    char           compressionMode;                     /// compression mode (table / hash table)
-    U8             n_models;                            /// number of models
-    double         gamma;                               /// gamma (for mixture of FCMs)
-    vector<bool>   invertedRepeats;                     /// inverted repeat(s)
-    vector<U8>     contextDepths;                       /// context depthe(s) (SIZE <= 255)
-    vector<U16>    alphaDenoms;                         /// alpha denominator(s)
-    vector<string> tarAddresses;                        /// target files addresses
-    vector<string> refAddresses;                        /// reference files addresses
-    vector<U64 *>  tables;                              /// table(s)
+    std::mutex       mut;                                 /// mutex
+                     
+    htable_t         hashTable;                           /// hash table (int key)
+//    htable_str_t   hashTable_str;                                /// hash table (string key)
+                     
+    char             compressionMode;                     /// compression mode (table / hash table)
+    U8               n_models;                            /// number of models
+    double           gamma;                               /// gamma (for mixture of FCMs)
+    vector<bool>     invertedRepeats;                     /// inverted repeat(s)
+    vector<U8>       contextDepths;                       /// context depthe(s) (SIZE <= 255)
+    vector<U16>      alphaDenoms;                         /// alpha denominator(s)
+    vector<string>   tarAddresses;                        /// target files addresses
+    vector<string>   refAddresses;                        /// reference files addresses
+    vector<U64 *>    tables;                              /// table(s)
+    vector<htable_t> hashTables;                          /// hash table(s)
 };
 
 
