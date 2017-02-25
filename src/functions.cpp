@@ -3,6 +3,7 @@
 #include <fstream>
 #include <vector>
 #include <thread>
+#include <cmath>
 
 #include "functions.h"
 #include "messages.h"
@@ -250,8 +251,29 @@ void Functions::commandLineParser (int argc, char **argv)
                                      (U16)  stoi( modelParams[2] ) ); /// alpha denominator
         }
         
-        // TODO: multithreaded model build
-//        mixModel.buildModel(modelParams[0],modelParams[1]);                                        /// build model(s)
+        /// set compression mode: 't'=table, 'h'=hash table
+        /// 5^k_1 + 5^k_2 + ... > 5^12 ==> mode: hash table
+        U64 cmpModeSum = 0;     for (U8 k : mixModel.getContextDepths()) cmpModeSum += pow(ALPH_SIZE, k);
+        mixModel.setCompressionMode( ((cmpModeSum > pow(ALPH_SIZE, TABLE_MAX_CTX)) ? 'h' : 't') );
+        
+        thread *arrThread;                                            /// array of threads
+        U8 arrThrSize;                                                /// size of array of threads
+    
+        arrThrSize = (n_models > n_threads) ? n_threads : n_models;
+        arrThread  = new thread[ arrThrSize ];
+        
+        for (U8 i = 0; i < n_models; i += arrThrSize)
+        {
+            for (U8 j = 0; j < arrThrSize && i + j < n_models; ++j)
+                arrThread[ j ] = thread( &FCM::buildModel, &mixModel,
+                                         mixModel.getInvertedRepeats()[ i + j ],
+                                         mixModel.getContextDepths()[ i + j ] );
+            
+            for (U8 j = 0; j < arrThrSize && i + j < n_models; ++j)
+                arrThread[ j ].join();
+        }
+        
+        delete[] arrThread;                                           /// free up the memory for array of threads
         
         /*
         /// compress target(s) using reference(s) model -- multithreaded
@@ -265,23 +287,23 @@ void Functions::commandLineParser (int argc, char **argv)
         thread *arrThread = new thread[arrThrSize];             /// array of threads
         */
     
-        /// compress target(s) using reference(s) model(s) -- multithreaded
-        mixModel.setGamma(gamma);                                     /// set gamma
-        U8 n_targets = (U8) mixModel.getTarAddresses().size();        /// up to 2^8=256 targets
-
-        U8 arrThrSize = (n_targets > n_threads) ? n_threads : n_targets;
-        thread *arrThread = new thread[ arrThrSize ];                 /// array of threads
-
-        for (U8 i = 0; i < n_targets; i += arrThrSize)
-        {
-            for (U8 j = 0; j < arrThrSize && i + j < n_targets; ++j)
-                arrThread[ j ] = thread( &FCM::compressTarget, &mixModel, mixModel.getTarAddresses()[ i + j ] );
-
-            for (U8 j = 0; j < arrThrSize && i + j < n_targets; ++j)
-                arrThread[ j ].join();
-        }
-
-        delete[] arrThread;                                           /// free up the memory for array of threads
+//        /// compress target(s) using reference(s) model(s) -- multithreaded
+//        mixModel.setGamma(gamma);                                     /// set gamma
+//        U8 n_targets = (U8) mixModel.getTarAddresses().size();        /// up to 2^8=256 targets
+//
+//        U8 arrThrSize = (n_targets > n_threads) ? n_threads : n_targets;
+//        thread *arrThread = new thread[ arrThrSize ];                 /// array of threads
+//
+//        for (U8 i = 0; i < n_targets; i += arrThrSize)
+//        {
+//            for (U8 j = 0; j < arrThrSize && i + j < n_targets; ++j)
+//                arrThread[ j ] = thread( &FCM::compressTarget, &mixModel, mixModel.getTarAddresses()[ i + j ] );
+//
+//            for (U8 j = 0; j < arrThrSize && i + j < n_targets; ++j)
+//                arrThread[ j ].join();
+//        }
+//
+//        delete[] arrThread;                                           /// free up the memory for array of threads
     }
     
     /// Print any remaining command line arguments (not options).

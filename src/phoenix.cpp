@@ -39,7 +39,6 @@ int main (int argc, char *argv[])
     
     
     
-    
     high_resolution_clock::time_point exeFinishTime = high_resolution_clock::now(); /// Record end time
     std::chrono::duration< double > elapsed = exeFinishTime - exeStartTime; /// calculate and show duration in seconds
     

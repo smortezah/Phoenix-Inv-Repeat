@@ -49,7 +49,7 @@ void Messages::help () const
          << "         requires an integer number (n >= 1)"                                          << '\n'
                                                                                                     << '\n'
          << "    -g [NUMBER (float)],  --gamma [NUMBER (float)]"                                    << '\n'
-         << "         gamma (default: 0.99)."                                                       << '\n'
+         << "         gamma (default: 0.95)."                                                       << '\n'
          << "         requires a float number (0 <= g < 1)"                                         << '\n'
                                                                                                     << '\n'
          << "    -V,  --version"                                                                    << '\n'
@@ -57,10 +57,6 @@ void Messages::help () const
                                                                                                     << '\n'
          << "    -v,  --verbose"                                                                    << '\n'
          << "         verbose mode (more information)"                                              << '\n'
-                                                                                                    << '\n'
-         << "    -d [NUMBER],  --fnumber [NUMBER]"                                                  << '\n'
-         << "         number of something."                                                         << '\n'
-         << "         requires a float number (NUMBER)"                                             << '\n'
                                                                                                     << '\n';
 }
 

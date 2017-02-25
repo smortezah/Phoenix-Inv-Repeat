@@ -10,7 +10,6 @@
 
 using std::string;
 using std::vector;
-using std::tuple;
 
 
 class FCM
@@ -27,10 +26,12 @@ public:
 //    void buildHashTable_str ();                                /// build hash table (string key)
     void   printHashTable () const;                     /// print hash table
     
+    void   setCompressionMode (char);                   /// setter of compression mode
     void   setN_models (U8);                            /// setter of number of models
     void   setGamma (double);                           /// setter of gamma
+    const  vector<bool> &getInvertedRepeats () const;   /// getter of inverted repeat(s)
+    const  vector<U8> &getContextDepths () const;       /// getter of context depth(es)
     void   pushBackParams (bool, U8, U16);              /// setter of model(s) parameters (ir, ctx_depth, alpha_denom)
-    const  tuple<bool,U8,U16> &getParams () const;      /// getter of model(s) parameters
     const  vector<string> &getTarAddresses () const;    /// getter of target files addresses
     void   pushBackTarAddresses (const string&);        /// pushBacker of target files addresses
     const  vector<string> &getRefAddresses () const;    /// getter of reference files addresses
@@ -38,11 +39,11 @@ public:
     
 private:
     std::mutex     mut;                                 /// mutex
-    char           compressionMode;                     /// compression mode (table / hash table)
     U64            *table;                              /// table
     htable_t       hashTable;                           /// hash table (int key)
 //    htable_str_t hashTable_str;                                /// hash table (string key)
     
+    char           compressionMode;                     /// compression mode (table / hash table)
     U8             n_models;                            /// number of models
     double         gamma;                               /// gamma (for mixture of FCMs)
     vector<bool>   invertedRepeats;                     /// inverted repeat(s)
