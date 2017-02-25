@@ -226,10 +226,11 @@ void Functions::commandLineParser (int argc, char **argv)
                 begIter = it + 1;
             }
         vecModelsParams.push_back( string(begIter, endIter) );        /// last model parameters
-                                                                      
+        
         vector< string > modelParams;                                 /// parameters for each model
         U8 n_models = (U8) vecModelsParams.size();                    /// number of models
         mixModel.setN_models(n_models);                               /// set number of models
+        
         for (U8 n = n_models; n--;)
         {
             modelParams.clear();                                      /// reset vector modelParams
@@ -250,7 +251,7 @@ void Functions::commandLineParser (int argc, char **argv)
         }
         
         // TODO: multithreaded model build
-        mixModel.buildModel();                                        /// build model(s)
+//        mixModel.buildModel(modelParams[0],modelParams[1]);                                        /// build model(s)
         
         /*
         /// compress target(s) using reference(s) model -- multithreaded

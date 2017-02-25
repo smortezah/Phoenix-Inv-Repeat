@@ -10,6 +10,7 @@
 
 using std::string;
 using std::vector;
+using std::tuple;
 
 
 class FCM
@@ -17,7 +18,8 @@ class FCM
 public:
     FCM ();                                             /// constructor
     
-    void   buildModel ();                               /// build reference(s) model
+//    void   buildModel ();                               /// build reference(s) model
+    void   buildModel (bool, U8);                       /// build reference(s) model
     void   compressTarget (string);                     /// compress target file
     inline U8   symCharToInt (char) const;              /// ACNGT -> 01234
     inline void updateTable (U64, U64);                 /// update table, including 'sum' column
@@ -28,6 +30,7 @@ public:
     void   setN_models (U8);                            /// setter of number of models
     void   setGamma (double);                           /// setter of gamma
     void   pushBackParams (bool, U8, U16);              /// setter of model(s) parameters (ir, ctx_depth, alpha_denom)
+    const  tuple<bool,U8,U16> &getParams () const;      /// getter of model(s) parameters
     const  vector<string> &getTarAddresses () const;    /// getter of target files addresses
     void   pushBackTarAddresses (const string&);        /// pushBacker of target files addresses
     const  vector<string> &getRefAddresses () const;    /// getter of reference files addresses

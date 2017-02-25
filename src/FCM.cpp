@@ -13,6 +13,7 @@ using std::cout;
 using std::cerr;
 using std::string;
 using std::vector;
+using std::tuple;
 using std::ifstream;
 using std::getline;
 using std::to_string;
@@ -34,7 +35,7 @@ FCM::FCM () {}
 /***********************************************************
     build reference(s) model
 ************************************************************/
-void FCM::buildModel ()
+void FCM::buildModel (bool invRep, U8 ctxDepth)
 {
     vector< string > refFilesNames = getRefAddresses();     /// reference file(s) address(es)
     U8 refsNumber = (U8) refFilesNames.size();              /// number of references
@@ -46,7 +47,7 @@ void FCM::buildModel ()
     
     /// check if reference(s) file(s) cannot be opened, or are empty
     ifstream refFilesIn[ refsNumber ];
-
+    
     for (U8 i = refsNumber; i--;)
     {
         refFilesIn[ i ].open( refFilesNames[ i ], ios::in );
@@ -58,6 +59,123 @@ void FCM::buildModel ()
         }
     }
     
+    U64 context;                       	    /// context (integer), that slides in the dataset
+    U64 maxPlaceValue = (U64) pow(ALPH_SIZE, ctxDepth);
+    U64 invRepContext = maxPlaceValue - 1;  /// inverted repeat context (integer)
+    
+    U64 iRCtxCurrSym;                       /// concatenation of inverted repeat context and current symbol
+    U8 currSymInt;                          /// current symbol integer
+    
+    string refLine;                         /// keep each line of a file
+    
+    switch ( compressionMode )              /// build model based on 't'=table, or 'h'=hash table
+    {
+        case 't':
+        {
+            U64 tableSize = maxPlaceValue * ALPH_SUM_SIZE;              /// create table
+            table = new U64[ tableSize ];                               /// already initialized with 0's
+            /*
+            /// initialize table with 0's
+//            memset(table, 0, sizeof(table[ 0 ]) * tableSize);
+//            std::fill_n(table,tableSize,(double) 1/alphaDenom);
+            */
+            
+            for (U8 i = refsNumber; i--;)
+            {
+                context = 0;    /// reset in the beginning of each reference file
+                
+                while ( getline(refFilesIn[ i ], refLine) )
+                {
+                    /// fill table by number of occurrences of symbols A, C, N, G, T
+                    for (string::iterator lineIter = refLine.begin(); lineIter != refLine.end(); ++lineIter)
+                    {
+                        currSymInt = symCharToInt(*lineIter);
+                        
+                        if (invRep)   /// considering inverted repeats to update table
+                        {
+                            /// concatenation of inverted repeat context and current symbol
+                            iRCtxCurrSym = (4 - currSymInt) * maxPlaceValue + invRepContext;
+                            /// update inverted repeat context (integer)
+                            invRepContext = (U64) iRCtxCurrSym / ALPH_SIZE;
+                            
+                            /// update table, including 'sum' column, considering inverted repeats
+                            updateTable( invRepContext * ALPH_SUM_SIZE, iRCtxCurrSym % ALPH_SIZE );
+                        }
+                        
+                        updateTable( context * ALPH_SUM_SIZE, currSymInt ); /// update table, including 'sum' column
+                        context = (U64) (context * ALPH_SIZE + currSymInt) % maxPlaceValue; /// update context
+                    }
+                }
+            }   /// end for
+        }   /// end case
+            break;
+        
+        case 'h':               /// adding 'sum' column, makes hash table slower
+        {
+            for (int i = refsNumber; i--;)
+            {
+                context = 0;    /// reset in the beginning of each reference file
+
+                while ( getline(refFilesIn[ i ], refLine) )
+                {
+                    /// fill hash table by number of occurrences of symbols A, C, N, G, T
+                    for (string::iterator lineIter = refLine.begin(); lineIter != refLine.end(); ++lineIter)
+                    {
+                        currSymInt = symCharToInt(*lineIter);
+
+                        /// considering inverted repeats to update hash table
+                        if (invRep)
+                        {
+                            /// concatenation of inverted repeat context and current symbol
+                            iRCtxCurrSym = (4 - currSymInt) * maxPlaceValue + invRepContext;
+                            /// update inverted repeat context (integer)
+                            invRepContext = (U64) iRCtxCurrSym / ALPH_SIZE;
+
+                            /// update hash table considering inverted repeats
+                            ++hashTable[ invRepContext ][ iRCtxCurrSym % ALPH_SIZE ];
+                        }
+
+                        ++hashTable[ context ][ currSymInt ];                               /// update hash table
+                        context = (U64) (context * ALPH_SIZE + currSymInt) % maxPlaceValue; /// update context
+                    }
+                }
+            }   /// end for
+        }   /// end case
+            break;
+        
+        default: break;
+    }   /// end switch
+    
+    for (U8 i = refsNumber; i--;)  refFilesIn[i].close();   /// close file(s)
+}
+
+
+
+
+//void FCM::buildModel ()
+//{
+//    vector< string > refFilesNames = getRefAddresses();     /// reference file(s) address(es)
+//    U8 refsNumber = (U8) refFilesNames.size();              /// number of references
+//
+//    /// set compression mode: 't'=table, 'h'=hash table.
+//    /// 5^k_1 + 5^k_2 + ... > 5^12 ==> mode: hash table
+//    U64 cmpModeSum = 0;     for (U8 k : contextDepths) cmpModeSum += pow(ALPH_SIZE, k);
+//    compressionMode = (cmpModeSum > pow(ALPH_SIZE, TABLE_MAX_CTX)) ? 'h' : 't';
+//
+//    /// check if reference(s) file(s) cannot be opened, or are empty
+//    ifstream refFilesIn[ refsNumber ];
+//
+//    for (U8 i = refsNumber; i--;)
+//    {
+//        refFilesIn[ i ].open( refFilesNames[ i ], ios::in );
+//        if (!refFilesIn[ i ])               /// error occurred while opening file(s)
+//        {
+//            cerr << "The file '" << refFilesNames[ i ] << "' cannot be opened, or it is empty.\n";
+//            refFilesIn[ i ].close();        /// close file(s)
+//            return;                         /// exit this function
+//        }
+//    }
+//
 //    U64 context;                       	    /// context (integer), that slides in the dataset
 //    U64 maxPlaceValue = (U64) pow(ALPH_SIZE, contextDepth);
 //    U64 invRepContext = maxPlaceValue - 1;  /// inverted repeat context (integer)
@@ -66,7 +184,7 @@ void FCM::buildModel ()
 //    U8 currSymInt;                          /// current symbol integer
 //
 //    string refLine;                         /// keep each line of a file
-
+//
 //    switch ( compressionMode )              /// build model based on 't'=table, or 'h'=hash table
 //    {
 //        case 't':
@@ -108,7 +226,7 @@ void FCM::buildModel ()
 //            }   /// end for
 //        }   /// end case
 //            break;
-
+//
 //        case 'h':               /// adding 'sum' column, makes hash table slower
 //        {
 //            for (int i = refsNumber; i--;)
@@ -146,7 +264,7 @@ void FCM::buildModel ()
 //    }   /// end switch
 //
 //    for (U8 i = refsNumber; i--;)  refFilesIn[i].close();   /// close file(s)
-}
+//}
 
 
 /***********************************************************
@@ -841,6 +959,7 @@ void  FCM::setGamma (double g)                       { gamma = g;               
 void  FCM::pushBackParams (bool iR, U8 ctx, U16 aD)  { invertedRepeats.push_back(iR);
                                                        contextDepths.push_back(ctx);
                                                        alphaDenoms.push_back(aD);     }
+const tuple<bool,U8,U16> &FCM::getParams () const    { return std::make_tuple(); }
 const vector<string> &FCM::getTarAddresses () const  { return tarAddresses;           }
 void  FCM::pushBackTarAddresses (const string &tFAs) { tarAddresses.push_back(tFAs);  }
 const vector<string> &FCM::getRefAddresses () const  { return refAddresses;           }
