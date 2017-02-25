@@ -36,10 +36,13 @@ public:
     void   pushBackTarAddresses (const string&);        /// pushBacker of target files addresses
     const  vector<string> &getRefAddresses () const;    /// getter of reference files addresses
     void   pushBackRefAddresses (const string&);        /// pushBacker of reference files addresses
+    void   pushBackTables (U64 *);                      /// pushBacker of tables
     
 private:
     std::mutex     mut;                                 /// mutex
-    U64            *table;                              /// table
+    
+//    U64            *table;                              /// table
+    
     htable_t       hashTable;                           /// hash table (int key)
 //    htable_str_t hashTable_str;                                /// hash table (string key)
     
@@ -51,6 +54,7 @@ private:
     vector<U16>    alphaDenoms;                         /// alpha denominator(s)
     vector<string> tarAddresses;                        /// target files addresses
     vector<string> refAddresses;                        /// reference files addresses
+    vector<U64 *>  tables;                              /// table(s)
 };
 
 

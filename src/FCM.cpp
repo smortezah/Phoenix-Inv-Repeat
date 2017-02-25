@@ -60,13 +60,17 @@ void FCM::buildModel (bool invRep, U8 ctxDepth)
     U8  currSymInt;                             /// current symbol integer
                                                 
     string refLine;                             /// keep each line of a file
-                                                
+    
     switch ( compressionMode )                  /// build model based on 't'=table, or 'h'=hash table
     {
         case 't':
         {
             U64 tableSize = maxPlaceValue * ALPH_SUM_SIZE;              /// create table
-            table = new U64[ tableSize ];                               /// already initialized with 0's
+            U64 *table = new U64[ tableSize ];                               /// already initialized with 0's
+            table[0]=1;
+            pushBackTables(table);
+            
+            cout<<table[0];
             /*
             /// initialize table with 0's
 //            memset(table, 0, sizeof(table[ 0 ]) * tableSize);
@@ -93,9 +97,15 @@ void FCM::buildModel (bool invRep, U8 ctxDepth)
 //
 //                            /// update table, including 'sum' column, considering inverted repeats
 //                            updateTable( invRepContext * ALPH_SUM_SIZE, iRCtxCurrSym % ALPH_SIZE );
+//            ++table[ rowIndex + column ];    /// update table
+//            ++table[ rowIndex + ALPH_SIZE ]; /// update 'sum' column
+
 //                        }
 //
 //                        updateTable( context * ALPH_SUM_SIZE, currSymInt ); /// update table, including 'sum' column
+//            ++table[ rowIndex + column ];    /// update table
+//            ++table[ rowIndex + ALPH_SIZE ]; /// update 'sum' column
+
 //                        context = (U64) (context * ALPH_SIZE + currSymInt) % maxPlaceValue; /// update context
 //                    }
 //                }
@@ -459,8 +469,8 @@ inline U8 FCM::symCharToInt (char ch) const
 ************************************************************/
 inline void FCM::updateTable (U64 rowIndex, U64 column)
 {
-    ++table[ rowIndex + column ];    /// update table
-    ++table[ rowIndex + ALPH_SIZE ]; /// update 'sum' column
+//    ++table[ rowIndex + column ];    /// update table
+//    ++table[ rowIndex + ALPH_SIZE ]; /// update 'sum' column
 }
 
 
@@ -959,3 +969,4 @@ const vector<string> &FCM::getTarAddresses () const  { return tarAddresses;     
 void  FCM::pushBackTarAddresses (const string &tFAs) { tarAddresses.push_back(tFAs);  }
 const vector<string> &FCM::getRefAddresses () const  { return refAddresses;           }
 void  FCM::pushBackRefAddresses (const string &rFAs) { refAddresses.push_back(rFAs);  }
+void  FCM::pushBackTables (U64 *tbls)                { tables.push_back(tbls);        }
