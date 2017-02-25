@@ -228,7 +228,9 @@ void Functions::commandLineParser (int argc, char **argv)
         vecModelsParams.push_back( string(begIter, endIter) );        /// last model parameters
                                                                       
         vector< string > modelParams;                                 /// parameters for each model
-        for (U8 n = (U8) vecModelsParams.size(); n--;)                /// loop through number of models
+        U8 n_models = (U8) vecModelsParams.size();                    /// number of models
+        mixModel.setN_models(n_models);                               /// set number of models
+        for (U8 n = n_models; n--;)
         {
             modelParams.clear();                                      /// reset vector modelParams
 
@@ -247,9 +249,6 @@ void Functions::commandLineParser (int argc, char **argv)
                                      (U16)  stoi( modelParams[2] ) ); /// alpha denominator
         }
         
-        mixModel.setGamma(gamma);                                     /// set gamma
-        
-        
         // TODO: multithreaded model build
         mixModel.buildModel();                                        /// build model(s)
         
@@ -264,8 +263,9 @@ void Functions::commandLineParser (int argc, char **argv)
         U8 arrThrSize = (n_targets > n_threads_available) ? n_threads_available : n_targets;
         thread *arrThread = new thread[arrThrSize];             /// array of threads
         */
-        
+    
         /// compress target(s) using reference(s) model(s) -- multithreaded
+        mixModel.setGamma(gamma);                                     /// set gamma
         U8 n_targets = (U8) mixModel.getTarAddresses().size();        /// up to 2^8=256 targets
 
         U8 arrThrSize = (n_targets > n_threads) ? n_threads : n_targets;

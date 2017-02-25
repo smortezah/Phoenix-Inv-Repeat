@@ -38,7 +38,7 @@ void FCM::buildModel ()
 {
     vector< string > refFilesNames = getRefAddresses();     /// reference file(s) address(es)
     U8 refsNumber = (U8) refFilesNames.size();              /// number of references
-
+    
     /// set compression mode: 't'=table, 'h'=hash table.
     /// 5^k_1 + 5^k_2 + ... > 5^12 ==> mode: hash table
     U64 cmpModeSum = 0;     for (U8 k : contextDepths) cmpModeSum += pow(ALPH_SIZE, k);
@@ -108,39 +108,39 @@ void FCM::buildModel ()
 //            }   /// end for
 //        }   /// end case
 //            break;
+
+//        case 'h':               /// adding 'sum' column, makes hash table slower
+//        {
+//            for (int i = refsNumber; i--;)
+//            {
+//                context = 0;    /// reset in the beginning of each reference file
 //
-////        case 'h':               /// adding 'sum' column, makes hash table slower
-////        {
-////            for (int i = refsNumber; i--;)
-////            {
-////                context = 0;    /// reset in the beginning of each reference file
-////
-////                while ( getline(refFilesIn[ i ], refLine) )
-////                {
-////                    /// fill hash table by number of occurrences of symbols A, C, N, G, T
-////                    for (string::iterator lineIter = refLine.begin(); lineIter != refLine.end(); ++lineIter)
-////                    {
-////                        currSymInt = symCharToInt(*lineIter);
-////
-////                        /// considering inverted repeats to update hash table
-////                        if (invertedRepeat)
-////                        {
-////                            /// concatenation of inverted repeat context and current symbol
-////                            iRCtxCurrSym = (4 - currSymInt) * maxPlaceValue + invRepContext;
-////                            /// update inverted repeat context (integer)
-////                            invRepContext = (U64) iRCtxCurrSym / ALPH_SIZE;
-////
-////                            /// update hash table considering inverted repeats
-////                            ++hashTable[ invRepContext ][ iRCtxCurrSym % ALPH_SIZE ];
-////                        }
-////
-////                        ++hashTable[ context ][ currSymInt ];                               /// update hash table
-////                        context = (U64) (context * ALPH_SIZE + currSymInt) % maxPlaceValue; /// update context
-////                    }
-////                }
-////            }   /// end for
-////        }   /// end case
-////            break;
+//                while ( getline(refFilesIn[ i ], refLine) )
+//                {
+//                    /// fill hash table by number of occurrences of symbols A, C, N, G, T
+//                    for (string::iterator lineIter = refLine.begin(); lineIter != refLine.end(); ++lineIter)
+//                    {
+//                        currSymInt = symCharToInt(*lineIter);
+//
+//                        /// considering inverted repeats to update hash table
+//                        if (invertedRepeat)
+//                        {
+//                            /// concatenation of inverted repeat context and current symbol
+//                            iRCtxCurrSym = (4 - currSymInt) * maxPlaceValue + invRepContext;
+//                            /// update inverted repeat context (integer)
+//                            invRepContext = (U64) iRCtxCurrSym / ALPH_SIZE;
+//
+//                            /// update hash table considering inverted repeats
+//                            ++hashTable[ invRepContext ][ iRCtxCurrSym % ALPH_SIZE ];
+//                        }
+//
+//                        ++hashTable[ context ][ currSymInt ];                               /// update hash table
+//                        context = (U64) (context * ALPH_SIZE + currSymInt) % maxPlaceValue; /// update context
+//                    }
+//                }
+//            }   /// end for
+//        }   /// end case
+//            break;
 //
 //        default: break;
 //    }   /// end switch
@@ -159,16 +159,14 @@ void FCM::compressTarget (string tarFileName)
 //
 //    ifstream tarFileIn( tarFileName, ios::in ); /// open target file
 //
-//    /// mutex lock ========================================================
-//    mut.lock();
+//    mut.lock();///========================================================
 //    if (!tarFileIn)                             /// error occurred while opening file
 //    {
 //        cerr << "The file '" << tarFileName << "' cannot be opened, or it is empty.\n";
 //        tarFileIn.close();                      /// close file
 //        return;                                 /// exit this function
 //    }
-//    mut.unlock();
-//    /// mutex unlock ======================================================
+//    mut.unlock();///======================================================
 //
 //    U64 maxPlaceValue = (U64) pow(ALPH_SIZE, contextDepth);
 //    U64 tarContext = 0;                         /// context (integer), that slides in the dataset
@@ -213,6 +211,7 @@ void FCM::compressTarget (string tarFileName)
 //                    U8 currSymInt = symCharToInt(*lineIter);   /// integer version of the current symbol
 //
 //                    //////////////////////////////////
+//     ///            nSym0 = table0[ tarContext0 * ALPH_SUM_SIZE + currSymInt ];    /// number of symbols0
 //                    nSym = table[ tarContext * ALPH_SUM_SIZE + currSymInt ];    /// number of symbols
 ////                    nSym = X;
 //                    sumNSyms = table[ tarContext * ALPH_SUM_SIZE + ALPH_SIZE ]; /// sum of number of symbols
@@ -286,9 +285,8 @@ void FCM::compressTarget (string tarFileName)
 //    for (U8 i = refsAdressesSize; i--;)
 //        lastSlash_Ref[ i ] = getRefAddresses()[ i ].find_last_of("/");
 //    size_t lastSlash_Tar = tarFileName.find_last_of("/");
-//
-//    /// mutex lock ========================================================
-//    mut.lock();
+
+//    mut.lock();///========================================================
 //
 //    for (int i = refsAdressesSize - 1; i; --i)
 //        cout << getRefAddresses()[ i ].substr(lastSlash_Ref[ i ] + 1) << ',';
@@ -305,8 +303,7 @@ void FCM::compressTarget (string tarFileName)
 //
 //    cout << '\n';
 //
-//    mut.unlock();
-//    /// mutex unlock ======================================================
+//    mut.unlock();///======================================================
 //    ////////////////////////////////
 //
 }
@@ -839,6 +836,7 @@ void FCM::printHashTable () const
 /***********************************************************
     getters and setters
 ************************************************************/
+void  FCM::setN_models (U8 n)                        { n_models = n;                  }
 void  FCM::setGamma (double g)                       { gamma = g;                     }
 void  FCM::pushBackParams (bool iR, U8 ctx, U16 aD)  { invertedRepeats.push_back(iR);
                                                        contextDepths.push_back(ctx);
@@ -847,3 +845,4 @@ const vector<string> &FCM::getTarAddresses () const  { return tarAddresses;     
 void  FCM::pushBackTarAddresses (const string &tFAs) { tarAddresses.push_back(tFAs);  }
 const vector<string> &FCM::getRefAddresses () const  { return refAddresses;           }
 void  FCM::pushBackRefAddresses (const string &rFAs) { refAddresses.push_back(rFAs);  }
+
