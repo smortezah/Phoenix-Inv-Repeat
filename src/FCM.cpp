@@ -164,7 +164,7 @@ void FCM::compressTarget (string tarFileName)
     /// alpha -- used in P numerator
     vector< double > alpha;     for (U16 u : alphaDenoms) alpha.push_back((double) 1 / u);
     /// ALPH_SIZE * alpha -- used in P denominator
-    vector< double > sumAlphas;  for (double d : alpha) sumAlphas.push_back(ALPH_SIZE * d);
+    vector< double > sumAlphas; for (double d : alpha) sumAlphas.push_back(ALPH_SIZE * d);
 
     ifstream tarFileIn( tarFileName, ios::in ); /// open target file
 
