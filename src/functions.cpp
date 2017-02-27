@@ -258,7 +258,7 @@ void Functions::commandLineParser (int argc, char **argv)
         
         U8 arrThrSize = (n_models > n_threads) ? n_threads : n_models;/// size of array of threads
         thread *arrThread = new thread[ arrThrSize ];                 /// array of threads
-
+        
         for (U8 i = 0; i < n_models; i += arrThrSize)
         {
             for (U8 j = 0; j < arrThrSize && i + j < n_models; ++j)

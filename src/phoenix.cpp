@@ -35,7 +35,14 @@ int main (int argc, char *argv[])
     function.commandLineParser(argc, argv); /// parse the command line
     
     
-    
+//    std::vector<int*> v;
+//    int* a=new int[2];a[0]=1;a[1]=9;
+//    int* b=new int[1];b[0]=67;
+//    v.push_back(a);v.push_back(b);
+//    for (int i = 0; i < 2; ++i)
+//    {
+//        cout<<v[0][i]<<' ';
+//    }
     
     
     
