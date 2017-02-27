@@ -264,7 +264,8 @@ void Functions::commandLineParser (int argc, char **argv)
             for (U8 j = 0; j < arrThrSize && i + j < n_models; ++j)
                 arrThread[ j ] = thread( &FCM::buildModel, &mixModel,
                                          mixModel.getInvertedRepeats()[ i + j ],
-                                         mixModel.getContextDepths()[ i + j ] );
+                                         mixModel.getContextDepths()[ i + j ],
+                                         i + j );
 
             for (U8 j = 0; j < arrThrSize && i + j < n_models; ++j)
                 arrThread[ j ].join();

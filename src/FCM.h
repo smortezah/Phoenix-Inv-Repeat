@@ -17,7 +17,7 @@ class FCM
 public:
     FCM ();                                             /// constructor
     
-    void   buildModel (bool, U8);                       /// build reference(s) model
+    void   buildModel (bool, U8, U8);                   /// build reference(s) model
     void   compressTarget (string);                     /// compress target file
     inline U8 symCharToInt (char) const;                /// ACNGT -> 01234
                                                         
@@ -34,6 +34,7 @@ public:
     void   pushBackTarAddresses (const string&);        /// pushBacker of target files addresses
     const  vector<string> &getRefAddresses () const;    /// getter of reference files addresses
     void   pushBackRefAddresses (const string&);        /// pushBacker of reference files addresses
+    void   setTable (U64 *, U8);                        /// setter of tables
     void   pushBackTables (U64 *);                      /// pushBacker of tables
     void   pushBackhashTables (const htable_t&);        /// pushBacker of hash tables
     

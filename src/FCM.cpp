@@ -34,7 +34,7 @@ FCM::FCM () {}
 /***********************************************************
     build reference(s) model
 ************************************************************/
-void FCM::buildModel (bool invRep, U8 ctxDepth)
+void FCM::buildModel (bool invRep, U8 ctxDepth, U8 modelIndex)
 {
     vector< string > refFilesNames = getRefAddresses();     /// reference file(s) address(es)
     U8 refsNumber = (U8) refFilesNames.size();              /// number of references
@@ -108,7 +108,9 @@ void FCM::buildModel (bool invRep, U8 ctxDepth)
                 }
             }   /// end for
             
-            mut.lock(); pushBackTables(table);  mut.unlock();               /// push back table
+//            mut.lock(); pushBackTables(table);  mut.unlock();               /// push back table
+            mut.lock(); setTable(table, modelIndex);  mut.unlock();         /// push back table
+    
         }   /// end case
             break;
             
@@ -1031,5 +1033,6 @@ const vector<string> &FCM::getTarAddresses () const  { return tarAddresses;     
 void  FCM::pushBackTarAddresses (const string &tFAs) { tarAddresses.push_back(tFAs);  }
 const vector<string> &FCM::getRefAddresses () const  { return refAddresses;           }
 void  FCM::pushBackRefAddresses (const string &rFAs) { refAddresses.push_back(rFAs);  }
+void  FCM::setTable (U64 *tbl, U8 idx)               { tables[ idx ] = tbl;           }
 void  FCM::pushBackTables (U64 *tbls)                { tables.push_back(tbls);        }
 void  FCM::pushBackhashTables (const htable_t &hts)  { hashTables.push_back(hts);     }
