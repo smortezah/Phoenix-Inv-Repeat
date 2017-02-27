@@ -50,7 +50,7 @@ private:
     vector<U16>      alphaDenoms;                       /// alpha denominator(s)
     vector<string>   tarAddresses;                      /// target files addresses
     vector<string>   refAddresses;                      /// reference files addresses
-    vector<U64 *>    tables;                            /// table(s)
+    vector<U64*>     tables;                            /// table(s)
     vector<htable_t> hashTables;                        /// hash table(s)
 //    htable_str_t   hashTable_str;                              /// hash table (string key)
 };
