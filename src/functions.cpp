@@ -258,8 +258,8 @@ void Functions::commandLineParser (int argc, char **argv)
         const char compressionMode = (cmpModeSum > pow(ALPH_SIZE, TABLE_MAX_CTX)) ? 'h' : 't';
         mixModel.setCompressionMode( compressionMode );
         
-//        compressionMode == 'h' ? mixModel.initHashTables( cmpModeSum * ALPH_SUM_SIZE )
-//                               : mixModel.initTables( cmpModeSum * ALPH_SUM_SIZE );
+        compressionMode == 'h' ? mixModel.initHashTables( cmpModeSum * ALPH_SUM_SIZE )
+                               : mixModel.initTables( cmpModeSum * ALPH_SUM_SIZE );
 
         
         

@@ -169,8 +169,12 @@ void FCM::compressTarget (string tarFileName)
 //
 //        cout<<tables[0][i];
 //    }
-
-    for (htable_t::iterator it = hashTables[0].begin(); it != hashTables[0].end(); ++it)
+    
+    htable_t::iterator b=hashTables[0].begin();
+    htable_t::iterator e=hashTables[0].end();
+//    htable_t::iterator b=hashTables[1].begin();
+//    htable_t::iterator e=hashTables[1].end();
+    for (htable_t::iterator it = b; it != e; ++it)
     {
         cout << it->first;
         cout << "\t";
@@ -178,6 +182,8 @@ void FCM::compressTarget (string tarFileName)
             cout << i << "\t";
         cout << '\n';
     }
+    
+    
     
     
 //    /// alpha -- used in P numerator
@@ -883,8 +889,12 @@ void FCM::printHashTable () const
 void  FCM::initTables (U64 n)                        {
 //    tables.reserve(n);
     tables.reserve(n_models);
+//    tables.push_back(0);
+    
+//    cout<<tables.size();
 }
 void  FCM::initHashTables (U64 n)                        {
+//    hashTables.reserve(240040625);
     hashTables.reserve(n_models);
 }
 void  FCM::setCompressionMode (char cM)              { compressionMode = cM;          }
