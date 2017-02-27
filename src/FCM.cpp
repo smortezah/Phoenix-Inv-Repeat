@@ -38,7 +38,7 @@ void FCM::buildModel (bool invRep, U8 ctxDepth, U8 modelIndex)
 {
     vector< string > refFilesNames = getRefAddresses();     /// reference file(s) address(es)
     U8 refsNumber = (U8) refFilesNames.size();              /// number of references
-
+    
     /// check if reference(s) file(s) cannot be opened, or are empty
     ifstream refFilesIn[ refsNumber ];
     for (U8 i = refsNumber; i--;)
@@ -51,7 +51,7 @@ void FCM::buildModel (bool invRep, U8 ctxDepth, U8 modelIndex)
             return;                             /// exit this function
         }
     }
-
+    
     U64 context;                       	        /// context (integer), that slides in the dataset
     U64 maxPlaceValue = (U64) pow(ALPH_SIZE, ctxDepth);
     U64 invRepContext = maxPlaceValue - 1;      /// inverted repeat context (integer)
@@ -60,7 +60,7 @@ void FCM::buildModel (bool invRep, U8 ctxDepth, U8 modelIndex)
     U8  currSymInt;                             /// current symbol integer
     
     string refLine;                             /// keep each line of a file
-
+    
     switch ( compressionMode )                  /// build model based on 't'=table, or 'h'=hash table
     {
         case 't':
@@ -73,7 +73,7 @@ void FCM::buildModel (bool invRep, U8 ctxDepth, U8 modelIndex)
 //            std::fill_n(table,tableSize,(double) 1/alphaDenom);
             */
             U64 rowIndex;                       /// to update table
-
+            
             for (U8 i = refsNumber; i--;)
             {
                 context = 0;                    /// reset in the beginning of each reference file
@@ -108,16 +108,16 @@ void FCM::buildModel (bool invRep, U8 ctxDepth, U8 modelIndex)
                 }
             }   /// end for
 
-            mut.lock(); pushBackTables(table);  mut.unlock();               /// push back table
-//            mut.lock(); setTable(table, modelIndex);  mut.unlock();         /// push back table
+//            mut.lock(); pushBackTables(table);  mut.unlock();               /// push back table
+            mut.lock(); setTable(table, modelIndex);  mut.unlock();         /// push back table
 //
         }   /// end case
             break;
-
+            
         case 'h':               /// adding 'sum' column, makes hash table slower
         {
             htable_t hashTable;
-
+            
             for (int i = refsNumber; i--;)
             {
                 context = 0;    /// reset in the beginning of each reference file
@@ -140,13 +140,13 @@ void FCM::buildModel (bool invRep, U8 ctxDepth, U8 modelIndex)
                             /// update hash table considering inverted repeats
                             ++hashTable[ invRepContext ][ iRCtxCurrSym % ALPH_SIZE ];
                         }
-
+                        
                         ++hashTable[ context ][ currSymInt ];                               /// update hash table
                         context = (U64) (context * ALPH_SIZE + currSymInt) % maxPlaceValue; /// update context
                     }
                 }
             }   /// end for
-
+            
             mut.lock(); pushBackhashTables(hashTable);  mut.unlock();   /// push back hash table
         }   /// end case
             break;

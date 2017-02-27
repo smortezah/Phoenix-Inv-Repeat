@@ -254,7 +254,8 @@ void Functions::commandLineParser (int argc, char **argv)
         /// build reference(s) model(s) -- multithreaded
         /// set compression mode: 't'=table, 'h'=hash table -- 5^k_1 + 5^k_2 + ... > 5^12 ==> mode: hash table
         U64 cmpModeSum = 0;     for (U8 k : mixModel.getContextDepths()) cmpModeSum += pow(ALPH_SIZE, k);
-        mixModel.setCompressionMode( (cmpModeSum > pow(ALPH_SIZE, TABLE_MAX_CTX)) ? 'h' : 't' );
+        const char compressionMode = (cmpModeSum > pow(ALPH_SIZE, TABLE_MAX_CTX)) ? 'h' : 't';
+        mixModel.setCompressionMode( compressionMode );
         
         U8 arrThrSize = (n_models > n_threads) ? n_threads : n_models;/// size of array of threads
         thread *arrThread = new thread[ arrThrSize ];                 /// array of threads

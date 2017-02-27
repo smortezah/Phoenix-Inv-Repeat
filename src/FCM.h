@@ -16,6 +16,13 @@ class FCM
 {
 public:
     FCM ();                                             /// constructor
+    void initTables (){
+        
+        for (int i = 0; i < n_models; ++i)
+        {
+            
+        }
+    }
     
     void   buildModel (bool, U8, U8);                   /// build reference(s) model
     void   compressTarget (string);                     /// compress target file
@@ -39,19 +46,19 @@ public:
     void   pushBackhashTables (const htable_t&);        /// pushBacker of hash tables
     
 private:
-    std::mutex       mut;                                 /// mutex
+    std::mutex       mut;                               /// mutex
     
-    char             compressionMode;                     /// compression mode (table / hash table)
-    U8               n_models;                            /// number of models
-    double           gamma;                               /// gamma (for mixture of FCMs)
-    vector<bool>     invertedRepeats;                     /// inverted repeat(s)
-    vector<U8>       contextDepths;                       /// context depthe(s) (SIZE <= 255)
-    vector<U16>      alphaDenoms;                         /// alpha denominator(s)
-    vector<string>   tarAddresses;                        /// target files addresses
-    vector<string>   refAddresses;                        /// reference files addresses
-    vector<U64 *>    tables;                              /// table(s)
-    vector<htable_t> hashTables;                          /// hash table(s)
-//    htable_str_t   hashTable_str;                                /// hash table (string key)
+    char             compressionMode;                   /// compression mode (table / hash table)
+    U8               n_models;                          /// number of models
+    double           gamma;                             /// gamma (for mixture of FCMs)
+    vector<bool>     invertedRepeats;                   /// inverted repeat(s)
+    vector<U8>       contextDepths;                     /// context depthe(s) (SIZE <= 255)
+    vector<U16>      alphaDenoms;                       /// alpha denominator(s)
+    vector<string>   tarAddresses;                      /// target files addresses
+    vector<string>   refAddresses;                      /// reference files addresses
+    vector<U64 *>    tables;                            /// table(s)
+    vector<htable_t> hashTables;                        /// hash table(s)
+//    htable_str_t   hashTable_str;                              /// hash table (string key)
 };
 
 
