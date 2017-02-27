@@ -17,8 +17,8 @@ for ir in $INV_REPEATS; do
 #     ./phoenix -m $ir,$ctx,$alphaDen -r $FLD_dataset/$refDataset -t $FLD_dataset/$tarDataset \
 #      ./phoenix -n 4 -m 0,13,10\
       ./phoenix -n 4 -m 0,1,10:0,2,100\
-      -r x -t y
-#       -r dataset/HSY -t dataset/PTY \
+       -r dataset/HS21 -t dataset/PTY \
+#      -r x -t y
 #               > $IR_LBL$ir-$refDataset-$TAR_SPECIES.$INF_FILE_TYPE
      done
 #    done
