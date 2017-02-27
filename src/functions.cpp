@@ -250,16 +250,17 @@ void Functions::commandLineParser (int argc, char **argv)
                                      (U8)   stoi( modelParams[1] ),   /// context depth
                                      (U16)  stoi( modelParams[2] ) ); /// alpha denominator
         }
-    
+        
         /// build reference(s) model(s) -- multithreaded
         /// set compression mode: 't'=table, 'h'=hash table -- 5^k_1 + 5^k_2 + ... > 5^12 ==> mode: hash table
-        U64 cmpModeSum = 0;     for (U8 k : mixModel.getContextDepths()) cmpModeSum += pow(ALPH_SIZE, k);
+        U64 cmpModeSum = 0;
+        for (U8 k : mixModel.getContextDepths())    cmpModeSum = cmpModeSum + (U64) pow(ALPH_SIZE, k);
         const char compressionMode = (cmpModeSum > pow(ALPH_SIZE, TABLE_MAX_CTX)) ? 'h' : 't';
         mixModel.setCompressionMode( compressionMode );
-    
-        mixModel.initTables();
-//        compressionMode == 'h' ? mixModel.initHashTables() : mixModel.initTables();
         
+//        compressionMode == 'h' ? mixModel.initHashTables( cmpModeSum * ALPH_SUM_SIZE )
+//                               : mixModel.initTables( cmpModeSum * ALPH_SUM_SIZE );
+
         
         
         

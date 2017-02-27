@@ -107,9 +107,9 @@ void FCM::buildModel (bool invRep, U8 ctxDepth, U8 modelIndex)
                     }
                 }
             }   /// end for
-
+            
 //            mut.lock(); pushBackTables(table);  mut.unlock();               /// push back table
-            mut.lock(); setTable(table, modelIndex);  mut.unlock();         /// push back table
+            mut.lock(); setTable(table, modelIndex);    mut.unlock();       /// push back table
 //
         }   /// end case
             break;
@@ -146,8 +146,9 @@ void FCM::buildModel (bool invRep, U8 ctxDepth, U8 modelIndex)
                     }
                 }
             }   /// end for
-            
-            mut.lock(); pushBackhashTables(hashTable);  mut.unlock();   /// push back hash table
+    
+//            mut.lock(); pushBackhashTables(hashTable);  mut.unlock();   /// push back hash table
+            mut.lock(); setHashTable(hashTable, modelIndex);    mut.unlock();   /// push back hash table
         }   /// end case
             break;
 
@@ -163,186 +164,202 @@ void FCM::buildModel (bool invRep, U8 ctxDepth, U8 modelIndex)
 ************************************************************/
 void FCM::compressTarget (string tarFileName)
 {
-    /// alpha -- used in P numerator
-    vector< double > alpha;     for (U16 u : alphaDenoms) alpha.push_back((double) 1 / u);
-    /// ALPH_SIZE * alpha -- used in P denominator
-    vector< double > sumAlphas; for (double d : alpha) sumAlphas.push_back(ALPH_SIZE * d);
+//    for (int i = 0; i < 125; ++i)
+//    {
+//
+//        cout<<tables[0][i];
+//    }
 
-    ifstream tarFileIn( tarFileName, ios::in ); /// open target file
-
-    mut.lock();///========================================================
-    if (!tarFileIn)                             /// error occurred while opening file
+    for (htable_t::iterator it = hashTables[0].begin(); it != hashTables[0].end(); ++it)
     {
-        cerr << "The file '" << tarFileName << "' cannot be opened, or it is empty.\n";
-        tarFileIn.close();                      /// close file
-        return;                                 /// exit this function
+        cout << it->first;
+        cout << "\t";
+        for (U64 i : it->second)
+            cout << i << "\t";
+        cout << '\n';
     }
-    mut.unlock();///======================================================
-
-    vector< U64 > maxPlaceValue;    for (U8 u : contextDepths) maxPlaceValue.push_back( (U64) pow(ALPH_SIZE, u) );
-    vector< U64 > tarContext (n_models, 0);     /// context(s) (integer), that slide(s) in the dataset
     
-    string tarLine;                             /// keep each line of the file
     
-    ////////////////////////////////
-    vector< U64 >    nSym (n_models, 0);        /// number of symbols (n_s). in probability numerator
-    vector< U64 >    sumNSym (n_models, 0);     /// sum of number of symbols (sum n_a). in probability denominator
-    vector< double > prob (n_models, (double) 1/ALPH_SIZE);     /// each model probability of a symbol
-    vector< double > rawWeight (n_models, (double) 1/n_models); /// each model weight before normalization. init: 1/M
-    vector< double > weight (n_models, 0);      /// each model weight
-    double           probability = 0;           /// final probability of a symbol
-    double           sumOfEntropies = 0;        /// sum of entropies for different symbols
-    U64              totalNOfSyms = 0;          /// number of all symbols in the sequence
-    double           averageEntropy = 0;        /// average entropy (H)
-    ////////////////////////////////
-
-    /*
-    /// using macros make this code slower
-    #define X \
-         ((compressionMode == 'h') ? (hashTable[ tarContext ][ currSymInt ]) \
-                                   : (table[ tarContext * ALPH_SUM_SIZE + currSymInt ]))
-    #define Y(in) do { \
-                (compressionMode == 't') \
-                ? in = table[ tarContext * ALPH_SUM_SIZE + ALPH_SIZE ] \
-                : in = 0; for (U64 u : hashTable[ tarContext ]) in += u; \
-              } while ( 0 )
-    */
-
-    switch ( compressionMode )
-    {
-        case 't':
-        {
-            U64 rowIndex;
-            double sumWeights = 0;
-            
-            while (getline(tarFileIn, tarLine))
-            {
-                
-                //////////////////////////////////
-                totalNOfSyms = totalNOfSyms + tarLine.size();   /// number of symbols in each line of dataset
-                //////////////////////////////////
-// mut.lock();
-                /// table includes the number of occurrences of symbols A, C, N, G, T
-                for (string::iterator lineIter = tarLine.begin(); lineIter != tarLine.end(); ++lineIter)
-                {
-                    U8 currSymInt = symCharToInt(*lineIter);   /// integer version of the current symbol
-    
-                    ////////////////////////////////
-                    for (int i = 0; i < n_models; ++i)
-                    {
-                        rowIndex = tarContext[ i ] * ALPH_SUM_SIZE;
-                        nSym[ i ] = tables[ i ][ rowIndex + currSymInt ];           /// number of symbols
-//                          nSym = X;
-                        sumNSym[ i ] = tables[ i ][ rowIndex + ALPH_SIZE ];         /// sum of number of symbols
-//                          Y(sumNSyms);
-                        rawWeight[ i ] = pow(rawWeight[ i ], gamma) * prob[ i ];  /// weight before normalization
-                        prob[ i ] = (nSym[ i ] + alpha[ i ]) / (sumNSym[ i ] + sumAlphas[ i ]);  /// P(s|c^t)
-        
-                        sumWeights = sumWeights + rawWeight[ i ];       /// sum of weights. used for normalization
-                        /// update context
-                        tarContext[ i ] = (U64) (tarContext[ i ] * ALPH_SIZE + currSymInt) % maxPlaceValue[ i ];
-                    }
-                    for (int i = 0; i < n_models; ++i)
-                    {
-                        weight[ i ] = rawWeight[ i ] / sumWeights;
-                        probability = probability + prob[ i ] * weight[ i ];   /// P_1*W_1 + P_2*W_2 + ...
-                    }
-    
-                    sumOfEntropies = sumOfEntropies + log2(probability);       /// sum( log_2 P(s|c^t) )
-                    /////////////////////////////////
-                }
-                
-// mut.unlock();
-                
-            }   /// end while
-        }   /// end case
-        break;
-
-        case 'h':
-        {
+//    /// alpha -- used in P numerator
+//    vector< double > alpha;     for (U16 u : alphaDenoms) alpha.push_back((double) 1 / u);
+//    /// ALPH_SIZE * alpha -- used in P denominator
+//    vector< double > sumAlphas; for (double d : alpha) sumAlphas.push_back(ALPH_SIZE * d);
+//
+//    ifstream tarFileIn( tarFileName, ios::in ); /// open target file
+//
+//    mut.lock();///========================================================
+//    if (!tarFileIn)                             /// error occurred while opening file
+//    {
+//        cerr << "The file '" << tarFileName << "' cannot be opened, or it is empty.\n";
+//        tarFileIn.close();                      /// close file
+//        return;                                 /// exit this function
+//    }
+//    mut.unlock();///======================================================
+//
+//    vector< U64 > maxPlaceValue;    for (U8 u : contextDepths) maxPlaceValue.push_back( (U64) pow(ALPH_SIZE, u) );
+//    vector< U64 > tarContext (n_models, 0);     /// context(s) (integer), that slide(s) in the dataset
+//
+//    string tarLine;                             /// keep each line of the file
+//
+//    ////////////////////////////////
+//    vector< U64 >    nSym (n_models, 0);        /// number of symbols (n_s). in probability numerator
+//    vector< U64 >    sumNSym (n_models, 0);     /// sum of number of symbols (sum n_a). in probability denominator
+//    vector< double > prob (n_models, (double) 1/ALPH_SIZE);     /// each model probability of a symbol
+//    vector< double > rawWeight (n_models, (double) 1/n_models); /// each model weight before normalization. init: 1/M
+//    vector< double > weight (n_models, 0);      /// each model weight
+//    double           probability = 0;           /// final probability of a symbol
+//    double           sumOfEntropies = 0;        /// sum of entropies for different symbols
+//    U64              totalNOfSyms = 0;          /// number of all symbols in the sequence
+//    double           averageEntropy = 0;        /// average entropy (H)
+//    ////////////////////////////////
+//
+//    /*
+//    /// using macros make this code slower
+//    #define X \
+//         ((compressionMode == 'h') ? (hashTable[ tarContext ][ currSymInt ]) \
+//                                   : (table[ tarContext * ALPH_SUM_SIZE + currSymInt ]))
+//    #define Y(in) do { \
+//                (compressionMode == 't') \
+//                ? in = table[ tarContext * ALPH_SUM_SIZE + ALPH_SIZE ] \
+//                : in = 0; for (U64 u : hashTable[ tarContext ]) in += u; \
+//              } while ( 0 )
+//    */
+//
+//    switch ( compressionMode )
+//    {
+//        case 't':
+//        {
+//            U64 rowIndex;
+//            double sumWeights = 0;
+//
 //            while (getline(tarFileIn, tarLine))
 //            {
 //
 //                //////////////////////////////////
 //                totalNOfSyms = totalNOfSyms + tarLine.size();   /// number of symbols in each line of dataset
 //                //////////////////////////////////
-//
-//                /// hash table includes the number of occurrences of symbols A, C, N, G, T
+//// mut.lock();
+//                /// table includes the number of occurrences of symbols A, C, N, G, T
 //                for (string::iterator lineIter = tarLine.begin(); lineIter != tarLine.end(); ++lineIter)
 //                {
 //                    U8 currSymInt = symCharToInt(*lineIter);   /// integer version of the current symbol
 //
-//                    //////////////////////////////////
-////                    if (hTable.find(tarContext) == hTable.end()) { nSym = 0;   sumNSyms = 0; }
-////                    else
-////                    {
-//                        nSym = hashTable[ tarContext ][ currSymInt ];       /// number of symbols
-//                        /*
-//                        nSym = X;
-//                        X(nSym);
-//                        */
-//                        sumNSyms = 0; for (U64 u : hashTable[ tarContext ])   sumNSyms = sumNSyms + u;  /// sum(n_a)
-//                        /*
-//                        Y(sumNSyms);
-//                        */
-////                    }
-////                    probability = (double) (alphaDen * nSym + 1) / (alphaDen * sumNSyms + ALPH_SIZE);
-//                    probability = (nSym + alpha) / (sumNSyms + sumAlphas);  /// P(s|c^t)
-//                    sumOfEntropies = sumOfEntropies + log2(probability);    /// sum( log_2 P(s|c^t) )
+//                    ////////////////////////////////
+//                    for (int i = 0; i < n_models; ++i)
+//                    {
+//                        rowIndex = tarContext[ i ] * ALPH_SUM_SIZE;
+//                        nSym[ i ] = tables[ i ][ rowIndex + currSymInt ];           /// number of symbols
+////                          nSym = X;
+//                        sumNSym[ i ] = tables[ i ][ rowIndex + ALPH_SIZE ];         /// sum of number of symbols
+////                          Y(sumNSyms);
+//                        rawWeight[ i ] = pow(rawWeight[ i ], gamma) * prob[ i ];  /// weight before normalization
+//                        prob[ i ] = (nSym[ i ] + alpha[ i ]) / (sumNSym[ i ] + sumAlphas[ i ]);  /// P(s|c^t)
+//
+//                        sumWeights = sumWeights + rawWeight[ i ];       /// sum of weights. used for normalization
+//                        /// update context
+//                        tarContext[ i ] = (U64) (tarContext[ i ] * ALPH_SIZE + currSymInt) % maxPlaceValue[ i ];
+//                    }
+//                    for (int i = 0; i < n_models; ++i)
+//                    {
+//                        probability = probability + prob[ i ] * weight[ i ];   /// P_1*W_1 + P_2*W_2 + ...
+//                        weight[ i ] = rawWeight[ i ] / sumWeights;
+//                    }
+//
+//                    sumOfEntropies = sumOfEntropies + log2(probability);       /// sum( log_2 P(s|c^t) )
 //                    /////////////////////////////////
-//
-//                    tarContext = (U64) (tarContext * ALPH_SIZE + currSymInt) % maxPlaceValue;   /// update context
 //                }
+//
+//// mut.unlock();
+//
 //            }   /// end while
-        }   /// end case
-        break;
-
-        default: break;
-    }   /// end switch
-
-    tarFileIn.close();  /// close file
-
-    ////////////////////////////////
-    averageEntropy = (double) (-1) * sumOfEntropies / totalNOfSyms;     /// H_N = -1/N sum( log_2 P(s|c^t) )
-
-////    cout << sumOfEntropies << '\n';
-////    cout << totalNOfSyms << '\n';
-////    cout << ' ';
-
-    /// to print reference and target file names in the output
-    U8 refsAdressesSize = (U8) getRefAddresses().size();
-    size_t lastSlash_Ref[ refsAdressesSize ];
-    for (U8 i = refsAdressesSize; i--;)
-        lastSlash_Ref[ i ] = getRefAddresses()[ i ].find_last_of("/");
-    size_t lastSlash_Tar = tarFileName.find_last_of("/");
-
-    mut.lock();///========================================================
-    for (int i = refsAdressesSize - 1; i; --i)
-        cout << getRefAddresses()[ i ].substr(lastSlash_Ref[ i ] + 1) << ',';
-    cout << getRefAddresses()[ 0 ].substr(lastSlash_Ref[ 0 ] + 1) << '\t'
-         << tarFileName.substr(lastSlash_Tar + 1) << '\t';
-    
-    cout
-//            << invertedRepeat << '\t'
-//            << std::fixed << setprecision(4) << alpha << '\t'
-//            << (int) contextDepth << '\t'
-            << std::fixed << setprecision(5) << averageEntropy << '\t'
-            << std::fixed << setprecision(5) << averageEntropy / LOG2_ALPH_SIZE;
-    cout << '\n';
-
-    
-//    cout << invertedRepeat << '\t'
-//         << std::fixed << setprecision(4) << alpha << '\t'
-//         << (int) contextDepth << '\t'
-//         << std::fixed << setprecision(5) << averageEntropy << '\t'
-//         << std::fixed << setprecision(5) << averageEntropy/LOG2_ALPH_SIZE;
+//        }   /// end case
+//        break;
 //
-////    cout.width(2);  cout << std::left << getInvertedRepeat() << "   ";
+//        case 'h':
+//        {
+////            while (getline(tarFileIn, tarLine))
+////            {
+////
+////                //////////////////////////////////
+////                totalNOfSyms = totalNOfSyms + tarLine.size();   /// number of symbols in each line of dataset
+////                //////////////////////////////////
+////
+////                /// hash table includes the number of occurrences of symbols A, C, N, G, T
+////                for (string::iterator lineIter = tarLine.begin(); lineIter != tarLine.end(); ++lineIter)
+////                {
+////                    U8 currSymInt = symCharToInt(*lineIter);   /// integer version of the current symbol
+////
+////                    //////////////////////////////////
+//////                    if (hTable.find(tarContext) == hTable.end()) { nSym = 0;   sumNSyms = 0; }
+//////                    else
+//////                    {
+////                        nSym = hashTable[ tarContext ][ currSymInt ];       /// number of symbols
+////                        /*
+////                        nSym = X;
+////                        X(nSym);
+////                        */
+////                        sumNSyms = 0; for (U64 u : hashTable[ tarContext ])   sumNSyms = sumNSyms + u;  /// sum(n_a)
+////                        /*
+////                        Y(sumNSyms);
+////                        */
+//////                    }
+//////                    probability = (double) (alphaDen * nSym + 1) / (alphaDen * sumNSyms + ALPH_SIZE);
+////                    probability = (nSym + alpha) / (sumNSyms + sumAlphas);  /// P(s|c^t)
+////                    sumOfEntropies = sumOfEntropies + log2(probability);    /// sum( log_2 P(s|c^t) )
+////                    /////////////////////////////////
+////
+////                    tarContext = (U64) (tarContext * ALPH_SIZE + currSymInt) % maxPlaceValue;   /// update context
+////                }
+////            }   /// end while
+//        }   /// end case
+//        break;
 //
+//        default: break;
+//    }   /// end switch
+//
+//    tarFileIn.close();  /// close file
+//
+//    ////////////////////////////////
+//    averageEntropy = (double) (-1) * sumOfEntropies / totalNOfSyms;     /// H_N = -1/N sum( log_2 P(s|c^t) )
+//
+//////    cout << sumOfEntropies << '\n';
+//////    cout << totalNOfSyms << '\n';
+//////    cout << ' ';
+//
+//    /// to print reference and target file names in the output
+//    U8 refsAdressesSize = (U8) getRefAddresses().size();
+//    size_t lastSlash_Ref[ refsAdressesSize ];
+//    for (U8 i = refsAdressesSize; i--;)
+//        lastSlash_Ref[ i ] = getRefAddresses()[ i ].find_last_of("/");
+//    size_t lastSlash_Tar = tarFileName.find_last_of("/");
+//
+//    mut.lock();///========================================================
+//    for (int i = refsAdressesSize - 1; i; --i)
+//        cout << getRefAddresses()[ i ].substr(lastSlash_Ref[ i ] + 1) << ',';
+//    cout << getRefAddresses()[ 0 ].substr(lastSlash_Ref[ 0 ] + 1) << '\t'
+//         << tarFileName.substr(lastSlash_Tar + 1) << '\t';
+//
+//    cout
+////            << invertedRepeat << '\t'
+////            << std::fixed << setprecision(4) << alpha << '\t'
+////            << (int) contextDepth << '\t'
+//            << std::fixed << setprecision(5) << averageEntropy << '\t'
+//            << std::fixed << setprecision(5) << averageEntropy / LOG2_ALPH_SIZE;
 //    cout << '\n';
-    mut.unlock();///======================================================
-    ////////////////////////////////
-    
+//
+//
+////    cout << invertedRepeat << '\t'
+////         << std::fixed << setprecision(4) << alpha << '\t'
+////         << (int) contextDepth << '\t'
+////         << std::fixed << setprecision(5) << averageEntropy << '\t'
+////         << std::fixed << setprecision(5) << averageEntropy/LOG2_ALPH_SIZE;
+////
+//////    cout.width(2);  cout << std::left << getInvertedRepeat() << "   ";
+////
+////    cout << '\n';
+//    mut.unlock();///======================================================
+//    ////////////////////////////////
+//
 }
 
 
@@ -863,6 +880,13 @@ void FCM::printHashTable () const
 /***********************************************************
     getters and setters
 ************************************************************/
+void  FCM::initTables (U64 n)                        {
+//    tables.reserve(n);
+    tables.reserve(n_models);
+}
+void  FCM::initHashTables (U64 n)                        {
+    hashTables.reserve(n_models);
+}
 void  FCM::setCompressionMode (char cM)              { compressionMode = cM;          }
 void  FCM::setN_models (U8 n)                        { n_models = n;                  }
 void  FCM::setGamma (double g)                       { gamma = g;                     }
@@ -876,5 +900,6 @@ void  FCM::pushBackTarAddresses (const string &tFAs) { tarAddresses.push_back(tF
 const vector<string> &FCM::getRefAddresses () const  { return refAddresses;           }
 void  FCM::pushBackRefAddresses (const string &rFAs) { refAddresses.push_back(rFAs);  }
 void  FCM::setTable (U64 *tbl, U8 idx)               { tables[ idx ] = tbl;           }
-void  FCM::pushBackTables (U64 *tbls)                { tables.push_back(tbls);        }
-void  FCM::pushBackhashTables (const htable_t &hts)  { hashTables.push_back(hts);     }
+void  FCM::setHashTable (htable_t ht, U8 idx)        { hashTables[ idx ] = ht;        }
+//void  FCM::pushBackTables (U64 *tbls)                { tables.push_back(tbls);        }
+//void  FCM::pushBackhashTables (const htable_t &hts)  { hashTables.push_back(hts);     }
