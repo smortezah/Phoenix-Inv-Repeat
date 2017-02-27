@@ -21,6 +21,7 @@ using std::memset;
 using std::memmove;
 using std::fixed;
 using std::setprecision;
+using std::fill_n;
 
 /// TODO TEST
 //using std::chrono::high_resolution_clock;
@@ -163,11 +164,11 @@ void FCM::buildModel (bool invRep, U8 ctxDepth, U8 modelIndex)
 void FCM::compressTarget (string tarFileName)
 {
     /// alpha and ALPH_SIZE*alpha: used in P numerator and denominator
-    double alpha[n_models], sumAlphas[n_models];
-    for (U8 j = n_models; j--;)
+    double alpha[ n_models ], sumAlphas[ n_models ];
+    for (U8 i = n_models; i--;)
     {
-        alpha[ j ] = (double) 1 / alphaDenoms[ j ];
-        sumAlphas[ j ] = ALPH_SIZE * alpha[ j ];
+        alpha[ i ] = (double) 1 / alphaDenoms[ i ];
+        sumAlphas[ i ] = ALPH_SIZE * alpha[ i ];
     }
     
     ifstream tarFileIn( tarFileName, ios::in ); /// open target file
@@ -180,32 +181,28 @@ void FCM::compressTarget (string tarFileName)
         return;                                 /// exit this function
     }
     mut.unlock();///======================================================
-
-    vector< U64 > maxPlaceValue;    for (U8 u : contextDepths) maxPlaceValue.push_back( (U64) pow(ALPH_SIZE, u) );
-    vector< U64 > tarContext (n_models, 0);     /// context(s) (integer), that slide(s) in the dataset
-
+    
+    U64 maxPlaceValue[ n_models ];
+    for (U8 i = n_models; i--;) maxPlaceValue[ i ] = (U64) pow( ALPH_SIZE, contextDepths[ i ] );
+    U64 tarContext[ n_models ]; fill_n(tarContext, n_models, 0); /// context(s) (integer) sliding through the dataset
     string tarLine;                             /// keep each line of the file
-
-    ////////////////////////////////
-//    vector< U64 >    nSym (n_models, 0);        /// number of symbols (n_s). in probability numerator
-//    vector< U64 >    sumNSym (n_models, 0);     /// sum of number of symbols (sum n_a). in probability denominator
-//    vector< double > prob (n_models, (double) 1/ALPH_SIZE);     /// each model probability of a symbol
-    U64 *nSym = new U64[n_models];
-    U64 *sumNSym = new U64[n_models]; memset(sumNSym, 0, sizeof(sumNSym[0]) * n_models);
-    double *prob = new double[n_models]; std::fill_n(prob, n_models, (double) 1/ALPH_SIZE);
-    double *rawWeight = new double[n_models];   std::fill_n(rawWeight, n_models, (double) 1/n_models);
-    double *weight = new double[n_models];      std::fill_n(weight, n_models, 0);
-//    vector< double > prob (n_models, (double) 1/ALPH_SIZE);     /// each model probability of a symbol
-//    vector< double > rawWeight (n_models, (double) 1/n_models); /// each model weight before normalization. init: 1/M
-//    vector< double > weight (n_models, 0);      /// each model weight
     
-    
-    double           probability = 0;           /// final probability of a symbol
-    double           sumOfEntropies = 0;        /// sum of entropies for different symbols
-    U64              totalNOfSyms = 0;          /// number of all symbols in the sequence
-    double           averageEntropy = 0;        /// average entropy (H)
     ////////////////////////////////
-
+    /// number of symbols (n_s). in probability numerator
+    U64     nSym[ n_models ];       fill_n(nSym, n_models, 0);
+    /// sum of number of symbols (sum n_a). in probability denominator
+    U64     sumNSym[ n_models ];    fill_n(sumNSym, n_models, 0);
+    /// each model probability of a symbol
+    double  prob[ n_models ];       fill_n(prob, n_models, (double) 1 / ALPH_SIZE);
+    /// each model weight before normalization. init: 1/M
+    double  rawWeight[ n_models ];  fill_n(rawWeight, n_models, (double) 1 / n_models);
+    double  weight[ n_models ];     fill_n(weight, n_models, 0);    /// each model weight
+    double  probability = 0;                     /// final probability of a symbol
+    double  sumOfEntropies = 0;                  /// sum of entropies for different symbols
+    U64     totalNOfSyms = 0;                    /// number of all symbols in the sequence
+    double  averageEntropy = 0;                  /// average entropy (H)
+    ////////////////////////////////
+    
     /*
     /// using macros make this code slower
     #define X \
@@ -217,7 +214,7 @@ void FCM::compressTarget (string tarFileName)
                 : in = 0; for (U64 u : hashTable[ tarContext ]) in += u; \
               } while ( 0 )
     */
-
+    
     switch ( compressionMode )
     {
         case 't':
@@ -227,11 +224,11 @@ void FCM::compressTarget (string tarFileName)
 
             while (getline(tarFileIn, tarLine))
             {
-                
+
                 //////////////////////////////////
                 totalNOfSyms = totalNOfSyms + tarLine.size();   /// number of symbols in each line of dataset
                 //////////////////////////////////
-                
+
                 /// table includes the number of occurrences of symbols A, C, N, G, T
                 for (string::iterator lineIter = tarLine.begin(); lineIter != tarLine.end(); ++lineIter)
                 {
