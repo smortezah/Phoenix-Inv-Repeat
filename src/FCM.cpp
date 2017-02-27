@@ -224,7 +224,7 @@ void FCM::compressTarget (string tarFileName)
                 for (string::iterator lineIter = tarLine.begin(); lineIter != tarLine.end(); ++lineIter)
                 {
                     U8 currSymInt = symCharToInt(*lineIter);   /// integer version of the current symbol
-                    
+    
                     ////////////////////////////////
                     for (int i = 0; i < n_models; ++i)
                     {
@@ -233,9 +233,9 @@ void FCM::compressTarget (string tarFileName)
 //                          nSym = X;
                         sumNSym[ i ] = tables[ i ][ rowIndex + ALPH_SIZE ];         /// sum of number of symbols
 //                          Y(sumNSyms);
-                        rawWeight[ i ] = pow( rawWeight[ i ], gamma ) * prob[ i ];  /// weight before normalization
+                        rawWeight[ i ] = pow(rawWeight[ i ], gamma) * prob[ i ];  /// weight before normalization
                         prob[ i ] = (nSym[ i ] + alpha[ i ]) / (sumNSym[ i ] + sumAlphas[ i ]);  /// P(s|c^t)
-                        
+        
                         sumWeights = sumWeights + rawWeight[ i ];       /// sum of weights. used for normalization
                         /// update context
                         tarContext[ i ] = (U64) (tarContext[ i ] * ALPH_SIZE + currSymInt) % maxPlaceValue[ i ];
@@ -245,7 +245,7 @@ void FCM::compressTarget (string tarFileName)
                         weight[ i ] = rawWeight[ i ] / sumWeights;
                         probability = probability + prob[ i ] * weight[ i ];   /// P_1*W_1 + P_2*W_2 + ...
                     }
-                    
+    
                     sumOfEntropies = sumOfEntropies + log2(probability);       /// sum( log_2 P(s|c^t) )
                     /////////////////////////////////
                 }
