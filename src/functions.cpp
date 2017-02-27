@@ -258,11 +258,8 @@ void Functions::commandLineParser (int argc, char **argv)
         const char compressionMode = (cmpModeSum > pow(ALPH_SIZE, TABLE_MAX_CTX)) ? 'h' : 't';
         mixModel.setCompressionMode( compressionMode );
         
-        compressionMode == 'h' ? mixModel.initHashTables( cmpModeSum * ALPH_SUM_SIZE )
-                               : mixModel.initTables( cmpModeSum * ALPH_SUM_SIZE );
-
-        
-        
+        /// initialize vector of tables or hash tables
+        compressionMode == 'h' ? mixModel.initHashTables() : mixModel.initTables();
         
         U8 arrThrSize = (n_models > n_threads) ? n_threads : n_models;/// size of array of threads
         thread *arrThread = new thread[ arrThrSize ];                 /// array of threads

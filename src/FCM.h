@@ -16,13 +16,13 @@ class FCM
 {
 public:
     FCM ();                                             /// constructor
-    void   initTables (U64);
-    void   initHashTables (U64);
+    void   initTables ();                               /// initialize vector of tables
+    void   initHashTables ();                           /// initialize vector of hash tables
     
     void   buildModel (bool, U8, U8);                   /// build reference(s) model
     void   compressTarget (string);                     /// compress target file
     inline U8 symCharToInt (char) const;                /// ACNGT -> 01234
-                                                        
+    
 //    void buildHashTable_str ();                                /// build hash table (string key)
     void   printHashTable () const;                     /// print hash table
     
@@ -36,10 +36,8 @@ public:
     void   pushBackTarAddresses (const string&);        /// pushBacker of target files addresses
     const  vector<string> &getRefAddresses () const;    /// getter of reference files addresses
     void   pushBackRefAddresses (const string&);        /// pushBacker of reference files addresses
-    void   setTable (U64*, U8);                         /// setter of tables
-//    void   pushBackTables (U64 *);                      /// pushBacker of tables
-    void   setHashTable (htable_t, U8);                         /// setter of
-//    void   pushBackhashTables (const htable_t&);        /// pushBacker of hash tables
+    void   setTable (U64*, U8);                         /// setter of table(s)
+    void   setHashTable (const htable_t&, U8);          /// setter of hash table(s)
     
 private:
     std::mutex       mut;                               /// mutex
@@ -53,8 +51,6 @@ private:
     vector<string>   tarAddresses;                      /// target files addresses
     vector<string>   refAddresses;                      /// reference files addresses
     vector<U64 *>    tables;                            /// table(s)
-//    U64              **tables;                          /// table(s)
-//    htable_t         *hashTables;                       /// hash table(s)
     vector<htable_t> hashTables;                        /// hash table(s)
 //    htable_str_t   hashTable_str;                              /// hash table (string key)
 };

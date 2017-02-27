@@ -108,8 +108,7 @@ void FCM::buildModel (bool invRep, U8 ctxDepth, U8 modelIndex)
                 }
             }   /// end for
             
-//            mut.lock(); pushBackTables(table);  mut.unlock();               /// push back table
-            mut.lock(); setTable(table, modelIndex);    mut.unlock();       /// push back table
+            mut.lock(); setTable(table, modelIndex);    mut.unlock();       /// set table
 //
         }   /// end case
             break;
@@ -147,8 +146,7 @@ void FCM::buildModel (bool invRep, U8 ctxDepth, U8 modelIndex)
                 }
             }   /// end for
     
-//            mut.lock(); pushBackhashTables(hashTable);  mut.unlock();   /// push back hash table
-            mut.lock(); setHashTable(hashTable, modelIndex);    mut.unlock();   /// push back hash table
+            mut.lock(); setHashTable(hashTable, modelIndex);    mut.unlock();   /// set hash table
         }   /// end case
             break;
 
@@ -164,28 +162,6 @@ void FCM::buildModel (bool invRep, U8 ctxDepth, U8 modelIndex)
 ************************************************************/
 void FCM::compressTarget (string tarFileName)
 {
-//    for (int i = 0; i < 125; ++i)
-//    {
-//
-//        cout<<tables[0][i];
-//    }
-    
-    htable_t::iterator b=hashTables[0].begin();
-    htable_t::iterator e=hashTables[0].end();
-//    htable_t::iterator b=hashTables[1].begin();
-//    htable_t::iterator e=hashTables[1].end();
-    for (htable_t::iterator it = b; it != e; ++it)
-    {
-        cout << it->first;
-        cout << "\t";
-        for (U64 i : it->second)
-            cout << i << "\t";
-        cout << '\n';
-    }
-    
-    
-    
-    
 //    /// alpha -- used in P numerator
 //    vector< double > alpha;     for (U16 u : alphaDenoms) alpha.push_back((double) 1 / u);
 //    /// ALPH_SIZE * alpha -- used in P denominator
@@ -854,8 +830,29 @@ void FCM::buildHashTable_str ()
 ************************************************************/
 void FCM::printHashTable () const
 {
-//    htable_t hTable = hashTable;
 //
+////    for (int i = 0; i < 125; ++i)
+////    {
+////
+////        cout<<tables[0][i];
+////    }
+//
+//
+////    htable_t::iterator b=hashTables[0].begin();
+////    htable_t::iterator e=hashTables[0].end();
+//    htable_t::iterator b=hashTables[1].begin();
+//    htable_t::iterator e=hashTables[1].end();
+//    for (htable_t::iterator it = b; it != e; ++it)
+//    {
+//        cout << it->first;
+//        cout << "\t";
+//        for (U64 i : it->second)
+//            cout << i << "\t";
+//        cout << '\n';
+//    }
+    
+//**********************************************************************
+    
 //    cout
 //         << " >>> Context order size:\t" << (U16) contextDepth << '\n'
 //         << " >>> Alpha denominator:\t\t" << (U16) alphaDenom << '\n'
@@ -886,17 +883,6 @@ void FCM::printHashTable () const
 /***********************************************************
     getters and setters
 ************************************************************/
-void  FCM::initTables (U64 n)                        {
-//    tables.reserve(n);
-    tables.reserve(n_models);
-//    tables.push_back(0);
-    
-//    cout<<tables.size();
-}
-void  FCM::initHashTables (U64 n)                        {
-//    hashTables.reserve(240040625);
-    hashTables.reserve(n_models);
-}
 void  FCM::setCompressionMode (char cM)              { compressionMode = cM;          }
 void  FCM::setN_models (U8 n)                        { n_models = n;                  }
 void  FCM::setGamma (double g)                       { gamma = g;                     }
@@ -909,7 +895,7 @@ const vector<string> &FCM::getTarAddresses () const  { return tarAddresses;     
 void  FCM::pushBackTarAddresses (const string &tFAs) { tarAddresses.push_back(tFAs);  }
 const vector<string> &FCM::getRefAddresses () const  { return refAddresses;           }
 void  FCM::pushBackRefAddresses (const string &rFAs) { refAddresses.push_back(rFAs);  }
+void  FCM::initTables ()                             { tables.reserve(n_models);      }
 void  FCM::setTable (U64 *tbl, U8 idx)               { tables[ idx ] = tbl;           }
-void  FCM::setHashTable (htable_t ht, U8 idx)        { hashTables[ idx ] = ht;        }
-//void  FCM::pushBackTables (U64 *tbls)                { tables.push_back(tbls);        }
-//void  FCM::pushBackhashTables (const htable_t &hts)  { hashTables.push_back(hts);     }
+void  FCM::initHashTables ()                         { hashTables.reserve(n_models);  }
+void  FCM::setHashTable (const htable_t &ht, U8 idx) { hashTables[ idx ] = ht;        }
