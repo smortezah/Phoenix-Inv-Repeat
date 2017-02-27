@@ -256,6 +256,12 @@ void Functions::commandLineParser (int argc, char **argv)
         U64 cmpModeSum = 0;     for (U8 k : mixModel.getContextDepths()) cmpModeSum += pow(ALPH_SIZE, k);
         const char compressionMode = (cmpModeSum > pow(ALPH_SIZE, TABLE_MAX_CTX)) ? 'h' : 't';
         mixModel.setCompressionMode( compressionMode );
+    
+        mixModel.initTables();
+//        compressionMode == 'h' ? mixModel.initHashTables() : mixModel.initTables();
+        
+        
+        
         
         U8 arrThrSize = (n_models > n_threads) ? n_threads : n_models;/// size of array of threads
         thread *arrThread = new thread[ arrThrSize ];                 /// array of threads
@@ -286,23 +292,23 @@ void Functions::commandLineParser (int argc, char **argv)
         thread *arrThread = new thread[arrThrSize];             /// array of threads
         */
 
-//        /// compress target(s) using reference(s) model(s) -- multithreaded
-//        mixModel.setGamma(gamma);                                     /// set gamma
-//        U8 n_targets = (U8) mixModel.getTarAddresses().size();        /// up to 2^8=256 targets
-//
-//        arrThrSize = (n_targets > n_threads) ? n_threads : n_targets;
-//        arrThread  = new thread[ arrThrSize ];                        /// array of threads
-//
-//        for (U8 i = 0; i < n_targets; i += arrThrSize)
-//        {
-//            for (U8 j = 0; j < arrThrSize && i + j < n_targets; ++j)
-//                arrThread[ j ] = thread( &FCM::compressTarget, &mixModel, mixModel.getTarAddresses()[ i + j ] );
-//
-//            for (U8 j = 0; j < arrThrSize && i + j < n_targets; ++j)
-//                arrThread[ j ].join();
-//        }
-//
-//        delete[] arrThread;                                           /// free up the memory for array of threads
+        /// compress target(s) using reference(s) model(s) -- multithreaded
+        mixModel.setGamma(gamma);                                     /// set gamma
+        U8 n_targets = (U8) mixModel.getTarAddresses().size();        /// up to 2^8=256 targets
+
+        arrThrSize = (n_targets > n_threads) ? n_threads : n_targets;
+        arrThread  = new thread[ arrThrSize ];                        /// array of threads
+
+        for (U8 i = 0; i < n_targets; i += arrThrSize)
+        {
+            for (U8 j = 0; j < arrThrSize && i + j < n_targets; ++j)
+                arrThread[ j ] = thread( &FCM::compressTarget, &mixModel, mixModel.getTarAddresses()[ i + j ] );
+
+            for (U8 j = 0; j < arrThrSize && i + j < n_targets; ++j)
+                arrThread[ j ].join();
+        }
+
+        delete[] arrThread;                                           /// free up the memory for array of threads
     }
     
     /// Print any remaining command line arguments (not options).

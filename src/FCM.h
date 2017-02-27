@@ -16,11 +16,13 @@ class FCM
 {
 public:
     FCM ();                                             /// constructor
-    void initTables (){
-        
+    void initTables ()
+    {
         for (int i = 0; i < n_models; ++i)
         {
-            
+            U64 *a = new U64[ (U64) pow(ALPH_SIZE, contextDepths[i]) * ALPH_SUM_SIZE ];
+            tables.push_back(a);
+            delete[] a;
         }
     }
     
