@@ -185,17 +185,15 @@ void FCM::compressTarget (string tarFileName)
     U64 maxPlaceValue[ n_models ];
     for (U8 i = n_models; i--;) maxPlaceValue[ i ] = (U64) pow( ALPH_SIZE, contextDepths[ i ] );
     U64 tarContext[ n_models ]; fill_n(tarContext, n_models, 0); /// context(s) (integer) sliding through the dataset
+    U64 tCtx = 0;                               /// temp variable to decrease accessing tarContext[] array
     string tarLine;                             /// keep each line of the file
     
     ////////////////////////////////
-    /// number of symbols (n_s). in probability numerator
-    U64     nSym[ n_models ];       fill_n(nSym, n_models, 0);
-    /// sum of number of symbols (sum n_a). in probability denominator
-    U64     sumNSym[ n_models ];    fill_n(sumNSym, n_models, 0);
-    /// each model probability of a symbol
-    double  prob[ n_models ];       fill_n(prob, n_models, (double) 1 / ALPH_SIZE);
-    /// each model weight before normalization. init: 1/M
-    double  rawWeight[ n_models ];
+    U64     nSym;                               /// number of symbols (n_s). in probability numerator
+    U64     sumNSym;                            /// sum of number of symbols (sum n_a). in probability denominator
+    double  prob_i;                             /// each model probability of a symbol
+    double  rawWeight[ n_models ];              /// each model weight before normalization. init: 1/M
+    double  rW_i;                               /// temp variable to decrease accessing rawWeight[] array
     double  weight[ n_models ];     fill_n(weight, n_models, (double) 1 / n_models);    /// each model weight
     double  probability;                        /// final probability of a symbol
     double  sumOfEntropies = 0;                 /// sum of entropies for different symbols
@@ -240,25 +238,23 @@ void FCM::compressTarget (string tarFileName)
                     
                     for (U8 i = n_models; i--;)
                     {
-                        rowIndex = tarContext[ i ] * ALPH_SUM_SIZE;
-                        nSym[ i ] = tables[ i ][ rowIndex + currSymInt ];           /// number of symbols
+                        rowIndex = (tCtx = tarContext[ i ]) * ALPH_SUM_SIZE;
+                        nSym = tables[ i ][ rowIndex + currSymInt ];                /// number of symbols
 //                          nSym = X;
-                        sumNSym[ i ] = tables[ i ][ rowIndex + ALPH_SIZE ];         /// sum of number of symbols
+                        sumNSym = tables[ i ][ rowIndex + ALPH_SIZE ];              /// sum of number of symbols
 //                          Y(sumNSyms);
-                        prob[ i ] = (nSym[ i ] + alpha[ i ]) / (sumNSym[ i ] + sumAlphas[ i ]);  /// P(s|c^t)
+                        prob_i = (nSym + alpha[ i ]) / (sumNSym + sumAlphas[ i ]);  /// P(s|c^t)
                         
-                        probability = probability + weight[ i ] * prob[ i ];        /// P_1*W_1 + P_2*W_2 + ...
+                        probability = probability + weight[ i ] * prob_i;           /// P_1*W_1 + P_2*W_2 + ...
                         
-//                        rawWeight[ i ] = pow(weight[ i ], gamma) * prob[ i ];       /// weight before normalization
-                        rawWeight[ i ] = fastPow(weight[ i ], gamma) * prob[ i ];   /// weight before normalization
-                        sumOfWeights = sumOfWeights + rawWeight[ i ];   /// sum of weights. used for normalization
-                    }
-                    for (U8 i = n_models; i--;)
-                    {
-                        weight[ i ] = rawWeight[ i ] / sumOfWeights;                /// final weights
+//                        rW_i = rawWeight[ i ] = pow(weight[ i ], gamma) * prob_i; /// weight before normalization
+                        rW_i = rawWeight[ i ] = fastPow(weight[ i ], gamma) * prob_i; /// weight before normalization
+                        sumOfWeights = sumOfWeights + rW_i;             /// sum of weights. used for normalization
+                        
                         /// update context
-                        tarContext[ i ] = (U64) (tarContext[ i ] * ALPH_SIZE + currSymInt) % maxPlaceValue[ i ];
+                        tarContext[ i ] = (U64) (tCtx * ALPH_SIZE + currSymInt) % maxPlaceValue[ i ];
                     }
+                    for (U8 i = n_models; i--;) weight[ i ] = rawWeight[ i ] / sumOfWeights;    /// final weights
                     
                     sumOfEntropies = sumOfEntropies + log2(probability);            /// sum( log_2 P(s|c^t) )
                     /////////////////////////////////
@@ -269,6 +265,9 @@ void FCM::compressTarget (string tarFileName)
             
         case 'h':
         {
+            array< U64, ALPH_SIZE > hTRowArray;                 /// hash table row array -- to save a row of hTable
+//            U64 hTRowArray[ ALPH_SIZE ];                        /// hash table row array -- to save a row of hTable
+            U8 idx = 0;
             while ( getline(tarFileIn, tarLine) )
             {
                 
@@ -287,29 +286,47 @@ void FCM::compressTarget (string tarFileName)
 
                     for (U8 i = n_models; i--;)
                     {
-                        nSym[ i ] = hashTables[ i ][ tarContext[i] ][ currSymInt ];      /// number of symbols
+                        tCtx = tarContext[ i ];
+                        hTRowArray = hashTables[ i ][ tCtx ];
+//                        hTRowArray = hashTables[ i ][ tarContext[ i ] ];
+
+                        /// sum of number of symbols
+                        sumNSym = 0;
+//                        std::memcpy(hTRowArray,hashTables[ i ][ tCtx ],ALPH_SIZE);
+                        for (U64 u : hTRowArray)    sumNSym = sumNSym + u;
+//                        Y(sumNSym);
+                        nSym = hTRowArray[ currSymInt ];               /// number of symbols
 //                          nSym = X;
 //                          X(nSym);
-                        /// sum of number of symbols
-                        sumNSym[ i ] = 0; for (U64 u : hashTables[i][ tarContext[i] ])   sumNSym[ i ] = sumNSym[ i ] + u;
-//                        Y(sumNSym);
+                        
+                        
+                        
 
-                        prob[ i ] = (nSym[ i ] + alpha[ i ]) / (sumNSym[ i ] + sumAlphas[ i ]);  /// P(s|c^t)
+//                        tCtx = tarContext[ i ];
+//                        nSym = hashTables[ i ][ tCtx ][ currSymInt ];               /// number of symbols
+////                          nSym = X;
+////                          X(nSym);
+//                        /// sum of number of symbols
+//                        sumNSym = 0;    for (U64 u : hashTables[ i ][ tCtx ])   sumNSym = sumNSym + u;
+////                        Y(sumNSym);
+////
+                        prob_i = (nSym + alpha[ i ]) / (sumNSym + sumAlphas[ i ]);  /// P(s|c^t)
+    
+                        probability = probability + weight[ i ] * prob_i;           /// P_1*W_1 + P_2*W_2 + ...
 
-                        probability = probability + weight[ i ] * prob[ i ];        /// P_1*W_1 + P_2*W_2 + ...
-
-//                        rawWeight[ i ] = pow(weight[ i ], gamma) * prob[ i ];       /// weight before normalization
-                        rawWeight[ i ] = fastPow(weight[ i ], gamma) * prob[ i ];   /// weight before normalization
-                        sumOfWeights = sumOfWeights + rawWeight[ i ];   /// sum of weights. used for normalization
+//                        rW_i = rawWeight[ i ] = pow(weight[ i ], gamma) * prob_i;/// weight before normalization
+                        rW_i = rawWeight[ i ] = fastPow(weight[ i ], gamma) * prob_i;   /// weight before normalization
+                        sumOfWeights = sumOfWeights + rW_i;   /// sum of weights. used for normalization
+                        
+                        /// update context
+                        tarContext[ i ] = (U64) (tCtx * ALPH_SIZE + currSymInt) % maxPlaceValue[ i ];
                     }
                     for (U8 i = n_models; i--;)
                     {
-                        weight[ i ] = rawWeight[ i ] / sumOfWeights;                /// final weights
-                        /// update context
-                        tarContext[ i ] = (U64) (tarContext[ i ] * ALPH_SIZE + currSymInt) % maxPlaceValue[ i ];
+                        weight[ i ] = rawWeight[ i ] / sumOfWeights;                    /// final weights
                     }
-
-                    sumOfEntropies = sumOfEntropies + log2(probability);            /// sum( log_2 P(s|c^t) )
+                    
+                    sumOfEntropies = sumOfEntropies + log2(probability);                /// sum( log_2 P(s|c^t) )
                     /////////////////////////////////
                 }
             }   /// end while

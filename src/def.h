@@ -23,7 +23,7 @@ using std::array;
 #define ALPH_SUM_SIZE     6           /// ALPHABET_SIZE+1: one more column for 'sum'
 #define LOG2_ALPH_SIZE    2.321928095 /// log2 of 5 (ALPHABET_SIZE)
 //#define TABLE_MAX_CTX     12          /// max context depth for building table
-#define TABLE_MAX_CTX     12          /// max context depth for building table
+#define TABLE_MAX_CTX     0          /// max context depth for building table
 #define DEFAULT_N_THREADS 2           /// default number of threads
 #define N_FREE_THREADS    1
 #define DEFAULT_GAMMA     0.95        /// default gamma (for mixture of FCMs)
@@ -46,6 +46,7 @@ typedef int64_t  I64;
 /// ye variable ro ham tanzim kon ke maloom she chand bar nesf kardim
 //typedef unordered_map< string, array< U64, ALPH_SIZE > > htable_str_t;
 typedef unordered_map< U64 , array< U64, ALPH_SIZE > > htable_t;
+//typedef unordered_map< U64 , U64[ALPH_SIZE] > htable_t;
 
 
 #endif //PHOENIX_DEF_H
