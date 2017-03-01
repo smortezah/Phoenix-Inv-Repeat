@@ -195,7 +195,6 @@ void FCM::compressTarget (string tarFileName)
     /// each model probability of a symbol
     double  prob[ n_models ];       fill_n(prob, n_models, (double) 1 / ALPH_SIZE);
     /// each model weight before normalization. init: 1/M
-//    double  rawWeight[ n_models ];  fill_n(rawWeight, n_models, (double) 1 / n_models);
     double  rawWeight[ n_models ];
     double  weight[ n_models ];     fill_n(weight, n_models, (double) 1 / n_models);    /// each model weight
     double  probability;                        /// final probability of a symbol
@@ -223,7 +222,7 @@ void FCM::compressTarget (string tarFileName)
             U64 rowIndex;
             double sumOfWeights;
             
-            while (getline(tarFileIn, tarLine))
+            while ( getline(tarFileIn, tarLine) )
             {
                 
                 //////////////////////////////////
@@ -242,27 +241,26 @@ void FCM::compressTarget (string tarFileName)
                     for (U8 i = n_models; i--;)
                     {
                         rowIndex = tarContext[ i ] * ALPH_SUM_SIZE;
-                        nSym[ i ] = tables[ i ][ rowIndex + currSymInt ];       /// number of symbols
+                        nSym[ i ] = tables[ i ][ rowIndex + currSymInt ];           /// number of symbols
 //                          nSym = X;
-                        sumNSym[ i ] = tables[ i ][ rowIndex + ALPH_SIZE ];     /// sum of number of symbols
+                        sumNSym[ i ] = tables[ i ][ rowIndex + ALPH_SIZE ];         /// sum of number of symbols
 //                          Y(sumNSyms);
                         prob[ i ] = (nSym[ i ] + alpha[ i ]) / (sumNSym[ i ] + sumAlphas[ i ]);  /// P(s|c^t)
                         
-                        probability = probability + weight[ i ] * prob[ i ];    /// P_1*W_1 + P_2*W_2 + ...
-    
-//                        rawWeight[ i ] = pow(weight[ i ], gamma) * prob[ i ];   /// weight before normalization
+                        probability = probability + weight[ i ] * prob[ i ];        /// P_1*W_1 + P_2*W_2 + ...
+                        
+//                        rawWeight[ i ] = pow(weight[ i ], gamma) * prob[ i ];       /// weight before normalization
                         rawWeight[ i ] = fastPow(weight[ i ], gamma) * prob[ i ];   /// weight before normalization
                         sumOfWeights = sumOfWeights + rawWeight[ i ];   /// sum of weights. used for normalization
                     }
                     for (U8 i = n_models; i--;)
                     {
-                        weight[ i ] = rawWeight[ i ] / sumOfWeights;              /// final weights
+                        weight[ i ] = rawWeight[ i ] / sumOfWeights;                /// final weights
                         /// update context
                         tarContext[ i ] = (U64) (tarContext[ i ] * ALPH_SIZE + currSymInt) % maxPlaceValue[ i ];
                     }
                     
-                    sumOfEntropies = sumOfEntropies + log2(probability);        /// sum( log_2 P(s|c^t) )
-    
+                    sumOfEntropies = sumOfEntropies + log2(probability);            /// sum( log_2 P(s|c^t) )
                     /////////////////////////////////
                 }
             }   /// end while
@@ -271,7 +269,42 @@ void FCM::compressTarget (string tarFileName)
 
         case 'h':
         {
-//            while (getline(tarFileIn, tarLine))
+            while ( getline(tarFileIn, tarLine) )
+            {
+        
+                //////////////////////////////////
+                totalNOfSyms = totalNOfSyms + tarLine.size();   /// number of symbols in each line of dataset
+                //////////////////////////////////
+        
+                /// hash table includes the number of occurrences of symbols A, C, N, G, T
+                for (string::iterator lineIter = tarLine.begin(); lineIter != tarLine.end(); ++lineIter)
+                {
+                    U8 currSymInt = symCharToInt(*lineIter);   /// integer version of the current symbol
+            
+                    //////////////////////////////////
+//                    if (hTable.find(tarContext) == hTable.end()) { nSym = 0;   sumNSyms = 0; }
+//                    else
+//                    {
+                    nSym = hashTable[ tarContext ][ currSymInt ];       /// number of symbols
+                    /*
+                    nSym = X;
+                    X(nSym);
+                    */
+                    sumNSyms = 0; for (U64 u : hashTable[ tarContext ])   sumNSyms = sumNSyms + u;  /// sum(n_a)
+                    /*
+                    Y(sumNSyms);
+                    */
+//                    }
+//                    probability = (double) (alphaDen * nSym + 1) / (alphaDen * sumNSyms + ALPH_SIZE);
+                    probability = (nSym + alpha) / (sumNSyms + sumAlphas);  /// P(s|c^t)
+                    sumOfEntropies = sumOfEntropies + log2(probability);    /// sum( log_2 P(s|c^t) )
+                    /////////////////////////////////
+            
+                    tarContext = (U64) (tarContext * ALPH_SIZE + currSymInt) % maxPlaceValue;   /// update context
+                }
+            }   /// end while
+
+//            while ( getline(tarFileIn, tarLine) )
 //            {
 //
 //                //////////////////////////////////
@@ -305,6 +338,7 @@ void FCM::compressTarget (string tarFileName)
 //                    tarContext = (U64) (tarContext * ALPH_SIZE + currSymInt) % maxPlaceValue;   /// update context
 //                }
 //            }   /// end while
+            
         }   /// end case
         break;
 
