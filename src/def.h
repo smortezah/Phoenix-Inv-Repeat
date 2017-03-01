@@ -25,9 +25,8 @@ using std::array;
 #define TABLE_MAX_CTX     12          /// max context depth for building table
 #define DEFAULT_N_THREADS 2           /// default number of threads
 #define N_FREE_THREADS    1
+#define DEFAULT_GAMMA     0.95        /// default gamma (for mixture of FCMs)
 //#define DEFAULT_GAMMA     1        /// default gamma (for mixture of FCMs)
-//#define DEFAULT_GAMMA     0.95        /// default gamma (for mixture of FCMs)
-#define DEFAULT_GAMMA     1        /// default gamma (for mixture of FCMs)
 
 
 /***********************************************************

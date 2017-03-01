@@ -250,7 +250,8 @@ void FCM::compressTarget (string tarFileName)
                         
                         probability = probability + weight[ i ] * prob[ i ];    /// P_1*W_1 + P_2*W_2 + ...
     
-                        rawWeight[ i ] = pow(weight[ i ], gamma) * prob[ i ];   /// weight before normalization
+//                        rawWeight[ i ] = pow(weight[ i ], gamma) * prob[ i ];   /// weight before normalization
+                        rawWeight[ i ] = fastPow(weight[ i ], gamma) * prob[ i ];   /// weight before normalization
                         sumOfWeights = sumOfWeights + rawWeight[ i ];   /// sum of weights. used for normalization
                     }
                     for (U8 i = n_models; i--;)
@@ -387,6 +388,24 @@ inline U8 FCM::symCharToInt (char ch) const
 //        case 'N':   return (U8) 2;
 //        default:    return (U8) (ch % ALPH_SIZE);
 //    }
+}
+
+
+/***********************************************************
+    fast power
+************************************************************/
+inline double FCM::fastPow (double base, double exponent)
+{
+    union
+    {
+        double d;
+        int x[2];
+    } u = {base};
+    
+    u.x[ 1 ] = (int) (exponent * (u.x[ 1 ] - 1072632447) + 1072632447);
+    u.x[ 0 ] = 0;
+    
+    return u.d;
 }
 
 

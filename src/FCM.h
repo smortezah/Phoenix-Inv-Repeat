@@ -22,6 +22,7 @@ public:
     void   buildModel (bool, U8, U8);                   /// build reference(s) model
     void   compressTarget (string);                     /// compress target file
     inline U8 symCharToInt (char) const;                /// ACNGT -> 01234
+    inline double fastPow(double, double);              /// fast power
     
 //    void buildHashTable_str ();                                /// build hash table (string key)
     void   printHashTable () const;                     /// print hash table
