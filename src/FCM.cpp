@@ -221,7 +221,7 @@ void FCM::compressTarget (string tarFileName)
         case 't':
         {
             U64 rowIndex;
-            double sumWeights;
+            double sumOfWeights;
             
             while (getline(tarFileIn, tarLine))
             {
@@ -236,8 +236,8 @@ void FCM::compressTarget (string tarFileName)
                     U8 currSymInt = symCharToInt(*lineIter);   /// integer version of the current symbol
                     
                     ////////////////////////////////
-                    probability = 0;
-                    sumWeights = 0;
+                    probability  = 0;
+                    sumOfWeights = 0;
                     
                     for (U8 i = n_models; i--;)
                     {
@@ -251,11 +251,11 @@ void FCM::compressTarget (string tarFileName)
                         probability = probability + weight[ i ] * prob[ i ];    /// P_1*W_1 + P_2*W_2 + ...
     
                         rawWeight[ i ] = pow(weight[ i ], gamma) * prob[ i ];   /// weight before normalization
-                        sumWeights = sumWeights + rawWeight[ i ];       /// sum of weights. used for normalization
+                        sumOfWeights = sumOfWeights + rawWeight[ i ];   /// sum of weights. used for normalization
                     }
                     for (U8 i = n_models; i--;)
                     {
-                        weight[ i ] = rawWeight[ i ] / sumWeights;              /// final weights
+                        weight[ i ] = rawWeight[ i ] / sumOfWeights;              /// final weights
                         /// update context
                         tarContext[ i ] = (U64) (tarContext[ i ] * ALPH_SIZE + currSymInt) % maxPlaceValue[ i ];
                     }
