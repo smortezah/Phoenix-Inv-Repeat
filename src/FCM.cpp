@@ -223,43 +223,44 @@ void FCM::compressTarget (string tarFileName)
         {
             U64 rowIndex;
             double sumWeights = 0;
-
+            
             while (getline(tarFileIn, tarLine))
             {
-
+                
                 //////////////////////////////////
                 totalNOfSyms = totalNOfSyms + tarLine.size();   /// number of symbols in each line of dataset
                 //////////////////////////////////
-
+                
                 /// table includes the number of occurrences of symbols A, C, N, G, T
                 for (string::iterator lineIter = tarLine.begin(); lineIter != tarLine.end(); ++lineIter)
                 {
                     U8 currSymInt = symCharToInt(*lineIter);   /// integer version of the current symbol
-                    
+    
                     ////////////////////////////////
                     for (U8 i = n_models; i--;)
                     {
+                        probability = probability + prob[ i ] * weight[ i ];    /// P_1*W_1 + P_2*W_2 + ...
+                        
                         rowIndex = tarContext[ i ] * ALPH_SUM_SIZE;
-                        nSym[ i ] = tables[ i ][ rowIndex + currSymInt ];           /// number of symbols
+                        nSym[ i ] = tables[ i ][ rowIndex + currSymInt ];       /// number of symbols
 //                          nSym = X;
-                        sumNSym[ i ] = tables[ i ][ rowIndex + ALPH_SIZE ];         /// sum of number of symbols
+                        sumNSym[ i ] = tables[ i ][ rowIndex + ALPH_SIZE ];     /// sum of number of symbols
 //                          Y(sumNSyms);
                         prob[ i ] = (nSym[ i ] + alpha[ i ]) / (sumNSym[ i ] + sumAlphas[ i ]);  /// P(s|c^t)
-                        probability = probability + prob[ i ] * weight[ i ];   /// P_1*W_1 + P_2*W_2 + ...
                     }
                     for (U8 i = n_models; i--;)
                     {
-                        rawWeight[ i ] = pow(weight[ i ], gamma) * probability;  /// weight before normalization
+                        rawWeight[ i ] = pow(weight[ i ], gamma) * probability; /// weight before normalization
                         sumWeights = sumWeights + rawWeight[ i ];       /// sum of weights. used for normalization
                     }
                     for (U8 i = n_models; i--;)
                     {
-                        weight[ i ] = rawWeight[ i ] / sumWeights;
+                        weight[ i ] = rawWeight[ i ] / sumWeights;              /// final weights
                         /// update context
                         tarContext[ i ] = (U64) (tarContext[ i ] * ALPH_SIZE + currSymInt) % maxPlaceValue[ i ];
                     }
                     
-                    sumOfEntropies = sumOfEntropies + log2(probability);       /// sum( log_2 P(s|c^t) )
+                    sumOfEntropies = sumOfEntropies + log2(probability);        /// sum( log_2 P(s|c^t) )
                     /////////////////////////////////
                 }
             }   /// end while
@@ -312,18 +313,18 @@ void FCM::compressTarget (string tarFileName)
 
     ////////////////////////////////
     averageEntropy = (double) (-1) * sumOfEntropies / totalNOfSyms;     /// H_N = -1/N sum( log_2 P(s|c^t) )
-
+    
 ////    cout << sumOfEntropies << '\n';
 ////    cout << totalNOfSyms << '\n';
 ////    cout << ' ';
-
+    
     /// to print reference and target file names in the output
     U8 refsAdressesSize = (U8) getRefAddresses().size();
     size_t lastSlash_Ref[ refsAdressesSize ];
     for (U8 i = refsAdressesSize; i--;)
         lastSlash_Ref[ i ] = getRefAddresses()[ i ].find_last_of("/");
     size_t lastSlash_Tar = tarFileName.find_last_of("/");
-
+    
     mut.lock();///========================================================
     for (int i = refsAdressesSize - 1; i; --i)
         cout << getRefAddresses()[ i ].substr(lastSlash_Ref[ i ] + 1) << ',';
