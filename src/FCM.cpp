@@ -269,27 +269,6 @@ void FCM::compressTarget (string tarFileName)
             
         case 'h':
         {
-
-
-
-
-    htable_t::iterator b=hashTables[0].begin();
-    htable_t::iterator e=hashTables[0].end();
-//    htable_t::iterator b=hashTables[1].begin();
-//    htable_t::iterator e=hashTables[1].end();
-    for (htable_t::iterator it = b; it != e; ++it)
-    {
-        cout << it->first;
-        cout << "\t";
-        for (U64 i : it->second)
-            cout << i << "\t";
-        cout << '\n';
-    }
-            
-            
-            
-            
-            
             while ( getline(tarFileIn, tarLine) )
             {
                 
@@ -302,81 +281,38 @@ void FCM::compressTarget (string tarFileName)
                 {
                     U8 currSymInt = symCharToInt(*lineIter);   /// integer version of the current symbol
     
-//                    //////////////////////////////////
-//                    probability  = 0;
-//                    sumOfWeights = 0;
-//
-//                    for (U8 i = n_models; i--;)
-//                    {
-//                        nSym[ i ] = hashTables[i][ tarContext ][ currSymInt ];      /// number of symbols
-////                          nSym = X;
-////                          X(nSym);
-//                        /// sum of number of symbols
-//                        sumNSym[ i ] = 0; for (U64 u : hashTables[i][ tarContext ])   sumNSym[ i ] = sumNSym[ i ] + u;
-////                        Y(sumNSym);
-//
-//                        prob[ i ] = (nSym[ i ] + alpha[ i ]) / (sumNSym[ i ] + sumAlphas[ i ]);  /// P(s|c^t)
-//
-//                        probability = probability + weight[ i ] * prob[ i ];        /// P_1*W_1 + P_2*W_2 + ...
-//
-////                        rawWeight[ i ] = pow(weight[ i ], gamma) * prob[ i ];       /// weight before normalization
-//                        rawWeight[ i ] = fastPow(weight[ i ], gamma) * prob[ i ];   /// weight before normalization
-//                        sumOfWeights = sumOfWeights + rawWeight[ i ];   /// sum of weights. used for normalization
-//                    }
-//                    for (U8 i = n_models; i--;)
-//                    {
-//                        weight[ i ] = rawWeight[ i ] / sumOfWeights;                /// final weights
-//                        /// update context
-//                        tarContext[ i ] = (U64) (tarContext[ i ] * ALPH_SIZE + currSymInt) % maxPlaceValue[ i ];
-//                    }
-//
-//                    sumOfEntropies = sumOfEntropies + log2(probability);            /// sum( log_2 P(s|c^t) )
-//                    /////////////////////////////////
-                }
-            }   /// end while
-
-            
-            
-            
-            
-            
-            /*
-            while ( getline(tarFileIn, tarLine) )
-            {
-
-                //////////////////////////////////
-                totalNOfSyms = totalNOfSyms + tarLine.size();   /// number of symbols in each line of dataset
-                //////////////////////////////////
-
-                /// hash table includes the number of occurrences of symbols A, C, N, G, T
-                for (string::iterator lineIter = tarLine.begin(); lineIter != tarLine.end(); ++lineIter)
-                {
-                    U8 currSymInt = symCharToInt(*lineIter);   /// integer version of the current symbol
-
                     //////////////////////////////////
-//                    if (hTable.find(tarContext) == hTable.end()) { nSym = 0;   sumNSyms = 0; }
-//                    else
-//                    {
-                        nSym = hashTable[ tarContext ][ currSymInt ];       /// number of symbols
-//                        nSym = X;
-//                        X(nSym);
-                        sumNSyms = 0; for (U64 u : hashTable[ tarContext ])   sumNSyms = sumNSyms + u;  /// sum(n_a)
-//                        Y(sumNSyms);
-//                    }
-//                    probability = (double) (alphaDen * nSym + 1) / (alphaDen * sumNSyms + ALPH_SIZE);
-                    probability = (nSym + alpha) / (sumNSyms + sumAlphas);  /// P(s|c^t)
-                    sumOfEntropies = sumOfEntropies + log2(probability);    /// sum( log_2 P(s|c^t) )
-                    /////////////////////////////////
+                    probability  = 0;
+                    sumOfWeights = 0;
 
-                    tarContext = (U64) (tarContext * ALPH_SIZE + currSymInt) % maxPlaceValue;   /// update context
+                    for (U8 i = n_models; i--;)
+                    {
+                        nSym[ i ] = hashTables[ i ][ tarContext[i] ][ currSymInt ];      /// number of symbols
+//                          nSym = X;
+//                          X(nSym);
+                        /// sum of number of symbols
+                        sumNSym[ i ] = 0; for (U64 u : hashTables[i][ tarContext[i] ])   sumNSym[ i ] = sumNSym[ i ] + u;
+//                        Y(sumNSym);
+
+                        prob[ i ] = (nSym[ i ] + alpha[ i ]) / (sumNSym[ i ] + sumAlphas[ i ]);  /// P(s|c^t)
+
+                        probability = probability + weight[ i ] * prob[ i ];        /// P_1*W_1 + P_2*W_2 + ...
+
+//                        rawWeight[ i ] = pow(weight[ i ], gamma) * prob[ i ];       /// weight before normalization
+                        rawWeight[ i ] = fastPow(weight[ i ], gamma) * prob[ i ];   /// weight before normalization
+                        sumOfWeights = sumOfWeights + rawWeight[ i ];   /// sum of weights. used for normalization
+                    }
+                    for (U8 i = n_models; i--;)
+                    {
+                        weight[ i ] = rawWeight[ i ] / sumOfWeights;                /// final weights
+                        /// update context
+                        tarContext[ i ] = (U64) (tarContext[ i ] * ALPH_SIZE + currSymInt) % maxPlaceValue[ i ];
+                    }
+
+                    sumOfEntropies = sumOfEntropies + log2(probability);            /// sum( log_2 P(s|c^t) )
+                    /////////////////////////////////
                 }
             }   /// end while
-    */
-            
-            
-            
-            
-            
         }   /// end case
         break;
 
@@ -940,16 +876,14 @@ void FCM::printHashTable () const
 ////    }
 //
 //
-////    htable_t::iterator b=hashTables[0].begin();
-////    htable_t::iterator e=hashTables[0].end();
-//    htable_t::iterator b=hashTables[1].begin();
-//    htable_t::iterator e=hashTables[1].end();
+//    htable_t::iterator b=hashTables[0].begin();
+//    htable_t::iterator e=hashTables[0].end();
+////    htable_t::iterator b=hashTables[1].begin();
+////    htable_t::iterator e=hashTables[1].end();
 //    for (htable_t::iterator it = b; it != e; ++it)
 //    {
-//        cout << it->first;
-//        cout << "\t";
-//        for (U64 i : it->second)
-//            cout << i << "\t";
+//        cout << it->first << "\t";
+//        for (U64 i : it->second)    cout << i << "\t";
 //        cout << '\n';
 //    }
     
