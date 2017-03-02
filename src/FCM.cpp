@@ -169,7 +169,7 @@ void FCM::compressTarget (string tarFileName)
         a_i = alpha[ i ] = (double) 1 / alphaDenoms[ i ];
         sumAlphas[ i ] = ALPH_SIZE * a_i;
     }
-
+    
     ifstream tarFileIn( tarFileName, ios::in ); /// open target file
 
     mut.lock();///========================================================

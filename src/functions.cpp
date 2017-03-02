@@ -262,7 +262,8 @@ void Functions::commandLineParser (int argc, char **argv)
         compressionMode == 'h' ? mixModel.initHashTables() : mixModel.initTables();
         
         U8 arrThrSize = (n_models > n_threads) ? n_threads : n_models;/// size of array of threads
-        thread *arrThread = new thread[ arrThrSize ];                 /// array of threads
+//        thread *arrThread = new thread[ arrThrSize ];                 /// array of threads
+        thread arrThread[ arrThrSize ];                               /// array of threads
         
         for (U8 i = 0; i < n_models; i += arrThrSize)
         {
@@ -276,7 +277,7 @@ void Functions::commandLineParser (int argc, char **argv)
                 arrThread[ j ].join();
         }
         
-        delete[] arrThread;                                           /// free up the memory for array of threads
+//        delete[] arrThread;                                           /// free up the memory for array of threads
 
         /*
         /// compress target(s) using reference(s) model -- multithreaded
@@ -295,7 +296,7 @@ void Functions::commandLineParser (int argc, char **argv)
         U8 n_targets = (U8) mixModel.getTarAddresses().size();        /// up to 2^8=256 targets
 
         arrThrSize = (n_targets > n_threads) ? n_threads : n_targets;
-        arrThread  = new thread[ arrThrSize ];                        /// array of threads
+//        arrThread  = new thread[ arrThrSize ];                        /// array of threads
 
         for (U8 i = 0; i < n_targets; i += arrThrSize)
         {
@@ -306,7 +307,7 @@ void Functions::commandLineParser (int argc, char **argv)
                 arrThread[ j ].join();
         }
 
-        delete[] arrThread;                                           /// free up the memory for array of threads
+//        delete[] arrThread;                                           /// free up the memory for array of threads
     }
     
     /// Print any remaining command line arguments (not options).
