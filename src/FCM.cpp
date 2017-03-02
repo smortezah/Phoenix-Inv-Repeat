@@ -381,6 +381,8 @@ inline U8 FCM::symCharToInt (char ch) const
 
 /***********************************************************
     fast power
+    by Martin Ankerl
+    http://martin.ankerl.com/2012/01/25/optimized-approximative-pow-in-c-and-cpp/
 ************************************************************/
 inline double FCM::fastPow (double base, double exponent)
 {
