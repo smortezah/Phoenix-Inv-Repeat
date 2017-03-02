@@ -231,7 +231,7 @@ void Functions::commandLineParser (int argc, char **argv)
         vector< string > modelParams;                                 /// parameters for each model
         U8 n_models = (U8) vecModelsParams.size();                    /// number of models
         mixModel.setN_models(n_models);                               /// set number of models
-        
+    
         for (U8 n = n_models; n--;)
         {
             modelParams.clear();                                      /// reset vector modelParams
