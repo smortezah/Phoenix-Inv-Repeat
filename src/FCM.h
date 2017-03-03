@@ -21,6 +21,17 @@ public:
     
     void   buildModel (bool, U8, U8);                   /// build reference(s) model
     void   compressTarget (string);                     /// compress target file
+    
+    
+    
+    
+    void   decompressTarget (string);
+    inline U8 NumToDNASym (int) const;
+    
+    
+    
+    
+    
     inline U8 symCharToInt (char) const;                /// ACNGT -> 01234
     inline double fastPow(double, double);              /// fast power
     

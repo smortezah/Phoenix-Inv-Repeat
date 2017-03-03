@@ -18,6 +18,7 @@ for ir in $INV_REPEATS; do
 #      ./phoenix -n 4 -m 0,13,10\
       ./phoenix -n 4 -m 0,1,100:0,2,10\
       -r x -t y \
+#      -r x -t HSMT \
 #       -r dataset/HS21 -t dataset/PTY \
 #               > $IR_LBL$ir-$refDataset-$TAR_SPECIES.$INF_FILE_TYPE
      done
