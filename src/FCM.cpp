@@ -218,6 +218,13 @@ void FCM::compressTarget (string tarFileName)
         case 't':
         {
             U64 rowIndex;
+    
+    
+            
+            
+            double freqs[ALPH_SIZE];
+            double sumFreqs;
+            
             
             while ( getline(tarFileIn, tarLine) )
             {
@@ -230,6 +237,12 @@ void FCM::compressTarget (string tarFileName)
                 for (string::iterator lineIter = tarLine.begin(); lineIter != tarLine.end(); ++lineIter)
                 {
                     U8 currSymInt = symCharToInt(*lineIter);   /// integer version of the current symbol
+    
+    
+    
+                    fill_n(freqs, ALPH_SIZE, 0);
+                    sumFreqs = 0;
+                    
                     
                     ////////////////////////////////
                     probability  = 0;
@@ -239,6 +252,24 @@ void FCM::compressTarget (string tarFileName)
                     {
                         rowIndex = (tCtx = tarContext[ i ]) * ALPH_SUM_SIZE;
                         nSym = tables[ i ][ rowIndex + currSymInt ];                /// number of symbols
+                        
+                        
+                        
+                        for (int j = 0; j < ALPH_SIZE; ++j)
+                        {
+                            freqs[ j ] += weight[ i ] * tables[ i ][ rowIndex + j ];
+                        }
+                        
+                        for (double d : freqs)  sumFreqs += d;
+
+//                        for (int j = 0; j < ALPH_SIZE; ++j) cout << tables[ i ][ rowIndex + j ] << ' ';
+//                        cout << '\n';
+//                        for (int j = 0; j < ALPH_SIZE; ++j) cout << ceil(freqs[ j ]) << ' ';
+//                        cout << '\n';
+                        
+                        
+                        
+                        
 //                          nSym = X;
                         sumNSym = tables[ i ][ rowIndex + ALPH_SIZE ];              /// sum of number of symbols
 //                          Y(sumNSyms);
@@ -252,7 +283,7 @@ void FCM::compressTarget (string tarFileName)
                         
                         tarContext[ i ] = (U64) (tCtx * ALPH_SIZE + currSymInt) % maxPlaceValue[ i ];/// update context
                     }
-                    for (U8 i = n_models; i--;) weight[ i ] = rawWeight[ i ] / sumOfWeights;    /// final weights
+                    for (U8 i = n_models; i--;) weight[ i ] = rawWeight[ i ] / sumOfWeights;    /// update weights
                     
                     sumOfEntropies = sumOfEntropies + log2(probability);            /// sum( log_2 P(s|c^t) )
                     /////////////////////////////////
@@ -301,7 +332,7 @@ void FCM::compressTarget (string tarFileName)
                         
                         tarContext[ i ] = (U64) (tCtx * ALPH_SIZE + currSymInt) % maxPlaceValue[ i ];/// update context
                     }
-                    for (U8 i = n_models; i--;) weight[ i ] = rawWeight[ i ] / sumOfWeights;         /// final weights
+                    for (U8 i = n_models; i--;) weight[ i ] = rawWeight[ i ] / sumOfWeights;         /// update weights
                     
                     sumOfEntropies = sumOfEntropies + log2(probability);                /// sum( log_2 P(s|c^t) )
                     /////////////////////////////////
