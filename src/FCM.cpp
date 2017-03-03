@@ -23,8 +23,16 @@ using std::fixed;
 using std::setprecision;
 using std::fill_n;
 
-/// TODO TEST
+// TODO TEST
 //using std::chrono::high_resolution_clock;
+#include "bitio.h"
+#include "arith.h"
+#include "arith_aux.h"
+
+
+
+
+
 
 /***********************************************************
     constructor
@@ -171,7 +179,7 @@ void FCM::compressTarget (string tarFileName)
     }
     
     ifstream tarFileIn( tarFileName, ios::in ); /// open target file
-
+    
     mut.lock();///========================================================
     if (!tarFileIn)                             /// error occurred while opening file
     {
@@ -213,6 +221,31 @@ void FCM::compressTarget (string tarFileName)
               } while ( 0 )
     */
     
+    
+    
+    
+    FILE *Writer = fopen("MORI", "w");
+    
+    startoutputtingbits();
+    start_encode();
+    
+    WriteNBits(WATERMARK,                32, Writer);
+//    WriteNBits(nBases,                   46, Writer);
+    WriteNBits((int) (gamma * 65536), 32, Writer);
+    WriteNBits(P->col,                   32, Writer);
+    WriteNBits(P->nModels,               16, Writer);
+    for(n = 0 ; n < P->nModels ; ++n){
+        WriteNBits(cModels[n]->ctx,        16, Writer);
+        WriteNBits(cModels[n]->alphaDen,   16, Writer);
+        WriteNBits(cModels[n]->ir,          1, Writer);
+        WriteNBits(cModels[n]->edits,       8, Writer);
+        WriteNBits(cModels[n]->SUBS.eDen,  32, Writer);
+        WriteNBits(P->model[n].type,        1, Writer);
+    }
+    
+    
+    
+    
     switch ( compressionMode )
     {
         case 't':
@@ -222,8 +255,10 @@ void FCM::compressTarget (string tarFileName)
     
             
             
-            double freqs[ALPH_SIZE];
-            double sumFreqs;
+            double freqsDouble[ALPH_SIZE];
+            U64 freqs[ALPH_SIZE];
+            U64 sumFreqs;
+            
             
             
             while ( getline(tarFileIn, tarLine) )
@@ -240,8 +275,9 @@ void FCM::compressTarget (string tarFileName)
     
     
     
-                    fill_n(freqs, ALPH_SIZE, 0);
+                    fill_n(freqsDouble, ALPH_SIZE, 0);
                     sumFreqs = 0;
+                    
                     
                     
                     ////////////////////////////////
@@ -252,21 +288,27 @@ void FCM::compressTarget (string tarFileName)
                     {
                         rowIndex = (tCtx = tarContext[ i ]) * ALPH_SUM_SIZE;
                         nSym = tables[ i ][ rowIndex + currSymInt ];                /// number of symbols
+    
+    
                         
-                        
-                        
+    
                         for (int j = 0; j < ALPH_SIZE; ++j)
                         {
-                            freqs[ j ] += weight[ i ] * tables[ i ][ rowIndex + j ];
+                            freqsDouble[ j ] += weight[ i ] * tables[ i ][ rowIndex + j ];
+                            freqs[ j ] = (U64) (1 + freqsDouble[ j ] * 65535);
                         }
                         
-                        for (double d : freqs)  sumFreqs += d;
+                        for (U64 d : freqs)
+                            sumFreqs += d;
+    
+    
+                        AESym(sym, (int *)(MX->freqs), (int) MX->sum, Writer);
 
+                        
 //                        for (int j = 0; j < ALPH_SIZE; ++j) cout << tables[ i ][ rowIndex + j ] << ' ';
 //                        cout << '\n';
 //                        for (int j = 0; j < ALPH_SIZE; ++j) cout << ceil(freqs[ j ]) << ' ';
 //                        cout << '\n';
-                        
                         
                         
                         
@@ -343,6 +385,20 @@ void FCM::compressTarget (string tarFileName)
             
         default: break;
     }   /// end switch
+    
+    
+    
+    
+    
+    
+    finish_encode(Writer);
+    doneoutputtingbits(Writer);
+    fclose(Writer);
+    
+    
+    
+    
+    
     
     tarFileIn.close();  /// close file
     
