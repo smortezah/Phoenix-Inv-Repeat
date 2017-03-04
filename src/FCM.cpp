@@ -301,9 +301,6 @@ void FCM::compressTarget (string tarFileName)
                         for (U64 d : freqs)
                             sumFreqs += d;
     
-    
-//                        AESym(currSymInt, (int*) freqs, (int) sumFreqs, Writer);
-
                         
                         
                         
@@ -443,7 +440,7 @@ void FCM::compressTarget (string tarFileName)
 ////    cout.width(2);  cout << std::left << getInvertedRepeat() << "   ";
     mut.unlock();///======================================================
     ////////////////////////////////
-
+    
 }
 
 
@@ -527,8 +524,7 @@ void FCM::decompressTarget (string tarFileName)
     FILE *Writer = fopen("MORI.de", "w");
     
     int32_t idxOut = 0;
-    uint8_t *outBuffer;
-    outBuffer = (uint8_t  *) calloc(BUFFER_SIZE, sizeof(uint8_t));
+    uint8_t *outBuffer = (uint8_t  *) calloc(BUFFER_SIZE, sizeof(uint8_t));
     
     startinputtingbits();
     start_decode(Reader);
@@ -603,18 +599,11 @@ void FCM::decompressTarget (string tarFileName)
                         
                         for (U64 d : freqs)
                             sumFreqs += d;
-//
-//                        sym =ArithDecodeSymbol(ALPH_SIZE, (int *) freqs, (int) sumFreqs, Reader);
-//                        outBuffer[idxOut] = NumToDNASym(sym);
-//
-//                        if(++idxOut == BUFFER_SIZE){
-//                            fwrite(outBuffer, 1, idxOut, Writer);
-//                            idxOut = 0;
-//                        }
-
                         
                         
-
+                        
+                        
+                        
 //                          nSym = X;
                         sumNSym = tables[ i ][ rowIndex + ALPH_SIZE ];              /// sum of number of symbols
 //                          Y(sumNSyms);
@@ -643,10 +632,11 @@ void FCM::decompressTarget (string tarFileName)
     
     
     
-                    sym =ArithDecodeSymbol(ALPH_SIZE, (int *) freqs, (int) sumFreqs, Reader);
-                    outBuffer[idxOut] = NumToDNASym(sym);
+                    sym = ArithDecodeSymbol(ALPH_SIZE, (int *) freqs, (int) sumFreqs, Reader);
+                    outBuffer[ idxOut ] = NumToDNASym(sym);
     
-                    if(++idxOut == BUFFER_SIZE){
+                    if (++idxOut == BUFFER_SIZE)
+                    {
                         fwrite(outBuffer, 1, idxOut, Writer);
                         idxOut = 0;
                     }
@@ -720,7 +710,7 @@ void FCM::decompressTarget (string tarFileName)
     
     
     
-    if(idxOut != 0)
+    if (idxOut != 0)
         fwrite(outBuffer, 1, idxOut, Writer);
     
     finish_decode();
