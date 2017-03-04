@@ -10,7 +10,7 @@ make
 
 <h2>USAGE</h2>
 <pre>
-./phoenix [OPTION]... -m [MODEL] -r [REFERENCE(S)] -t [TARGET(S)]
+./phoenix [OPTION]... -m [MODEL(S)] -r [REFERENCE(S)] -t [TARGET(S)]
 </pre>
 To see the options, type:
 
@@ -21,17 +21,17 @@ To see the options, type:
 This will print the following:
 <pre>
 Synopsis:
-    ./phoenix [OPTION]... -m [MODEL] -r [REFERENCE(S)] -t [TARGET(S)]
+    ./phoenix [OPTION]... -m [MODEL(S)] -r [REFERENCE(S)] -t [TARGET(S)]
     
-         EXAMPLE: ./phoenix -n 4 -m 0,11,100 -r HS21,HSY -t PT19,PT21,PT22,PTY
+         EXAMPLE: ./phoenix -n 4 -d -m 0,11,100:1,9,10 -r HS21,HSY -t PT19,PT21,PT22,PTY
 
 Mandatory arguments:
-    -m [&lt;i&gt;,&lt;k&gt;,&lt;a&gt;],   --model [&lt;i&gt;,&lt;k&gt;,&lt;a&gt;]
+    -m [&lt;i_1&gt;,&lt;k_1&gt;,&lt;a_1&gt;:&lt;i_2&gt;,&lt;k_2&gt;,&lt;a_2&gt;:...],   --model [&lt;i_1&gt;,&lt;k_1&gt;,&lt;a_1&gt;:...]
          context model(s).
          &lt;i&gt;:  inverted repeat (0=don't use, 1=use).
          &lt;k&gt;:  context-order size,
          &lt;a&gt;:  1/alpha,
-         EXAMPLE: -m 9,100,1
+         EXAMPLE: -m 0,11,100:1,9,10
 
     -r [REFERENCE(S)],   --reference [REFERENCE(S)]
          reference file(s) address(es)
@@ -45,15 +45,23 @@ Options:
     -h,  --help
          usage guide
 
+    -d,  --decompress
+         decompression
+
+    -n [NUMBER (integer)],  --n_threads [NUMBER (integer)]
+         number of threads (default: 2).
+         requires an integer number (n >= 1)
+
+    -g [NUMBER (float)],  --gamma [NUMBER (float)]
+         gamma (default: 0.95).
+         requires a float number (0 <= g < 1)
+
     -V,  --version
          version number
 
     -v,  --verbose
          verbose mode (more information)
 
-    -n [NUMBER],  --n_threads [NUMBER]
-         number of threads (default: 2).
-         requires an integer number (n >= 1)
 </pre>
 
 <h2>CITATION</h2>
