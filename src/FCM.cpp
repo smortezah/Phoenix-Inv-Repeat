@@ -403,9 +403,9 @@ void FCM::compressTarget (string tarFileName)
     
     
     
-    finish_encode(Writer);
-    doneoutputtingbits(Writer);
-    fclose(Writer);
+//    finish_encode(Writer);
+//    doneoutputtingbits(Writer);
+//    fclose(Writer);
     
     
     
@@ -524,22 +524,27 @@ void FCM::decompressTarget (string tarFileName)
     FILE *Writer = fopen("MORI.de", "w");
     
     int32_t idxOut = 0;
-    uint8_t *outBuffer = (uint8_t  *) calloc(BUFFER_SIZE, sizeof(uint8_t));
+    uint8_t *outBuffer = (uint8_t *) calloc(BUFFER_SIZE, sizeof(uint8_t));
     
     startinputtingbits();
     start_decode(Reader);
-
-//    WriteNBits(WATERMARK,                32, Writer);
-////    WriteNBits(nBases,                   46, Writer);
-//    WriteNBits((int) (gamma * 65536), 32, Writer);
-////    WriteNBits(P->col,                   32, Writer);
-//    WriteNBits(n_models,               16, Writer);
-//    for(int n = 0 ; n < n_models ; ++n){
-//        WriteNBits(contextDepths[n],        16, Writer);
-//        WriteNBits(alphaDenoms[n],   16, Writer);
-//        WriteNBits(invertedRepeats[n],          1, Writer);
-//        WriteNBits(compressionMode,        1, Writer);
+    
+    
+//    P[id].watermark        = ReadNBits(32, Reader);
+//    garbage                = ReadNBits(46, Reader);
+//    P[id].size             = ReadNBits(46, Reader);
+//    P[id].gamma            = ReadNBits(32, Reader) / 65536.0;
+//    P[id].col              = ReadNBits(32, Reader);
+//    P[id].nModels          = ReadNBits(16, Reader);
+//    for(k = 0 ; k < P[id].nModels ; ++k){
+//        P[id].model[k].ctx   = ReadNBits(16, Reader);
+//        P[id].model[k].den   = ReadNBits(16, Reader);
+//        P[id].model[k].ir    = ReadNBits( 1, Reader);
+//        P[id].model[k].edits = ReadNBits( 8, Reader);
+//        P[id].model[k].eDen  = ReadNBits(32, Reader);
+//        P[id].model[k].type  = ReadNBits( 1, Reader);
 //    }
+    
     
     
     
@@ -737,21 +742,18 @@ void FCM::decompressTarget (string tarFileName)
 
 
 
-inline U8 FCM::NumToDNASym(int intSym) const
+inline char FCM::NumToDNASym(int intSym) const
 {
     switch(intSym)
     {
         case 0: return 'A';
         case 1: return 'C';
-        case 2: return 'N';
-        case 3: return 'G';
         case 4: return 'T';
+        case 3: return 'G';
+        case 2: return 'N';
         default: fprintf(stderr, "Error: unknown numerical symbols\n"); exit(1);
     }
 }
-
-
-
 
 
 
@@ -767,9 +769,10 @@ inline U8 FCM::symCharToInt (char charSym) const
     {
         case 'A':   return 0;
         case 'C':   return 1;
-        case 'G':   return 3;
         case 'T':   return 4;
-        default:    return 2;  /// 'N' symbol
+        case 'G':   return 3;
+        case 'N':   return 2;
+        default:    fprintf(stderr, "Error: unknown symbols\n"); exit(1);
     }
     
 //    switch (ch)

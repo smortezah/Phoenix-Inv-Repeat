@@ -26,7 +26,7 @@ public:
     
     
     void   decompressTarget (string);
-    inline U8 NumToDNASym (int) const;
+    inline char NumToDNASym (int) const;
     
     
     

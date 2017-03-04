@@ -316,14 +316,14 @@ void Functions::commandLineParser (int argc, char **argv)
         
         
     
-//        for (U8 i = 0; i < n_targets; i += arrThrSize)
-//        {
-//            for (U8 j = 0; j < arrThrSize && i + j < n_targets; ++j)
-//                arrThread[ j ] = thread( &FCM::decompressTarget, &mixModel, mixModel.getTarAddresses()[ i + j ] );
-//
-//            for (U8 j = 0; j < arrThrSize && i + j < n_targets; ++j)
-//                arrThread[ j ].join();
-//        }
+        for (U8 i = 0; i < n_targets; i += arrThrSize)
+        {
+            for (U8 j = 0; j < arrThrSize && i + j < n_targets; ++j)
+                arrThread[ j ] = thread( &FCM::decompressTarget, &mixModel, mixModel.getTarAddresses()[ i + j ] );
+
+            for (U8 j = 0; j < arrThrSize && i + j < n_targets; ++j)
+                arrThread[ j ].join();
+        }
 
         
         
