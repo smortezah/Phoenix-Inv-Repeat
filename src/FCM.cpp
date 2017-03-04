@@ -257,8 +257,6 @@ void FCM::compressTarget (string tarFileName)
             
             
             double freqsDouble[ALPH_SIZE];
-//            U64 freqs[ALPH_SIZE];
-//            U64 *freqs = new U64[ALPH_SIZE];
             int freqs[ALPH_SIZE];
             U64 sumFreqs;
             
@@ -284,7 +282,7 @@ void FCM::compressTarget (string tarFileName)
                     
                     
                     ////////////////////////////////
-                    probability  = 0;
+//                    probability  = 0;
                     sumOfWeights = 0;
                     
                     for (U8 i = n_models; i--;)
@@ -302,10 +300,8 @@ void FCM::compressTarget (string tarFileName)
                         {
                             freqsDouble[ j ] += weight[ i ] * tables[ i ][ rowIndex + j ];
                             freqs[ j ] = (int) (1 + (unsigned) (freqsDouble[ j ] * 65535));
-//                            freqs[ j ] = (U64) (1 + (unsigned) (freqsDouble[ j ] * 65535));
                         }
     
-//                        for (U64 d : freqs)
                         for (int f : freqs)
                             sumFreqs += f;
     
@@ -317,9 +313,9 @@ void FCM::compressTarget (string tarFileName)
 //                          Y(sumNSyms);
                         prob_i = (nSym + alpha[ i ]) / (sumNSym + sumAlphas[ i ]);  /// P(s|c^t)
                         
-                        probability = probability + weight[ i ] * prob_i;           /// P_1*W_1 + P_2*W_2 + ...
-                        
-//                        rW_i = rawWeight[ i ] = pow(weight[ i ], gamma) * prob_i; /// weight before normalization
+//                        probability = probability + weight[ i ] * prob_i;           /// P_1*W_1 + P_2*W_2 + ...
+//
+////                        rW_i = rawWeight[ i ] = pow(weight[ i ], gamma) * prob_i; /// weight before normalization
                         rW_i = rawWeight[ i ] = fastPow(weight[ i ], gamma) * prob_i; /// weight before normalization
                         sumOfWeights = sumOfWeights + rW_i;             /// sum of weights. used for normalization
                         
@@ -327,26 +323,11 @@ void FCM::compressTarget (string tarFileName)
                     }
                     for (U8 i = n_models; i--;) weight[ i ] = rawWeight[ i ] / sumOfWeights;    /// update weights
                     
-                    sumOfEntropies = sumOfEntropies + log2(probability);            /// sum( log_2 P(s|c^t) )
+//                    sumOfEntropies = sumOfEntropies + log2(probability);            /// sum( log_2 P(s|c^t) )
                     /////////////////////////////////
     
     
     
-    
-    
-    
-    
-////                    cout << (int) currSymInt;
-////                    for (U64 i:freqs)
-////                        cout << (int) i << ' ';
-//                    for (int i = 0; i < 5; ++i)
-//                    {
-//                        printf("%d\t", freqs[ i ]);
-//                    }
-//                    cout << '\n';
-////                    cout << (int) sumFreqs;
-                    
-                    
                     AESym(currSymInt, freqs, (int) sumFreqs, Writer);
     
     
@@ -430,34 +411,35 @@ void FCM::compressTarget (string tarFileName)
     
     
     tarFileIn.close();  /// close file
-    
-    ////////////////////////////////
-    averageEntropy = (double) (-1) * sumOfEntropies / totalNOfSyms;     /// H_N = -1/N sum( log_2 P(s|c^t) )
-    
+//
+//    ////////////////////////////////
+//    averageEntropy = (double) (-1) * sumOfEntropies / totalNOfSyms;     /// H_N = -1/N sum( log_2 P(s|c^t) )
+//
 ////    cout << sumOfEntropies << '\n';
 ////    cout << totalNOfSyms << '\n';
 ////    cout << ' ';
-    
+
     /// print reference and target file names
     U8 refsAdressesSize = (U8) getRefAddresses().size();
     size_t lastSlash_Ref[ refsAdressesSize ];
     for (U8 i = refsAdressesSize; i--;)     lastSlash_Ref[ i ] = getRefAddresses()[ i ].find_last_of("/");
     size_t lastSlash_Tar = tarFileName.find_last_of("/");
-    
+
     mut.lock();///========================================================
     for (int i = refsAdressesSize - 1; i; --i)  cout << getRefAddresses()[ i ].substr(lastSlash_Ref[ i ] + 1) << ',';
     cout << getRefAddresses()[ 0 ].substr(lastSlash_Ref[ 0 ] + 1) << '\t'
          << tarFileName.substr(lastSlash_Tar + 1) << '\t'
-//         << invertedRepeat << '\t'
-//         << std::fixed << setprecision(4) << alpha << '\t'
-//         << (int) contextDepth << '\t'
-         << std::fixed << setprecision(5) << averageEntropy << '\t'
-         << std::fixed << setprecision(5) << averageEntropy / LOG2_ALPH_SIZE << '\n';
-    
+////         << invertedRepeat << '\t'
+////         << std::fixed << setprecision(4) << alpha << '\t'
+////         << (int) contextDepth << '\t'
+//         << std::fixed << setprecision(5) << averageEntropy << '\t'
+//         << std::fixed << setprecision(5) << averageEntropy / LOG2_ALPH_SIZE << '\n'
+            ;
+
 ////    cout.width(2);  cout << std::left << getInvertedRepeat() << "   ";
     mut.unlock();///======================================================
-    ////////////////////////////////
-    
+//    ////////////////////////////////
+//
 }
 
 
@@ -567,8 +549,6 @@ void FCM::decompressTarget (string tarFileName)
             
             
             double freqsDouble[ALPH_SIZE];
-//            U64 freqs[ALPH_SIZE];
-//            U64 *freqs = new U64[ALPH_SIZE];
             int freqs[ALPH_SIZE];
             U64 sumFreqs;
             int sym;
@@ -786,9 +766,9 @@ inline U8 FCM::symCharToInt (char charSym) const
         case 'T':   return 4;
         case 'G':   return 3;
         case 'N':   return 2;
-        default:    fprintf(stderr, "Error: unknown symbols\n"); exit(1);
+        default:    cout << "ERROR: unknown symbol '" << charSym << "'\n"; exit(1);
     }
-    
+    if(charSym!='A' && charSym!='C' && charSym!='G' && charSym!='T' && charSym!='N') cout<<charSym;
 //    switch (ch)
 //    {
 //        case 'A':   return (U8) 0;
