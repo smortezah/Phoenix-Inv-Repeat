@@ -25,11 +25,12 @@ using std::fill_n;
 
 // TODO TEST
 //using std::chrono::high_resolution_clock;
+
 #include "bitio.h"
-#include "arith.h"
-#include "arith_aux.h"
 #include "bitio.c"
+#include "arith.h"
 #include "arith.c"
+#include "arith_aux.h"
 #include "arith_aux.c"
 
 
@@ -226,7 +227,7 @@ void FCM::compressTarget (string tarFileName)
     
     
     
-    FILE *Writer = fopen("MORI.co", "w");
+    FILE *Writer = fopen("COMP.co", "w");
     
     startoutputtingbits();
     start_encode();
@@ -256,7 +257,9 @@ void FCM::compressTarget (string tarFileName)
             
             
             double freqsDouble[ALPH_SIZE];
-            U64 freqs[ALPH_SIZE];
+//            U64 freqs[ALPH_SIZE];
+//            U64 *freqs = new U64[ALPH_SIZE];
+            int freqs[ALPH_SIZE];
             U64 sumFreqs;
             
             
@@ -298,11 +301,13 @@ void FCM::compressTarget (string tarFileName)
                         for (int j = 0; j < ALPH_SIZE; ++j)
                         {
                             freqsDouble[ j ] += weight[ i ] * tables[ i ][ rowIndex + j ];
-                            freqs[ j ] = (U64) (1 + (unsigned) (freqsDouble[ j ] * 65535));
+                            freqs[ j ] = (int) (1 + (unsigned) (freqsDouble[ j ] * 65535));
+//                            freqs[ j ] = (U64) (1 + (unsigned) (freqsDouble[ j ] * 65535));
                         }
-                        
-                        for (U64 d : freqs)
-                            sumFreqs += d;
+    
+//                        for (U64 d : freqs)
+                        for (int f : freqs)
+                            sumFreqs += f;
     
                         
                         
@@ -331,20 +336,18 @@ void FCM::compressTarget (string tarFileName)
     
     
     
-//                    cout << (int) currSymInt;
-                    for (U64 i:freqs)
-                        cout << i << ' ';
-                    cout << '\n';
-                    cout << sumFreqs;
-                    
-                    AESym(2, (int *) freqs, (int) sumFreqs, Writer);
-                    
-                    
-                    
-                    
+////                    cout << (int) currSymInt;
+////                    for (U64 i:freqs)
+////                        cout << (int) i << ' ';
+//                    for (int i = 0; i < 5; ++i)
+//                    {
+//                        printf("%d\t", freqs[ i ]);
+//                    }
+//                    cout << '\n';
+////                    cout << (int) sumFreqs;
                     
                     
-//                    AESym(currSymInt, (int *) freqs, (int) sumFreqs, Writer);
+                    AESym(currSymInt, freqs, (int) sumFreqs, Writer);
     
     
     
@@ -525,8 +528,8 @@ void FCM::decompressTarget (string tarFileName)
     
     
     
-    FILE *Reader = fopen("MORI.co", "r");
-    FILE *Writer = fopen("MORI.de", "w");
+    FILE *Reader = fopen("COMP.co", "r");
+    FILE *Writer = fopen("DECOMP.de", "w");
     
     int32_t idxOut = 0;
     uint8_t *outBuffer = (uint8_t *) calloc(BUFFER_SIZE, sizeof(uint8_t));
@@ -564,7 +567,9 @@ void FCM::decompressTarget (string tarFileName)
             
             
             double freqsDouble[ALPH_SIZE];
-            U64 freqs[ALPH_SIZE];
+//            U64 freqs[ALPH_SIZE];
+//            U64 *freqs = new U64[ALPH_SIZE];
+            int freqs[ALPH_SIZE];
             U64 sumFreqs;
             int sym;
             
@@ -609,11 +614,13 @@ void FCM::decompressTarget (string tarFileName)
                         for (int j = 0; j < ALPH_SIZE; ++j)
                         {
                             freqsDouble[ j ] += weight[ i ] * tables[ i ][ rowIndex + j ];
-                            freqs[ j ] = (U64) (1 + (unsigned) (freqsDouble[ j ] * 65535));
+                            freqs[ j ] = (int) (1 + (unsigned) (freqsDouble[ j ] * 65535));
+//                            freqs[ j ] = (U64) (1 + (unsigned) (freqsDouble[ j ] * 65535));
                         }
-                        
-                        for (U64 d : freqs)
-                            sumFreqs += d;
+    
+//                        for (U64 d : freqs)
+                        for (int f : freqs)
+                            sumFreqs += f;
                         
                         
                         
@@ -647,7 +654,7 @@ void FCM::decompressTarget (string tarFileName)
     
     
     
-                    sym = ArithDecodeSymbol(ALPH_SIZE, (int *) freqs, (int) sumFreqs, Reader);
+                    sym = ArithDecodeSymbol(ALPH_SIZE, freqs, (int) sumFreqs, Reader);
                     outBuffer[ idxOut ] = NumToDNASym(sym);
     
                     if (++idxOut == BUFFER_SIZE)
@@ -749,7 +756,7 @@ void FCM::decompressTarget (string tarFileName)
 
 
 
-inline char FCM::NumToDNASym(int intSym) const
+inline U8 FCM::NumToDNASym(int intSym) const
 {
     switch(intSym)
     {
@@ -907,10 +914,10 @@ inline double FCM::fastPow (double base, double exponent)
 ////                                 (ch == 'C') ? (U8) 1 :
 ////                                 (ch == 'G') ? (U8) 3 :
 ////                                 (ch == 'T') ? (U8) 4 : (U8) 2;
-////            U8 currSymInt = ch % ALPHABET_SIZE;
+////            U8 currSymInt = ch % ALPH_SIZE;
 ////            U8 currSymInt = (ch == 'C') ? (U8) 3 :
 ////                                 (ch == 'N') ? (U8) 2 :
-////                                 (U8) (ch % ALPHABET_SIZE);
+////                                 (U8) (ch % ALPH_SIZE);
 //
 //            /// update table
 //            nSym = table[ context * ALPH_SUM_SIZE + currSymInt ]++;
@@ -923,15 +930,15 @@ inline double FCM::fastPow (double base, double exponent)
 //
 ////                /// to save quotient and reminder of a division
 ////                div_t iRCtxCurrSymDiv;
-////                iRCtxCurrSymDiv = div(iRCtxCurrSym, ALPHABET_SIZE);
+////                iRCtxCurrSymDiv = div(iRCtxCurrSym, ALPH_SIZE);
 //
 //                /// update inverted repeat context (integer)
 ////                invRepContext = (U32) iRCtxCurrSymDiv.quot;
 //                invRepContext = (U32) iRCtxCurrSym / ALPH_SIZE;
 //
 //                /// update table considering inverted repeats
-////                ++table[ invRepContext*ALPHABET_SIZE + iRCtxCurrSymDiv.rem ];
-////                ++table[ invRepContext * ALPHABET_SIZE + iRCtxCurrSym % ALPHABET_SIZE ];
+////                ++table[ invRepContext*ALPH_SIZE + iRCtxCurrSymDiv.rem ];
+////                ++table[ invRepContext * ALPH_SIZE + iRCtxCurrSym % ALPH_SIZE ];
 //                ++table[ invRepContext * ALPH_SUM_SIZE + iRCtxCurrSym % ALPH_SIZE ];
 //                ++table[ invRepContext * ALPH_SUM_SIZE + ALPH_SIZE ];
 //            }
@@ -940,12 +947,12 @@ inline double FCM::fastPow (double base, double exponent)
 //            /// sum(n_a)
 ////            U64 *pointerToTable = table;   /// pointer to the beginning of table
 ////            sumNSyms = 0;
-////            for (U8 i = 0; i < ALPHABET_SIZE; ++i)
-////                sumNSyms += *(pointerToTable + context*ALPHABET_SIZE + i);
+////            for (U8 i = 0; i < ALPH_SIZE; ++i)
+////                sumNSyms += *(pointerToTable + context*ALPH_SIZE + i);
 //            sumNSyms = ++table[ context * ALPH_SUM_SIZE + ALPH_SIZE ];
 //
 //            /// P(s|c^t)
-////            probability = (nSym + (double) 1/alphaDen) / (sumNSyms + (double) ALPHABET_SIZE/alphaDen);
+////            probability = (nSym + (double) 1/alphaDen) / (sumNSyms + (double) ALPH_SIZE/alphaDen);
 //            probability = (double) (alphaDen * nSym + 1) / (alphaDen * sumNSyms + ALPH_SIZE);
 //
 //            /// sum( log_2 P(s|c^t) )
@@ -1058,7 +1065,7 @@ inline double FCM::fastPow (double base, double exponent)
 ////            U8 currSymInt = ch % 5;
 ////            U8 currSymInt = (ch == 'C') ? (U8) 3 :
 ////                                 (ch == 'N') ? (U8) 2 :
-////                                 (U8) (ch % ALPHABET_SIZE);
+////                                 (U8) (ch % ALPH_SIZE);
 //
 //            /// update hash table
 //            nSym = hTable[ context ][ currSymInt ]++;
@@ -1071,7 +1078,7 @@ inline double FCM::fastPow (double base, double exponent)
 //
 //                /// to save quotient and reminder of a division
 ////                div_t iRCtxCurrSymDiv;
-////                iRCtxCurrSymDiv = div(iRCtxCurrSym, ALPHABET_SIZE);
+////                iRCtxCurrSymDiv = div(iRCtxCurrSym, ALPH_SIZE);
 //
 //                /// update inverted repeat context (integer)
 ////                invRepContext =  iRCtxCurrSymDiv.quot;
@@ -1089,7 +1096,7 @@ inline double FCM::fastPow (double base, double exponent)
 //            for (U64 u : hTable[ context ])    sumNSyms += u;
 //
 //            /// P(s|c^t)
-////            probability = (nSym + (double) 1/alphaDen) / (sumNSyms + (double) ALPHABET_SIZE/alphaDen);
+////            probability = (nSym + (double) 1/alphaDen) / (sumNSyms + (double) ALPH_SIZE/alphaDen);
 //            probability = (double) (alphaDen * nSym + 1) / (alphaDen * sumNSyms + ALPH_SIZE);
 //
 //            /// sum( log_2 P(s|c^t) )

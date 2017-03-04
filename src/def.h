@@ -27,6 +27,7 @@ using std::array;
 #define N_FREE_THREADS    1
 #define DEFAULT_GAMMA     0.95        /// default gamma (for mixture of FCMs)
 
+#define BUFFER_SIZE       262144      ///
 
 /***********************************************************
     typedef

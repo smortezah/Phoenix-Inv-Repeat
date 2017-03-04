@@ -16,6 +16,7 @@ and every copy made of these files.
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <stdint.h>
 #include "arith.h"
 #include "bitio.h"
 #include "arith_aux.h"
