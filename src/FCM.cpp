@@ -272,9 +272,10 @@ void FCM::compressTarget (string tarFileName)
                 for (string::iterator lineIter = tarLine.begin(); lineIter != tarLine.end(); ++lineIter)
                 {
                     U8 currSymInt = symCharToInt(*lineIter);   /// integer version of the current symbol
-    
-    
-    
+                    
+                    
+                    
+                    
                     fill_n(freqsDouble, ALPH_SIZE, 0);
                     
                     
@@ -330,13 +331,20 @@ void FCM::compressTarget (string tarFileName)
     
     
     
-                    cout << (int) currSymInt;
+//                    cout << (int) currSymInt;
                     for (U64 i:freqs)
                         cout << i << ' ';
                     cout << '\n';
                     cout << sumFreqs;
-                    AESym((int)currSymInt, (int *) freqs, (int) sumFreqs, Writer);
-    
+                    
+                    AESym(2, (int *) freqs, (int) sumFreqs, Writer);
+                    
+                    
+                    
+                    
+                    
+                    
+//                    AESym(currSymInt, (int *) freqs, (int) sumFreqs, Writer);
     
     
     
@@ -732,9 +740,6 @@ void FCM::decompressTarget (string tarFileName)
     tarFileIn.close();  /// close file
     
 }
-
-
-
 
 
 
