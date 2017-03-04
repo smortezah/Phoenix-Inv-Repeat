@@ -276,7 +276,6 @@ void FCM::compressTarget (string tarFileName)
     
     
                     fill_n(freqsDouble, ALPH_SIZE, 0);
-                    sumFreqs = 0;
                     
                     
                     
@@ -286,9 +285,12 @@ void FCM::compressTarget (string tarFileName)
                     
                     for (U8 i = n_models; i--;)
                     {
+                        sumFreqs = 0;
+                        
+                        
+                        
                         rowIndex = (tCtx = tarContext[ i ]) * ALPH_SUM_SIZE;
                         nSym = tables[ i ][ rowIndex + currSymInt ];                /// number of symbols
-    
     
                         
     
@@ -329,7 +331,11 @@ void FCM::compressTarget (string tarFileName)
     
     
     
-    
+////                    cout << (int) currSymInt;
+//                    for (U64 i:freqs)
+//                        cout << i << ' ';
+//                    cout<<'\n';
+//                    cout<<sumFreqs;
                     AESym(currSymInt, (int*) freqs, (int) sumFreqs, Writer);
     
     
@@ -403,9 +409,9 @@ void FCM::compressTarget (string tarFileName)
     
     
     
-//    finish_encode(Writer);
-//    doneoutputtingbits(Writer);
-//    fclose(Writer);
+    finish_encode(Writer);
+    doneoutputtingbits(Writer);
+    fclose(Writer);
     
     
     
@@ -579,7 +585,6 @@ void FCM::decompressTarget (string tarFileName)
                     
                     
                     fill_n(freqsDouble, ALPH_SIZE, 0);
-                    sumFreqs = 0;
                     
                     
                     
@@ -589,6 +594,12 @@ void FCM::decompressTarget (string tarFileName)
                     
                     for (U8 i = n_models; i--;)
                     {
+                        sumFreqs = 0;
+                        
+                        
+                        
+                        
+                        
                         rowIndex = (tCtx = tarContext[ i ]) * ALPH_SUM_SIZE;
                         nSym = tables[ i ][ rowIndex + currSymInt ];                /// number of symbols
                         
