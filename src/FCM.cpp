@@ -330,13 +330,12 @@ void FCM::compressTarget (string tarFileName)
     
     
     
-    
-////                    cout << (int) currSymInt;
-//                    for (U64 i:freqs)
-//                        cout << i << ' ';
-//                    cout<<'\n';
-//                    cout<<sumFreqs;
-                    AESym(currSymInt, (int*) freqs, (int) sumFreqs, Writer);
+                    cout << (int) currSymInt;
+                    for (U64 i:freqs)
+                        cout << i << ' ';
+                    cout << '\n';
+                    cout << sumFreqs;
+                    AESym((int)currSymInt, (int *) freqs, (int) sumFreqs, Writer);
     
     
     
@@ -418,6 +417,7 @@ void FCM::compressTarget (string tarFileName)
     
     
     
+    
     tarFileIn.close();  /// close file
     
     ////////////////////////////////
@@ -455,16 +455,7 @@ void FCM::compressTarget (string tarFileName)
 
 
 
-
-
-
-
-
-
-
-
-
-
+////***********************************************************
 
 
 
@@ -757,12 +748,12 @@ inline char FCM::NumToDNASym(int intSym) const
 {
     switch(intSym)
     {
-        case 0: return 'A';
-        case 1: return 'C';
-        case 4: return 'T';
-        case 3: return 'G';
-        case 2: return 'N';
-        default: fprintf(stderr, "Error: unknown numerical symbols\n"); exit(1);
+        case 0:     return 'A';
+        case 1:     return 'C';
+        case 4:     return 'T';
+        case 3:     return 'G';
+        case 2:     return 'N';
+        default:    fprintf(stderr, "Error: unknown numerical symbols\n"); exit(1);
     }
 }
 
@@ -772,7 +763,7 @@ inline char FCM::NumToDNASym(int intSym) const
 
 
 /***********************************************************
-    convert char (base) to integer (U8): ACNGT -> 01234
+    convert char base to integer (U8): ACNGT -> 01234
 ************************************************************/
 inline U8 FCM::symCharToInt (char charSym) const
 {
