@@ -14,6 +14,9 @@ public:
     Functions ();                               /// constructor
     
     void commandLineParser (int, char**);       /// parse command line
+    
+    //todo checkEqualFiles(f1, f2);
+    
 //    static bool isFileCorrect (ifstream&);      /// check if file opened correctly
 };
 
