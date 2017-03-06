@@ -33,12 +33,17 @@ int main (int argc, char *argv[])
     
     /// objects on memory stack
     Functions funcObj;
-    FCM       mixModel;
+    
+//    FCM       mixModel;
     
     /// parse the command line
     funcObj.commandLineParser(argc, argv);
     
-    cout << mixModel.getN_models();
+    
+////    cout << mixModel.getN_models();
+//    cout<<mixModel.getGamma();
+    
+    
     
 //    const U8 n_models = mixModel.getN_models();
 //    const U8 n_threads = funcObj.getN_threads();

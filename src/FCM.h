@@ -35,6 +35,8 @@ public:
     void   setN_models (U8);                            /// setter of number of models
     U8     getN_models () const;                        /// getter of number of models
     void   setGamma (double);                           /// setter of gamma
+    double getGamma () const { return gamma;}                           /// getter of gamma
+    
     const  vector<bool> &getInvertedRepeats () const;   /// getter of inverted repeat(s)
     const  vector<U8> &getContextDepths () const;       /// getter of context depth(es)
     void   pushBackParams (bool, U8, U16);              /// setter of model(s) parameters (ir, ctx_depth, alpha_denom)

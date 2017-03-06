@@ -25,7 +25,10 @@ using std::thread;
 /***********************************************************
     constructor
 ************************************************************/
-Functions::Functions () {}
+Functions::Functions ()
+{
+    n_threads = DEFAULT_N_THREADS;      /// number of threads
+}
 
 
 /***********************************************************
@@ -37,9 +40,8 @@ void Functions::commandLineParser (int argc, char **argv)
     FCM      mixModel;                  /// mixture of FCM models
     
     decompressFlag = false;
-//    U8
-    n_threads = DEFAULT_N_THREADS;      /// number of threads
     double gamma = DEFAULT_GAMMA;       /// gamma
+//    double gamma;
     
     /// using these flags, if both short and long arguments
     /// are entered, just one of them is considered
@@ -148,7 +150,10 @@ void Functions::commandLineParser (int argc, char **argv)
                 try
                 {
                     gamma = stod((string) optarg);
-                    if (gamma < 0 || gamma >= 1)    gamma = DEFAULT_GAMMA;
+                    if (gamma < 0 || gamma >= 1)
+                        gamma = DEFAULT_GAMMA;
+//                        mixModel.setGamma( DEFAULT_GAMMA );
+//                    else mixModel.setGamma( gamma );
                 }
                 catch (const invalid_argument &ia)
                 {
@@ -263,6 +268,9 @@ void Functions::commandLineParser (int argc, char **argv)
         /// build reference(s) model(s) -- multithreaded
         
         mixModel.setGamma(gamma);                                     /// set gamma
+    
+//        cout<<mixModel.getGamma();
+        
         
         /// set compression mode: 't'=table, 'h'=hash table -- 5^k_1 + 5^k_2 + ... > 5^12 ==> mode: hash table
         U64 cmpModeSum = 0;
