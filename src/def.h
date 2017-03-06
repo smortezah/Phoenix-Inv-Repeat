@@ -28,6 +28,7 @@ using std::array;
 #define DEFAULT_GAMMA     0.95        /// default gamma (for mixture of FCMs)
 
 #define BUFFER_SIZE       262144      /// used in decompression
+#define DOUBLE_TO_INT     65535       /// for converting double to integer
 
 /***********************************************************
     typedef

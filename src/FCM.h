@@ -20,18 +20,10 @@ public:
     void   initHashTables ();                           /// initialize vector of hash tables
     
     void   buildModel (bool, U8, U8);                   /// build reference(s) model
-    void   compressTarget (string);                     /// compress target file
+    void   compressTarget (const string&);              /// compress target file
+    void   decompressTarget (const string&);            /// decompress target file
     
-    
-    
-    
-    void   decompressTarget (string);
-    inline U8 NumToDNASym (int) const;
-    
-    
-    
-    
-    
+    inline char symIntToChar (U8) const;                /// 01234 -> ACNGT
     inline U8 symCharToInt (char) const;                /// ACNGT -> 01234
     inline double fastPow(double, double);              /// fast power
     

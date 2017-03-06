@@ -4,9 +4,6 @@
 
 #include <iostream>
 
-//using std::string;
-using std::ifstream;
-
 
 class Functions
 {
@@ -17,7 +14,7 @@ public:
     
     //todo checkEqualFiles(f1, f2);
     
-//    static bool isFileCorrect (ifstream&);      /// check if file opened correctly
+//    static bool isFileCorrect (std::ifstream&); /// check if file opened correctly
 };
 
 

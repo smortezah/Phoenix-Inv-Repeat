@@ -90,5 +90,5 @@ void Messages::about () const
 ************************************************************/
 void Messages::verbose () const
 {
-    cout << "verbose mode.\n"; /// TODO for test
+    cout << "verbose mode.\n";  // TODO: for test
 }
