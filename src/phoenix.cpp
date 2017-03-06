@@ -33,7 +33,7 @@ int main (int argc, char *argv[])
     
     /// objects on memory stack
     Functions funcObj;
-    FCM mixModel;
+    FCM       mixModel;
     
     /// parse the command line
     funcObj.commandLineParser(argc, argv);
@@ -52,11 +52,12 @@ int main (int argc, char *argv[])
 
     
     
-//    U8 arrThrSize = (n_models > n_threads) ? n_threads : n_models;/// size of array of threads
-//    thread arrThread[ arrThrSize ];                               /// array of threads
-//
-//    for (U8 i = 0; i < n_models; i += arrThrSize)
-//    {
+    
+    U8 arrThrSize = (n_models > n_threads) ? n_threads : n_models;/// size of array of threads
+    thread arrThread[ arrThrSize ];                               /// array of threads
+
+    for (U8 i = 0; i < n_models; i += arrThrSize)
+    {
 //        for (U8 j = 0; j < arrThrSize && i + j < n_models; ++j)
 //            arrThread[ j ] = thread( &FCM::buildModel, &mixModel,
 //                                     mixModel.getInvertedRepeats()[ i + j ],
@@ -65,7 +66,7 @@ int main (int argc, char *argv[])
 //
 //        for (U8 j = 0; j < arrThrSize && i + j < n_models; ++j)
 //            arrThread[ j ].join();
-//    }
+    }
 //    /*
 //    /// compress target(s) using reference(s) model -- multithreaded
 //    U8 MAX_N_THREADS = (U8) thread::hardware_concurrency(); /// max cores in current machine
