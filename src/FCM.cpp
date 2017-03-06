@@ -1194,6 +1194,7 @@ void FCM::printHashTable () const
 ************************************************************/
 void  FCM::setCompressionMode (char cM)              { compressionMode = cM;          }
 void  FCM::setN_models (U8 n)                        { n_models = n;                  }
+U8    FCM::getN_models () const                      { return n_models;               }
 void  FCM::setGamma (double g)                       { gamma = g;                     }
 const vector<bool> &FCM::getInvertedRepeats () const { return invertedRepeats;        }
 const vector<U8> &FCM::getContextDepths () const     { return contextDepths;          }
