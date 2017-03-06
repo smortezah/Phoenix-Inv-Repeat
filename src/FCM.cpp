@@ -156,10 +156,10 @@ void FCM::buildModel (bool invRep, U8 ctxDepth, U8 modelIndex)
             mut.lock(); setHashTable(hashTable, modelIndex);    mut.unlock();   /// set hash table
         }   /// end case
             break;
-
+            
         default: break;
     }   /// end switch
-
+    
     for (U8 i = refsNumber; i--;)  refFilesIn[i].close();   /// close file(s)
 }
 
