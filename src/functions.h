@@ -5,7 +5,7 @@
 #include <iostream>
 
 #include "def.h"
-
+#include "FCM.h"
 
 class Functions
 {

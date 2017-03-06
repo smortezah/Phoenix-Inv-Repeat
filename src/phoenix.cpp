@@ -34,14 +34,14 @@ int main (int argc, char *argv[])
     /// objects on memory stack
     Functions funcObj;
     
-//    FCM       mixModel;
+    FCM       mixModel;
     
     /// parse the command line
     funcObj.commandLineParser(argc, argv);
     
     
 ////    cout << mixModel.getN_models();
-//    cout<<mixModel.getGamma();
+    cout<<mixModel.getGamma();
     
     
     
