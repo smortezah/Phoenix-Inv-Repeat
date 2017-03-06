@@ -1193,6 +1193,7 @@ void FCM::printHashTable () const
     getters and setters
 ************************************************************/
 void  FCM::setCompressionMode (char cM)              { compressionMode = cM;          }
+char  FCM::getCompressionMode () const               { return compressionMode;        }
 void  FCM::setN_models (U8 n)                        { n_models = n;                  }
 U8    FCM::getN_models () const                      { return n_models;               }
 void  FCM::setGamma (double g)                       { gamma = g;                     }

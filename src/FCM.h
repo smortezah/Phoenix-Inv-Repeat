@@ -31,6 +31,7 @@ public:
     void   printHashTable () const;                     /// print hash table
     
     void   setCompressionMode (char);                   /// setter of compression mode
+    char   getCompressionMode () const;                 /// getter of compression mode
     void   setN_models (U8);                            /// setter of number of models
     U8     getN_models () const;                        /// getter of number of models
     void   setGamma (double);                           /// setter of gamma

@@ -38,8 +38,10 @@ int main (int argc, char *argv[])
     /// parse the command line
     funcObj.commandLineParser(argc, argv);
     
-    const U8 n_models = mixModel.getN_models();
-    const U8 n_threads = funcObj.getN_threads();
+    cout << mixModel.getN_models();
+    
+//    const U8 n_models = mixModel.getN_models();
+//    const U8 n_threads = funcObj.getN_threads();
     /// build reference(s) model(s) -- multithreaded
 //    /// set compression mode: 't'=table, 'h'=hash table -- 5^k_1 + 5^k_2 + ... > 5^12 ==> mode: hash table
 //    U64 cmpModeSum = 0;
@@ -49,35 +51,38 @@ int main (int argc, char *argv[])
 //
 //    /// initialize vector of tables or hash tables
 //    compressionMode == 'h' ? mixModel.initHashTables() : mixModel.initTables();
-
     
     
     
-    U8 arrThrSize = (n_models > n_threads) ? n_threads : n_models;/// size of array of threads
-    thread arrThread[ arrThrSize ];                               /// array of threads
-
-    for (U8 i = 0; i < n_models; i += arrThrSize)
-    {
-//        for (U8 j = 0; j < arrThrSize && i + j < n_models; ++j)
-//            arrThread[ j ] = thread( &FCM::buildModel, &mixModel,
-//                                     mixModel.getInvertedRepeats()[ i + j ],
-//                                     mixModel.getContextDepths()[ i + j ],
-//                                     i + j );
+//    /// initialize vector of tables or hash tables
+//    mixModel.getCompressionMode() == 'h' ? mixModel.initHashTables() : mixModel.initTables();
+    
+    
+//    U8 arrThrSize = (n_models > n_threads) ? n_threads : n_models;/// size of array of threads
+//    thread arrThread[ arrThrSize ];                               /// array of threads
 //
-//        for (U8 j = 0; j < arrThrSize && i + j < n_models; ++j)
-//            arrThread[ j ].join();
-    }
-//    /*
-//    /// compress target(s) using reference(s) model -- multithreaded
-//    U8 MAX_N_THREADS = (U8) thread::hardware_concurrency(); /// max cores in current machine
-//    /// N_FREE_THREADS considered for other jobs in current system
-//    U8 n_threads_available = (U8) (!MAX_N_THREADS ? DEFAULT_N_THREADS - N_FREE_THREADS
-//                                                            : MAX_N_THREADS - N_FREE_THREADS);
-//    U8 n_targets = (U8) model.getTarAddresses().size();     /// up to 2^8=256 targets
-//
-//    U8 arrThrSize = (n_targets > n_threads_available) ? n_threads_available : n_targets;
-//    thread *arrThread = new thread[arrThrSize];             /// array of threads
-//    */
+//    for (U8 i = 0; i < n_models; i += arrThrSize)
+//    {
+////        for (U8 j = 0; j < arrThrSize && i + j < n_models; ++j)
+////            arrThread[ j ] = thread( &FCM::buildModel, &mixModel,
+////                                     mixModel.getInvertedRepeats()[ i + j ],
+////                                     mixModel.getContextDepths()[ i + j ],
+////                                     i + j );
+////
+////        for (U8 j = 0; j < arrThrSize && i + j < n_models; ++j)
+////            arrThread[ j ].join();
+//    }
+    /*
+    /// compress target(s) using reference(s) model -- multithreaded
+    U8 MAX_N_THREADS = (U8) thread::hardware_concurrency(); /// max cores in current machine
+    /// N_FREE_THREADS considered for other jobs in current system
+    U8 n_threads_available = (U8) (!MAX_N_THREADS ? DEFAULT_N_THREADS - N_FREE_THREADS
+                                                            : MAX_N_THREADS - N_FREE_THREADS);
+    U8 n_targets = (U8) model.getTarAddresses().size();     /// up to 2^8=256 targets
+
+    U8 arrThrSize = (n_targets > n_threads_available) ? n_threads_available : n_targets;
+    thread *arrThread = new thread[arrThrSize];             /// array of threads
+    */
 
 //    /// compress target(s) using reference(s) model(s) -- multithreaded
 ////    mixModel.setGamma(gamma);                                     /// set gamma
@@ -104,7 +109,7 @@ int main (int argc, char *argv[])
 //    }
 //
 //    /// check if decompressed file is exactly the same as target file
-    
+
     
     
     

@@ -270,9 +270,9 @@ void Functions::commandLineParser (int argc, char **argv)
         const char compressionMode = (cmpModeSum > pow(ALPH_SIZE, TABLE_MAX_CTX)) ? 'h' : 't';
         mixModel.setCompressionMode( compressionMode );
 
-        /// initialize vector of tables or hash tables
-        compressionMode == 'h' ? mixModel.initHashTables() : mixModel.initTables();
-//
+//        /// initialize vector of tables or hash tables
+//        compressionMode == 'h' ? mixModel.initHashTables() : mixModel.initTables();
+
 //        U8 arrThrSize = (n_models > n_threads) ? n_threads : n_models;/// size of array of threads
 ////        thread *arrThread = new thread[ arrThrSize ];                 /// array of threads
 //        thread arrThread[ arrThrSize ];                               /// array of threads
@@ -335,7 +335,7 @@ void Functions::commandLineParser (int argc, char **argv)
 ////        delete[] arrThread;                                           /// free up the memory for array of threads
 //
 //        /// check if decompressed file is exactly the same as target file
-//
+
     }
     
     /// Print any remaining command line arguments (not options).
