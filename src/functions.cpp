@@ -327,6 +327,9 @@ void Functions::commandLineParser (int argc, char **argv)
         }
         
 //        delete[] arrThread;                                           /// free up the memory for array of threads
+        
+        /// check if decompressed file is exactly the same as target file
+        
     }
     
     /// Print any remaining command line arguments (not options).
