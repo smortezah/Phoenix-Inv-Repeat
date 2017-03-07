@@ -93,9 +93,9 @@ void FCM::buildModel (bool invRepeat, U8 ctxDepth, U8 modelIndex)
                 while ( getline(refFilesIn[ i ], refLine) )
                 {
                     /// fill table by number of occurrences of symbols A, C, N, G, T
-                    for (string::iterator lineIter = refLine.begin(); lineIter != refLine.end(); ++lineIter)
+                    for (string::iterator lineIt = refLine.begin(); lineIt != refLine.end(); ++lineIt)
                     {
-                        currSymInt = symCharToInt(*lineIter);
+                        currSymInt = symCharToInt(*lineIt);
 
                         if (invRepeat)      /// considering inverted repeats to update table
                         {
@@ -135,9 +135,9 @@ void FCM::buildModel (bool invRepeat, U8 ctxDepth, U8 modelIndex)
                 while ( getline(refFilesIn[ i ], refLine) )
                 {
                     /// fill hash table by number of occurrences of symbols A, C, N, G, T
-                    for (string::iterator lineIter = refLine.begin(); lineIter != refLine.end(); ++lineIter)
+                    for (string::iterator lineIt = refLine.begin(); lineIt != refLine.end(); ++lineIt)
                     {
-                        currSymInt = symCharToInt(*lineIter);
+                        currSymInt = symCharToInt(*lineIt);
 
                         /// considering inverted repeats to update hash table
                         if (invRepeat)
@@ -261,11 +261,11 @@ void FCM::compress (const string &tarFileName)
                 //////////////////////////////////
                 
                 /// table includes the number of occurrences of symbols A, C, N, G, T
-                for (string::iterator lineIter = tarLine.begin(); lineIter != tarLine.end(); ++lineIter)
+                for (string::iterator lineIt = tarLine.begin(); lineIt != tarLine.end(); ++lineIt)
                 {
                     fill_n( freqsDouble, ALPH_SIZE, 0 );        /// reset array of frequencies
                                                                 
-                    U8 currSymInt = symCharToInt(*lineIter);    /// integer version of the current symbol
+                    U8 currSymInt = symCharToInt(*lineIt);    /// integer version of the current symbol
                     
                     ////////////////////////////////
 //                    probability  = 0;
@@ -320,11 +320,11 @@ void FCM::compress (const string &tarFileName)
                 //////////////////////////////////
                 
                 /// hash table includes the number of occurrences of symbols A, C, N, G, T
-                for (string::iterator lineIter = tarLine.begin(); lineIter != tarLine.end(); ++lineIter)
+                for (string::iterator lineIt = tarLine.begin(); lineIt != tarLine.end(); ++lineIt)
                 {
                     fill_n( freqsDouble, ALPH_SIZE, 0 );        /// reset array of frequencies
     
-                    U8 currSymInt = symCharToInt(*lineIter);    /// integer version of the current symbol
+                    U8 currSymInt = symCharToInt(*lineIt);    /// integer version of the current symbol
                     
                     //////////////////////////////////
 //                    probability  = 0;
@@ -508,11 +508,11 @@ void FCM::decompress (const string &tarFileName)
                 //////////////////////////////////
                 
                 /// table includes the number of occurrences of symbols A, C, N, G, T
-                for (string::iterator lineIter = tarLine.begin(); lineIter != tarLine.end(); ++lineIter)
+                for (string::iterator lineIt = tarLine.begin(); lineIt != tarLine.end(); ++lineIt)
                 {
                     fill_n( freqsDouble, ALPH_SIZE, 0 );        /// reset array of frequencies
                     
-                    U8 currSymInt = symCharToInt(*lineIter);    /// integer version of the current symbol
+                    U8 currSymInt = symCharToInt(*lineIt);    /// integer version of the current symbol
                     
                     ////////////////////////////////
 //                    probability  = 0;
@@ -572,11 +572,11 @@ void FCM::decompress (const string &tarFileName)
                 //////////////////////////////////
             
                 /// hash table includes the number of occurrences of symbols A, C, N, G, T
-                for (string::iterator lineIter = tarLine.begin(); lineIter != tarLine.end(); ++lineIter)
+                for (string::iterator lineIt = tarLine.begin(); lineIt != tarLine.end(); ++lineIt)
                 {
                     fill_n( freqsDouble, ALPH_SIZE, 0 );        /// reset array of frequencies
                 
-                    U8 currSymInt = symCharToInt(*lineIter);    /// integer version of the current symbol
+                    U8 currSymInt = symCharToInt(*lineIt);    /// integer version of the current symbol
                 
                     //////////////////////////////////
 //                    probability  = 0;
@@ -774,10 +774,10 @@ inline double FCM::fastPow (double base, double exponent)
 //        //////////////////////////////////
 //
 //        /// fill hash table by number of occurrences of symbols A, C, N, G, T
-//        for (string::iterator lineIter = datasetLine.begin(); lineIter != datasetLine.end(); ++lineIter)
+//        for (string::iterator lineIt = datasetLine.begin(); lineIt != datasetLine.end(); ++lineIt)
 //        {
 //            /// htable includes an array of U64 numbers
-//            char ch = *lineIter;
+//            char ch = *lineIt;
 //            U8 currSymInt = (U8) ((ch == 'A') ? 0 :
 //                                            (ch == 'C') ? 1 :
 //                                            (ch == 'G') ? 3 :
@@ -922,10 +922,10 @@ inline double FCM::fastPow (double base, double exponent)
 //        //////////////////////////////////
 //
 //        /// fill hash table by number of occurrences of symbols A, C, N, G, T
-//        for (string::iterator lineIter = datasetLine.begin(); lineIter != datasetLine.end(); ++lineIter)
+//        for (string::iterator lineIt = datasetLine.begin(); lineIt != datasetLine.end(); ++lineIt)
 //        {
 //            /// htable includes an array of U64 numbers
-//            char ch = *lineIter;
+//            char ch = *lineIt;
 //            U8 currSymInt = (U8) ((ch == 'A') ? 0 :
 //                                            (ch == 'C') ? 1 :
 //                                            (ch == 'G') ? 3 :
@@ -1072,10 +1072,10 @@ void FCM::buildHashTable_str ()
         //////////////////////////////////
 
         /// fill hash table by number of occurrences of symbols A, C, N, G, T
-        for (string::iterator lineIter = datasetLine.begin(); lineIter != datasetLine.end(); ++lineIter)
+        for (string::iterator lineIt = datasetLine.begin(); lineIt != datasetLine.end(); ++lineIt)
         {
             /// htable includes an array of U64 numbers
-            char c = *lineIter;
+            char c = *lineIt;
             U8 currSymInt = (c == 'A') ? (U8) 0 :
                                  (c == 'C') ? (U8) 1 :
                                  (c == 'G') ? (U8) 3 :

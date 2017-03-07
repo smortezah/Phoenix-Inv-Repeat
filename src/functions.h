@@ -20,6 +20,7 @@ using std::vector;
 using std::ifstream;
 using std::invalid_argument;
 using std::thread;
+using std::ios;
 
 
 /***********************************************************
@@ -267,6 +268,38 @@ void commandLineParser (int argc, char **argv, FCM &mixModel)
     }
     
 }   /// end commandLineParser
+
+
+/***********************************************************
+    check if original and decompressed files are the same
+************************************************************/
+bool areFilesEqual (const string &target, const string &decompressed)
+{
+    ifstream tarFile( target, ios::in ); /// open target file
+    
+    if (!tarFile)                    /// error occurred while opening file
+    {
+        cerr << "The file '" << target << "' cannot be opened, or it is empty.\n";
+        tarFile.close();             /// close file
+        exit(1);                        /// exit this function
+    }
+    
+    string tarLine;                     /// keep each line of the file
+    while ( getline(tarFile, tarLine) )
+    {
+        for (string::iterator lineIt = tarLine.begin(); lineIt != tarLine.end(); ++lineIt)
+        {
+            
+        }
+    }
+    
+    
+    std::string str;
+    
+    str.erase(std::remove(str.begin(), str.end(), '\n'), str.end());
+    
+    
+}
 
 
 /***********************************************************
