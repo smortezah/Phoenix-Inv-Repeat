@@ -34,10 +34,10 @@ Functions::Functions ()
 /***********************************************************
     parse command line
 ************************************************************/
-void Functions::commandLineParser (int argc, char **argv)
+void Functions::commandLineParser (int argc, char **argv, FCM &mixModel)
 {
     Messages messageObj;                /// object for showing messages
-    FCM      mixModel;                  /// mixture of FCM models
+//    FCM      mixModel;                  /// mixture of FCM models
     
     decompressFlag = false;
     double gamma = DEFAULT_GAMMA;       /// gamma

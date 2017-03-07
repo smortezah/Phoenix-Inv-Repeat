@@ -37,7 +37,7 @@ int main (int argc, char *argv[])
     FCM       mixModel;
     
     /// parse the command line
-    funcObj.commandLineParser(argc, argv);
+    funcObj.commandLineParser(argc, argv, mixModel);
     
     
 ////    cout << mixModel.getN_models();

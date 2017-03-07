@@ -12,7 +12,7 @@ class Functions
 public:
     Functions ();                           /// constructor
     
-    void commandLineParser (int, char**);   /// parse command line
+    void commandLineParser (int, char**, FCM&);   /// parse command line
     
     //todo checkEqualFiles(f1, f2);
     
