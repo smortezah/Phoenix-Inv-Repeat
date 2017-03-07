@@ -24,7 +24,7 @@ Synopsis:
 
 Mandatory arguments:
     -m [&lt;i_1&gt;,&lt;k_1&gt;,&lt;a_1&gt;:&lt;i_2&gt;,&lt;k_2&gt;,&lt;a_2&gt;:...],   --model [&lt;i_1&gt;,&lt;k_1&gt;,&lt;a_1&gt;:...]
-         context model(s).
+         context model(s) (at least one).
          &lt;i&gt;:  inverted repeat (0=don't use, 1=use).
          &lt;k&gt;:  context-order size,
          &lt;a&gt;:  1/alpha,
@@ -65,7 +65,9 @@ Options:
 Please cite the following papers, if you use <i>Phoenix</i>:
 
 <h2>ISSUES</h2>
-Please let me know if there is any issues, at <a href="https://github.com/smortezah/Phoenix/issues">issues</a>.
+Please let me know if there is any issues, at [issues] (https://github.com/smortezah/Phoenix/issues)
+ 
+ <a href="https://github.com/smortezah/Phoenix/issues">issues</a>.
 
 <h2>LICENSE</h2>
 GPL v3.
