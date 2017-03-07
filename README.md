@@ -58,7 +58,6 @@ Options:
 
     -v,  --verbose
          verbose mode (more information)
-
 ```
 
 ## CITATION
@@ -71,6 +70,5 @@ Please let me know if there is any issues, at <a href="https://github.com/smorte
 GPL v3.
 
 For more information, please visit
-<a href="http://www.gnu.org/licenses/gpl-3.0.html">
-http://www.gnu.org/licenses/gpl-3.0.html
-</a>.
+[http://www.gnu.org/licenses/gpl-3.0.html]
+(http://www.gnu.org/licenses/gpl-3.0.html).
