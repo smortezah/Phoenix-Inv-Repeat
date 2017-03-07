@@ -9,9 +9,9 @@ make
 ```
 
 <h2>USAGE</h2>
-<pre>
+```bash
 ./phoenix [OPTION]... -m [MODEL(S)] -r [REFERENCE(S)] -t [TARGET(S)]
-</pre>
+```
 To see the options, type:
 
 <code>
