@@ -43,7 +43,7 @@ public:
     const  vector<bool>   &getInvertedRepeats () const; /// getter - inverted repeat(s)
     const  vector<U8>     &getContextDepths   () const; /// getter - context depth(es)
     void   pushBackParams (bool, U8, U16);              /// setter - model(s) params (ir, ctx_depth, alpha_denom)
-    const  vector<string> &getTarAddresses    () const; /// getter - target files addresses
+    const  vector<string> &getTarAddr () const; /// getter - target files addresses
     void   pushBackTarAddresses (const string&);        /// pushBacker - target files addresses
     const  vector<string> &getRefAddresses    () const; /// getter - reference files addresses
     void   pushBackRefAddresses (const string&);        /// pushBacker - reference files addresses

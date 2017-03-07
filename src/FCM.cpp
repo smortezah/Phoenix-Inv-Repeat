@@ -1208,7 +1208,7 @@ void   FCM::setGamma           (double g)               { gamma = g;            
 double FCM::getGamma           ()       const           { return gamma;                  }
 const  vector<bool> &FCM::getInvertedRepeats () const   { return invertedRepeats;        }
 const  vector<U8> &FCM::getContextDepths     () const   { return contextDepths;          }
-const  vector<string> &FCM::getTarAddresses  () const   { return tarAddresses;           }
+const  vector<string> &FCM::getTarAddr       () const   { return tarAddresses;           }
 void   FCM::pushBackTarAddresses (const string &tFAs)   { tarAddresses.push_back(tFAs);  }
 const  vector<string> &FCM::getRefAddresses  () const   { return refAddresses;           }
 void   FCM::pushBackRefAddresses (const string &rFAs)   { refAddresses.push_back(rFAs);  }
