@@ -45,7 +45,7 @@ void Messages::help () const
          << "         usage guide"                                                                     << '\n'
                                                                                                        << '\n'
          << "    -d,  --decompress"                                                                    << '\n'
-         << "         decompression"                                                                   << '\n'
+         << "         enable decompression"                                                            << '\n'
                                                                                                        << '\n'
          << "    -n [NUMBER (integer)],  --n_threads [NUMBER (integer)]"                               << '\n'
          << "         number of threads (default: 2)."                                                 << '\n'

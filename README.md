@@ -43,7 +43,7 @@ Options:
          usage guide
 
     -d,  --decompress
-         decompression
+         enable decompression
 
     -n [NUMBER (integer)],  --n_threads [NUMBER (integer)]
          number of threads (default: 2).
