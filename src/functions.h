@@ -8,6 +8,7 @@
 #include <vector>
 #include <thread>
 #include <cmath>
+#include <algorithm>    /// std::remove
 
 #include "def.h"
 #include "messages.h"
@@ -128,7 +129,7 @@ void commandLineParser (int argc, char **argv, FCM &mixModel)
                 }
                 catch (const invalid_argument &ia)
                 {
-                    cerr << "Option 'n' ('n_threads') has an invalid argument.\n";
+                    cerr << "ERROR: Option 'n' ('n_threads') has an invalid argument.\n";
                     return;
                 }
                 break;
@@ -141,18 +142,18 @@ void commandLineParser (int argc, char **argv, FCM &mixModel)
                 }
                 catch (const invalid_argument &ia)
                 {
-                    cerr << "Option 'g' ('gamma') has an invalid argument.\n";
+                    cerr << "ERROR: Option 'g' ('gamma') has an invalid argument.\n";
                     return;
                 }
                 break;
             
             case ':':   /// missing option argument
-                cerr << "Option '" << (char) optopt << "' requires an argument.\n";
+                cerr << "ERROR: Option '" << (char) optopt << "' requires an argument.\n";
                 break;
             
             case '?':   /// invalid option
             default:
-                cerr << "Option '" << (char) optopt << "' is invalid.\n";
+                cerr << "ERROR: Option '" << (char) optopt << "' is invalid.\n";
                 break;
         }
     }
@@ -262,7 +263,7 @@ void commandLineParser (int argc, char **argv, FCM &mixModel)
     /// Print any remaining command line arguments (not options).
     if (optind < argc)
     {
-        cerr << "non-option ARGV-element(s): ";
+        cerr << "ERROR: non-option ARGV-element(s): ";
         while (optind < argc)   cerr << argv[ optind++ ] << " ";
         cerr << '\n';
     }
@@ -271,34 +272,43 @@ void commandLineParser (int argc, char **argv, FCM &mixModel)
 
 
 /***********************************************************
-    check if original and decompressed files are the same
+    check if original and decompressed files are identical
 ************************************************************/
-bool areFilesEqual (const string &target, const string &decompressed)
+bool areFilesEqual (const string &first, const string &second)
 {
-    ifstream tarFile( target, ios::in ); /// open target file
+    ifstream firstFile  (first,  ios::in);  /// open first file
+    ifstream secondFile (second, ios::in);  /// open second file
     
-    if (!tarFile)                    /// error occurred while opening file
+    /// error occurred while opening files
+    if (!firstFile)
     {
-        cerr << "The file '" << target << "' cannot be opened, or it is empty.\n";
-        tarFile.close();             /// close file
-        exit(1);                        /// exit this function
+        cerr << "ERROR: The file '" << first << "' cannot be opened, or it is empty.\n";
+        exit(1);                            /// exit this function
+    }
+    else if (!secondFile)
+    {
+        cerr << "ERROR: The file '" << second << "' cannot be opened, or it is empty.\n";
+        exit(1);                            /// exit this function
     }
     
-    string tarLine;                     /// keep each line of the file
-    while ( getline(tarFile, tarLine) )
+    /// keep each line as well as all of the first and second files
+    string firstLine, secondLine, firstStr = "", secondStr = "";
+    
+    /// remove '\n' from first and second files
+    while ( getline(firstFile, firstLine) )
     {
-        for (string::iterator lineIt = tarLine.begin(); lineIt != tarLine.end(); ++lineIt)
-        {
-            
-        }
+        firstLine.erase( std::remove(firstLine.begin(), firstLine.end(), '\n'), firstLine.end() );
+        firstStr += firstLine;
+    }
+    while ( getline(secondFile, secondLine) )
+    {
+        secondLine.erase( std::remove(secondLine.begin(), secondLine.end(), '\n'), secondLine.end() );
+        secondStr += secondLine;
     }
     
+    firstFile.close();  secondFile.close(); /// close files
     
-    std::string str;
-    
-    str.erase(std::remove(str.begin(), str.end(), '\n'), str.end());
-    
-    
+    return (firstStr == secondStr); /// if files are identical, return true, otherwise return false
 }
 
 

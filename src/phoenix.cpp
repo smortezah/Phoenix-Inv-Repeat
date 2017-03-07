@@ -86,7 +86,8 @@ int main (int argc, char *argv[])
 //    }
     
     /// check if decompressed file is exactly the same as target file
-    
+//    cout<<areFilesEqual("y","DECOMP.de");
+    cout<<areFilesEqual("x","z");
     
     
     
