@@ -16,12 +16,8 @@
 using std::cout;
 using std::cerr;
 using std::string;
-using std::stoi;
-using std::stof;
 using std::vector;
-using std::size_t;
 using std::ifstream;
-using std::ios;
 using std::invalid_argument;
 using std::thread;
 
@@ -252,7 +248,14 @@ void commandLineParser (int argc, char **argv, FCM &mixModel)
                                      (U16)  stoi( modelParams[2] ) ); /// alpha denominator
         }
         
+        
+        
+        
+        
+        
         /// build reference(s) model(s) -- multithreaded
+        
+        
         
         
         
@@ -265,7 +268,7 @@ void commandLineParser (int argc, char **argv, FCM &mixModel)
         /// initialize vector of tables or hash tables
         compressionMode == 'h' ? mixModel.initHashTables() : mixModel.initTables();
 
-//        U8 arrThrSize = (n_models > n_threads) ? n_threads : n_models;/// size of array of threads
+//        U8 arrThrSize = (n_models > mixModel.getN_threads()) ? mixModel.getN_threads() : n_models;/// size of array of threads
 ////        thread *arrThread = new thread[ arrThrSize ];                 /// array of threads
 //        thread arrThread[ arrThrSize ];                               /// array of threads
 //
@@ -280,7 +283,7 @@ void commandLineParser (int argc, char **argv, FCM &mixModel)
 //            for (U8 j = 0; j < arrThrSize && i + j < n_models; ++j)
 //                arrThread[ j ].join();
 //        }
-//
+
 ////        delete[] arrThread;                                           /// free up the memory for array of threads
 //
 //        /*

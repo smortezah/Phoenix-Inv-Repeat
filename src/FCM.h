@@ -19,27 +19,27 @@ public:
     void   initTables     ();                           /// initialize vector of tables
     void   initHashTables ();                           /// initialize vector of hash tables
     
-    void   buildModel       (bool, U8, U8);             /// build reference(s) model
-    void   compressTarget   (const string&);            /// compress target file
-    void   decompressTarget (const string&);            /// decompress target file
+    void   buildModel          (bool, U8, U8);          /// build reference(s) model
+    void   compressTarget      (const string&);         /// compress target file
+    void   decompressTarget    (const string&);         /// decompress target file
     
     inline char   symIntToChar (U8)     const;          /// 01234 -> ACNGT
     inline U8     symCharToInt (char)   const;          /// ACNGT -> 01234
     inline double fastPow      (double, double);        /// fast power
     
 //    void buildHashTable_str ();                         /// build hash table (string key)
-    void   printHashTable ()            const;          /// print hash table
+    void   printHashTable ()             const;         /// print hash table
     
-    bool   getDecompressFlag  ()        const;          /// getter of decompress flag
-    void   setDecompressFlag  (bool);                   /// getter of decompress flag
-    U8     getN_threads       ()        const;          /// getter of number of threads
-    void   setN_threads       (U8);                     /// setter of number of threads
-    void   setCompressionMode (char);                   /// setter of compression mode
-    char   getCompressionMode ()        const;          /// getter of compression mode
-    void   setN_models        (U8);                     /// setter of number of models
-    U8     getN_models        ()        const;          /// getter of number of models
-    void   setGamma           (double);                 /// setter of gamma
-    double getGamma           ()        const;          /// getter of gamma
+    bool   getDecompressFlag   ()        const;         /// getter of decompress flag
+    void   setDecompressFlag   (bool);                  /// getter of decompress flag
+    U8     getN_threads        ()        const;         /// getter of number of threads
+    void   setN_threads        (U8);                    /// setter of number of threads
+    void   setCompressionMode  (char);                  /// setter of compression mode
+    char   getCompressionMode  ()        const;         /// getter of compression mode
+    void   setN_models         (U8);                    /// setter of number of models
+    U8     getN_models         ()        const;         /// getter of number of models
+    void   setGamma            (double);                /// setter of gamma
+    double getGamma            ()        const;         /// getter of gamma
     const  vector<bool>   &getInvertedRepeats () const; /// getter of inverted repeat(s)
     const  vector<U8>     &getContextDepths   () const; /// getter of context depth(es)
     void   pushBackParams (bool, U8, U16);              /// setter of model(s) parameters (ir, ctx_depth, alpha_denom)
@@ -50,6 +50,7 @@ public:
     void   setTable       (U64*, U8);                   /// setter of table(s)
     void   setHashTable   (const htable_t&, U8);        /// setter of hash table(s)
     
+    const  vector<U64*> &getTables   () const{ return tables;} /// getter of reference files addresses
 private:
     std::mutex       mut;                               /// mutex
     

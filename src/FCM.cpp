@@ -7,7 +7,6 @@
 #include <vector>
 
 #include "FCM.h"
-#include "functions.h"
 #include "bitio.h"
 #include "bitio.c"
 #include "arith.h"
@@ -644,7 +643,7 @@ inline U8 FCM::symCharToInt (char charSym) const
         case 'T':   return 4;
         case 'G':   return 3;
         case 'N':   return 2;
-        default:    cout << "ERROR: unknown symbol '" << charSym << "'\n";  exit(1);
+        default:    cerr << "ERROR: unknown symbol '" << charSym << "'\n";  exit(1);
     }
 
     /*
@@ -670,7 +669,7 @@ inline char FCM::symIntToChar (U8 intSym) const
         case 4:     return 'T';
         case 3:     return 'G';
         case 2:     return 'N';
-        default:    cout << "ERROR: unknown integer '" << intSym << "'\n";  exit(1);
+        default:    cerr << "ERROR: unknown integer '" << intSym << "'\n";  exit(1);
     }
 }
 

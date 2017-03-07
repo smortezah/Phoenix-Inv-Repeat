@@ -64,7 +64,8 @@ Options:
 Please cite the following papers, if you use <i>Phoenix</i>:
 
 ## ISSUES
-Please let me know if there is any issues, at <a href="https://github.com/smortezah/Phoenix/issues">issues</a>.
+Please let me know if there is any issues, at [issues]
+(https://github.com/smortezah/Phoenix/issues).
 
 ## LICENSE
 GPL v3.
