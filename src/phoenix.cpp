@@ -34,7 +34,7 @@ int main (int argc, char *argv[])
     /// objects on memory stack
 //    Functions funcObj;
     
-    FCM       mixModel;
+    FCM mixModel;
     
     /// parse the command line
     commandLineParser(argc, argv, mixModel);

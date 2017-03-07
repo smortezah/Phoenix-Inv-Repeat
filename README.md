@@ -9,7 +9,7 @@ make
 ```
 
 <h2>USAGE</h2>
-```bash
+```
 ./phoenix [OPTION]... -m [MODEL(S)] -r [REFERENCE(S)] -t [TARGET(S)]
 ```
 To see the options, type:
