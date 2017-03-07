@@ -30,27 +30,26 @@ public:
 //    void buildHashTable_str ();                         /// build hash table (string key)
     void   printHashTable ()             const;         /// print hash table
     
-    bool   getDecompressFlag   ()        const;         /// getter of decompress flag
-    void   setDecompressFlag   (bool);                  /// getter of decompress flag
-    U8     getN_threads        ()        const;         /// getter of number of threads
-    void   setN_threads        (U8);                    /// setter of number of threads
-    void   setCompressionMode  (char);                  /// setter of compression mode
-    char   getCompressionMode  ()        const;         /// getter of compression mode
-    void   setN_models         (U8);                    /// setter of number of models
-    U8     getN_models         ()        const;         /// getter of number of models
-    void   setGamma            (double);                /// setter of gamma
-    double getGamma            ()        const;         /// getter of gamma
-    const  vector<bool>   &getInvertedRepeats () const; /// getter of inverted repeat(s)
-    const  vector<U8>     &getContextDepths   () const; /// getter of context depth(es)
-    void   pushBackParams (bool, U8, U16);              /// setter of model(s) parameters (ir, ctx_depth, alpha_denom)
-    const  vector<string> &getTarAddresses    () const; /// getter of target files addresses
-    void   pushBackTarAddresses (const string&);        /// pushBacker of target files addresses
-    const  vector<string> &getRefAddresses    () const; /// getter of reference files addresses
-    void   pushBackRefAddresses (const string&);        /// pushBacker of reference files addresses
-    void   setTable       (U64*, U8);                   /// setter of table(s)
-    void   setHashTable   (const htable_t&, U8);        /// setter of hash table(s)
+    bool   getDecompressFlag   ()        const;         /// getter - decompress flag
+    void   setDecompressFlag   (bool);                  /// getter - decompress flag
+    U8     getN_threads        ()        const;         /// getter - number of threads
+    void   setN_threads        (U8);                    /// setter - number of threads
+    void   setCompressionMode  (char);                  /// setter - compression mode
+    char   getCompressionMode  ()        const;         /// getter - compression mode
+    void   setN_models         (U8);                    /// setter - number of models
+    U8     getN_models         ()        const;         /// getter - number of models
+    void   setGamma            (double);                /// setter - gamma
+    double getGamma            ()        const;         /// getter - gamma
+    const  vector<bool>   &getInvertedRepeats () const; /// getter - inverted repeat(s)
+    const  vector<U8>     &getContextDepths   () const; /// getter - context depth(es)
+    void   pushBackParams (bool, U8, U16);              /// setter - model(s) params (ir, ctx_depth, alpha_denom)
+    const  vector<string> &getTarAddresses    () const; /// getter - target files addresses
+    void   pushBackTarAddresses (const string&);        /// pushBacker - target files addresses
+    const  vector<string> &getRefAddresses    () const; /// getter - reference files addresses
+    void   pushBackRefAddresses (const string&);        /// pushBacker - reference files addresses
+    void   setTable       (U64*, U8);                   /// setter - table(s)
+    void   setHashTable   (const htable_t&, U8);        /// setter - hash table(s)
     
-    const  vector<U64*> &getTables   () const{ return tables;} /// getter of reference files addresses
 private:
     std::mutex       mut;                               /// mutex
     

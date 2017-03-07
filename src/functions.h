@@ -248,17 +248,6 @@ void commandLineParser (int argc, char **argv, FCM &mixModel)
                                      (U16)  stoi( modelParams[2] ) ); /// alpha denominator
         }
         
-        
-        
-        
-        
-        
-        /// build reference(s) model(s) -- multithreaded
-        
-        
-        
-        
-        
         /// set compression mode: 't'=table, 'h'=hash table -- 5^k_1 + 5^k_2 + ... > 5^12 ==> mode: hash table
         U64 cmpModeSum = 0;
         for (U8 k : mixModel.getContextDepths())    cmpModeSum = cmpModeSum + (U64) pow(ALPH_SIZE, k);
@@ -267,70 +256,6 @@ void commandLineParser (int argc, char **argv, FCM &mixModel)
         
         /// initialize vector of tables or hash tables
         compressionMode == 'h' ? mixModel.initHashTables() : mixModel.initTables();
-
-//        U8 arrThrSize = (n_models > mixModel.getN_threads()) ? mixModel.getN_threads() : n_models;/// size of array of threads
-////        thread *arrThread = new thread[ arrThrSize ];                 /// array of threads
-//        thread arrThread[ arrThrSize ];                               /// array of threads
-//
-//        for (U8 i = 0; i < n_models; i += arrThrSize)
-//        {
-//            for (U8 j = 0; j < arrThrSize && i + j < n_models; ++j)
-//                arrThread[ j ] = thread( &FCM::buildModel, &mixModel,
-//                                         mixModel.getInvertedRepeats()[ i + j ],
-//                                         mixModel.getContextDepths()[ i + j ],
-//                                         i + j );
-//
-//            for (U8 j = 0; j < arrThrSize && i + j < n_models; ++j)
-//                arrThread[ j ].join();
-//        }
-
-////        delete[] arrThread;                                           /// free up the memory for array of threads
-//
-//        /*
-//        /// compress target(s) using reference(s) model -- multithreaded
-//        U8 MAX_N_THREADS = (U8) thread::hardware_concurrency(); /// max cores in current machine
-//        /// N_FREE_THREADS considered for other jobs in current system
-//        U8 n_threads_available = (U8) (!MAX_N_THREADS ? DEFAULT_N_THREADS - N_FREE_THREADS
-//                                                                : MAX_N_THREADS - N_FREE_THREADS);
-//        U8 n_targets = (U8) model.getTarAddresses().size();     /// up to 2^8=256 targets
-//
-//        U8 arrThrSize = (n_targets > n_threads_available) ? n_threads_available : n_targets;
-//        thread *arrThread = new thread[arrThrSize];             /// array of threads
-//        */
-//
-//        /// compress target(s) using reference(s) model(s) -- multithreaded
-//        mixModel.setGamma(gamma);                                     /// set gamma
-//        U8 n_targets = (U8) mixModel.getTarAddresses().size();        /// up to 2^8=256 targets
-//
-//        arrThrSize = (n_targets > n_threads) ? n_threads : n_targets;
-////        arrThread  = new thread[ arrThrSize ];                        /// array of threads
-//
-//        for (U8 i = 0; i < n_targets; i += arrThrSize)
-//        {
-//            for (U8 j = 0; j < arrThrSize && i + j < n_targets; ++j)
-//                arrThread[ j ] = thread( &FCM::compressTarget, &mixModel, mixModel.getTarAddresses()[ i + j ] );
-//
-//            for (U8 j = 0; j < arrThrSize && i + j < n_targets; ++j)
-//                arrThread[ j ].join();
-//        }
-//
-//        /// decompress target(s) using reference(s) model(s) -- multithreaded
-//        if (d_flag)
-//        {
-//            for (U8 i = 0; i < n_targets; i += arrThrSize)
-//            {
-//                for (U8 j = 0; j < arrThrSize && i + j < n_targets; ++j)
-//                    arrThread[ j ] = thread(&FCM::decompressTarget, &mixModel, mixModel.getTarAddresses()[ i + j ]);
-//
-//                for (U8 j = 0; j < arrThrSize && i + j < n_targets; ++j)
-//                    arrThread[ j ].join();
-//            }
-//        }
-//
-////        delete[] arrThread;                                           /// free up the memory for array of threads
-//
-//        /// check if decompressed file is exactly the same as target file
-        
     }
     
     /// Print any remaining command line arguments (not options).
