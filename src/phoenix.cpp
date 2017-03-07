@@ -32,12 +32,13 @@ int main (int argc, char *argv[])
     high_resolution_clock::time_point exeStartTime = high_resolution_clock::now();  /// Record start time
     
     /// objects on memory stack
-    Functions funcObj;
+//    Functions funcObj;
     
     FCM       mixModel;
     
     /// parse the command line
-    funcObj.commandLineParser(argc, argv, mixModel);
+    commandLineParser(argc, argv, mixModel);
+//    funcObj.commandLineParser(argc, argv, mixModel);
     
     const U8 n_models = mixModel.getN_models();
     const U8 n_threads = mixModel.getN_threads();
