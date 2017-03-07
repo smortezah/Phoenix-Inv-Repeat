@@ -101,7 +101,7 @@ void commandLineParser (int argc, char **argv, FCM &mixModel)
             
             case 'd':   /// decompression mode
                 d_flag = 1;
-                mixModel.setDecompressFlag(true);
+                mixModel.setDecompFlag(true);
                 break;
             
             case 'm':   /// needs model(s) parameters
@@ -163,10 +163,10 @@ void commandLineParser (int argc, char **argv, FCM &mixModel)
         for (string::iterator it = begIter; it != endIter; ++it)      /// all target files names but the last one
             if (*it == ',')
             {
-                mixModel.pushBackTarAddresses( string(begIter, it) );
+                mixModel.pushTarAddr(string(begIter, it));
                 begIter = it + 1;
             }
-        mixModel.pushBackTarAddresses( string(begIter, endIter) );    /// last target file name
+        mixModel.pushTarAddr(string(begIter, endIter));    /// last target file name
         
         /*  slower
         U8 tarIndex = (U8) tarFilesNames.size();
@@ -180,7 +180,7 @@ void commandLineParser (int argc, char **argv, FCM &mixModel)
             }
         }
         /// save last target file name
-        mixModel.pushBackTarAddresses(tarFilesNames.substr(0, tarIndex));
+        mixModel.pushTarAddr(tarFilesNames.substr(0, tarIndex));
         */
     }
     
@@ -191,10 +191,10 @@ void commandLineParser (int argc, char **argv, FCM &mixModel)
         for (string::iterator it = begIter; it != endIter; ++it)      /// all reference files names but the last one
             if (*it == ',')
             {
-                mixModel.pushBackRefAddresses( string(begIter, it) );
+                mixModel.pushRefAddr(string(begIter, it));
                 begIter = it + 1;
             }
-        mixModel.pushBackRefAddresses( string(begIter, endIter) );    /// last reference file name
+        mixModel.pushRefAddr(string(begIter, endIter));    /// last reference file name
         
         /*  slower
         U8 refIndex = (U8) refFilesNames.size();
@@ -208,7 +208,7 @@ void commandLineParser (int argc, char **argv, FCM &mixModel)
             }
         }
         /// save last reference file name
-        mixModel.pushBackRefAddresses(refFilesNames.substr(0, refIndex));
+        mixModel.pushRefAddr(refFilesNames.substr(0, refIndex));
         */
     }
     
@@ -243,16 +243,16 @@ void commandLineParser (int argc, char **argv, FCM &mixModel)
             modelParams.push_back( string(begIter, endIter) );        /// parameters for the last model
             
             /// set model(s) parameters
-            mixModel.pushBackParams( (bool) stoi( modelParams[0] ),   /// inverted repeat
-                                     (U8)   stoi( modelParams[1] ),   /// context depth
-                                     (U16)  stoi( modelParams[2] ) ); /// alpha denominator
+            mixModel.pushParams((bool) stoi(modelParams[ 0 ]),   /// inverted repeat
+                                (U8) stoi(modelParams[ 1 ]),   /// context depth
+                                (U16) stoi(modelParams[ 2 ])); /// alpha denominator
         }
         
         /// set compression mode: 't'=table, 'h'=hash table -- 5^k_1 + 5^k_2 + ... > 5^12 ==> mode: hash table
         U64 cmpModeSum = 0;
-        for (U8 k : mixModel.getContextDepths())    cmpModeSum = cmpModeSum + (U64) pow(ALPH_SIZE, k);
+        for (U8 k : mixModel.getCtxDepth())    cmpModeSum = cmpModeSum + (U64) pow(ALPH_SIZE, k);
         const char compressionMode = (cmpModeSum > pow(ALPH_SIZE, TABLE_MAX_CTX)) ? 'h' : 't';
-        mixModel.setCompressionMode( compressionMode );
+        mixModel.setCompMode(compressionMode);
         
         /// initialize vector of tables or hash tables
         compressionMode == 'h' ? mixModel.initHashTables() : mixModel.initTables();

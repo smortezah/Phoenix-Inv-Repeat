@@ -29,23 +29,23 @@ using std::thread;
 ///////////////////////////////////////////////////////////
 int main (int argc, char *argv[])
 {
-    high_resolution_clock::time_point exeStartTime = high_resolution_clock::now();  /// Record start time
+    /// Record start time
+    high_resolution_clock::time_point exeStartTime = high_resolution_clock::now();
     
-    FCM mixModel;   /// object on memory stack
-
-    /// parse the command line
-    commandLineParser(argc, argv, mixModel);
+    FCM mixModel;                               /// object on memory stack
+    
+    commandLineParser(argc, argv, mixModel);    /// parse the command line
     
     /// build reference(s) model(s) -- multithreaded
-    const U8 n_models = mixModel.getN_models();
+    const U8 n_models  = mixModel.getN_models();
     const U8 n_threads = mixModel.getN_threads();
     U8 arrThrSize = (n_models > n_threads) ? n_threads : n_models;/// size of array of threads
     thread arrThread[ arrThrSize ];                               /// array of threads
     for (U8 i = 0; i < n_models; i += arrThrSize)
     {
         for (U8 j = 0; j < arrThrSize && i + j < n_models; ++j)
-            arrThread[ j ] = thread( &FCM::buildModel, &mixModel, mixModel.getInvertedRepeats()[ i + j ],
-                                     mixModel.getContextDepths()[ i + j ], i + j );
+            arrThread[ j ] = thread( &FCM::buildModel, &mixModel, mixModel.getIR()[ i + j ],
+                                     mixModel.getCtxDepth()[ i + j ], i + j );
         for (U8 j = 0; j < arrThrSize && i + j < n_models; ++j)
             arrThread[ j ].join();
     }
@@ -62,23 +62,24 @@ int main (int argc, char *argv[])
     */
     
     /// compress target(s) using reference(s) model(s) -- multithreaded
-    U8 n_targets = (U8) mixModel.getTarAddr().size();             /// up to 2^8=256 targets
-    arrThrSize = (n_targets > n_threads) ? n_threads : n_targets; /// modify the size of array of threads
+    U8 n_targets = (U8) mixModel.getTarAddr().size();   /// up to 2^8=256 targets
+    /// modify the size of array of threads
+    arrThrSize = (n_targets > n_threads) ? n_threads : n_targets;
     for (U8 i = 0; i < n_targets; i += arrThrSize)
     {
         for (U8 j = 0; j < arrThrSize && i + j < n_targets; ++j)
-            arrThread[ j ] = thread( &FCM::compressTarget, &mixModel, mixModel.getTarAddr()[ i + j ] );
+            arrThread[ j ] = thread(&FCM::compress, &mixModel, mixModel.getTarAddr()[ i + j ] );
         for (U8 j = 0; j < arrThrSize && i + j < n_targets; ++j)
             arrThread[ j ].join();
     }
     
     /// decompress target(s) using reference(s) model(s) -- multithreaded
-    if ( mixModel.getDecompressFlag() )
+    if (mixModel.getDecompFlag() )
     {
         for (U8 i = 0; i < n_targets; i += arrThrSize)
         {
             for (U8 j = 0; j < arrThrSize && i + j < n_targets; ++j)
-                arrThread[ j ] = thread(&FCM::decompressTarget, &mixModel, mixModel.getTarAddr()[ i + j ]);
+                arrThread[ j ] = thread(&FCM::decompress, &mixModel, mixModel.getTarAddr()[ i + j ]);
             for (U8 j = 0; j < arrThrSize && i + j < n_targets; ++j)
                 arrThread[ j ].join();
         }
@@ -90,9 +91,10 @@ int main (int argc, char *argv[])
     
     
     
-    
-    high_resolution_clock::time_point exeFinishTime = high_resolution_clock::now(); /// Record end time
-    std::chrono::duration< double > elapsed = exeFinishTime - exeStartTime; /// calculate and show duration in seconds
+    /// Record end time
+    high_resolution_clock::time_point exeFinishTime = high_resolution_clock::now();
+    /// calculate and show duration in seconds
+    std::chrono::duration< double > elapsed = exeFinishTime - exeStartTime;
     
     cout << "Elapsed time: " << std::fixed << setprecision(3) << elapsed.count() << '\n';
     
