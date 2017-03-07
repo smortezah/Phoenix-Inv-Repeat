@@ -25,10 +25,7 @@ using std::thread;
 /***********************************************************
     constructor
 ************************************************************/
-Functions::Functions ()
-{
-    n_threads = DEFAULT_N_THREADS;      /// number of threads
-}
+Functions::Functions () {}
 
 
 /***********************************************************
@@ -39,7 +36,7 @@ void Functions::commandLineParser (int argc, char **argv, FCM &mixModel)
     Messages messageObj;                /// object for showing messages
 //    FCM      mixModel;                  /// mixture of FCM models
     
-    decompressFlag = false;
+//    decompressFlag = false;
     double gamma = DEFAULT_GAMMA;       /// gamma
 //    double gamma;
     
@@ -115,7 +112,8 @@ void Functions::commandLineParser (int argc, char **argv, FCM &mixModel)
                 
             case 'd':   /// decompression mode
                 d_flag = 1;
-                decompressFlag = true;
+//                decompressFlag = true;
+                mixModel.setDecompressFlag(true);
                 break;
             
             case 'm':   /// needs model(s) parameters
@@ -136,8 +134,8 @@ void Functions::commandLineParser (int argc, char **argv, FCM &mixModel)
             case 'n':   /// needs an integer argument
                 try
                 {
-                    n_threads = (U8) stoi((string) optarg);
-                    if (n_threads < 1)  n_threads = DEFAULT_N_THREADS;
+                    U8 n_threads = (U8) stoi((string) optarg);
+                    mixModel.setN_threads( (n_threads < 1) ? (U8) DEFAULT_N_THREADS : n_threads );
                 }
                 catch (const invalid_argument &ia)
                 {
@@ -278,8 +276,8 @@ void Functions::commandLineParser (int argc, char **argv, FCM &mixModel)
         const char compressionMode = (cmpModeSum > pow(ALPH_SIZE, TABLE_MAX_CTX)) ? 'h' : 't';
         mixModel.setCompressionMode( compressionMode );
 
-//        /// initialize vector of tables or hash tables
-//        compressionMode == 'h' ? mixModel.initHashTables() : mixModel.initTables();
+        /// initialize vector of tables or hash tables
+        compressionMode == 'h' ? mixModel.initHashTables() : mixModel.initTables();
 
 //        U8 arrThrSize = (n_models > n_threads) ? n_threads : n_models;/// size of array of threads
 ////        thread *arrThread = new thread[ arrThrSize ];                 /// array of threads
@@ -388,6 +386,5 @@ bool Functions::isFileCorrect (ifstream &fileIn)
 /***********************************************************
     getters and setters
 ************************************************************/
-U8   Functions::getN_threads () const       { return n_threads;               }
-bool Functions::getDecompressFlag () const  { return decompressFlag;          }
-void Functions::setDecompressFlag (bool dF) { Functions::decompressFlag = dF; }
+//bool Functions::getDecompressFlag () const  { return decompressFlag;          }
+//void Functions::setDecompressFlag (bool dF) { Functions::decompressFlag = dF; }

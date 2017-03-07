@@ -40,42 +40,42 @@ int main (int argc, char *argv[])
     funcObj.commandLineParser(argc, argv, mixModel);
     
     
-////    cout << mixModel.getN_models();
-    cout<<mixModel.getGamma();
-    
-    
     
 //    const U8 n_models = mixModel.getN_models();
-//    const U8 n_threads = funcObj.getN_threads();
-    /// build reference(s) model(s) -- multithreaded
-//    /// set compression mode: 't'=table, 'h'=hash table -- 5^k_1 + 5^k_2 + ... > 5^12 ==> mode: hash table
-//    U64 cmpModeSum = 0;
-//    for (U8 k : mixModel.getContextDepths())    cmpModeSum = cmpModeSum + (U64) pow(ALPH_SIZE, k);
-//    const char compressionMode = (cmpModeSum > pow(ALPH_SIZE, TABLE_MAX_CTX)) ? 'h' : 't';
-//    mixModel.setCompressionMode( compressionMode );
+    const U8 n_threads = mixModel.getN_threads();
+    
+    cout<<(int)n_threads;
+    cout<<(int)mixModel.getDecompressFlag();
+    
+//    /// build reference(s) model(s) -- multithreaded
+////    /// set compression mode: 't'=table, 'h'=hash table -- 5^k_1 + 5^k_2 + ... > 5^12 ==> mode: hash table
+////    U64 cmpModeSum = 0;
+////    for (U8 k : mixModel.getContextDepths())    cmpModeSum = cmpModeSum + (U64) pow(ALPH_SIZE, k);
+////    const char compressionMode = (cmpModeSum > pow(ALPH_SIZE, TABLE_MAX_CTX)) ? 'h' : 't';
+////    mixModel.setCompressionMode( compressionMode );
+////
+////    /// initialize vector of tables or hash tables
+////    compressionMode == 'h' ? mixModel.initHashTables() : mixModel.initTables();
 //
-//    /// initialize vector of tables or hash tables
-//    compressionMode == 'h' ? mixModel.initHashTables() : mixModel.initTables();
-    
-    
-    
-//    /// initialize vector of tables or hash tables
-//    mixModel.getCompressionMode() == 'h' ? mixModel.initHashTables() : mixModel.initTables();
-    
-    
+//
+//
+////    /// initialize vector of tables or hash tables
+////    mixModel.getCompressionMode() == 'h' ? mixModel.initHashTables() : mixModel.initTables();
+//
+//
 //    U8 arrThrSize = (n_models > n_threads) ? n_threads : n_models;/// size of array of threads
 //    thread arrThread[ arrThrSize ];                               /// array of threads
 //
 //    for (U8 i = 0; i < n_models; i += arrThrSize)
 //    {
-////        for (U8 j = 0; j < arrThrSize && i + j < n_models; ++j)
-////            arrThread[ j ] = thread( &FCM::buildModel, &mixModel,
-////                                     mixModel.getInvertedRepeats()[ i + j ],
-////                                     mixModel.getContextDepths()[ i + j ],
-////                                     i + j );
-////
-////        for (U8 j = 0; j < arrThrSize && i + j < n_models; ++j)
-////            arrThread[ j ].join();
+//        for (U8 j = 0; j < arrThrSize && i + j < n_models; ++j)
+//            arrThread[ j ] = thread( &FCM::buildModel, &mixModel,
+//                                     mixModel.getInvertedRepeats()[ i + j ],
+//                                     mixModel.getContextDepths()[ i + j ],
+//                                     i + j );
+//
+//        for (U8 j = 0; j < arrThrSize && i + j < n_models; ++j)
+//            arrThread[ j ].join();
 //    }
     /*
     /// compress target(s) using reference(s) model -- multithreaded

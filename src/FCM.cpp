@@ -1195,21 +1195,26 @@ void FCM::printHashTable () const
 /***********************************************************
     getters and setters
 ************************************************************/
-void  FCM::setCompressionMode (char cM)              { compressionMode = cM;          }
-char  FCM::getCompressionMode () const               { return compressionMode;        }
-void  FCM::setN_models (U8 n)                        { n_models = n;                  }
-U8    FCM::getN_models () const                      { return n_models;               }
-void  FCM::setGamma (double g)                       { gamma = g;                     }
-const vector<bool> &FCM::getInvertedRepeats () const { return invertedRepeats;        }
-const vector<U8> &FCM::getContextDepths () const     { return contextDepths;          }
-const vector<string> &FCM::getTarAddresses () const  { return tarAddresses;           }
-void  FCM::pushBackTarAddresses (const string &tFAs) { tarAddresses.push_back(tFAs);  }
-const vector<string> &FCM::getRefAddresses () const  { return refAddresses;           }
-void  FCM::pushBackRefAddresses (const string &rFAs) { refAddresses.push_back(rFAs);  }
-void  FCM::initTables ()                             { tables.reserve(n_models);      }
-void  FCM::setTable (U64 *tbl, U8 idx)               { tables[ idx ] = tbl;           }
-void  FCM::initHashTables ()                         { hashTables.reserve(n_models);  }
-void  FCM::setHashTable (const htable_t &ht, U8 idx) { hashTables[ idx ] = ht;        }
-void  FCM::pushBackParams (bool iR, U8 ctx, U16 aD)  { invertedRepeats.push_back(iR);
-                                                       contextDepths.push_back(ctx);
-                                                       alphaDenoms.push_back(aD);     }
+bool   FCM::getDecompressFlag  ()       const           { return decompressFlag;         }
+void   FCM::setDecompressFlag  (bool dF)                { FCM::decompressFlag = dF;      }
+U8     FCM::getN_threads       ()       const           { return n_threads;              }
+void   FCM::setN_threads       (U8 nT)                  { n_threads = nT;                }
+void   FCM::setCompressionMode (char cM)                { compressionMode = cM;          }
+char   FCM::getCompressionMode ()       const           { return compressionMode;        }
+void   FCM::setN_models        (U8 n)                   { n_models = n;                  }
+U8     FCM::getN_models        ()       const           { return n_models;               }
+void   FCM::setGamma           (double g)               { gamma = g;                     }
+double FCM::getGamma           ()       const           { return gamma;                  }
+const  vector<bool> &FCM::getInvertedRepeats () const   { return invertedRepeats;        }
+const  vector<U8> &FCM::getContextDepths     () const   { return contextDepths;          }
+const  vector<string> &FCM::getTarAddresses  () const   { return tarAddresses;           }
+void   FCM::pushBackTarAddresses (const string &tFAs)   { tarAddresses.push_back(tFAs);  }
+const  vector<string> &FCM::getRefAddresses  () const   { return refAddresses;           }
+void   FCM::pushBackRefAddresses (const string &rFAs)   { refAddresses.push_back(rFAs);  }
+void   FCM::initTables     ()                           { tables.reserve(n_models);      }
+void   FCM::setTable       (U64 *tbl, U8 idx)           { tables[ idx ] = tbl;           }
+void   FCM::initHashTables ()                           { hashTables.reserve(n_models);  }
+void   FCM::setHashTable   (const htable_t &ht, U8 idx) { hashTables[ idx ] = ht;        }
+void   FCM::pushBackParams (bool iR, U8 ctx, U16 aD)    { invertedRepeats.push_back(iR);
+                                                          contextDepths.push_back(ctx);
+                                                          alphaDenoms.push_back(aD);     }

@@ -18,13 +18,11 @@ public:
     
 //    static bool isFileCorrect (std::ifstream&); /// check if file opened correctly
     
-    U8   getN_threads () const;             /// getter of number of threads
-    bool getDecompressFlag () const;        /// getter of decompress flag
-    void setDecompressFlag (bool);          /// getter of decompress flag
+//    bool getDecompressFlag () const;        /// getter of decompress flag
+//    void setDecompressFlag (bool);          /// getter of decompress flag
     
 private:
-    U8   n_threads;                         /// number of threads
-    bool decompressFlag;                    /// decompress flag
+//    bool decompressFlag;                    /// decompress flag
 };
 
 
