@@ -65,12 +65,12 @@ Options:
 Please cite the following papers, if you use <i>Phoenix</i>:
 
 <h2>ISSUES</h2>
-Please let me know if there is any issues, at [issues] (https://github.com/smortezah/Phoenix/issues)
- 
- <a href="https://github.com/smortezah/Phoenix/issues">issues</a>.
+Please let me know if there is any issues, at <a href="https://github.com/smortezah/Phoenix/issues">issues</a>.
 
 <h2>LICENSE</h2>
 GPL v3.
 
-For more information:
+For more information, please visit
+<a href="http://www.gnu.org/licenses/gpl-3.0.html">
 http://www.gnu.org/licenses/gpl-3.0.html
+</a>.
