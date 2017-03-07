@@ -32,8 +32,8 @@ public:
     
     bool   getDecompressFlag  ()        const;          /// getter of decompress flag
     void   setDecompressFlag  (bool);                   /// getter of decompress flag
-    U8     getN_threads   ()            const;          /// getter of number of threads
-    void   setN_threads   (U8);                         /// setter of number of threads
+    U8     getN_threads       ()        const;          /// getter of number of threads
+    void   setN_threads       (U8);                     /// setter of number of threads
     void   setCompressionMode (char);                   /// setter of compression mode
     char   getCompressionMode ()        const;          /// getter of compression mode
     void   setN_models        (U8);                     /// setter of number of models

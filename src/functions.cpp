@@ -34,11 +34,6 @@ Functions::Functions () {}
 void Functions::commandLineParser (int argc, char **argv, FCM &mixModel)
 {
     Messages messageObj;                /// object for showing messages
-//    FCM      mixModel;                  /// mixture of FCM models
-    
-//    decompressFlag = false;
-    double gamma = DEFAULT_GAMMA;       /// gamma
-//    double gamma;
     
     /// using these flags, if both short and long arguments
     /// are entered, just one of them is considered
@@ -112,7 +107,6 @@ void Functions::commandLineParser (int argc, char **argv, FCM &mixModel)
                 
             case 'd':   /// decompression mode
                 d_flag = 1;
-//                decompressFlag = true;
                 mixModel.setDecompressFlag(true);
                 break;
             
@@ -143,15 +137,12 @@ void Functions::commandLineParser (int argc, char **argv, FCM &mixModel)
                     return;
                 }
                 break;
-            
+                
             case 'g':   /// needs a double argument
                 try
                 {
-                    gamma = stod((string) optarg);
-                    if (gamma < 0 || gamma >= 1)
-                        gamma = DEFAULT_GAMMA;
-//                        mixModel.setGamma( DEFAULT_GAMMA );
-//                    else mixModel.setGamma( gamma );
+                    double gamma = stod( (string) optarg );
+                    mixModel.setGamma( (gamma < 0 || gamma >= 1) ? DEFAULT_GAMMA : gamma );
                 }
                 catch (const invalid_argument &ia)
                 {
@@ -264,10 +255,7 @@ void Functions::commandLineParser (int argc, char **argv, FCM &mixModel)
         }
 
         /// build reference(s) model(s) -- multithreaded
-        
-        mixModel.setGamma(gamma);                                     /// set gamma
     
-//        cout<<mixModel.getGamma();
         
         
         /// set compression mode: 't'=table, 'h'=hash table -- 5^k_1 + 5^k_2 + ... > 5^12 ==> mode: hash table

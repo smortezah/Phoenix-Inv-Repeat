@@ -38,7 +38,9 @@ using std::fill_n;
 ************************************************************/
 FCM::FCM ()
 {
-//    gamma = DEFAULT_GAMMA;       /// gamma
+    n_threads      = DEFAULT_N_THREADS;          /// number of threads
+    gamma          = DEFAULT_GAMMA;              /// gamma
+    decompressFlag = false;                      /// decompression flag
 }
 
 

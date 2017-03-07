@@ -39,13 +39,9 @@ int main (int argc, char *argv[])
     /// parse the command line
     funcObj.commandLineParser(argc, argv, mixModel);
     
-    
-    
-//    const U8 n_models = mixModel.getN_models();
+    const U8 n_models = mixModel.getN_models();
     const U8 n_threads = mixModel.getN_threads();
     
-    cout<<(int)n_threads;
-    cout<<(int)mixModel.getDecompressFlag();
     
 //    /// build reference(s) model(s) -- multithreaded
 ////    /// set compression mode: 't'=table, 'h'=hash table -- 5^k_1 + 5^k_2 + ... > 5^12 ==> mode: hash table
@@ -88,7 +84,7 @@ int main (int argc, char *argv[])
     U8 arrThrSize = (n_targets > n_threads_available) ? n_threads_available : n_targets;
     thread *arrThread = new thread[arrThrSize];             /// array of threads
     */
-
+    
 //    /// compress target(s) using reference(s) model(s) -- multithreaded
 ////    mixModel.setGamma(gamma);                                     /// set gamma
 //    U8 n_targets = (U8) mixModel.getTarAddresses().size();        /// up to 2^8=256 targets
