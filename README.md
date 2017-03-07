@@ -1,4 +1,4 @@
-<h2>INSTALLATION</h2>
+## INSTALLATION
 **Cmake** is required for the installation. Also, **git** is suggested for cloning the repository.
 ```bash
 sudo apt-get install cmake git
@@ -8,7 +8,7 @@ cmake .
 make
 ```
 
-<h2>USAGE</h2>
+## USAGE
 ```
 ./phoenix [OPTION]... -m [MODEL(S)] -r [REFERENCE(S)] -t [TARGET(S)]
 ```
@@ -16,18 +16,18 @@ To see the options, type:
 `./phoenix -h`
 
 This will print the following:
-<pre>
+```
 Synopsis:
     ./phoenix [OPTION]... -m [MODEL(S)] -r [REFERENCE(S)] -t [TARGET(S)]
     
          EXAMPLE: ./phoenix -n 4 -d -m 0,11,100:1,9,10 -r HS21,HSY -t PT19,PT21,PT22,PTY
-
+         
 Mandatory arguments:
-    -m [&lt;i_1&gt;,&lt;k_1&gt;,&lt;a_1&gt;:&lt;i_2&gt;,&lt;k_2&gt;,&lt;a_2&gt;:...],   --model [&lt;i_1&gt;,&lt;k_1&gt;,&lt;a_1&gt;:...]
+    -m [<i_1>,<k_1>,<a_1>:<i_2>,<k_2>,<a_2>:...],   --model [<i_1>,<k_1>,<a_1>:...]
          context model(s) (at least one).
-         &lt;i&gt;:  inverted repeat (0=don't use, 1=use).
-         &lt;k&gt;:  context-order size,
-         &lt;a&gt;:  1/alpha,
+         <i>:  inverted repeat (0=don't use, 1=use).
+         <k>:  context-order size,
+         <a>:  1/alpha,
          EXAMPLE: -m 0,11,100:1,9,10
 
     -r [REFERENCE(S)],   --reference [REFERENCE(S)]
@@ -59,15 +59,15 @@ Options:
     -v,  --verbose
          verbose mode (more information)
 
-</pre>
+```
 
-<h2>CITATION</h2>
+## CITATION
 Please cite the following papers, if you use <i>Phoenix</i>:
 
-<h2>ISSUES</h2>
+## ISSUES
 Please let me know if there is any issues, at <a href="https://github.com/smortezah/Phoenix/issues">issues</a>.
 
-<h2>LICENSE</h2>
+## LICENSE
 GPL v3.
 
 For more information, please visit
