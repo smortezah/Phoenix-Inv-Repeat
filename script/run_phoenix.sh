@@ -17,7 +17,7 @@ for ir in $INV_REPEATS; do
 #     ./phoenix -m $ir,$ctx,$alphaDen -r $FLD_dataset/$refDataset -t $FLD_dataset/$tarDataset \
       ./phoenix -n 4 -d -m 0,1,100:1,2,10\
        -r x -t y \
-#      -r x -t dataset/HS21 \
+#      -r HS21 -t HSMT \
 #               > $IR_LBL$ir-$refDataset-$TAR_SPECIES.$INF_FILE_TYPE
 #       tr -d '\n' < PTY > tmp; diff tmp DECOMP.de; rm -f tmp;
      done
