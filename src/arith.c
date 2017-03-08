@@ -197,7 +197,7 @@ void arithmetic_encode(freq_value low, freq_value high, freq_value total,
 
     if (out_bits_outstanding > MAX_BITS_OUTSTANDING)
     {
-/* 
+/*
  * For MAX_BITS_OUTSTANDING to be exceeded is extremely improbable, but
  * it is possible.  For this to occur the COMPRESSED file would need to
  * contain a sequence MAX_BITS_OUTSTANDING bits long (eg: 2^31 bits, or
@@ -208,9 +208,9 @@ void arithmetic_encode(freq_value low, freq_value high, freq_value total,
  * the probability for any 256 megabyte section causing an overflow
  * would be 1 in 2^(2^31).  This is a number approximately 600 million
  * digits long (decimal).
- * 
+ *
  */
-	
+
 	fprintf(stderr,"Bits_outstanding limit reached - File too large\n");
 	exit(1);
     }

@@ -91,11 +91,12 @@ uint64_t ReadNBits (int nBits, FILE *iFp)
 
 /*----------------------------------------------------------------------------*/
 
-void AESym (int symbol, int *counters, FILE *oFp)
+//void AESym (int symbol, int *counters, FILE *oFp)
+void AESym (int symbol, int *counters, int totalCount, FILE *oFp)
 {
     int low, high;
-    int totalCount = 0;
-    for (int i=ALPH_SIZE; i--;) totalCount = totalCount + counters[i];
+//    int totalCount = 0;
+//    for (int i=ALPH_SIZE; i--;) totalCount = totalCount + counters[i];
     
     GetInterval(&low, &high, counters, symbol);
     arithmetic_encode(low, high, totalCount, oFp);
