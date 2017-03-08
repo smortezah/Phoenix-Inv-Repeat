@@ -1,8 +1,6 @@
 /*------------------------------------------------------------------------------
 
-Copyright 2010,2017 IEETA / University of Aveiro, All Rights Reserved.
-
-Armando J. Pinho, Morteza Hosseini
+Copyright 2010 IEETA / University of Aveiro, All Rights Reserved.
  
 These programs are supplied free of charge for research purposes only,
 and may not be sold or incorporated into any commercial product. There is
@@ -91,12 +89,9 @@ uint64_t ReadNBits (int nBits, FILE *iFp)
 
 /*----------------------------------------------------------------------------*/
 
-//void AESym (int symbol, int *counters, FILE *oFp)
 void AESym (int symbol, int *counters, int totalCount, FILE *oFp)
 {
     int low, high;
-//    int totalCount = 0;
-//    for (int i=ALPH_SIZE; i--;) totalCount = totalCount + counters[i];
     
     GetInterval(&low, &high, counters, symbol);
     arithmetic_encode(low, high, totalCount, oFp);

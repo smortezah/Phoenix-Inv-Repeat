@@ -119,7 +119,7 @@ void FCM::buildModel (bool invRepeat, U8 ctxDepth, U8 modelIndex)
                     }
                 }   /// end while
             }   /// end for
-            
+    
             mut.lock(); setTable(table, modelIndex);    mut.unlock();       /// set table
         }   /// end case
             break;
@@ -213,6 +213,7 @@ void FCM::compress (const string &tarFileName)
     double  sumOfWeights;               /// sum of weights. used for normalization
     double  freqsDouble[ ALPH_SIZE ];   /// frequencies of each symbol (double)
     int     freqs[ ALPH_SIZE ];         /// frequencies of each symbol (integer)
+    U64     sumFreqs;
     
     /*
     /// using macros make this code slower
@@ -243,13 +244,6 @@ void FCM::compress (const string &tarFileName)
         WriteNBits( alphaDens[ n ],       16, Writer );
 //        WriteNBits( compMode,           1, Writer );
     }
-    
-    
-    
-    
-    
-U64 sumFreqs;
-    
     
     switch ( compMode )
     {
@@ -302,8 +296,18 @@ U64 sumFreqs;
                     /// frequencies (integer)
                     for (U8 j = ALPH_SIZE; j--;) freqs[ j ] = (int) (1 + (freqsDouble[j] * DOUBLE_TO_INT));
                     sumFreqs = 0;   for (int f : freqs) sumFreqs += f;  /// sum of frequencies
+    
+    
+                    for (int j = 0; j < 30; ++j)
+                        cout << tables[ 0 ][ j ] << ' ';
+                    cout << '\n';
+
                     
-//                    AESym( currSymInt, freqs, Writer );         /// Arithmetic encoder
+//                   for(int i=0;i<5;++i)
+//                    cout<<tables[0][0][i]<<' ';
+                    
+//                    for(U8 i=0;i<ALPH_SIZE;++i)printf("%d\t",freqs[i]);printf("***\n");
+                    
                     AESym( currSymInt, freqs, (int) sumFreqs, Writer ); /// Arithmetic encoder
                 }   /// end for
             }   /// end while
@@ -361,10 +365,9 @@ U64 sumFreqs;
 //
 //                    /// frequencies (integer)
 //                    for (U8 j = ALPH_SIZE; j--;) freqs[ j ] = (int) (1 + (freqsDouble[j] * DOUBLE_TO_INT));
-////                    sumFreqs = 0;   for (int f : freqs) sumFreqs += f;      /// sum of frequencies
+//                    sumFreqs = 0;   for (int f : freqs) sumFreqs += f;      /// sum of frequencies
 //
-//                    AESym( currSymInt, freqs, Writer );     /// Arithmetic encoding
-////                    AESym( currSymInt, freqs, (int) sumFreqs, Writer );     /// Arithmetic encoding
+//                    AESym( currSymInt, freqs, (int) sumFreqs, Writer );     /// Arithmetic encoding
 //                }   /// end for
 //            }   /// end while
 //        }   /// end case
