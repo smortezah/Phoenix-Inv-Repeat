@@ -26,10 +26,11 @@ public:
     inline char   symIntToChar (U8)       const;    /// 01234 -> ACNGT
     inline U8     symCharToInt (char)     const;    /// ACNGT -> 01234
     inline double fastPow      (double, double);    /// fast power
+    inline U64    fileSize     (const string &);    /// size of file
     
 //    void buildHashTable_str ();                      /// build hash table (string key)
     void   printHashTable ()              const;    /// print hash table
-                                          
+    
     bool   getDecompFlag  ()              const;    /// getter - decompress flag
     void   setDecompFlag  (bool);                   /// getter - decompress flag
     U8     getN_threads   ()              const;    /// getter - number of threads

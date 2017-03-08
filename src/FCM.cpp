@@ -182,7 +182,8 @@ void FCM::compress (const string &tarFileName)
         sumAlphas[ i ] = ALPH_SIZE * alpha[ i ];
     }
     
-    ifstream tarFileIn( tarFileName, ios::in ); /// open target file
+    /// open target file
+    ifstream tarFileIn( tarFileName, ios::in );
     
     mut.lock();///========================================================
     if (!tarFileIn)                     /// error occurred while opening file
@@ -207,7 +208,8 @@ void FCM::compress (const string &tarFileName)
     double  weight[ n_models ];  fill_n(weight, n_models, (double) 1 / n_models);   /// each model weight
     double  probability;                /// final probability of a symbol
     double  sumOfEntropies;             /// sum of entropies for different symbols
-    U64     totalNSyms = 0;             /// number of all symbols in the sequence
+    U64     totalNSyms = 0;     /// number of all symbols in the sequence
+//    U64     totalNSyms = fileSize(tarFileName);     /// number of all symbols in the sequence
     double  averageEntropy = 0;         /// average entropy (H)
     double  sumOfWeights;               /// sum of weights. used for normalization
     double  freqsDouble[ ALPH_SIZE ];   /// frequencies of each symbol (double)
@@ -231,13 +233,13 @@ void FCM::compress (const string &tarFileName)
     startoutputtingbits();                  /// start arithmetic encoding process
     start_encode();
     
-    /// number of symbols at target file. then, close file
-    while ( getline(tarFileIn, tarLine) )   totalNSyms = totalNSyms + tarLine.size();
-//    tarFileIn.close();
+//    /// number of symbols at target file. then, close file
+//    while ( getline(tarFileIn, tarLine) )   totalNSyms = totalNSyms + tarLine.size();
+////    tarFileIn.close();
     
     /// model(s) properties, to be sent to decoder
     WriteNBits( WATERMARK,                26, Writer );
-    WriteNBits( totalNSyms,               46, Writer );
+//    WriteNBits( totalNSyms,               46, Writer );
     WriteNBits( (int) (gamma * 65536),    32, Writer );
     WriteNBits( n_models,                 16, Writer );
     for (U8 n = 0; n < n_models; ++n)
@@ -256,7 +258,7 @@ void FCM::compress (const string &tarFileName)
             sumOfEntropies = 0;             /// sum of entropies
             
             while ( getline(tarFileIn, tarLine) )
-            {                                                                                                       cout<<'a';
+            {                  totalNSyms = totalNSyms + tarLine.size();
                 /// table includes the number of occurrences of symbols A, C, N, G, T
                 for (string::iterator lineIt = tarLine.begin(); lineIt != tarLine.end(); ++lineIt)
                 {
@@ -371,7 +373,7 @@ void FCM::compress (const string &tarFileName)
     fclose( Writer );               /// close compressed file
                                     
     tarFileIn.close();              /// close target file
-
+    cout<<totalNSyms;
     averageEntropy = (double) (-1) * sumOfEntropies / totalNSyms;     /// H_N = -1/N sum( log_2 P(s|c^t) )
 
     /// print reference and target file names
@@ -713,6 +715,17 @@ inline double FCM::fastPow (double base, double exponent)
     u.x[ 0 ] = 0;
     
     return u.d;
+}
+
+
+/***********************************************************
+    size of file
+************************************************************/
+inline U64 FCM::fileSize (const string &fileName)
+{
+    /// ios::ate seeks to end immediately after opening
+    ifstream fileIn( fileName, ios::in | ios::ate );
+    return (U64) fileIn.tellg();
 }
 
 
