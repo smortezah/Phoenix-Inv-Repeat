@@ -202,14 +202,13 @@ void FCM::compress (const string &tarFileName)
     string  tarLine;                    /// keep each line of the file
     U64     nSym;                       /// number of symbols (n_s). in probability numerator
     U64     sumNSym;                    /// sum of number of symbols (sum n_a). in probability denominator
-    double  prob_i;                     /// each model probability of a symbol
-    double  rawWeight[ n_models ];      /// each model weight before normalization. init: 1/M
-    double  rW_i;                       /// temp variable to decrease accessing rawWeight[] array
+    double  prob_i;                     /// probability of a symbol for each model
+    double  rawWeight[ n_models ];      /// weight before normalization for each model. init: 1/M
     double  weight[ n_models ];  fill_n(weight, n_models, (double) 1 / n_models);   /// each model weight
     double  probability;                /// final probability of a symbol
     double  sumOfEntropies;             /// sum of entropies for different symbols
-    U64     totalNSyms = 0;     /// number of all symbols in the sequence
-//    U64     totalNSyms = fileSize(tarFileName);     /// number of all symbols in the sequence
+    U64     n_fileLines = 0;            /// number of file lines
+    U64     file_size = fileSize(tarFileName);      /// size of file, including '\n' symbols
     double  averageEntropy = 0;         /// average entropy (H)
     double  sumOfWeights;               /// sum of weights. used for normalization
     double  freqsDouble[ ALPH_SIZE ];   /// frequencies of each symbol (double)
@@ -233,13 +232,9 @@ void FCM::compress (const string &tarFileName)
     startoutputtingbits();                  /// start arithmetic encoding process
     start_encode();
     
-//    /// number of symbols at target file. then, close file
-//    while ( getline(tarFileIn, tarLine) )   totalNSyms = totalNSyms + tarLine.size();
-////    tarFileIn.close();
-    
     /// model(s) properties, to be sent to decoder
     WriteNBits( WATERMARK,                26, Writer );
-//    WriteNBits( totalNSyms,               46, Writer );
+    WriteNBits( file_size,                46, Writer );
     WriteNBits( (int) (gamma * 65536),    32, Writer );
     WriteNBits( n_models,                 16, Writer );
     for (U8 n = 0; n < n_models; ++n)
@@ -258,7 +253,9 @@ void FCM::compress (const string &tarFileName)
             sumOfEntropies = 0;             /// sum of entropies
             
             while ( getline(tarFileIn, tarLine) )
-            {                  totalNSyms = totalNSyms + tarLine.size();
+            {
+                ++n_fileLines;                              /// number of file lines
+                
                 /// table includes the number of occurrences of symbols A, C, N, G, T
                 for (string::iterator lineIt = tarLine.begin(); lineIt != tarLine.end(); ++lineIt)
                 {
@@ -285,8 +282,8 @@ void FCM::compress (const string &tarFileName)
                         probability = probability + weight[ i ] * prob_i;       /// P_1*W_1 + P_2*W_2 + ...
                         
                         /// weight before normalization
-                        rW_i = rawWeight[ i ] = fastPow(weight[ i ], gamma) * prob_i;
-                        sumOfWeights = sumOfWeights + rW_i;     /// sum of weights. used for normalization
+                        rawWeight[ i ] = fastPow(weight[ i ], gamma) * prob_i;
+                        sumOfWeights = sumOfWeights + rawWeight[ i ];   /// sum of weights. used for normalization
                         
                         /// update context
                         tarContext[ i ] = (U64) (tCtx * ALPH_SIZE + currSymInt) % maxPlaceValue[ i ];
@@ -314,6 +311,8 @@ void FCM::compress (const string &tarFileName)
                     
             while ( getline(tarFileIn, tarLine) )
             {
+                ++n_fileLines;                              /// number of file lines
+    
                 /// hash table includes the number of occurrences of symbols A, C, N, G, T
                 for (string::iterator lineIt = tarLine.begin(); lineIt != tarLine.end(); ++lineIt)
                 {
@@ -340,11 +339,11 @@ void FCM::compress (const string &tarFileName)
 ////                          nSym = X;
 ////                          X(nSym);
                         prob_i = (nSym + alpha[ i ]) / (sumNSym + sumAlphas[ i ]);  /// P(s|c^t)
-                        probability = probability + weight[ i ] * prob_i;       /// P_1*W_1 + P_2*W_2 + ...
+                        probability = probability + weight[ i ] * prob_i;   /// P_1*W_1 + P_2*W_2 + ...
                         
                         /// weight before normalization
-                        rW_i = rawWeight[ i ] = fastPow(weight[ i ], gamma) * prob_i;
-                        sumOfWeights = sumOfWeights + rW_i;     /// sum of weights. used for normalization
+                        rawWeight[ i ] = fastPow(weight[ i ], gamma) * prob_i;
+                        sumOfWeights = sumOfWeights + rawWeight[ i ];       /// sum of weights. used for normalization
                         
                         /// update context
                         tarContext[ i ] = (U64) (tCtx * ALPH_SIZE + currSymInt) % maxPlaceValue[ i ];
@@ -373,8 +372,11 @@ void FCM::compress (const string &tarFileName)
     fclose( Writer );               /// close compressed file
                                     
     tarFileIn.close();              /// close target file
-    cout<<totalNSyms;
-    averageEntropy = (double) (-1) * sumOfEntropies / totalNSyms;     /// H_N = -1/N sum( log_2 P(s|c^t) )
+
+    /// (file_size - n_fileLines) is number of symbols in file
+    /// n_fileLines is number of '\n's, which are accounted in file_size
+    /// H_N = -1/N sum( log_2 P(s|c^t) )
+    averageEntropy = (double) (-1) * sumOfEntropies / (file_size - n_fileLines);
 
     /// print reference and target file names
     U8 refsAdressesSize = (U8) getRefAddr().size();
@@ -434,7 +436,6 @@ void FCM::decompress (const string &tarFileName)
     U64     sumNSym;                            /// sum of number of symbols (sum n_a). in probability denominator
     double  prob_i;                             /// each model probability of a symbol
     double  rawWeight[ n_models ];              /// each model weight before normalization. init: 1/M
-    double  rW_i;                               /// temp variable to decrease accessing rawWeight[] array
     double  weight[ n_models ];     fill_n(weight, n_models, (double) 1 / n_models);    /// each model weight
     double  probability;                        /// final probability of a symbol
     double  sumOfEntropies = 0;                 /// sum of entropies for different symbols
@@ -545,8 +546,8 @@ void FCM::decompress (const string &tarFileName)
                         prob_i = (nSym + alpha[ i ]) / (sumNSym + sumAlphas[ i ]);  /// P(s|c^t)
 //                        probability = probability + weight[ i ] * prob_i;           /// P_1*W_1 + P_2*W_2 + ...
                         /// weight before normalization
-                        rW_i = rawWeight[ i ] = fastPow(weight[ i ], gamma) * prob_i;
-                        sumOfWeights = sumOfWeights + rW_i;             /// sum of weights. used for normalization
+                        rawWeight[ i ] = fastPow(weight[ i ], gamma) * prob_i;
+                        sumOfWeights = sumOfWeights + rawWeight[ i ];   /// sum of weights. used for normalization
     
                         /// update context
                         tarContext[ i ] = (U64) (tCtx * ALPH_SIZE + currSymInt) % maxPlaceValue[ i ];
@@ -612,8 +613,8 @@ void FCM::decompress (const string &tarFileName)
                         prob_i = (nSym + alpha[ i ]) / (sumNSym + sumAlphas[ i ]);  /// P(s|c^t)
 //                        probability = probability + weight[ i ] * prob_i;           /// P_1*W_1 + P_2*W_2 + ...
                         /// weight before normalization
-                        rW_i = rawWeight[ i ] = fastPow(weight[ i ], gamma) * prob_i;
-                        sumOfWeights = sumOfWeights + rW_i;     /// sum of weights. used for normalization
+                        rawWeight[ i ] = fastPow(weight[ i ], gamma) * prob_i;
+                        sumOfWeights = sumOfWeights + rawWeight[ i ];   /// sum of weights. used for normalization
                         
                         /// update context
                         tarContext[ i ] = (U64) (tCtx * ALPH_SIZE + currSymInt) % maxPlaceValue[ i ];
