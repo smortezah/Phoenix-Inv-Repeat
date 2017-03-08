@@ -294,7 +294,7 @@ bool areFilesEqual (const string &first, const string &second)
     /// keep each line as well as all of the first and second files
     string firstLine, secondLine, firstStr = "", secondStr = "";
     
-    /// remove '\n' from first and second files
+    /// remove '\n' from first and second files and save them in a string
     while ( getline(firstFile, firstLine) )
     {
         firstLine.erase( std::remove(firstLine.begin(), firstLine.end(), '\n'), firstLine.end() );
@@ -308,7 +308,8 @@ bool areFilesEqual (const string &first, const string &second)
     
     firstFile.close();  secondFile.close(); /// close files
     
-    return (firstStr == secondStr); /// if files are identical, return true, otherwise return false
+    /// if files are identical, return true, otherwise return false
+    return (firstStr == secondStr);
 }
 
 

@@ -32,9 +32,10 @@ int main (int argc, char *argv[])
     /// Record start time
     high_resolution_clock::time_point exeStartTime = high_resolution_clock::now();
     
-    FCM mixModel;                               /// object on memory stack
+    FCM mixModel;   /// object on memory stack
     
-//    commandLineParser(argc, argv, mixModel);    /// parse the command line
+//    /// parse the command line
+//    commandLineParser(argc, argv, mixModel);
 //
 //    /// build reference(s) model(s) -- multithreaded
 //    const U8 n_models  = mixModel.getN_models();
@@ -49,18 +50,18 @@ int main (int argc, char *argv[])
 //        for (U8 j = 0; j < arrThrSize && i + j < n_models; ++j)
 //            arrThread[ j ].join();
 //    }
-//    /*
-//    /// compress target(s) using reference(s) model -- multithreaded
-//    U8 MAX_N_THREADS = (U8) thread::hardware_concurrency(); /// max cores in current machine
-//    /// N_FREE_THREADS considered for other jobs in current system
-//    U8 n_threads_available = (U8) (!MAX_N_THREADS ? DEFAULT_N_THREADS - N_FREE_THREADS
-//                                                            : MAX_N_THREADS - N_FREE_THREADS);
-//    U8 n_targets = (U8) model.getTarAddr().size();     /// up to 2^8=256 targets
-//
-//    U8 arrThrSize = (n_targets > n_threads_available) ? n_threads_available : n_targets;
-//    thread *arrThread = new thread[arrThrSize];             /// array of threads
-//    */
-//
+    /*
+    /// compress target(s) using reference(s) model -- multithreaded
+    U8 MAX_N_THREADS = (U8) thread::hardware_concurrency(); /// max cores in current machine
+    /// N_FREE_THREADS considered for other jobs in current system
+    U8 n_threads_available = (U8) (!MAX_N_THREADS ? DEFAULT_N_THREADS - N_FREE_THREADS
+                                                            : MAX_N_THREADS - N_FREE_THREADS);
+    U8 n_targets = (U8) model.getTarAddr().size();     /// up to 2^8=256 targets
+
+    U8 arrThrSize = (n_targets > n_threads_available) ? n_threads_available : n_targets;
+    thread *arrThread = new thread[arrThrSize];             /// array of threads
+    */
+
 //    /// compress target(s) using reference(s) model(s) -- multithreaded
 //    U8 n_targets = (U8) mixModel.getTarAddr().size();   /// up to 2^8=256 targets
 //    /// modify the size of array of threads
@@ -73,7 +74,7 @@ int main (int argc, char *argv[])
 //            arrThread[ j ].join();
 //    }
 //
-//    /// decompress target(s) using reference(s) model(s) -- multithreaded
+//   /// decompress target(s) using reference(s) model(s) -- multithreaded
 //    if (mixModel.getDecompFlag() )
 //    {
 //        for (U8 i = 0; i < n_targets; i += arrThrSize)
@@ -84,13 +85,9 @@ int main (int argc, char *argv[])
 //                arrThread[ j ].join();
 //        }
 //    }
-    
-    /// check if decompressed file is exactly the same as target file
+//
+//    /// check if decompressed file and target file are exactly the same (check: lossless compression)
 //    cout<<areFilesEqual("y","DECOMP.de");
-    cout<<areFilesEqual("x","z");
-    
-    
-    
     
     /// Record end time
     high_resolution_clock::time_point exeFinishTime = high_resolution_clock::now();

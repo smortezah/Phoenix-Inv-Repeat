@@ -35,11 +35,9 @@ public:
     U8     getN_threads   ()              const;    /// getter - number of threads
     void   setN_threads   (U8);                     /// setter - number of threads
     void   setCompMode    (char);                   /// setter - compression mode
-    char   getCompMode    ()              const;    /// getter - compression mode
     void   setN_models    (U8);                     /// setter - number of models
     U8     getN_models    ()              const;    /// getter - number of models
     void   setGamma       (double);                 /// setter - gamma
-    double getGamma       ()              const;    /// getter - gamma
     const  vector<bool>   &getIR       () const;    /// getter - inverted repeat(s)
     const  vector<U8>     &getCtxDepth () const;    /// getter - context depth(es)
     void   pushParams     (bool, U8, U16);          /// setter - model(s) params (ir, ctx_depth, alpha_denom)

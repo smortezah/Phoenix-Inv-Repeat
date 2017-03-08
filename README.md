@@ -9,14 +9,14 @@ make
 ```
 
 ## USAGE
-```
+```commandline
 ./phoenix [OPTION]... -m [MODEL(S)] -r [REFERENCE(S)] -t [TARGET(S)]
 ```
 To see the options, type:
 `./phoenix -h`
 
 This will print the following:
-```
+```commandline
 Synopsis:
     ./phoenix [OPTION]... -m [MODEL(S)] -r [REFERENCE(S)] -t [TARGET(S)]
     

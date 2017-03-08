@@ -1209,11 +1209,9 @@ void   FCM::setDecompFlag  (bool dF)                    { FCM::decompFlag = dF; 
 U8     FCM::getN_threads   ()                    const  { return n_threads;             }
 void   FCM::setN_threads   (U8 nT)                      { n_threads = nT;               }
 void   FCM::setCompMode    (char cM)                    { compMode = cM;                }
-char   FCM::getCompMode    ()                    const  { return compMode;              }
 void   FCM::setN_models    (U8 n)                       { n_models = n;                 }
 U8     FCM::getN_models    ()                    const  { return n_models;              }
 void   FCM::setGamma       (double g)                   { gamma = g;                    }
-double FCM::getGamma       ()                    const  { return gamma;                 }
 const  vector<bool>        &FCM::getIR()         const  { return invRepeats;            }
 const  vector<U8>          &FCM::getCtxDepth ()  const  { return ctxDepths;             }
 const  vector<string>      &FCM::getTarAddr  ()  const  { return tarAddr;               }
