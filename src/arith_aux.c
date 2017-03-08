@@ -1,7 +1,9 @@
 /*------------------------------------------------------------------------------
 
-Copyright 2010 IEETA / University of Aveiro, All Rights Reserved.
+Copyright 2010,2017 IEETA / University of Aveiro, All Rights Reserved.
 
+Armando J. Pinho, Morteza Hosseini
+ 
 These programs are supplied free of charge for research purposes only,
 and may not be sold or incorporated into any commercial product. There is
 ABSOLUTELY NO WARRANTY of any sort, nor any undertaking that they are
@@ -89,9 +91,11 @@ uint64_t ReadNBits (int nBits, FILE *iFp)
 
 /*----------------------------------------------------------------------------*/
 
-void AESym (int symbol, int *counters, int totalCount, FILE *oFp)
+void AESym (int symbol, int *counters, FILE *oFp)
 {
     int low, high;
+    int totalCount = 0;
+    for (int i=ALPH_SIZE; i--;) totalCount = totalCount + counters[i];
     
     GetInterval(&low, &high, counters, symbol);
     arithmetic_encode(low, high, totalCount, oFp);
@@ -99,9 +103,12 @@ void AESym (int symbol, int *counters, int totalCount, FILE *oFp)
 
 /*----------------------------------------------------------------------------*/
 
-int ArithDecodeSymbol (int nSymbols, int *counters, int totalCount, FILE *iFp)
+int ArithDecodeSymbol (int nSymbols, int *counters, FILE *iFp)
 {
     int low, high;
+    int totalCount = 0;
+    for (int i=ALPH_SIZE; i--;) totalCount = totalCount + counters[i];
+    
     int symbol = GetSymbol(&low, &high, counters,
                            arithmetic_decode_target(totalCount), nSymbols);
     

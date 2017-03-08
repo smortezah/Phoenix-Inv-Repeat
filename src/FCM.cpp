@@ -175,11 +175,11 @@ void FCM::buildModel (bool invRepeat, U8 ctxDepth, U8 modelIndex)
 void FCM::compress (const string &tarFileName)
 {
     /// alpha and ALPH_SIZE*alpha: used in P numerator and denominator
-    double alpha[ n_models ], sumAlphas[ n_models ], a_i;
+    double alpha[ n_models ], sumAlphas[ n_models ];
     for (U8 i = n_models; i--;)
     {
-        a_i = alpha[ i ] = (double) 1 / alphaDens[ i ];
-        sumAlphas[ i ] = ALPH_SIZE * a_i;
+        alpha[ i ] = (double) 1 / alphaDens[ i ];
+        sumAlphas[ i ] = ALPH_SIZE * alpha[ i ];
     }
     
     ifstream tarFileIn( tarFileName, ios::in ); /// open target file
@@ -231,8 +231,9 @@ void FCM::compress (const string &tarFileName)
     startoutputtingbits();                  /// start arithmetic encoding process
     start_encode();
     
-    /// number of symbols at target file
+    /// number of symbols at target file. then, close file
     while ( getline(tarFileIn, tarLine) )   totalNSyms = totalNSyms + tarLine.size();
+//    tarFileIn.close();
     
     /// model(s) properties, to be sent to decoder
     WriteNBits( WATERMARK,                26, Writer );
@@ -251,11 +252,11 @@ void FCM::compress (const string &tarFileName)
     {
         case 't':
         {
-            U64    rowIndex;                /// index of a row in the table
+            U64 rowIndex;                   /// index of a row in the table
             sumOfEntropies = 0;             /// sum of entropies
             
             while ( getline(tarFileIn, tarLine) )
-            {
+            {                                                                                                       cout<<'a';
                 /// table includes the number of occurrences of symbols A, C, N, G, T
                 for (string::iterator lineIt = tarLine.begin(); lineIt != tarLine.end(); ++lineIt)
                 {
@@ -292,12 +293,13 @@ void FCM::compress (const string &tarFileName)
                     for (U8 i = n_models; i--;) weight[ i ] = rawWeight[ i ] / sumOfWeights;
                     
                     sumOfEntropies = sumOfEntropies + log2(probability);            /// sum( log_2 P(s|c^t) )
-                    
+
                     /// frequencies (integer)
                     for (U8 j = ALPH_SIZE; j--;) freqs[ j ] = (int) (1 + (freqsDouble[j] * DOUBLE_TO_INT));
-                    sumFreqs = 0;   for (int f : freqs) sumFreqs += f;  /// sum of frequencies
+//                    sumFreqs = 0;   for (int f : freqs) sumFreqs += f;  /// sum of frequencies
                     
-                    AESym( currSymInt, freqs, (int) sumFreqs, Writer ); /// Arithmetic encoder
+                    AESym( currSymInt, freqs, Writer );         /// Arithmetic encoder
+//                    AESym( currSymInt, freqs, (int) sumFreqs, Writer ); /// Arithmetic encoder
                 }   /// end for
             }   /// end while
         }   /// end case
@@ -352,9 +354,10 @@ void FCM::compress (const string &tarFileName)
     
                     /// frequencies (integer)
                     for (U8 j = ALPH_SIZE; j--;) freqs[ j ] = (int) (1 + (freqsDouble[j] * DOUBLE_TO_INT));
-                    sumFreqs = 0;   for (int f : freqs) sumFreqs += f;      /// sum of frequencies
-                                                                            
-                    AESym( currSymInt, freqs, (int) sumFreqs, Writer );     /// Arithmetic encoding
+//                    sumFreqs = 0;   for (int f : freqs) sumFreqs += f;      /// sum of frequencies
+    
+                    AESym( currSymInt, freqs, Writer );     /// Arithmetic encoding
+//                    AESym( currSymInt, freqs, (int) sumFreqs, Writer );     /// Arithmetic encoding
                 }   /// end for
             }   /// end while
         }   /// end case
@@ -400,11 +403,11 @@ void FCM::compress (const string &tarFileName)
 void FCM::decompress (const string &tarFileName)
 {
     /// alpha and ALPH_SIZE*alpha: used in P numerator and denominator
-    double alpha[ n_models ], sumAlphas[ n_models ], a_i;
+    double alpha[ n_models ], sumAlphas[ n_models ];
     for (U8 i = n_models; i--;)
     {
-        a_i = alpha[ i ] = (double) 1 / alphaDens[ i ];
-        sumAlphas[ i ] = ALPH_SIZE * a_i;
+        alpha[ i ] = (double) 1 / alphaDens[ i ];
+        sumAlphas[ i ] = ALPH_SIZE * alpha[ i ];
     }
     
     ifstream tarFileIn( tarFileName, ios::in ); /// open target file
@@ -554,9 +557,10 @@ void FCM::decompress (const string &tarFileName)
                     
                     /// frequencies (integer)
                     for (U8 j = ALPH_SIZE; j--;) freqs[ j ] = (int) (1 + (freqsDouble[ j ] * DOUBLE_TO_INT));
-                    sumFreqs = 0;   for (int f : freqs) sumFreqs += f;                  /// sum of frequencies
-                    
-                    sym = ArithDecodeSymbol(ALPH_SIZE, freqs, (int) sumFreqs, Reader);  /// Arithmetic decoder
+//                    sumFreqs = 0;   for (int f : freqs) sumFreqs += f;                  /// sum of frequencies
+    
+                    sym = ArithDecodeSymbol(ALPH_SIZE, freqs, Reader);                  /// Arithmetic decoder
+//                    sym = ArithDecodeSymbol(ALPH_SIZE, freqs, (int) sumFreqs, Reader);  /// Arithmetic decoder
                     outBuffer[ idxOut ] = symIntToChar(sym);                            /// output buffer
                     
                     if (++idxOut == BUFFER_SIZE)
@@ -620,9 +624,10 @@ void FCM::decompress (const string &tarFileName)
                     
                     /// frequencies (integer)
                     for (U8 j = ALPH_SIZE; j--;) freqs[ j ] = (int) (1 + (freqsDouble[ j ] * DOUBLE_TO_INT));
-                    sumFreqs = 0;   for (int f : freqs) sumFreqs += f;                  /// sum of frequencies
-                    
-                    sym = ArithDecodeSymbol(ALPH_SIZE, freqs, (int) sumFreqs, Reader);  /// Arithmetic decoder
+//                    sumFreqs = 0;   for (int f : freqs) sumFreqs += f;                  /// sum of frequencies
+    
+                    sym = ArithDecodeSymbol(ALPH_SIZE, freqs, Reader);                  /// Arithmetic decoder
+//                    sym = ArithDecodeSymbol(ALPH_SIZE, freqs, (int) sumFreqs, Reader);  /// Arithmetic decoder
                     outBuffer[ idxOut ] = symIntToChar(sym);                            /// output buffer
                     
                     if (++idxOut == BUFFER_SIZE)
