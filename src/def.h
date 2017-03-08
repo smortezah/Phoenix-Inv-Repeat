@@ -27,6 +27,7 @@ using std::array;
 #define N_FREE_THREADS    1
 #define DEFAULT_GAMMA     0.95        /// default gamma (for mixture of FCMs)
 
+#define WATERMARK         20170308    /// used in compression/decompression
 #define BUFFER_SIZE       262144      /// used in decompression
 #define DOUBLE_TO_INT     65535       /// for converting double to integer
 
