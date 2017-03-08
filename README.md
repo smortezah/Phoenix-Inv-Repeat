@@ -8,6 +8,13 @@ cmake .
 make
 ```
 
+```objectivec
+if(i=1)
+{
+    a=2;
+}
+```
+
 ## USAGE
 ```commandline
 ./phoenix [OPTION]... -m [MODEL(S)] -r [REFERENCE(S)] -t [TARGET(S)]
