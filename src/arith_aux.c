@@ -55,7 +55,7 @@ int GetSymbol (int *low, int *high, int *count, int target, int nSymbols)
 
 /*----------------------------------------------------------------------------*/
 
-void WriteNBits (uint64_t bits, int nBits, FILE *oFp)
+void WriteNBits (U64 bits, int nBits, FILE *oFp)
 {
     while (nBits--)
     {
@@ -71,9 +71,9 @@ void WriteNBits (uint64_t bits, int nBits, FILE *oFp)
 
 /*----------------------------------------------------------------------------*/
 
-uint64_t ReadNBits (int nBits, FILE *iFp)
+U64 ReadNBits (int nBits, FILE *iFp)
 {
-    uint64_t bits = 0;
+    U64 bits = 0;
     int target, low, high, count[2] = {1, 1};
     
     while (nBits--)

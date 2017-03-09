@@ -22,8 +22,8 @@ and every copy made of these files.
 
 void GetInterval(int *low, int *high, int *count, int symbol);
 int GetSymbol(int *low, int *high, int *count, int target, int nSymbols);
-void WriteNBits(uint64_t bits, int nBits, FILE *oFp);
-uint64_t ReadNBits(int nBits, FILE *iFp);
+void WriteNBits(U64 bits, int nBits, FILE *oFp);
+U64 ReadNBits(int nBits, FILE *iFp);
 void AESym(int symbol, int *counters, FILE *oFp);
 int ArithDecodeSymbol(int nSymbols, int *counters, FILE *iFp);
 
