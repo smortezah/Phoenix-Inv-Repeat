@@ -249,6 +249,16 @@ void FCM::compress (const string &tarFileName)
 //        WriteNBits( compMode,           1, Writer );
     }
     
+    
+    
+    
+    FILE *Reader = fopen(tar, "r");
+    cout << ReadNBits(26, Reader);
+    
+    
+    
+    
+    
     switch ( compMode )
     {
         case 't':
@@ -309,7 +319,7 @@ void FCM::compress (const string &tarFileName)
 
 //                    for(U8 i=0;i<ALPH_SIZE;++i)printf("%d\t",freqs[i]);printf("***\n");
 
-//                    AESym( currSymInt, freqs, (int) sumFreqs, Writer ); /// Arithmetic encoder
+                    AESym( currSymInt, freqs, (int) sumFreqs, Writer ); /// Arithmetic encoder
                 }   /// end for
             }   /// end while
         }   /// end case
