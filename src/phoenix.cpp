@@ -32,16 +32,18 @@ int main (int argc, char *argv[])
     /// Record start time
     high_resolution_clock::time_point exeStartTime = high_resolution_clock::now();
     
-    FCM mixModel;   /// object on memory stack
+    FCM mixModel;       /// object on memory stack
     
     /// parse the command line
     commandLineParser(argc, argv, mixModel);
     
+    thread *arrThread;  /// array of threads
+    
     /// build reference(s) model(s) -- multithreaded
     const U8 n_models  = mixModel.getN_models();
     const U8 n_threads = mixModel.getN_threads();
-    U8 arrThrSize = (n_models > n_threads) ? n_threads : n_models;  /// size of threads array
-    thread arrThread[ arrThrSize ];                                 /// array of threads
+    U8    arrThrSize   = (n_models > n_threads) ? n_threads : n_models;  /// size of threads array
+    arrThread          = new thread[ arrThrSize ];
     for (U8 i = 0; i < n_models; i += arrThrSize)
     {
         for (U8 j = 0; j < arrThrSize && i + j < n_models; ++j)
@@ -50,6 +52,7 @@ int main (int argc, char *argv[])
         for (U8 j = 0; j < arrThrSize && i + j < n_models; ++j)
             arrThread[ j ].join();
     }
+    delete[] arrThread;
     /*
     /// compress target(s) using reference(s) model -- multithreaded
     U8 MAX_N_THREADS = (U8) thread::hardware_concurrency(); /// max cores in current machine
@@ -61,10 +64,11 @@ int main (int argc, char *argv[])
     U8 arrThrSize = (n_targets > n_threads_available) ? n_threads_available : n_targets;
     thread *arrThread = new thread[arrThrSize];             /// array of threads
     */
-
+    
     /// compress target(s) using reference(s) model(s) -- multithreaded
     U8 n_targets = (U8) mixModel.getTarAddr().size();               /// up to 2^8=256 targets
-    arrThrSize = (n_targets > n_threads) ? n_threads : n_targets;   /// modify threads array size
+    arrThrSize   = (n_targets > n_threads) ? n_threads : n_targets;   /// modify threads array size
+    arrThread    = new thread[ arrThrSize ];                           /// resize threads array
     for (U8 i = 0; i < n_targets; i += arrThrSize)
     {
         for (U8 j = 0; j < arrThrSize && i + j < n_targets; ++j)
@@ -72,7 +76,8 @@ int main (int argc, char *argv[])
         for (U8 j = 0; j < arrThrSize && i + j < n_targets; ++j)
             arrThread[ j ].join();
     }
-
+/////    delete[] arrThread;
+    
 //   /// decompress target(s) using reference(s) model(s) -- multithreaded
 //    if (mixModel.getDecompFlag() )
 //    {

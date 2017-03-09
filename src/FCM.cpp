@@ -230,12 +230,12 @@ void FCM::compress (const string &tarFileName)
     size_t lastSlash_Tar = tarFileName.find_last_of("/");           /// find the position of last slash
     string tarNamePure = tarFileName.substr(lastSlash_Tar + 1);     /// target file name without slash
     const char *tar = (tarNamePure + ".co").c_str();                /// convert string to char*
-
+    
     FILE *Writer = fopen(tar, "w");     /// to save compressed file
-
+    
     startoutputtingbits();              /// start arithmetic encoding process
     start_encode();
-
+    
     /// model(s) properties, to be sent to decoder
     WriteNBits( WATERMARK,                26, Writer );
     WriteNBits( file_size,                46, Writer );
@@ -248,7 +248,7 @@ void FCM::compress (const string &tarFileName)
         WriteNBits( alphaDens[ n ],       16, Writer );
 //        WriteNBits( compMode,           1, Writer );
     }
-
+    
     switch ( compMode )
     {
         case 't':
@@ -305,12 +305,11 @@ void FCM::compress (const string &tarFileName)
 //                    for (int j = 0; j < 30; ++j)
 //                        cout << tables[ 0 ][ j ] << ' ';
 //                    cout << '\n';
-
-
+                    
 
 //                    for(U8 i=0;i<ALPH_SIZE;++i)printf("%d\t",freqs[i]);printf("***\n");
 
-                    AESym( currSymInt, freqs, (int) sumFreqs, Writer ); /// Arithmetic encoder
+//                    AESym( currSymInt, freqs, (int) sumFreqs, Writer ); /// Arithmetic encoder
                 }   /// end for
             }   /// end while
         }   /// end case
@@ -392,13 +391,16 @@ void FCM::compress (const string &tarFileName)
     /// print reference and target file names
     U8 refsAdressesSize = (U8) getRefAddr().size();
     size_t lastSlash_Ref[ refsAdressesSize ];
-    for (U8 i = refsAdressesSize; i--;) lastSlash_Ref[ i ] = getRefAddr()[ i ].find_last_of("/");
-//    size_t lastSlash_Tar = tarFileName.find_last_of("/");
+    string refNamesPure[ refsAdressesSize ];
+    for (U8 i = refsAdressesSize; i--;)
+    {
+        lastSlash_Ref[ i ] = getRefAddr()[ i ].find_last_of("/");
+        refNamesPure[i]    = getRefAddr()[ i ].substr(lastSlash_Ref[ i ] + 1);
+    }
 
     mut.lock();///========================================================
-    for (int i = refsAdressesSize - 1; i; --i)
-        cout << getRefAddr()[ i ].substr(lastSlash_Ref[ i ] + 1) << ',';
-    cout << getRefAddr()[ 0 ].substr(lastSlash_Ref[ 0 ] + 1) << '\t'
+    for (int i = 0; i < refsAdressesSize - 1; ++i)  cout << refNamesPure[ i ] << ',';
+    cout << refNamesPure[ refsAdressesSize-1 ] << '\t'
          << tarNamePure << '\t'
 ////         << invertedRepeat << '\t'
 ////         << std::fixed << setprecision(4) << alpha << '\t'
