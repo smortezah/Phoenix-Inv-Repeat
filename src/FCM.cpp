@@ -233,23 +233,21 @@ void FCM::compress (const string &tarFileName)
     
     FILE *Writer = fopen(tar, "w");     /// to save compressed file
     
-    
-//    startoutputtingbits();              /// start arithmetic encoding process
-//    start_encode();
+    startoutputtingbits();              /// start arithmetic encoding process
+    start_encode();
     
     /// model(s) properties, to be sent to decoder
-    WriteNBits( 123,                32, Writer );
-//    WriteNBits( WATERMARK,                26, Writer );
-//    WriteNBits( file_size,                46, Writer );
-//    WriteNBits( (int) (gamma * 65536),    32, Writer );
-//    WriteNBits( n_models,                 16, Writer );
-//    for (U8 n = 0; n < n_models; ++n)
-//    {
-//        WriteNBits( (U8) invRepeats[ n ],  1, Writer );
-//        WriteNBits( ctxDepths[ n ],       16, Writer );
-//        WriteNBits( alphaDens[ n ],       16, Writer );
-////        WriteNBits( compMode,           1, Writer );
-//    }
+    WriteNBits( WATERMARK,                26, Writer );
+    WriteNBits( file_size,                46, Writer );
+    WriteNBits( (int) (gamma * 65536),    32, Writer );
+    WriteNBits( n_models,                 16, Writer );
+    for (U8 n = 0; n < n_models; ++n)
+    {
+        WriteNBits( (U8) invRepeats[ n ],  1, Writer );
+        WriteNBits( ctxDepths[ n ],       16, Writer );
+        WriteNBits( alphaDens[ n ],       16, Writer );
+//        WriteNBits( compMode,           1, Writer );
+    }
     
     /*
     switch ( compMode )
@@ -381,20 +379,12 @@ void FCM::compress (const string &tarFileName)
     }   /// end switch
 */
     
-//    finish_encode( Writer );
-//    doneoutputtingbits( Writer );   /// encode the last bit
+    finish_encode( Writer );
+    doneoutputtingbits( Writer );   /// encode the last bit
     fclose( Writer );               /// close compressed file
-
+    
     tarFileIn.close();              /// close target file
     
-    
-    
-    FILE *Reader = fopen(tar, "r");
-    cout << ReadNBits(26, Reader);
-    
-    
-    
-
     /// (file_size - n_fileLines) is number of symbols in file
     /// n_fileLines is number of '\n's, which are accounted in file_size
     /// H_N = -1/N sum( log_2 P(s|c^t) )
@@ -438,9 +428,9 @@ void FCM::decompress (const string &tarFileName)
         alpha[ i ] = (double) 1 / alphaDens[ i ];
         sumAlphas[ i ] = ALPH_SIZE * alpha[ i ];
     }
-    
+
     ifstream tarFileIn( tarFileName, ios::in ); /// open target file
-    
+
     mut.lock();///========================================================
     if (!tarFileIn)                             /// error occurred while opening file
     {
@@ -449,13 +439,13 @@ void FCM::decompress (const string &tarFileName)
         return;                                 /// exit this function
     }
     mut.unlock();///======================================================
-    
+
     U64 maxPlaceValue[ n_models ];
     for (U8 i = n_models; i--;) maxPlaceValue[ i ] = (U64) pow( ALPH_SIZE, ctxDepths[ i ] );
     U64 tarContext[ n_models ]; fill_n(tarContext, n_models, 0); /// context(s) (integer) sliding through the dataset
     U64 tCtx = 0;                               /// temp variable to decrease accessing tarContext[] array
     string tarLine;                             /// keep each line of the file
-    
+
     ////////////////////////////////
     U64     nSym;                               /// number of symbols (n_s). in probability numerator
     U64     sumNSym;                            /// sum of number of symbols (sum n_a). in probability denominator
@@ -472,7 +462,7 @@ void FCM::decompress (const string &tarFileName)
     U64     sumFreqs;                           /// sum of frequencies
     int     sym;                                /// temporary variable to save decode result
     ////////////////////////////////
-    
+
     /*
     /// using macros make this code slower
     #define X \
@@ -484,7 +474,7 @@ void FCM::decompress (const string &tarFileName)
                 : in = 0; for (U64 u : hashTable[ tarContext ]) in += u; \
               } while ( 0 )
     */
-    
+
     FILE *Reader = fopen("COMP.co", "r");       /// to process the compressed file
     FILE *Writer = fopen("DECOMP.de", "w");     /// to save decompressed file
     
