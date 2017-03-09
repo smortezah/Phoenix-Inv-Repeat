@@ -36,7 +36,7 @@ int main (int argc, char *argv[])
     
     /// parse the command line
     commandLineParser(argc, argv, mixModel);
-
+    
     /// build reference(s) model(s) -- multithreaded
     const U8 n_models  = mixModel.getN_models();
     const U8 n_threads = mixModel.getN_threads();
@@ -72,7 +72,7 @@ int main (int argc, char *argv[])
         for (U8 j = 0; j < arrThrSize && i + j < n_targets; ++j)
             arrThread[ j ].join();
     }
-//
+
 //   /// decompress target(s) using reference(s) model(s) -- multithreaded
 //    if (mixModel.getDecompFlag() )
 //    {

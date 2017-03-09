@@ -181,10 +181,10 @@ void FCM::compress (const string &tarFileName)
         alpha[ i ] = (double) 1 / alphaDens[ i ];
         sumAlphas[ i ] = ALPH_SIZE * alpha[ i ];
     }
-    
+
     /// open target file
     ifstream tarFileIn( tarFileName, ios::in );
-    
+
     mut.lock();///========================================================
     if (!tarFileIn)                     /// error occurred while opening file
     {
@@ -193,7 +193,7 @@ void FCM::compress (const string &tarFileName)
         return;                         /// exit this function
     }
     mut.unlock();///======================================================
-    
+
     U64 maxPlaceValue[ n_models ];
     for (U8 i = n_models; i--;)  maxPlaceValue[ i ] = (U64) pow( ALPH_SIZE, ctxDepths[ i ] );
     /// context(s) (integer) sliding through the dataset
@@ -214,7 +214,7 @@ void FCM::compress (const string &tarFileName)
     double  freqsDouble[ ALPH_SIZE ];   /// frequencies of each symbol (double)
     int     freqs[ ALPH_SIZE ];         /// frequencies of each symbol (integer)
     U64     sumFreqs;
-    
+
     /*
     /// using macros make this code slower
     #define X \
@@ -226,12 +226,16 @@ void FCM::compress (const string &tarFileName)
                 : in = 0; for (U64 u : hashTable[ tarContext ]) in += u; \
               } while ( 0 )
     */
-    
-    FILE *Writer = fopen("COMP.co", "w");   /// to save compressed file
-    
-    startoutputtingbits();                  /// start arithmetic encoding process
+
+    size_t lastSlash_Tar = tarFileName.find_last_of("/");           /// find the position of last slash
+    string tarNamePure = tarFileName.substr(lastSlash_Tar + 1);     /// target file name without slash
+    const char *tar = (tarNamePure + ".co").c_str();                /// convert string to char*
+
+    FILE *Writer = fopen(tar, "w");     /// to save compressed file
+
+    startoutputtingbits();              /// start arithmetic encoding process
     start_encode();
-    
+
     /// model(s) properties, to be sent to decoder
     WriteNBits( WATERMARK,                26, Writer );
     WriteNBits( file_size,                46, Writer );
@@ -244,7 +248,7 @@ void FCM::compress (const string &tarFileName)
         WriteNBits( alphaDens[ n ],       16, Writer );
 //        WriteNBits( compMode,           1, Writer );
     }
-    
+
     switch ( compMode )
     {
         case 't':
@@ -296,18 +300,16 @@ void FCM::compress (const string &tarFileName)
                     /// frequencies (integer)
                     for (U8 j = ALPH_SIZE; j--;) freqs[ j ] = (int) (1 + (freqsDouble[j] * DOUBLE_TO_INT));
                     sumFreqs = 0;   for (int f : freqs) sumFreqs += f;  /// sum of frequencies
-    
-    
-                    for (int j = 0; j < 30; ++j)
-                        cout << tables[ 0 ][ j ] << ' ';
-                    cout << '\n';
 
-                    
-//                   for(int i=0;i<5;++i)
-//                    cout<<tables[0][0][i]<<' ';
-                    
+
+//                    for (int j = 0; j < 30; ++j)
+//                        cout << tables[ 0 ][ j ] << ' ';
+//                    cout << '\n';
+
+
+
 //                    for(U8 i=0;i<ALPH_SIZE;++i)printf("%d\t",freqs[i]);printf("***\n");
-                    
+
                     AESym( currSymInt, freqs, (int) sumFreqs, Writer ); /// Arithmetic encoder
                 }   /// end for
             }   /// end while
@@ -391,13 +393,13 @@ void FCM::compress (const string &tarFileName)
     U8 refsAdressesSize = (U8) getRefAddr().size();
     size_t lastSlash_Ref[ refsAdressesSize ];
     for (U8 i = refsAdressesSize; i--;) lastSlash_Ref[ i ] = getRefAddr()[ i ].find_last_of("/");
-    size_t lastSlash_Tar = tarFileName.find_last_of("/");
+//    size_t lastSlash_Tar = tarFileName.find_last_of("/");
 
     mut.lock();///========================================================
     for (int i = refsAdressesSize - 1; i; --i)
         cout << getRefAddr()[ i ].substr(lastSlash_Ref[ i ] + 1) << ',';
     cout << getRefAddr()[ 0 ].substr(lastSlash_Ref[ 0 ] + 1) << '\t'
-         << tarFileName.substr(lastSlash_Tar + 1) << '\t'
+         << tarNamePure << '\t'
 ////         << invertedRepeat << '\t'
 ////         << std::fixed << setprecision(4) << alpha << '\t'
 ////         << (int) contextDepth << '\t'

@@ -16,9 +16,12 @@ for ir in $INV_REPEATS; do
 #     for((ctx=$MIN_CTX; ctx<=$MAX_CTX; ctx+=1)); do
 #     ./phoenix -m $ir,$ctx,$alphaDen -r $FLD_dataset/$refDataset -t $FLD_dataset/$tarDataset \
 #      ./phoenix -n 4 -d -m 0,1,100:0,2,10\
-      ./phoenix -n 4 -d -m 0,1,100\
-      -r x -t y \
-#      -r dataset/HS21 -t PTY \
+      ./phoenix -n 4 -d -m 0,1,100 \
+      -r x \
+      -t y,x
+#      ./phoenix -n 4 -d -m 0,1,100\
+#      -r dataset/HS21
+#      -t dataset/PTY
 #               > $IR_LBL$ir-$refDataset-$TAR_SPECIES.$INF_FILE_TYPE
 #       tr -d '\n' < PTY > tmp; diff tmp DECOMP.de; rm -f tmp;
      done
