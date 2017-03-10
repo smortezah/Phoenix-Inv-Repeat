@@ -31,8 +31,9 @@ using std::array;
 #define BUFFER_SIZE       262144      /// used in decompression
 #define DOUBLE_TO_INT     65535       /// for converting double to integer
 
+
 /***********************************************************
-    typedef
+    typedefs
 ************************************************************/
 typedef uint8_t  U8;
 typedef uint16_t U16;
@@ -48,6 +49,16 @@ typedef int64_t  I64;
 //typedef unordered_map< string, array< U64, ALPH_SIZE > > htable_str_t;
 typedef unordered_map< U64 , array< U64, ALPH_SIZE > > htable_t;
 //typedef unordered_map< U64 , U64[ALPH_SIZE] > htable_t;
+
+
+/***********************************************************
+    lookup tables
+************************************************************/
+static U64 POWER5[] =
+        {
+                1,  5,  25, 125,    625,    3125,   15625,
+                78125,  390625
+        };
 
 
 #endif //PHOENIX_DEF_H

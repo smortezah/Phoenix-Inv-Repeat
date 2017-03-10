@@ -36,9 +36,9 @@ int main (int argc, char *argv[])
     
     /// parse the command line
     commandLineParser(argc, argv, mixModel);
-    
+
     thread *arrThread;  /// array of threads
-    
+
     /// build reference(s) model(s) -- multithreaded
     const U8 n_models  = mixModel.getN_models();
     const U8 n_threads = mixModel.getN_threads();
@@ -64,34 +64,44 @@ int main (int argc, char *argv[])
     U8 arrThrSize = (n_targets > n_threads_available) ? n_threads_available : n_targets;
     thread *arrThread = new thread[arrThrSize];             /// array of threads
     */
-    
-    /// compress target(s) using reference(s) model(s) -- multithreaded
-    U8 n_targets = (U8) mixModel.getTarAddr().size();                   /// up to 2^8=256 targets
-    arrThrSize   = (n_targets > n_threads) ? n_threads : n_targets;     /// modify threads array size
-    arrThread    = new thread[ arrThrSize ];                            /// resize threads array
-    for (U8 i = 0; i < n_targets; i += arrThrSize)
-    {
-        for (U8 j = 0; j < arrThrSize && i + j < n_targets; ++j)
-            arrThread[ j ] = thread(&FCM::compress, &mixModel, mixModel.getTarAddr()[ i + j ] );
-        for (U8 j = 0; j < arrThrSize && i + j < n_targets; ++j)
-            arrThread[ j ].join();
-    }
-/////    delete[] arrThread;
-    
-//   /// decompress target(s) using reference(s) model(s) -- multithreaded
-//    if (mixModel.getDecompFlag() )
+
+//    /// compress target(s) using reference(s) model(s) -- multithreaded
+//    U8 n_targets = (U8) mixModel.getTarAddr().size();                   /// up to 2^8=256 targets
+//    arrThrSize   = (n_targets > n_threads) ? n_threads : n_targets;     /// modify threads array size
+//    arrThread    = new thread[ arrThrSize ];                            /// resize threads array
+//    for (U8 i = 0; i < n_targets; i += arrThrSize)
 //    {
-//        for (U8 i = 0; i < n_targets; i += arrThrSize)
-//        {
-//            for (U8 j = 0; j < arrThrSize && i + j < n_targets; ++j)
-//                arrThread[ j ] = thread(&FCM::decompress, &mixModel, mixModel.getTarAddr()[ i + j ]);
-//            for (U8 j = 0; j < arrThrSize && i + j < n_targets; ++j)
-//                arrThread[ j ].join();
-//        }
+//        for (U8 j = 0; j < arrThrSize && i + j < n_targets; ++j)
+//            arrThread[ j ] = thread(&FCM::compress, &mixModel, mixModel.getTarAddr()[ i + j ] );
+//        for (U8 j = 0; j < arrThrSize && i + j < n_targets; ++j)
+//            arrThread[ j ].join();
 //    }
+/////    delete[] arrThread;
+
+////   /// decompress target(s) using reference(s) model(s) -- multithreaded
+////    if (mixModel.getDecompFlag() )
+////    {
+////        for (U8 i = 0; i < n_targets; i += arrThrSize)
+////        {
+////            for (U8 j = 0; j < arrThrSize && i + j < n_targets; ++j)
+////                arrThread[ j ] = thread(&FCM::decompress, &mixModel, mixModel.getTarAddr()[ i + j ]);
+////            for (U8 j = 0; j < arrThrSize && i + j < n_targets; ++j)
+////                arrThread[ j ].join();
+////        }
+////    }
+////
+////    /// check if decompressed file and target file are exactly the same (check: lossless compression)
+////    cout<<areFilesEqual("y","DECOMP.de");
 //
-//    /// check if decompressed file and target file are exactly the same (check: lossless compression)
-//    cout<<areFilesEqual("y","DECOMP.de");
+    
+    
+    
+//    U64 a=1;  for (int i = 0; i < 1000000000; ++i) a*65535;//a<<16-a; //
+    
+    
+    
+    
+    
     
     /// Record end time
     high_resolution_clock::time_point exeFinishTime = high_resolution_clock::now();
