@@ -66,14 +66,14 @@ void FCM::buildModel (bool invRepeat, U8 ctxDepth, U8 modelIndex)
     
     U64 context;                       	    /// context (integer), that slides in the dataset
 ////    U64 maxPlaceValue = (U64) pow(ALPH_SIZE, ctxDepth);
-    U64 maxPlaceValue = POWER5[ctxDepth];
+    U64 maxPlaceValue = POWER5[ ctxDepth ];
     U64 invRepContext = maxPlaceValue - 1;  /// inverted repeat context (integer)
                                             
     U64 iRCtxCurrSym;                       /// concat of inverted repeat context and current symbol
     U8  currSymInt;                         /// current symbol integer
                                             
     string refLine;                         /// keep each line of a file
-                                            
+    
     switch ( compMode )                     /// build model based on 't'=table, or 'h'=hash table
     {
         case 't':
@@ -90,21 +90,21 @@ void FCM::buildModel (bool invRepeat, U8 ctxDepth, U8 modelIndex)
             for (U8 i = refsNumber; i--;)
             {
                 context = 0;                /// reset in the beginning of each reference file
-
+                
                 while ( getline(refFilesIn[ i ], refLine) )
                 {
                     /// fill table by number of occurrences of symbols A, C, N, G, T
                     for (string::iterator lineIt = refLine.begin(); lineIt != refLine.end(); ++lineIt)
                     {
                         currSymInt = symCharToInt(*lineIt);
-
+                        
                         if (invRepeat)      /// considering inverted repeats to update table
                         {
                             /// concatenation of inverted repeat context and current symbol
                             iRCtxCurrSym = (4 - currSymInt) * maxPlaceValue + invRepContext;
                             /// update inverted repeat context (integer)
                             invRepContext = (U64) iRCtxCurrSym / ALPH_SIZE;
-
+                            
                             /// update table, including 'sum' column, considering inverted repeats
                             rowIndex = invRepContext * ALPH_SUM_SIZE;
                             ++table[ rowIndex + iRCtxCurrSym % ALPH_SIZE ]; /// update table

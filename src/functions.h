@@ -162,13 +162,14 @@ void commandLineParser (int argc, char **argv, FCM &mixModel)
     if (t_flag)
     {
         string::iterator begIter = tarFilesNames.begin(),   endIter = tarFilesNames.end();
-        for (string::iterator it = begIter; it != endIter; ++it)      /// all target files names but the last one
+        /// all target files names but the last one
+        for (string::iterator it = begIter; it != endIter; ++it)
             if (*it == ',')
             {
-                mixModel.pushTarAddr(string(begIter, it));
+                mixModel.pushTarAddr( string(begIter, it) );
                 begIter = it + 1;
             }
-        mixModel.pushTarAddr(string(begIter, endIter));    /// last target file name
+        mixModel.pushTarAddr( string(begIter, endIter) );   /// last target file name
         
         /*  slower
         U8 tarIndex = (U8) tarFilesNames.size();
@@ -190,7 +191,8 @@ void commandLineParser (int argc, char **argv, FCM &mixModel)
     if (r_flag)
     {
         string::iterator begIter = refFilesNames.begin(),   endIter = refFilesNames.end();
-        for (string::iterator it = begIter; it != endIter; ++it)      /// all reference files names but the last one
+        /// all reference files names but the last one
+        for (string::iterator it = begIter; it != endIter; ++it)
             if (*it == ',')
             {
                 mixModel.pushRefAddr(string(begIter, it));
@@ -218,8 +220,9 @@ void commandLineParser (int argc, char **argv, FCM &mixModel)
     if (m_flag)
     {
         vector< string > vecModelsParams;                             /// parameters for different models
-        string::iterator begIter = strModelsParameters.begin(),   endIter = strModelsParameters.end();
-        for (string::iterator it = begIter; it != endIter; ++it)      /// all models parameters but the last one
+        string::iterator begIter = strModelsParameters.begin(), endIter = strModelsParameters.end();
+        /// all models parameters but the last one
+        for (string::iterator it = begIter; it != endIter; ++it)
             if (*it == ':')
             {
                 vecModelsParams.push_back( string(begIter, it) );
@@ -236,7 +239,8 @@ void commandLineParser (int argc, char **argv, FCM &mixModel)
             modelParams.clear();                                      /// reset vector modelParams
             
             begIter = vecModelsParams[ n ].begin(), endIter = vecModelsParams[ n ].end();
-            for (string::iterator it = begIter; it != endIter; ++it)/// all paramaeters for each model but the last one
+            /// all paramaeters for each model but the last one
+            for (string::iterator it = begIter; it != endIter; ++it)
                 if (*it == ',')
                 {
                     modelParams.push_back( string(begIter, it) );
@@ -245,9 +249,9 @@ void commandLineParser (int argc, char **argv, FCM &mixModel)
             modelParams.push_back( string(begIter, endIter) );        /// parameters for the last model
             
             /// set model(s) parameters
-            mixModel.pushParams((bool) stoi(modelParams[ 0 ]),   /// inverted repeat
-                                (U8) stoi(modelParams[ 1 ]),   /// context depth
-                                (U16) stoi(modelParams[ 2 ])); /// alpha denominator
+            mixModel.pushParams((bool) stoi(modelParams[ 0 ]),        /// inverted repeat
+                                (U8) stoi(modelParams[ 1 ]),          /// context depth
+                                (U16) stoi(modelParams[ 2 ]));        /// alpha denominator
         }
         
         /// set compression mode: 't'=table, 'h'=hash table -- 5^k_1 + 5^k_2 + ... > 5^12 ==> mode: hash table
