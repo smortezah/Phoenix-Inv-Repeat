@@ -252,8 +252,10 @@ void commandLineParser (int argc, char **argv, FCM &mixModel)
         
         /// set compression mode: 't'=table, 'h'=hash table -- 5^k_1 + 5^k_2 + ... > 5^12 ==> mode: hash table
         U64 cmpModeSum = 0;
-        for (U8 k : mixModel.getCtxDepth())    cmpModeSum = cmpModeSum + (U64) pow(ALPH_SIZE, k);
-        const char compressionMode = (cmpModeSum > pow(ALPH_SIZE, TABLE_MAX_CTX)) ? 'h' : 't';
+////        for (U8 k : mixModel.getCtxDepth())    cmpModeSum = cmpModeSum + (U64) pow(ALPH_SIZE, k);
+////        const char compressionMode = (cmpModeSum > pow(ALPH_SIZE, TABLE_MAX_CTX)) ? 'h' : 't';
+        for (U8 k : mixModel.getCtxDepth())    cmpModeSum = cmpModeSum + POWER5[k];
+        const char compressionMode = (cmpModeSum > POWER5[TABLE_MAX_CTX]) ? 'h' : 't';
         mixModel.setCompMode(compressionMode);
         
         /// initialize vector of tables or hash tables

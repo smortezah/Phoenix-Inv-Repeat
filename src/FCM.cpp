@@ -65,14 +65,8 @@ void FCM::buildModel (bool invRepeat, U8 ctxDepth, U8 modelIndex)
     }
     
     U64 context;                       	    /// context (integer), that slides in the dataset
-    U64 maxPlaceValue = (U64) pow(ALPH_SIZE, ctxDepth);
-    cout<<"buildModel: 69\n"<<POWER5[5];
-    
-    
-    
-    
-    
-    
+////    U64 maxPlaceValue = (U64) pow(ALPH_SIZE, ctxDepth);
+    U64 maxPlaceValue = POWER5[ctxDepth];
     U64 invRepContext = maxPlaceValue - 1;  /// inverted repeat context (integer)
                                             
     U64 iRCtxCurrSym;                       /// concat of inverted repeat context and current symbol
@@ -202,7 +196,8 @@ void FCM::compress (const string &tarFileName)
     mut.unlock();///======================================================
 
     U64 maxPlaceValue[ n_models ];
-    for (U8 i = n_models; i--;)  maxPlaceValue[ i ] = (U64) pow( ALPH_SIZE, ctxDepths[ i ] );
+////    for (U8 i = n_models; i--;)  maxPlaceValue[ i ] = (U64) pow( ALPH_SIZE, ctxDepths[ i ] );
+    for (U8 i = n_models; i--;)  maxPlaceValue[ i ] = POWER5[ ctxDepths[i] ];
     /// context(s) (integer) sliding through the dataset
     U64     tarContext[ n_models ];     fill_n(tarContext, n_models, 0);
     string  tarLine;                    /// keep each line of the file
@@ -471,7 +466,8 @@ void FCM::decompress (const string &tarFileName)
     mut.unlock();///======================================================
 
     U64 maxPlaceValue[ n_models ];
-    for (U8 i = n_models; i--;) maxPlaceValue[ i ] = (U64) pow( ALPH_SIZE, ctxDepths[ i ] );
+//    for (U8 i = n_models; i--;) maxPlaceValue[ i ] = (U64) pow( ALPH_SIZE, ctxDepths[ i ] );
+    for (U8 i = n_models; i--;) maxPlaceValue[ i ] = POWER5[ ctxDepths[i] ];
     U64 tarContext[ n_models ]; fill_n(tarContext, n_models, 0); /// context(s) (integer) sliding through the dataset
     U64 tCtx = 0;                               /// temp variable to decrease accessing tarContext[] array
     string tarLine;                             /// keep each line of the file
