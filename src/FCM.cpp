@@ -68,7 +68,7 @@ void FCM::buildModel (bool invRepeat, U8 ctxDepth, U8 modelIndex)
 ////    U64 maxPlaceValue = (U64) pow(ALPH_SIZE, ctxDepth);
     U64 maxPlaceValue = POWER5[ ctxDepth ];
     U64 invRepContext = maxPlaceValue - 1;  /// inverted repeat context (integer)
-                                            
+    
     U64 iRCtxCurrSym;                       /// concat of inverted repeat context and current symbol
     U8  currSymInt;                         /// current symbol integer
                                             
@@ -195,9 +195,10 @@ void FCM::compress (const string &tarFileName)
     }
     mut.unlock();///======================================================
 
-    U64 maxPlaceValue[ n_models ];
-////    for (U8 i = n_models; i--;)  maxPlaceValue[ i ] = (U64) pow( ALPH_SIZE, ctxDepths[ i ] );
+    U64     maxPlaceValue[ n_models ];
     for (U8 i = n_models; i--;)  maxPlaceValue[ i ] = POWER5[ ctxDepths[i] ];
+////    for (U8 i = n_models; i--;)  maxPlaceValue[ i ] = (U64) pow( ALPH_SIZE, ctxDepths[ i ] );
+    
     /// context(s) (integer) sliding through the dataset
     U64     tarContext[ n_models ];     fill_n(tarContext, n_models, 0);
     string  tarLine;                    /// keep each line of the file
@@ -214,7 +215,7 @@ void FCM::compress (const string &tarFileName)
     double  sumOfWeights;               /// sum of weights. used for normalization
     double  freqsDouble[ ALPH_SIZE ];   /// frequencies of each symbol (double)
     int     freqs[ ALPH_SIZE ];         /// frequencies of each symbol (integer)
-    U64     sumFreqs;
+    int     sumFreqs;
 
     /*
     /// using macros make this code slower
@@ -232,24 +233,41 @@ void FCM::compress (const string &tarFileName)
     string tarNamePure = tarFileName.substr(lastSlash_Tar + 1);     /// target file name without slash
     const char *tar = (tarNamePure + ".co").c_str();                /// convert string to char*
 
-//    FILE *Writer = fopen(tar, "w");     /// to save compressed file
-//
-//    startoutputtingbits();              /// start arithmetic encoding process
-//    start_encode();
-//
-//    /// model(s) properties, to be sent to decoder
-//    WriteNBits( WATERMARK,                26, Writer );
-//    WriteNBits( file_size,                46, Writer );
-//    WriteNBits( (int) (gamma * 65536),    32, Writer );
-//    WriteNBits( n_models,                 16, Writer );
-//    for (U8 n = 0; n < n_models; ++n)
-//    {
-//        WriteNBits( (U8) invRepeats[ n ],  1, Writer );
-//        WriteNBits( ctxDepths[ n ],       16, Writer );
-//        WriteNBits( alphaDens[ n ],       16, Writer );
-////        WriteNBits( compMode,           1, Writer );
-//    }
+    FILE *Writer = fopen(tar, "w");     /// to save compressed file
+
+    startoutputtingbits();              /// start arithmetic encoding process
+    start_encode();
+
+    /// model(s) properties, to be sent to decoder
+    WriteNBits( WATERMARK,                26, Writer );
+    WriteNBits( file_size,                46, Writer );
+    WriteNBits( (int) (gamma * 65536),    32, Writer );
+    WriteNBits( n_models,                 16, Writer );
+    for (U8 n = 0; n < n_models; ++n)
+    {
+        WriteNBits( (U8) invRepeats[ n ],  1, Writer );
+        WriteNBits( ctxDepths[ n ],       16, Writer );
+        WriteNBits( alphaDens[ n ],       16, Writer );
+//        WriteNBits( compMode,           1, Writer );
+    }
     
+    
+    
+    freqs[ 0 ] = 65536;
+    freqs[ 1 ] = 1;
+    freqs[ 2 ] = 1;
+    freqs[ 3 ] = 1;
+    freqs[ 4 ] = 1;
+    sumFreqs = 0;   for (int f : freqs) sumFreqs += f;
+    for (int j = 0; j < 1000; ++j)
+    {
+        AESym(0, freqs, sumFreqs, Writer); /// Arithmetic encoder
+    }
+    
+    
+    
+    
+    /*
     switch ( compMode )
     {
         case 't':
@@ -403,10 +421,11 @@ void FCM::compress (const string &tarFileName)
 
         default: break;
     }   /// end switch
+    */
     
-//    finish_encode( Writer );
-//    doneoutputtingbits( Writer );   /// encode the last bit
-//    fclose( Writer );               /// close compressed file
+    finish_encode( Writer );
+    doneoutputtingbits( Writer );   /// encode the last bit
+    fclose( Writer );               /// close compressed file
     
     tarFileIn.close();              /// close target file
     
