@@ -239,31 +239,26 @@ void FCM::compress (const string &tarFileName)
     start_encode();
 
     /// model(s) properties, to be sent to decoder
-    WriteNBits( WATERMARK,                26, Writer );
-    WriteNBits( file_size,                46, Writer );
-    WriteNBits( (int) (gamma * 65536),    32, Writer );
-    WriteNBits( n_models,                 16, Writer );
-    for (U8 n = 0; n < n_models; ++n)
-    {
-        WriteNBits( (U8) invRepeats[ n ],  1, Writer );
-        WriteNBits( ctxDepths[ n ],       16, Writer );
-        WriteNBits( alphaDens[ n ],       16, Writer );
-//        WriteNBits( compMode,           1, Writer );
-    }
+//    WriteNBits( WATERMARK,                26, Writer );
+//    WriteNBits( file_size,                46, Writer );
+//    WriteNBits( (int) (gamma * 65536),    32, Writer );
+//    WriteNBits( n_models,                 16, Writer );
+//    for (U8 n = 0; n < n_models; ++n)
+//    {
+//        WriteNBits( (U8) invRepeats[ n ],  1, Writer );
+//        WriteNBits( ctxDepths[ n ],       16, Writer );
+//        WriteNBits( alphaDens[ n ],       16, Writer );
+////        WriteNBits( compMode,           1, Writer );
+//    }
     
     
     
-    freqs[ 0 ] = 65536;
-    freqs[ 1 ] = 1;
-    freqs[ 2 ] = 1;
-    freqs[ 3 ] = 1;
-    freqs[ 4 ] = 1;
-    sumFreqs = 0;   for (int f : freqs) sumFreqs += f;
-    for (int j = 0; j < 1000; ++j)
-    {
-        AESym(0, freqs, sumFreqs, Writer); /// Arithmetic encoder
-    }
-    
+    freqs[0]=1, freqs[1]=65536, freqs[2]=65536, freqs[3]=1, freqs[4]=1;
+    AESym(4, freqs, 131075, Writer);
+    freqs[0]=1, freqs[1]=1, freqs[2]=1, freqs[3]=1, freqs[4]=1;
+    AESym(0, freqs, 5, Writer);
+    freqs[0]=1, freqs[1]=65536, freqs[2]=65536, freqs[3]=1, freqs[4]=1;
+    AESym(2, freqs, 131075, Writer);
     
     
     
@@ -319,9 +314,9 @@ void FCM::compress (const string &tarFileName)
                     }
                     /// update weights
                     for (U8 i = n_models; i--;) weight[ i ] = rawWeight[ i ] / sumOfWeights;
-
+                    
                     sumOfEntropies = sumOfEntropies + log2(probability);            /// sum( log_2 P(s|c^t) )
-
+                    
                     /// frequencies (integer)
 ////                    for (U8 j = ALPH_SIZE; j--;) freqs[ j ] = (int) (1 + (freqsDouble[j] * DOUBLE_TO_INT));
                     freqs[ 0 ] = (int) (1 + (freqsDouble[0] * DOUBLE_TO_INT));
@@ -329,7 +324,7 @@ void FCM::compress (const string &tarFileName)
                     freqs[ 2 ] = (int) (1 + (freqsDouble[2] * DOUBLE_TO_INT));
                     freqs[ 3 ] = (int) (1 + (freqsDouble[3] * DOUBLE_TO_INT));
                     freqs[ 4 ] = (int) (1 + (freqsDouble[4] * DOUBLE_TO_INT));
-                    
+
                     sumFreqs = 0;   for (int f : freqs) sumFreqs += f;  /// sum of frequencies
 
 
@@ -340,10 +335,10 @@ void FCM::compress (const string &tarFileName)
 
 //                    for(U8 i=0;i<ALPH_SIZE;++i)printf("%d\t",freqs[i]);printf("***\n");
 
-                    
-                    
-                    
-                    
+
+
+
+
 //                    AESym( currSymInt, freqs, (int) sumFreqs, Writer ); /// Arithmetic encoder
                 }   /// end for
             }   /// end while
@@ -410,7 +405,7 @@ void FCM::compress (const string &tarFileName)
                     freqs[ 2 ] = (int) (1 + (freqsDouble[2] * DOUBLE_TO_INT));
                     freqs[ 3 ] = (int) (1 + (freqsDouble[3] * DOUBLE_TO_INT));
                     freqs[ 4 ] = (int) (1 + (freqsDouble[4] * DOUBLE_TO_INT));
-                    
+
                     sumFreqs = 0;   for (int f : freqs) sumFreqs += f;      /// sum of frequencies
 
 //                    AESym( currSymInt, freqs, (int) sumFreqs, Writer );     /// Arithmetic encoding
@@ -421,11 +416,61 @@ void FCM::compress (const string &tarFileName)
 
         default: break;
     }   /// end switch
-    */
+*/
     
     finish_encode( Writer );
     doneoutputtingbits( Writer );   /// encode the last bit
     fclose( Writer );               /// close compressed file
+    
+    
+    
+    FILE *Reader = fopen(tar, "r");       /// to process the compressed file
+    FILE *Writer2 = fopen("y.de", "w");     /// to save decompressed file
+    
+    int32_t idxOut = 0;
+    char *outBuffer = (char *) calloc(BUFFER_SIZE, sizeof(uint8_t));
+    
+    startinputtingbits();                       /// start arithmetic decoding process
+    start_decode(Reader);
+    
+    int sym;
+    freqs[ 0 ] = 13107, freqs[ 1 ] = 13107, freqs[ 2 ] = 13107, freqs[ 3 ] = 13107, freqs[ 4 ] = 13107;
+    for (int j = 0; j < 3; ++j)
+    {
+        
+        sym = ArithDecodeSymbol(ALPH_SIZE, freqs, 65535, Reader);                  /// Arithmetic decoder
+//                    sym = ArithDecodeSymbol(ALPH_SIZE, freqs, (int) sumFreqs, Reader);  /// Arithmetic decoder
+        outBuffer[ idxOut ] = symIntToChar(sym);                            /// output buffer
+        
+        if (++idxOut == BUFFER_SIZE)
+        {
+            fwrite(outBuffer, 1, idxOut, Writer2);                         /// write output
+            idxOut = 0;
+        }
+    
+    }
+    if (idxOut != 0)
+        fwrite(outBuffer, 1, idxOut, Writer2);
+    
+    finish_decode();
+    doneinputtingbits();                                        /// decode last bit
+    fclose(Reader);                                           /// close compressed file
+    fclose(Writer2);                                           /// close decompressed file
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     tarFileIn.close();              /// close target file
     
@@ -463,257 +508,257 @@ void FCM::compress (const string &tarFileName)
 /***********************************************************
     decompress target(s) based on reference(s) model
 ************************************************************/
-void FCM::decompress (const string &tarFileName)
-{
-    /// alpha and ALPH_SIZE*alpha: used in P numerator and denominator
-    double alpha[ n_models ], sumAlphas[ n_models ];
-    for (U8 i = n_models; i--;)
-    {
-        alpha[ i ] = (double) 1 / alphaDens[ i ];
-        sumAlphas[ i ] = ALPH_SIZE * alpha[ i ];
-    }
-
-    ifstream tarFileIn( tarFileName, ios::in ); /// open target file
-
-    mut.lock();///========================================================
-    if (!tarFileIn)                             /// error occurred while opening file
-    {
-        cerr << "The file '" << tarFileName << "' cannot be opened, or it is empty.\n";
-        tarFileIn.close();                      /// close file
-        return;                                 /// exit this function
-    }
-    mut.unlock();///======================================================
-
-    U64 maxPlaceValue[ n_models ];
-//    for (U8 i = n_models; i--;) maxPlaceValue[ i ] = (U64) pow( ALPH_SIZE, ctxDepths[ i ] );
-    for (U8 i = n_models; i--;) maxPlaceValue[ i ] = POWER5[ ctxDepths[i] ];
-    U64 tarContext[ n_models ]; fill_n(tarContext, n_models, 0); /// context(s) (integer) sliding through the dataset
-    U64 tCtx = 0;                               /// temp variable to decrease accessing tarContext[] array
-    string tarLine;                             /// keep each line of the file
-
-    ////////////////////////////////
-    U64     nSym;                               /// number of symbols (n_s). in probability numerator
-    U64     sumNSym;                            /// sum of number of symbols (sum n_a). in probability denominator
-    double  prob_i;                             /// each model probability of a symbol
-    double  rawWeight[ n_models ];              /// each model weight before normalization. init: 1/M
-    double  weight[ n_models ];     fill_n(weight, n_models, (double) 1 / n_models);    /// each model weight
-    double  probability;                        /// final probability of a symbol
-    double  sumOfEntropies = 0;                 /// sum of entropies for different symbols
-    U64     totalNOfSyms = 0;                   /// number of all symbols in the sequence
-    double  averageEntropy = 0;                 /// average entropy (H)
-    double  sumOfWeights;                       /// sum of weights. used for normalization
-    double  freqsDouble[ ALPH_SIZE ];           /// frequencies of each symbol (double)
-    int     freqs[ ALPH_SIZE ];                 /// frequencies of each symbol (integer)
-    U64     sumFreqs;                           /// sum of frequencies
-    int     sym;                                /// temporary variable to save decode result
-    ////////////////////////////////
-
-    /*
-    /// using macros make this code slower
-    #define X \
-         ((compMode == 'h') ? (hashTable[ tarContext ][ currSymInt ]) \
-                                   : (table[ tarContext * ALPH_SUM_SIZE + currSymInt ]))
-    #define Y(in) do { \
-                (compMode == 't') \
-                ? in = table[ tarContext * ALPH_SUM_SIZE + ALPH_SIZE ] \
-                : in = 0; for (U64 u : hashTable[ tarContext ]) in += u; \
-              } while ( 0 )
-    */
-
-    FILE *Reader = fopen("COMP.co", "r");       /// to process the compressed file
-    FILE *Writer = fopen("DECOMP.de", "w");     /// to save decompressed file
-    
-    int32_t idxOut = 0;
-    char *outBuffer = (char *) calloc(BUFFER_SIZE, sizeof(uint8_t));
-    
-    startinputtingbits();                       /// start arithmetic decoding process
-    start_decode(Reader);
-    
-    
-    
-//    P[n].watermark = ReadNBits(32, Reader);
-//    if(P[n].watermark != WATERMARK){
-//        fprintf(stderr, "Error: Invalid compressed file to decompress!\n");
-//        return 1;
+//void FCM::decompress (const string &tarFileName)
+//{
+//    /// alpha and ALPH_SIZE*alpha: used in P numerator and denominator
+//    double alpha[ n_models ], sumAlphas[ n_models ];
+//    for (U8 i = n_models; i--;)
+//    {
+//        alpha[ i ] = (double) 1 / alphaDens[ i ];
+//        sumAlphas[ i ] = ALPH_SIZE * alpha[ i ];
 //    }
-//    checksum[n]    = ReadNBits(46, Reader);
-//    P[n].size      = ReadNBits(46, Reader);
-//    P[n].gamma     = ReadNBits(32, Reader) / 65536.0;
-//    P[n].col       = ReadNBits(32, Reader);
-//    P[n].nModels   = ReadNBits(16, Reader);
-//    P[n].model     = (ModelPar *) Calloc(P[n].nModels, sizeof(ModelPar));
-//    for(k = 0 ; k < P[n].nModels ; ++k){
-//        P[n].model[k].ctx   = ReadNBits(16, Reader);
-//        P[n].model[k].den   = ReadNBits(16, Reader);
-//        P[n].model[k].ir    = ReadNBits( 1, Reader);
-//        P[n].model[k].edits = ReadNBits( 8, Reader);
-//        P[n].model[k].eDen  = ReadNBits(32, Reader);
-//        P[n].model[k].type  = ReadNBits( 1, Reader);
-//        if(P[n].model[k].type == 1)
-//            ++refNModels;
+//
+//    ifstream tarFileIn( tarFileName, ios::in ); /// open target file
+//
+//    mut.lock();///========================================================
+//    if (!tarFileIn)                             /// error occurred while opening file
+//    {
+//        cerr << "The file '" << tarFileName << "' cannot be opened, or it is empty.\n";
+//        tarFileIn.close();                      /// close file
+//        return;                                 /// exit this function
 //    }
-    
-    
-//    P[id].watermark        = ReadNBits(32, Reader);
-//    garbage                = ReadNBits(46, Reader);
-//    P[id].size             = ReadNBits(46, Reader);
-//    P[id].gamma            = ReadNBits(32, Reader) / 65536.0;
-//    P[id].col              = ReadNBits(32, Reader);
-//    P[id].nModels          = ReadNBits(16, Reader);
-//    for(k = 0 ; k < P[id].nModels ; ++k){
-//        P[id].model[k].ctx   = ReadNBits(16, Reader);
-//        P[id].model[k].den   = ReadNBits(16, Reader);
-//        P[id].model[k].ir    = ReadNBits( 1, Reader);
-//        P[id].model[k].edits = ReadNBits( 8, Reader);
-//        P[id].model[k].eDen  = ReadNBits(32, Reader);
-//        P[id].model[k].type  = ReadNBits( 1, Reader);
-//    }
-    
-    switch ( compMode )
-    {
-        case 't':
-        {
-            U64 rowIndex;                       /// index of a row in the table
-            
-            while ( getline(tarFileIn, tarLine) )
-            {
-                
-                //////////////////////////////////
-                totalNOfSyms = totalNOfSyms + tarLine.size();   /// number of symbols in each line of dataset
-                //////////////////////////////////
-                
-                /// table includes the number of occurrences of symbols A, C, N, G, T
-                for (string::iterator lineIt = tarLine.begin(); lineIt != tarLine.end(); ++lineIt)
-                {
-                    fill_n( freqsDouble, ALPH_SIZE, 0 );        /// reset array of frequencies
-                    
-                    U8 currSymInt = symCharToInt(*lineIt);    /// integer version of the current symbol
-                    
-                    ////////////////////////////////
-//                    probability  = 0;
-                    sumOfWeights = 0;
-                    
-                    for (U8 i = n_models; i--;)
-                    {
-                        rowIndex = (tCtx = tarContext[ i ]) * ALPH_SUM_SIZE;
-                        
-                        /// frequencies (double)
-                        for (U8 j = ALPH_SIZE; j--;) freqsDouble[ j ] += weight[ i ] * tables[ i ][ rowIndex + j ];
-                        nSym = tables[ i ][ rowIndex + currSymInt ];    /// number of symbols
-//                          nSym = X;
-                        sumNSym = tables[ i ][ rowIndex + ALPH_SIZE ];  /// sum of number of symbols
-//                          Y(sumNSyms);
-                        prob_i = (nSym + alpha[ i ]) / (sumNSym + sumAlphas[ i ]);  /// P(s|c^t)
-//                        probability = probability + weight[ i ] * prob_i;           /// P_1*W_1 + P_2*W_2 + ...
-                        /// weight before normalization
-                        rawWeight[ i ] = fastPow(weight[ i ], gamma) * prob_i;
-                        sumOfWeights = sumOfWeights + rawWeight[ i ];   /// sum of weights. used for normalization
-    
-                        /// update context
-                        tarContext[ i ] = (U64) (tCtx * ALPH_SIZE + currSymInt) % maxPlaceValue[ i ];
-                    }
-                    /// update weights
-                    for (U8 i = n_models; i--;) weight[ i ] = rawWeight[ i ] / sumOfWeights;
-                    
-//                    sumOfEntropies = sumOfEntropies + log2(probability);            /// sum( log_2 P(s|c^t) )
-                    /////////////////////////////////
-                    
-                    /// frequencies (integer)
-                    for (U8 j = ALPH_SIZE; j--;) freqs[ j ] = (int) (1 + (freqsDouble[ j ] * DOUBLE_TO_INT));
-//                    sumFreqs = 0;   for (int f : freqs) sumFreqs += f;                  /// sum of frequencies
-    
-                    sym = ArithDecodeSymbol(ALPH_SIZE, freqs, Reader);                  /// Arithmetic decoder
-//                    sym = ArithDecodeSymbol(ALPH_SIZE, freqs, (int) sumFreqs, Reader);  /// Arithmetic decoder
-                    outBuffer[ idxOut ] = symIntToChar(sym);                            /// output buffer
-                    
-                    if (++idxOut == BUFFER_SIZE)
-                    {
-                        fwrite( outBuffer, 1, idxOut, Writer );                         /// write output
-                        idxOut = 0;
-                    }
-                }   /// end for
-            }   /// end while
-        }   /// end case
-            break;
-    
-        case 'h':
-        {
-            array< U64, ALPH_SIZE > hTRowArray;                 /// hash table row array -- to save a row of hTable
-        
-            while ( getline(tarFileIn, tarLine) )
-            {
-            
-                //////////////////////////////////
-                totalNOfSyms = totalNOfSyms + tarLine.size();   /// number of symbols in each line of dataset
-                //////////////////////////////////
-            
-                /// hash table includes the number of occurrences of symbols A, C, N, G, T
-                for (string::iterator lineIt = tarLine.begin(); lineIt != tarLine.end(); ++lineIt)
-                {
-                    fill_n( freqsDouble, ALPH_SIZE, 0 );        /// reset array of frequencies
-                
-                    U8 currSymInt = symCharToInt(*lineIt);    /// integer version of the current symbol
-                
-                    //////////////////////////////////
-//                    probability  = 0;
-                    sumOfWeights = 0;
-                
-                    for (U8 i = n_models; i--;)
-                    {
-                        tCtx = tarContext[ i ];
-                        hTRowArray = hashTables[ i ][ tCtx ];   /// save the row of hash table into an array
-                        /// frequencies (double)
-                        for (U8 j = ALPH_SIZE; j--;) freqsDouble[ j ] += weight[ i ] * hTRowArray[ j ];
-                        /// sum of number of symbols
-                        sumNSym = 0;    for (U64 u : hTRowArray) sumNSym = sumNSym + u;
-////                        Y(sumNSym);
-                        nSym = hTRowArray[ currSymInt ];        /// number of symbols
+//    mut.unlock();///======================================================
+//
+//    U64 maxPlaceValue[ n_models ];
+////    for (U8 i = n_models; i--;) maxPlaceValue[ i ] = (U64) pow( ALPH_SIZE, ctxDepths[ i ] );
+//    for (U8 i = n_models; i--;) maxPlaceValue[ i ] = POWER5[ ctxDepths[i] ];
+//    U64 tarContext[ n_models ]; fill_n(tarContext, n_models, 0); /// context(s) (integer) sliding through the dataset
+//    U64 tCtx = 0;                               /// temp variable to decrease accessing tarContext[] array
+//    string tarLine;                             /// keep each line of the file
+//
+//    ////////////////////////////////
+//    U64     nSym;                               /// number of symbols (n_s). in probability numerator
+//    U64     sumNSym;                            /// sum of number of symbols (sum n_a). in probability denominator
+//    double  prob_i;                             /// each model probability of a symbol
+//    double  rawWeight[ n_models ];              /// each model weight before normalization. init: 1/M
+//    double  weight[ n_models ];     fill_n(weight, n_models, (double) 1 / n_models);    /// each model weight
+//    double  probability;                        /// final probability of a symbol
+//    double  sumOfEntropies = 0;                 /// sum of entropies for different symbols
+//    U64     totalNOfSyms = 0;                   /// number of all symbols in the sequence
+//    double  averageEntropy = 0;                 /// average entropy (H)
+//    double  sumOfWeights;                       /// sum of weights. used for normalization
+//    double  freqsDouble[ ALPH_SIZE ];           /// frequencies of each symbol (double)
+//    int     freqs[ ALPH_SIZE ];                 /// frequencies of each symbol (integer)
+//    U64     sumFreqs;                           /// sum of frequencies
+//    int     sym;                                /// temporary variable to save decode result
+//    ////////////////////////////////
+//
+//    /*
+//    /// using macros make this code slower
+//    #define X \
+//         ((compMode == 'h') ? (hashTable[ tarContext ][ currSymInt ]) \
+//                                   : (table[ tarContext * ALPH_SUM_SIZE + currSymInt ]))
+//    #define Y(in) do { \
+//                (compMode == 't') \
+//                ? in = table[ tarContext * ALPH_SUM_SIZE + ALPH_SIZE ] \
+//                : in = 0; for (U64 u : hashTable[ tarContext ]) in += u; \
+//              } while ( 0 )
+//    */
+//
+//    FILE *Reader = fopen("COMP.co", "r");       /// to process the compressed file
+//    FILE *Writer = fopen("DECOMP.de", "w");     /// to save decompressed file
+//
+//    int32_t idxOut = 0;
+//    char *outBuffer = (char *) calloc(BUFFER_SIZE, sizeof(uint8_t));
+//
+//    startinputtingbits();                       /// start arithmetic decoding process
+//    start_decode(Reader);
+//
+//
+//
+////    P[n].watermark = ReadNBits(32, Reader);
+////    if(P[n].watermark != WATERMARK){
+////        fprintf(stderr, "Error: Invalid compressed file to decompress!\n");
+////        return 1;
+////    }
+////    checksum[n]    = ReadNBits(46, Reader);
+////    P[n].size      = ReadNBits(46, Reader);
+////    P[n].gamma     = ReadNBits(32, Reader) / 65536.0;
+////    P[n].col       = ReadNBits(32, Reader);
+////    P[n].nModels   = ReadNBits(16, Reader);
+////    P[n].model     = (ModelPar *) Calloc(P[n].nModels, sizeof(ModelPar));
+////    for(k = 0 ; k < P[n].nModels ; ++k){
+////        P[n].model[k].ctx   = ReadNBits(16, Reader);
+////        P[n].model[k].den   = ReadNBits(16, Reader);
+////        P[n].model[k].ir    = ReadNBits( 1, Reader);
+////        P[n].model[k].edits = ReadNBits( 8, Reader);
+////        P[n].model[k].eDen  = ReadNBits(32, Reader);
+////        P[n].model[k].type  = ReadNBits( 1, Reader);
+////        if(P[n].model[k].type == 1)
+////            ++refNModels;
+////    }
+//
+//
+////    P[id].watermark        = ReadNBits(32, Reader);
+////    garbage                = ReadNBits(46, Reader);
+////    P[id].size             = ReadNBits(46, Reader);
+////    P[id].gamma            = ReadNBits(32, Reader) / 65536.0;
+////    P[id].col              = ReadNBits(32, Reader);
+////    P[id].nModels          = ReadNBits(16, Reader);
+////    for(k = 0 ; k < P[id].nModels ; ++k){
+////        P[id].model[k].ctx   = ReadNBits(16, Reader);
+////        P[id].model[k].den   = ReadNBits(16, Reader);
+////        P[id].model[k].ir    = ReadNBits( 1, Reader);
+////        P[id].model[k].edits = ReadNBits( 8, Reader);
+////        P[id].model[k].eDen  = ReadNBits(32, Reader);
+////        P[id].model[k].type  = ReadNBits( 1, Reader);
+////    }
+//
+//    switch ( compMode )
+//    {
+//        case 't':
+//        {
+//            U64 rowIndex;                       /// index of a row in the table
+//
+//            while ( getline(tarFileIn, tarLine) )
+//            {
+//
+//                //////////////////////////////////
+//                totalNOfSyms = totalNOfSyms + tarLine.size();   /// number of symbols in each line of dataset
+//                //////////////////////////////////
+//
+//                /// table includes the number of occurrences of symbols A, C, N, G, T
+//                for (string::iterator lineIt = tarLine.begin(); lineIt != tarLine.end(); ++lineIt)
+//                {
+//                    fill_n( freqsDouble, ALPH_SIZE, 0 );        /// reset array of frequencies
+//
+//                    U8 currSymInt = symCharToInt(*lineIt);    /// integer version of the current symbol
+//
+//                    ////////////////////////////////
+////                    probability  = 0;
+//                    sumOfWeights = 0;
+//
+//                    for (U8 i = n_models; i--;)
+//                    {
+//                        rowIndex = (tCtx = tarContext[ i ]) * ALPH_SUM_SIZE;
+//
+//                        /// frequencies (double)
+//                        for (U8 j = ALPH_SIZE; j--;) freqsDouble[ j ] += weight[ i ] * tables[ i ][ rowIndex + j ];
+//                        nSym = tables[ i ][ rowIndex + currSymInt ];    /// number of symbols
 ////                          nSym = X;
-////                          X(nSym);
-                        prob_i = (nSym + alpha[ i ]) / (sumNSym + sumAlphas[ i ]);  /// P(s|c^t)
-//                        probability = probability + weight[ i ] * prob_i;           /// P_1*W_1 + P_2*W_2 + ...
-                        /// weight before normalization
-                        rawWeight[ i ] = fastPow(weight[ i ], gamma) * prob_i;
-                        sumOfWeights = sumOfWeights + rawWeight[ i ];   /// sum of weights. used for normalization
-                        
-                        /// update context
-                        tarContext[ i ] = (U64) (tCtx * ALPH_SIZE + currSymInt) % maxPlaceValue[ i ];
-                    }
-                    /// update weights
-                    for (U8 i = n_models; i--;) weight[ i ] = rawWeight[ i ] / sumOfWeights;
-                    
-//                    sumOfEntropies = sumOfEntropies + log2(probability);            /// sum( log_2 P(s|c^t) )
-                    /////////////////////////////////
-                    
-                    /// frequencies (integer)
-                    for (U8 j = ALPH_SIZE; j--;) freqs[ j ] = (int) (1 + (freqsDouble[ j ] * DOUBLE_TO_INT));
-//                    sumFreqs = 0;   for (int f : freqs) sumFreqs += f;                  /// sum of frequencies
-    
-                    sym = ArithDecodeSymbol(ALPH_SIZE, freqs, Reader);                  /// Arithmetic decoder
-//                    sym = ArithDecodeSymbol(ALPH_SIZE, freqs, (int) sumFreqs, Reader);  /// Arithmetic decoder
-                    outBuffer[ idxOut ] = symIntToChar(sym);                            /// output buffer
-                    
-                    if (++idxOut == BUFFER_SIZE)
-                    {
-                        fwrite( outBuffer, 1, idxOut, Writer );                         /// write output
-                        idxOut = 0;
-                    }
-                }   /// end for
-            }   /// end while
-        }   /// end case
-            
-        default: break;
-    }   /// end switch
-    
-    if (idxOut != 0)    fwrite(outBuffer, 1, idxOut, Writer);
-    
-    finish_decode();
-    doneinputtingbits();                                        /// decode last bit
-    fclose( Reader );                                           /// close compressed file
-    fclose( Writer );                                           /// close decompressed file
-    
-    tarFileIn.close();                                          /// close target file
-}
+//                        sumNSym = tables[ i ][ rowIndex + ALPH_SIZE ];  /// sum of number of symbols
+////                          Y(sumNSyms);
+//                        prob_i = (nSym + alpha[ i ]) / (sumNSym + sumAlphas[ i ]);  /// P(s|c^t)
+////                        probability = probability + weight[ i ] * prob_i;           /// P_1*W_1 + P_2*W_2 + ...
+//                        /// weight before normalization
+//                        rawWeight[ i ] = fastPow(weight[ i ], gamma) * prob_i;
+//                        sumOfWeights = sumOfWeights + rawWeight[ i ];   /// sum of weights. used for normalization
+//
+//                        /// update context
+//                        tarContext[ i ] = (U64) (tCtx * ALPH_SIZE + currSymInt) % maxPlaceValue[ i ];
+//                    }
+//                    /// update weights
+//                    for (U8 i = n_models; i--;) weight[ i ] = rawWeight[ i ] / sumOfWeights;
+//
+////                    sumOfEntropies = sumOfEntropies + log2(probability);            /// sum( log_2 P(s|c^t) )
+//                    /////////////////////////////////
+//
+//                    /// frequencies (integer)
+//                    for (U8 j = ALPH_SIZE; j--;) freqs[ j ] = (int) (1 + (freqsDouble[ j ] * DOUBLE_TO_INT));
+////                    sumFreqs = 0;   for (int f : freqs) sumFreqs += f;                  /// sum of frequencies
+//
+//                    sym = ArithDecodeSymbol(ALPH_SIZE, freqs, Reader);                  /// Arithmetic decoder
+////                    sym = ArithDecodeSymbol(ALPH_SIZE, freqs, (int) sumFreqs, Reader);  /// Arithmetic decoder
+//                    outBuffer[ idxOut ] = symIntToChar(sym);                            /// output buffer
+//
+//                    if (++idxOut == BUFFER_SIZE)
+//                    {
+//                        fwrite( outBuffer, 1, idxOut, Writer );                         /// write output
+//                        idxOut = 0;
+//                    }
+//                }   /// end for
+//            }   /// end while
+//        }   /// end case
+//            break;
+//
+//        case 'h':
+//        {
+//            array< U64, ALPH_SIZE > hTRowArray;                 /// hash table row array -- to save a row of hTable
+//
+//            while ( getline(tarFileIn, tarLine) )
+//            {
+//
+//                //////////////////////////////////
+//                totalNOfSyms = totalNOfSyms + tarLine.size();   /// number of symbols in each line of dataset
+//                //////////////////////////////////
+//
+//                /// hash table includes the number of occurrences of symbols A, C, N, G, T
+//                for (string::iterator lineIt = tarLine.begin(); lineIt != tarLine.end(); ++lineIt)
+//                {
+//                    fill_n( freqsDouble, ALPH_SIZE, 0 );        /// reset array of frequencies
+//
+//                    U8 currSymInt = symCharToInt(*lineIt);    /// integer version of the current symbol
+//
+//                    //////////////////////////////////
+////                    probability  = 0;
+//                    sumOfWeights = 0;
+//
+//                    for (U8 i = n_models; i--;)
+//                    {
+//                        tCtx = tarContext[ i ];
+//                        hTRowArray = hashTables[ i ][ tCtx ];   /// save the row of hash table into an array
+//                        /// frequencies (double)
+//                        for (U8 j = ALPH_SIZE; j--;) freqsDouble[ j ] += weight[ i ] * hTRowArray[ j ];
+//                        /// sum of number of symbols
+//                        sumNSym = 0;    for (U64 u : hTRowArray) sumNSym = sumNSym + u;
+//////                        Y(sumNSym);
+//                        nSym = hTRowArray[ currSymInt ];        /// number of symbols
+//////                          nSym = X;
+//////                          X(nSym);
+//                        prob_i = (nSym + alpha[ i ]) / (sumNSym + sumAlphas[ i ]);  /// P(s|c^t)
+////                        probability = probability + weight[ i ] * prob_i;           /// P_1*W_1 + P_2*W_2 + ...
+//                        /// weight before normalization
+//                        rawWeight[ i ] = fastPow(weight[ i ], gamma) * prob_i;
+//                        sumOfWeights = sumOfWeights + rawWeight[ i ];   /// sum of weights. used for normalization
+//
+//                        /// update context
+//                        tarContext[ i ] = (U64) (tCtx * ALPH_SIZE + currSymInt) % maxPlaceValue[ i ];
+//                    }
+//                    /// update weights
+//                    for (U8 i = n_models; i--;) weight[ i ] = rawWeight[ i ] / sumOfWeights;
+//
+////                    sumOfEntropies = sumOfEntropies + log2(probability);            /// sum( log_2 P(s|c^t) )
+//                    /////////////////////////////////
+//
+//                    /// frequencies (integer)
+//                    for (U8 j = ALPH_SIZE; j--;) freqs[ j ] = (int) (1 + (freqsDouble[ j ] * DOUBLE_TO_INT));
+////                    sumFreqs = 0;   for (int f : freqs) sumFreqs += f;                  /// sum of frequencies
+//
+//                    sym = ArithDecodeSymbol(ALPH_SIZE, freqs, Reader);                  /// Arithmetic decoder
+////                    sym = ArithDecodeSymbol(ALPH_SIZE, freqs, (int) sumFreqs, Reader);  /// Arithmetic decoder
+//                    outBuffer[ idxOut ] = symIntToChar(sym);                            /// output buffer
+//
+//                    if (++idxOut == BUFFER_SIZE)
+//                    {
+//                        fwrite( outBuffer, 1, idxOut, Writer );                         /// write output
+//                        idxOut = 0;
+//                    }
+//                }   /// end for
+//            }   /// end while
+//        }   /// end case
+//
+//        default: break;
+//    }   /// end switch
+//
+//    if (idxOut != 0)    fwrite(outBuffer, 1, idxOut, Writer);
+//
+//    finish_decode();
+//    doneinputtingbits();                                        /// decode last bit
+//    fclose( Reader );                                           /// close compressed file
+//    fclose( Writer );                                           /// close decompressed file
+//
+//    tarFileIn.close();                                          /// close target file
+//}
 
 
 /***********************************************************

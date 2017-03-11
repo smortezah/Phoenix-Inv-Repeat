@@ -99,12 +99,9 @@ void AESym (int symbol, int *counters, int totalCount, FILE *oFp)
 
 /*----------------------------------------------------------------------------*/
 
-int ArithDecodeSymbol (int nSymbols, int *counters, FILE *iFp)
+int ArithDecodeSymbol (int nSymbols, int *counters, int totalCount, FILE *iFp)
 {
     int low, high;
-    int totalCount = 0;
-    for (int i=ALPH_SIZE; i--;) totalCount = totalCount + counters[i];
-    
     int symbol = GetSymbol(&low, &high, counters,
                            arithmetic_decode_target(totalCount), nSymbols);
     
