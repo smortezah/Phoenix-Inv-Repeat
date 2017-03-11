@@ -239,8 +239,9 @@ void FCM::compress (const string &tarFileName)
     start_encode();
 
     /// model(s) properties, to be sent to decoder
-    WriteNBits( WATERMARK,                26, Writer );
-//    WriteNBits( file_size,                46, Writer );
+    // todo: tab'e "WriteNBits" faghat vase neveshtane etelaate hamin header estefade mishe
+//    WriteNBits( WATERMARK,                26, Writer );
+//    WriteNBits( file_size,                46, Writer );             /// file size in byte
 //    WriteNBits( (int) (gamma * 65536),    32, Writer );
 //    WriteNBits( n_models,                 16, Writer );
 //    for (U8 n = 0; n < n_models; ++n)
@@ -432,35 +433,44 @@ void FCM::compress (const string &tarFileName)
     
     startinputtingbits();                       /// start arithmetic decoding process
     start_decode(Reader);
-
-    U64 w        = ReadNBits(26, Reader);
+   
     
-    int sym;
-    freqs[ 0 ] = 13107, freqs[ 1 ] = 13107, freqs[ 2 ] = 13107, freqs[ 3 ] = 13107, freqs[ 4 ] = 13107;
-    for (int j = 0; j < 3; ++j)
-    {
-        
-        sym = ArithDecodeSymbol(ALPH_SIZE, freqs, 65535, Reader);                  /// Arithmetic decoder
-//                    sym = ArithDecodeSymbol(ALPH_SIZE, freqs, (int) sumFreqs, Reader);  /// Arithmetic decoder
-        outBuffer[ idxOut ] = symIntToChar(sym);                            /// output buffer
-        
-        if (++idxOut == BUFFER_SIZE)
-        {
-            fwrite(outBuffer, 1, idxOut, Writer2);                         /// write output
-            idxOut = 0;
-        }
+//    cout << ' ' << ReadNBits(46, Reader);
+//    cout << ' ' << setprecision (2) << (double) ReadNBits(32, Reader) / 65536;
+//    cout << ' ' << ReadNBits(16, Reader);
+////    for(k = 0 ; k < P[id].nModels ; ++k){
+////        P[id].model[k].ctx   = ReadNBits(16, Reader);
+////        P[id].model[k].den   = ReadNBits(16, Reader);
+////        P[id].model[k].ir    = ReadNBits( 1, Reader);
+////        P[id].model[k].edits = ReadNBits( 8, Reader);
+////        P[id].model[k].eDen  = ReadNBits(32, Reader);
+////        P[id].model[k].type  = ReadNBits( 1, Reader);
+////    }
     
-    }
-    if (idxOut != 0)
-        fwrite(outBuffer, 1, idxOut, Writer2);
+    int sym=ReadNBits(8, Reader);
+    freqs[ 0 ] = 1, freqs[ 1 ] = 1, freqs[ 2 ] = 1, freqs[ 3 ] = 1, freqs[ 4 ] = 1;
+    cout << ArithDecodeSymbol(sym, freqs, 5, Reader);                  /// Arithmetic decoder
+    
+//    for (int j = 0; j < 3; ++j)
+//    {
+//        sym = ArithDecodeSymbol(sym, freqs, 65535, Reader);                  /// Arithmetic decoder
+//
+//        outBuffer[ idxOut ] = symIntToChar(sym);                            /// output buffer
+//
+//        if (++idxOut == BUFFER_SIZE)
+//        {
+//            fwrite(outBuffer, 1, idxOut, Writer2);                         /// write output
+//            idxOut = 0;
+//        }
+//
+//    }
+//    if (idxOut != 0)
+//        fwrite(outBuffer, 1, idxOut, Writer2);
     
     finish_decode();
-    doneinputtingbits();                                        /// decode last bit
-    fclose(Reader);                                           /// close compressed file
+    doneinputtingbits();                                       /// decode last bit
+    fclose(Reader);                                            /// close compressed file
     fclose(Writer2);                                           /// close decompressed file
-
-    cout<<w;
-    
     
     
     
