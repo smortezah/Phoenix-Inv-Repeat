@@ -239,7 +239,7 @@ void FCM::compress (const string &tarFileName)
     start_encode();
 
     /// model(s) properties, to be sent to decoder
-//    WriteNBits( WATERMARK,                26, Writer );
+    WriteNBits( WATERMARK,                26, Writer );
 //    WriteNBits( file_size,                46, Writer );
 //    WriteNBits( (int) (gamma * 65536),    32, Writer );
 //    WriteNBits( n_models,                 16, Writer );
@@ -432,6 +432,8 @@ void FCM::compress (const string &tarFileName)
     
     startinputtingbits();                       /// start arithmetic decoding process
     start_decode(Reader);
+
+    U64 w        = ReadNBits(26, Reader);
     
     int sym;
     freqs[ 0 ] = 13107, freqs[ 1 ] = 13107, freqs[ 2 ] = 13107, freqs[ 3 ] = 13107, freqs[ 4 ] = 13107;
@@ -457,7 +459,7 @@ void FCM::compress (const string &tarFileName)
     fclose(Reader);                                           /// close compressed file
     fclose(Writer2);                                           /// close decompressed file
 
-    
+    cout<<w;
     
     
     
