@@ -85,7 +85,8 @@ int main (int argc, char *argv[])
         for (U8 i = 0; i < n_targets; i += arrThrSize)
         {
             for (U8 j = 0; j < arrThrSize && i + j < n_targets; ++j)
-                arrThread[ j ] = thread(&FCM::decompress, &mixModel, mixModel.getTarAddr()[ i + j ]);
+                arrThread[ j ] = thread(&FCM::decompress, &mixModel,
+                                        mixModel.getTarAddr()[ i + j ], mixModel.getRefAddr());
             for (U8 j = 0; j < arrThrSize && i + j < n_targets; ++j)
                 arrThread[ j ].join();
         }

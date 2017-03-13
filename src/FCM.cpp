@@ -248,24 +248,15 @@ void FCM::compress (const string &tarFileName)
     /// model(s) properties, being sent to decoder as header
     WriteNBits( WATERMARK,                26, Writer );         /// WriteNBits: just writes header
     WriteNBits( file_size,                46, Writer );         /// file size in byte
-    WriteNBits( (U64) (gamma * 65536),    32, Writer );
-    WriteNBits( n_models,                 16, Writer );
+    WriteNBits( (U64) (gamma * 65536),    32, Writer );         /// gamma
+    WriteNBits( n_models,                 16, Writer );         /// number of models
     for (U8 n = 0; n < n_models; ++n)
     {
-        WriteNBits( (U8) invRepeats[ n ],  1, Writer );
-        WriteNBits( ctxDepths[ n ],       16, Writer );
-        WriteNBits( alphaDens[ n ],       16, Writer );
-//        WriteNBits( compMode,           1, Writer );
+        WriteNBits( (U8) invRepeats[ n ],  1, Writer );         /// inverted repeats
+        WriteNBits( ctxDepths[ n ],       16, Writer );         /// context depths
+        WriteNBits( alphaDens[ n ],       16, Writer );         /// alpha denoms
     }
-    
-    
-//    freqs[0]=1, freqs[1]=65536, freqs[2]=65536, freqs[3]=1, freqs[4]=1;
-//    AESym(4, freqs, 131075, Writer);
-//    freqs[0]=1, freqs[1]=1, freqs[2]=1, freqs[3]=1, freqs[4]=1;
-//    AESym(0, freqs, 5, Writer);
-//    freqs[0]=1, freqs[1]=65536, freqs[2]=65536, freqs[3]=1, freqs[4]=1;
-//    AESym(2, freqs, 131075, Writer);
-    
+    WriteNBits( (U64) compMode,           16, Writer );         /// compression mode
     
     switch ( compMode )
     {
@@ -445,7 +436,7 @@ void FCM::compress (const string &tarFileName)
 /***********************************************************
     decompress target(s) based on reference(s) model
 ************************************************************/
-void FCM::decompress (const string &tarFileName)
+void FCM::decompress (const string &tarFileName, const vector<string> &refFilesNames)
 {
     size_t lastSlash_Tar = tarFileName.find_last_of("/");           /// position of last slash
     string tarNamePure   = tarFileName.substr(lastSlash_Tar + 1);   /// target file name without slash
@@ -455,27 +446,182 @@ void FCM::decompress (const string &tarFileName)
     FILE   *Writer       = fopen(tarDe, "w");                       /// to save decompressed file
     I32    idxOut        = 0;
     char   *outBuffer    = (char*) calloc(BUFFER_SIZE, sizeof(uint8_t));
-
-    startinputtingbits();                                           /// start arithmetic decoding process
-    start_decode(Reader);
     
-    U64 watermark = ReadNBits(26, Reader);//WATERMARK
-    cout << ' ' << watermark;
-    if (watermark != WATERMARK)
+    startinputtingbits();                                           /// start arithmetic decoding process
+    start_decode( Reader );
+    
+    /// extract header information
+    if (ReadNBits(26, Reader) != WATERMARK)                         /// watermark check-in
     {
         cerr << "ERROR: Invalid compressed file!\n";
         exit(1);
     }
-    cout << ' ' << ReadNBits(46, Reader);//file_size
-    cout << ' ' << setprecision(2) << (double) ReadNBits(32, Reader) / 65536;//gamma
-    cout << ' ' << ReadNBits(16, Reader);//n_models
-    for (U8 n = 0; n < n_models; ++n)
+    U64    file_size  = ReadNBits(    46, Reader );                 /// file size
+    double gamma      = std::round((double) ReadNBits(32,Reader)/65536 * 100) / 100;    /// gamma
+    U64    num_models = ReadNBits(    16, Reader );                 /// number of models
+    U64    invRepeats[num_models], ctxDepths[num_models], alphaDens[num_models];
+    for (U8 n = 0; n < num_models; ++n)
     {
-        cout << ' ' << ReadNBits(1, Reader);//invRepeats
-        cout << ' ' << ReadNBits(16, Reader);//ctxDepths
-        cout << ' ' << ReadNBits(16, Reader);//alphaDens
-//        cout << ' ' << ReadNBits(1, Reader);//compMode
+        invRepeats[ n ] = ReadNBits(   1, Reader );                 /// inverted repeats
+        ctxDepths[ n ]  = ReadNBits(  16, Reader );                 /// context depths
+        alphaDens[ n ]  = ReadNBits(  16, Reader );                 /// alplha denoms
     }
+    char compMode = (char) ReadNBits( 16, Reader );                 /// compression mode
+    
+    
+    
+//    void FCM::buildModel (bool invRepeat, U8 ctxDepth, U8 modelIndex)
+    //-----------
+//    vector< string > refFilesNames = getRefAddr();  /// reference file(s) address(es)
+    U8 refsNumber = (U8) refFilesNames.size();                      /// number of references
+    
+    /// check if reference(s) file(s) cannot be opened, or are empty
+    ifstream refFilesIn[refsNumber];
+    for (U8 i = refsNumber; i--;)
+    {
+        refFilesIn[ i ].open(refFilesNames[ i ], ios::in);
+        if (!refFilesIn[ i ])               /// error occurred while opening file(s)
+        {
+            cerr << "The file '" << refFilesNames[ i ] << "' cannot be opened, or it is empty.\n";
+            refFilesIn[ i ].close();        /// close file(s)
+            return;                         /// exit this function
+        }
+    }
+    
+    U64 context;                            /// context (integer), that slides in the dataset
+    U64 maxPlaceValue = POWER5[ ctxDepth ];
+    U64 befMaxPlaceValue = POWER5[ ctxDepth - 1 ];
+    U64 invRepContext = maxPlaceValue - 1;  /// inverted repeat context (integer)
+    
+    U64 iRCtxCurrSym;                       /// concat of inverted repeat context and current symbol
+    U8 currSymInt;                         /// current symbol integer
+    
+    string refLine;                         /// keep each line of a file
+    
+    switch (compMode)                     /// build model based on 't'=table, or 'h'=hash table
+    {
+        case 't':
+        {
+            U64 tableSize = maxPlaceValue * ALPH_SUM_SIZE;
+            U64 *table = new U64[tableSize];  /// already initialized with 0's
+            /*
+            /// initialize table with 0's
+//            memset(table, 0, sizeof(table[ 0 ]) * tableSize);
+//            std::fill_n(table,tableSize,(double) 1/alphaDenom);
+            */
+            U64 rowIndex;                   /// to update table
+            
+            for (U8 i = refsNumber; i--;)
+            {
+                context = 0;                /// reset in the beginning of each reference file
+                
+                while (getline(refFilesIn[ i ], refLine))
+                {
+                    /// fill table by number of occurrences of symbols A, C, N, G, T
+                    for (string::iterator lineIt = refLine.begin(); lineIt != refLine.end(); ++lineIt)
+                    {
+                        currSymInt = symCharToInt(*lineIt);
+                        
+                        if (invRepeat)      /// considering inverted repeats to update table
+                        {
+                            /// concatenation of inverted repeat context and current symbol
+                            iRCtxCurrSym = (4 - currSymInt) * maxPlaceValue + invRepContext;
+                            /// update inverted repeat context (integer)
+                            invRepContext = (U64) iRCtxCurrSym / ALPH_SIZE;
+                            
+                            /// update table, including 'sum' column, considering inverted repeats
+                            rowIndex = invRepContext * ALPH_SUM_SIZE;
+                            ++table[ rowIndex + iRCtxCurrSym % ALPH_SIZE ]; /// update table
+                            ++table[ rowIndex + ALPH_SIZE ];                /// update 'sum' column
+                        }
+                        
+                        rowIndex = context * ALPH_SUM_SIZE;
+                        ++table[ rowIndex + currSymInt ];                   /// update table
+                        ++table[ rowIndex + ALPH_SIZE ];                    /// update 'sum' column
+                        
+                        /// update context. (rowIndex - context) == (context * ALPH_SIZE)
+////                        context = (U64) (rowIndex - context + currSymInt) % maxPlaceValue;
+////                        context = (U64) (rowIndex - context) % maxPlaceValue + currSymInt;
+                        context = (U64) (context % befMaxPlaceValue) * 5 + currSymInt;
+                    }
+                }   /// end while
+            }   /// end for
+            
+//            mut.lock();
+//            setTable(table, modelIndex);
+//            mut.unlock();       /// set table
+        }   /// end case
+            break;
+
+//            case 'h':       /// adding 'sum' column, makes hash table slower
+//            {
+//                htable_t hashTable;
+//
+//                for (int i = refsNumber; i--;)
+//                {
+//                    context = 0;    /// reset in the beginning of each reference file
+//
+//                    while ( getline(refFilesIn[ i ], refLine) )
+//                    {
+//                        /// fill hash table by number of occurrences of symbols A, C, N, G, T
+//                        for (string::iterator lineIt = refLine.begin(); lineIt != refLine.end(); ++lineIt)
+//                        {
+//                            currSymInt = symCharToInt(*lineIt);
+//
+//                            /// considering inverted repeats to update hash table
+//                            if (invRepeat)
+//                            {
+//                                /// concatenation of inverted repeat context and current symbol
+//                                iRCtxCurrSym = (4 - currSymInt) * maxPlaceValue + invRepContext;
+//                                /// update inverted repeat context (integer)
+//                                invRepContext = (U64) iRCtxCurrSym / ALPH_SIZE;
+//
+//                                /// update hash table considering inverted repeats
+//                                ++hashTable[ invRepContext ][ iRCtxCurrSym % ALPH_SIZE ];
+//                            }
+//
+//                            ++hashTable[ context ][ currSymInt ];   /// update hash table
+//
+//                            /// update context. (rowIndex - context) == (context * ALPH_SIZE)
+//////                        context = (U64) (rowIndex - context + currSymInt) % maxPlaceValue;
+//////                        context = (U64) (rowIndex - context) % maxPlaceValue + currSymInt;
+//                            context = (U64) (context % befMaxPlaceValue) * 5 + currSymInt;
+//                        }
+//                    }
+//                }   /// end for
+//
+//                mut.lock();  setHashTable(hashTable, modelIndex);  mut.unlock();    /// set hash table
+//            }   /// end case
+//                break;
+        
+        default:
+            break;
+    }   /// end switch
+    
+    for (U8 i = refsNumber; i--;)
+        refFilesIn[ i ].close();       /// close file(s)
+  
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
 //    int freqs[5];

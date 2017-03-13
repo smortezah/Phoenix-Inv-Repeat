@@ -21,7 +21,8 @@ public:
     
     void   buildModel     (bool, U8, U8);           /// build reference(s) model
     void   compress       (const string &);         /// compress target file
-    void   decompress     (const string &);         /// decompress target file
+    void   decompress     (const string &,
+                           const vector<string>&);  /// decompress target file
     
     inline char   symIntToChar (U8)       const;    /// 01234 -> ACNGT
     inline U8     symCharToInt (char)     const;    /// ACNGT -> 01234
