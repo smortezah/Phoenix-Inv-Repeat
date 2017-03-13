@@ -67,6 +67,7 @@ void FCM::buildModel (bool invRepeat, U8 ctxDepth, U8 modelIndex)
     U64 context;                       	    /// context (integer), that slides in the dataset
 ////    U64 maxPlaceValue = (U64) pow(ALPH_SIZE, ctxDepth);
     U64 maxPlaceValue = POWER5[ ctxDepth ];
+    U64 befMaxPlaceValue = POWER5[ ctxDepth-1 ];
     U64 invRepContext = maxPlaceValue - 1;  /// inverted repeat context (integer)
     
     U64 iRCtxCurrSym;                       /// concat of inverted repeat context and current symbol
@@ -116,7 +117,9 @@ void FCM::buildModel (bool invRepeat, U8 ctxDepth, U8 modelIndex)
                         ++table[ rowIndex + ALPH_SIZE ];                    /// update 'sum' column
                         
                         /// update context. (rowIndex - context) == (context * ALPH_SIZE)
-                        context = (U64) (rowIndex - context + currSymInt) % maxPlaceValue;
+////                        context = (U64) (rowIndex - context + currSymInt) % maxPlaceValue;
+////                        context = (U64) (rowIndex - context) % maxPlaceValue + currSymInt;
+                        context = (U64) (context % befMaxPlaceValue) * 5 + currSymInt;
                     }
                 }   /// end while
             }   /// end for
@@ -153,8 +156,11 @@ void FCM::buildModel (bool invRepeat, U8 ctxDepth, U8 modelIndex)
                         }
                         
                         ++hashTable[ context ][ currSymInt ];   /// update hash table
-                        /// update context
-                        context = (U64) (context * ALPH_SIZE + currSymInt) % maxPlaceValue;
+                        
+                        /// update context. (rowIndex - context) == (context * ALPH_SIZE)
+////                        context = (U64) (rowIndex - context + currSymInt) % maxPlaceValue;
+////                        context = (U64) (rowIndex - context) % maxPlaceValue + currSymInt;
+                        context = (U64) (context % befMaxPlaceValue) * 5 + currSymInt;
                     }
                 }
             }   /// end for
@@ -234,13 +240,13 @@ void FCM::compress (const string &tarFileName)
     const char *tar = (tarNamePure + ".co").c_str();                /// convert string to char*
 
     FILE *Writer = fopen(tar, "w");     /// to save compressed file
-
+    
     startoutputtingbits();              /// start arithmetic encoding process
     start_encode();
-
-    /// model(s) properties, to be sent to decoder
+    
+    /// model(s) properties, being sent to decoder as header
     // todo: tab'e "WriteNBits" faghat vase neveshtane etelaate hamin header estefade mishe
-//    WriteNBits( WATERMARK,                26, Writer );
+    WriteNBits( WATERMARK,                26, Writer );               /// WriteNBits: just writes header
 //    WriteNBits( file_size,                46, Writer );             /// file size in byte
 //    WriteNBits( (int) (gamma * 65536),    32, Writer );
 //    WriteNBits( n_models,                 16, Writer );
@@ -253,14 +259,12 @@ void FCM::compress (const string &tarFileName)
 //    }
     
     
-    
     freqs[0]=1, freqs[1]=65536, freqs[2]=65536, freqs[3]=1, freqs[4]=1;
     AESym(4, freqs, 131075, Writer);
     freqs[0]=1, freqs[1]=1, freqs[2]=1, freqs[3]=1, freqs[4]=1;
     AESym(0, freqs, 5, Writer);
     freqs[0]=1, freqs[1]=65536, freqs[2]=65536, freqs[3]=1, freqs[4]=1;
     AESym(2, freqs, 131075, Writer);
-    
     
     
     /*
