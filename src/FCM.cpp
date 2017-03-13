@@ -221,8 +221,9 @@ void FCM::compress (const string &tarFileName)
     double  sumOfWeights;               /// sum of weights. used for normalization
     double  freqsDouble[ ALPH_SIZE ];   /// frequencies of each symbol (double)
     int     freqs[ ALPH_SIZE ];         /// frequencies of each symbol (integer)
-    int     sumFreqs;
-
+    int     sumFreqs;                   /// sum of frequencies of each symbol
+    U8      currSymInt;                 /// current symbol in integer format
+    
     /*
     /// using macros make this code slower
     #define X \
@@ -234,10 +235,10 @@ void FCM::compress (const string &tarFileName)
                 : in = 0; for (U64 u : hashTable[ tarContext ]) in += u; \
               } while ( 0 )
     */
-
-    size_t lastSlash_Tar = tarFileName.find_last_of("/");           /// find the position of last slash
-    string tarNamePure = tarFileName.substr(lastSlash_Tar + 1);     /// target file name without slash
-    const char *tar = (tarNamePure + ".co").c_str();                /// convert string to char*
+    
+    size_t lastSlash_Tar = tarFileName.find_last_of("/");       /// find the position of last slash
+    string tarNamePure = tarFileName.substr(lastSlash_Tar + 1); /// target file name without slash
+    const char *tar = (tarNamePure + ".co").c_str();            /// convert string to char*
     
     FILE *Writer = fopen(tar, "w");     /// to save compressed file
     
@@ -258,22 +259,22 @@ void FCM::compress (const string &tarFileName)
 //    }
     
     
-    freqs[0]=1, freqs[1]=65536, freqs[2]=65536, freqs[3]=1, freqs[4]=1;
-    AESym(0, freqs, 131075, Writer);
+//    freqs[0]=1, freqs[1]=65536, freqs[2]=65536, freqs[3]=1, freqs[4]=1;
+//    AESym(4, freqs, 131075, Writer);
 //    freqs[0]=1, freqs[1]=1, freqs[2]=1, freqs[3]=1, freqs[4]=1;
 //    AESym(0, freqs, 5, Writer);
 //    freqs[0]=1, freqs[1]=65536, freqs[2]=65536, freqs[3]=1, freqs[4]=1;
 //    AESym(2, freqs, 131075, Writer);
     
     
-    /*
+    
     switch ( compMode )
     {
         case 't':
         {
             U64 rowIndex;                   /// index of a row in the table
             sumOfEntropies = 0;             /// sum of entropies
-
+            
             while ( getline(tarFileIn, tarLine) )
             {
                 ++n_fileLines;                              /// number of file lines
@@ -283,7 +284,7 @@ void FCM::compress (const string &tarFileName)
                 {
                     fill_n( freqsDouble, ALPH_SIZE, 0 );    /// reset array of frequencies
 
-                    U8 currSymInt = symCharToInt(*lineIt);  /// integer version of the current symbol
+                    currSymInt = symCharToInt(*lineIt);     /// integer version of the current symbol
 
                     probability  = 0;
                     sumOfWeights = 0;
@@ -293,8 +294,6 @@ void FCM::compress (const string &tarFileName)
                         rowIndex = tarContext[ i ] * ALPH_SUM_SIZE;
 
                         /// frequencies (double)
-////                        for (U8 j = ALPH_SIZE; j--;)
-////                            freqsDouble[ j ] += weight[ i ] * tables[ i ][ rowIndex + j ];
                         freqsDouble[ 0 ] += weight[ i ] * tables[ i ][ rowIndex ];
                         freqsDouble[ 1 ] += weight[ i ] * tables[ i ][ rowIndex + 1 ];
                         freqsDouble[ 2 ] += weight[ i ] * tables[ i ][ rowIndex + 2 ];
@@ -311,7 +310,7 @@ void FCM::compress (const string &tarFileName)
                         /// weight before normalization
                         rawWeight[ i ] = fastPow(weight[ i ], gamma) * prob_i;
                         sumOfWeights = sumOfWeights + rawWeight[ i ];   /// sum of weights. used for normalization
-
+                        
                         /// update context. (rowIndex - tarContext[i]) == (tarContext[i] * ALPH_SIZE)
                         tarContext[ i ] = (U64) (rowIndex - tarContext[i] + currSymInt) % maxPlaceValue[ i ];
 ////                        tarContext[ i ] = (U64) (tarContext[i] * ALPH_SIZE + currSymInt) % maxPlaceValue[ i ];
@@ -332,18 +331,15 @@ void FCM::compress (const string &tarFileName)
                     sumFreqs = 0;   for (int f : freqs) sumFreqs += f;  /// sum of frequencies
 
 
-//                    for (int j = 0; j < 30; ++j)
-//                        cout << tables[ 0 ][ j ] << ' ';
-//                    cout << '\n';
-
+//                    for (int j = 0; j < 5; ++j)
+//                        cout << freqs[ j ] << ' ';
+//                    cout << sumFreqs << '\n';
+                    
 
 //                    for(U8 i=0;i<ALPH_SIZE;++i)printf("%d\t",freqs[i]);printf("***\n");
+                    
 
-
-
-
-
-//                    AESym( currSymInt, freqs, (int) sumFreqs, Writer ); /// Arithmetic encoder
+                    AESym( currSymInt, freqs, sumFreqs, Writer ); /// Arithmetic encoder
                 }   /// end for
             }   /// end while
         }   /// end case
@@ -363,7 +359,7 @@ void FCM::compress (const string &tarFileName)
                 {
                     fill_n( freqsDouble, ALPH_SIZE, 0 );    /// reset array of frequencies
 
-                    U8 currSymInt = symCharToInt(*lineIt);  /// integer version of the current symbol
+                    currSymInt = symCharToInt(*lineIt);  /// integer version of the current symbol
 
                     probability  = 0;
                     sumOfWeights = 0;
@@ -411,8 +407,8 @@ void FCM::compress (const string &tarFileName)
                     freqs[ 4 ] = (int) (1 + (freqsDouble[4] * DOUBLE_TO_INT));
 
                     sumFreqs = 0;   for (int f : freqs) sumFreqs += f;      /// sum of frequencies
-
-//                    AESym( currSymInt, freqs, (int) sumFreqs, Writer );     /// Arithmetic encoding
+    
+                    AESym( currSymInt, freqs, sumFreqs, Writer ); /// Arithmetic encoder
                 }   /// end for
             }   /// end while
         }   /// end case
@@ -420,7 +416,7 @@ void FCM::compress (const string &tarFileName)
 
         default: break;
     }   /// end switch
-*/
+    
     
     finish_encode( Writer );
     doneoutputtingbits( Writer );       /// encode the last bit
@@ -428,51 +424,58 @@ void FCM::compress (const string &tarFileName)
     
     
     
-    FILE *Reader = fopen(tar, "r");       /// to process the compressed file
-    FILE *Writer2 = fopen("y.de", "w");     /// to save decompressed file
-    
-    int32_t idxOut = 0;
-    char *outBuffer = (char *) calloc(BUFFER_SIZE, sizeof(uint8_t));
-    
-    startinputtingbits();                       /// start arithmetic decoding process
-    start_decode(Reader);
-    
-//    cout << ' ' << ReadNBits(26, Reader);
-//    cout << ' ' << setprecision (2) << (double) ReadNBits(32, Reader) / 65536;
-//    cout << ' ' << ReadNBits(16, Reader);
-////    for(k = 0 ; k < P[id].nModels ; ++k){
-////        P[id].model[k].ctx   = ReadNBits(16, Reader);
-////        P[id].model[k].den   = ReadNBits(16, Reader);
-////        P[id].model[k].ir    = ReadNBits( 1, Reader);
-////        P[id].model[k].edits = ReadNBits( 8, Reader);
-////        P[id].model[k].eDen  = ReadNBits(32, Reader);
-////        P[id].model[k].type  = ReadNBits( 1, Reader);
-////    }
-    
-    int sym;//=ReadNBits(4, Reader);cout<<sym;
-    freqs[0]=1, freqs[1]=65536, freqs[2]=65536, freqs[3]=1, freqs[4]=1;
-//    cout << ArithDecodeSymbol(5, freqs, 131075, Reader);                  /// Arithmetic decoder
-    
-    for (int j = 0; j < 1; ++j)
-    {
-        sym = ArithDecodeSymbol(ALPH_SIZE, freqs, 131075, Reader);                  /// Arithmetic decoder
-
-        outBuffer[ idxOut ] = symIntToChar(sym);                            /// output buffer
-
-        if (++idxOut == BUFFER_SIZE)
-        {
-            fwrite(outBuffer, 1, idxOut, Writer2);                         /// write output
-            idxOut = 0;
-        }
-
-    }
-    if (idxOut != 0)
-        fwrite(outBuffer, 1, idxOut, Writer2);
-    
-    finish_decode();
-    doneinputtingbits();                                       /// decode last bit
-    fclose(Reader);                                            /// close compressed file
-    fclose(Writer2);                                           /// close decompressed file
+//    FILE *Reader = fopen(tar, "r");       /// to process the compressed file
+//    FILE *Writer2 = fopen("y.de", "w");     /// to save decompressed file
+//
+//    int32_t idxOut = 0;
+//    char *outBuffer = (char *) calloc(BUFFER_SIZE, sizeof(uint8_t));
+//
+//    startinputtingbits();                       /// start arithmetic decoding process
+//    start_decode(Reader);
+//
+////    cout << ' ' << ReadNBits(26, Reader);
+////    cout << ' ' << setprecision (2) << (double) ReadNBits(32, Reader) / 65536;
+////    cout << ' ' << ReadNBits(16, Reader);
+//////    for(k = 0 ; k < P[id].nModels ; ++k){
+//////        P[id].model[k].ctx   = ReadNBits(16, Reader);
+//////        P[id].model[k].den   = ReadNBits(16, Reader);
+//////        P[id].model[k].ir    = ReadNBits( 1, Reader);
+//////        P[id].model[k].edits = ReadNBits( 8, Reader);
+//////        P[id].model[k].eDen  = ReadNBits(32, Reader);
+//////        P[id].model[k].type  = ReadNBits( 1, Reader);
+//////    }
+//
+//    int sym;//=ReadNBits(4, Reader);cout<<sym;
+//    freqs[0]=1, freqs[1]=65536, freqs[2]=65536, freqs[3]=1, freqs[4]=1;
+//    sym = ArithDecodeSymbol(ALPH_SIZE, freqs, 131075, Reader);                  /// Arithmetic decoder
+//
+//    outBuffer[ idxOut ] = symIntToChar(sym);                            /// output buffer
+//
+//    if (++idxOut == BUFFER_SIZE)
+//    {
+//        fwrite(outBuffer, 1, idxOut, Writer2);                         /// write output
+//        idxOut = 0;
+//    }
+//
+//    freqs[0]=1, freqs[1]=1, freqs[2]=1, freqs[3]=1, freqs[4]=1;
+//    sym = ArithDecodeSymbol(ALPH_SIZE, freqs, 5, Reader);                  /// Arithmetic decoder
+//
+//    outBuffer[ idxOut ] = symIntToChar(sym);                            /// output buffer
+//
+//    if (++idxOut == BUFFER_SIZE)
+//    {
+//        fwrite(outBuffer, 1, idxOut, Writer2);                         /// write output
+//        idxOut = 0;
+//    }
+//
+//
+//    if (idxOut != 0)
+//        fwrite(outBuffer, 1, idxOut, Writer2);
+//
+//    finish_decode();
+//    doneinputtingbits();                                       /// decode last bit
+//    fclose(Reader);                                            /// close compressed file
+//    fclose(Writer2);                                           /// close decompressed file
     
     
     
