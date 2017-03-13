@@ -76,23 +76,25 @@ int main (int argc, char *argv[])
         for (U8 j = 0; j < arrThrSize && i + j < n_targets; ++j)
             arrThread[ j ].join();
     }
-/////    delete[] arrThread;
+    delete[] arrThread;
 
-////   /// decompress target(s) using reference(s) model(s) -- multithreaded
-////    if (mixModel.getDecompFlag() )
-////    {
-////        for (U8 i = 0; i < n_targets; i += arrThrSize)
-////        {
-////            for (U8 j = 0; j < arrThrSize && i + j < n_targets; ++j)
-////                arrThread[ j ] = thread(&FCM::decompress, &mixModel, mixModel.getTarAddr()[ i + j ]);
-////            for (U8 j = 0; j < arrThrSize && i + j < n_targets; ++j)
-////                arrThread[ j ].join();
-////        }
-////    }
-////
-////    /// check if decompressed file and target file are exactly the same (check: lossless compression)
-////    cout<<areFilesEqual("y","DECOMP.de");
-//
+   /// decompress target(s) using reference(s) model(s) -- multithreaded
+    if (mixModel.getDecompFlag() )
+    {
+        arrThread = new thread[ arrThrSize ];                           /// threads array
+        for (U8 i = 0; i < n_targets; i += arrThrSize)
+        {
+            for (U8 j = 0; j < arrThrSize && i + j < n_targets; ++j)
+                arrThread[ j ] = thread(&FCM::decompress, &mixModel, mixModel.getTarAddr()[ i + j ]);
+            for (U8 j = 0; j < arrThrSize && i + j < n_targets; ++j)
+                arrThread[ j ].join();
+        }
+        delete[] arrThread;
+    }
+
+//    /// check if decompressed file and target file are exactly the same (check: lossless compression)
+//    cout<<areFilesEqual("y","DECOMP.de");
+
     
     
     

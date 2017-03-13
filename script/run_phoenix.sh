@@ -18,7 +18,7 @@ for ir in $INV_REPEATS; do
 #      ./phoenix -n 4 -d -m 0,1,100:0,2,10\
       ./phoenix -n 4 -d -m 0,1,100 \
       -r x \
-      -t PTY
+      -t y
 #      ./phoenix -n 4 -d -m 0,1,100\
 #      -r dataset/HS21
 #      -t dataset/PTY
