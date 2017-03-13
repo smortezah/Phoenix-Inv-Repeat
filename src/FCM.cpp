@@ -200,7 +200,7 @@ void FCM::compress (const string &tarFileName)
         return;                         /// exit this function
     }
     mut.unlock();///======================================================
-
+    
     U64     maxPlaceValue[ n_models ];
     for (U8 i = n_models; i--;)  maxPlaceValue[ i ] = POWER5[ ctxDepths[i] ];
 ////    for (U8 i = n_models; i--;)  maxPlaceValue[ i ] = (U64) pow( ALPH_SIZE, ctxDepths[ i ] );
@@ -238,15 +238,14 @@ void FCM::compress (const string &tarFileName)
     size_t lastSlash_Tar = tarFileName.find_last_of("/");           /// find the position of last slash
     string tarNamePure = tarFileName.substr(lastSlash_Tar + 1);     /// target file name without slash
     const char *tar = (tarNamePure + ".co").c_str();                /// convert string to char*
-
+    
     FILE *Writer = fopen(tar, "w");     /// to save compressed file
     
     startoutputtingbits();              /// start arithmetic encoding process
     start_encode();
     
     /// model(s) properties, being sent to decoder as header
-    // todo: tab'e "WriteNBits" faghat vase neveshtane etelaate hamin header estefade mishe
-    WriteNBits( WATERMARK,                26, Writer );               /// WriteNBits: just writes header
+//    WriteNBits( WATERMARK,                26, Writer );               /// WriteNBits: just writes header
 //    WriteNBits( file_size,                46, Writer );             /// file size in byte
 //    WriteNBits( (int) (gamma * 65536),    32, Writer );
 //    WriteNBits( n_models,                 16, Writer );
@@ -260,11 +259,11 @@ void FCM::compress (const string &tarFileName)
     
     
     freqs[0]=1, freqs[1]=65536, freqs[2]=65536, freqs[3]=1, freqs[4]=1;
-    AESym(4, freqs, 131075, Writer);
-    freqs[0]=1, freqs[1]=1, freqs[2]=1, freqs[3]=1, freqs[4]=1;
-    AESym(0, freqs, 5, Writer);
-    freqs[0]=1, freqs[1]=65536, freqs[2]=65536, freqs[3]=1, freqs[4]=1;
-    AESym(2, freqs, 131075, Writer);
+    AESym(0, freqs, 131075, Writer);
+//    freqs[0]=1, freqs[1]=1, freqs[2]=1, freqs[3]=1, freqs[4]=1;
+//    AESym(0, freqs, 5, Writer);
+//    freqs[0]=1, freqs[1]=65536, freqs[2]=65536, freqs[3]=1, freqs[4]=1;
+//    AESym(2, freqs, 131075, Writer);
     
     
     /*
@@ -437,9 +436,8 @@ void FCM::compress (const string &tarFileName)
     
     startinputtingbits();                       /// start arithmetic decoding process
     start_decode(Reader);
-   
     
-    cout << ' ' << ReadNBits(26, Reader);
+//    cout << ' ' << ReadNBits(26, Reader);
 //    cout << ' ' << setprecision (2) << (double) ReadNBits(32, Reader) / 65536;
 //    cout << ' ' << ReadNBits(16, Reader);
 ////    for(k = 0 ; k < P[id].nModels ; ++k){
@@ -451,25 +449,25 @@ void FCM::compress (const string &tarFileName)
 ////        P[id].model[k].type  = ReadNBits( 1, Reader);
 ////    }
     
-    int sym=ReadNBits(8, Reader);
-    freqs[ 0 ] = 1, freqs[ 1 ] = 1, freqs[ 2 ] = 1, freqs[ 3 ] = 1, freqs[ 4 ] = 1;
-    cout << ArithDecodeSymbol(sym, freqs, 5, Reader);                  /// Arithmetic decoder
+    int sym;//=ReadNBits(4, Reader);cout<<sym;
+    freqs[0]=1, freqs[1]=65536, freqs[2]=65536, freqs[3]=1, freqs[4]=1;
+//    cout << ArithDecodeSymbol(5, freqs, 131075, Reader);                  /// Arithmetic decoder
     
-//    for (int j = 0; j < 3; ++j)
-//    {
-//        sym = ArithDecodeSymbol(sym, freqs, 65535, Reader);                  /// Arithmetic decoder
-//
-//        outBuffer[ idxOut ] = symIntToChar(sym);                            /// output buffer
-//
-//        if (++idxOut == BUFFER_SIZE)
-//        {
-//            fwrite(outBuffer, 1, idxOut, Writer2);                         /// write output
-//            idxOut = 0;
-//        }
-//
-//    }
-//    if (idxOut != 0)
-//        fwrite(outBuffer, 1, idxOut, Writer2);
+    for (int j = 0; j < 1; ++j)
+    {
+        sym = ArithDecodeSymbol(ALPH_SIZE, freqs, 131075, Reader);                  /// Arithmetic decoder
+
+        outBuffer[ idxOut ] = symIntToChar(sym);                            /// output buffer
+
+        if (++idxOut == BUFFER_SIZE)
+        {
+            fwrite(outBuffer, 1, idxOut, Writer2);                         /// write output
+            idxOut = 0;
+        }
+
+    }
+    if (idxOut != 0)
+        fwrite(outBuffer, 1, idxOut, Writer2);
     
     finish_decode();
     doneinputtingbits();                                       /// decode last bit
