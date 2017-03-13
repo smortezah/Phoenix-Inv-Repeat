@@ -424,8 +424,8 @@ void FCM::compress (const string &tarFileName)
 */
     
     finish_encode( Writer );
-    doneoutputtingbits( Writer );   /// encode the last bit
-    fclose( Writer );               /// close compressed file
+    doneoutputtingbits( Writer );       /// encode the last bit
+    fclose( Writer );                   /// close compressed file
     
     
     
@@ -439,7 +439,7 @@ void FCM::compress (const string &tarFileName)
     start_decode(Reader);
    
     
-//    cout << ' ' << ReadNBits(46, Reader);
+    cout << ' ' << ReadNBits(26, Reader);
 //    cout << ' ' << setprecision (2) << (double) ReadNBits(32, Reader) / 65536;
 //    cout << ' ' << ReadNBits(16, Reader);
 ////    for(k = 0 ; k < P[id].nModels ; ++k){
