@@ -441,7 +441,7 @@ void FCM::compress (const string &tarFileName)
 /***********************************************************
     read header for decompression
 ************************************************************/
-void FCM::extractHeader (const string &tarFileName, FCM &decModel)
+void FCM::extractHeader (const string &tarFileName)
 {
     size_t lastSlash_Tar = tarFileName.find_last_of("/");           /// position of last slash
     string tarNamePure   = tarFileName.substr(lastSlash_Tar + 1);   /// target file name without slash
@@ -458,15 +458,20 @@ void FCM::extractHeader (const string &tarFileName, FCM &decModel)
         cerr << "ERROR: Invalid compressed file!\n";
         exit(1);
     }
-    ReadNBits(                                   46, Reader );        /// file size
-    decModel.setGamma( round((double) ReadNBits( 32, Reader )/65536 * 100) / 100 );    /// gamma
-    U64 no_models = ReadNBits(                   16, Reader ) ;       /// number of models
-    decModel.setN_models( (U8) no_models );
+    ReadNBits(                          46, Reader );        /// file size
+    setGamma( round((double) ReadNBits( 32, Reader )/65536 * 100) / 100 );    /// gamma
+    U64 no_models = ReadNBits(          16, Reader );       /// number of models
+    setN_models( (U8) no_models );
+    bool ir; U8 k; U16 aD;
+    invRepeats.clear(); ctxDepths.clear();  alphaDens.clear();
     for (U8 n = 0; n < no_models; ++n)
-        decModel.pushParams( (bool) ReadNBits(    1, Reader),
-                             (U8)   ReadNBits(   16, Reader),
-                             (U16)  ReadNBits(   16, Reader) );       /// ir, ctx depth, alpha denom
-    decModel.setCompMode( (char) ReadNBits(      16, Reader ) );      /// compression mode
+    {
+        ir = (bool) ReadNBits(           1, Reader );
+        k  = (U8)   ReadNBits(          16, Reader );
+        aD = (U16)  ReadNBits(          16, Reader );
+        pushParams( ir, k, aD );                                  /// ir, ctx depth, alpha denom
+    }
+    setCompMode( (char) ReadNBits(      16, Reader ) );      /// compression mode
 
     /// finishing
     finish_decode();

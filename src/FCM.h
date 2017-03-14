@@ -22,7 +22,7 @@ public:
     void   buildModel     (const vector<string>&,
                            bool, U8, U8);           /// build reference(s) model
     void   compress       (const string&);          /// compress target file
-    void   extractHeader  (const string &, FCM&);   /// extract header information for decompression
+    void   extractHeader  (const string &);         /// extract header information for decompression
     void   decompress     (const string&,
                            const vector<string>&);  /// decompress target file
     

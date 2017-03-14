@@ -82,36 +82,33 @@ int main (int argc, char *argv[])
    /// decompress target(s) using reference(s) model(s) -- multithreaded
     if ( mixModel.getDecompFlag() )
     {
-        FCM decModel;
-        
         /// extract header information
-        decModel.extractHeader( mixModel.getTarAddr()[ 0 ], decModel );
+        mixModel.extractHeader( mixModel.getTarAddr()[ 0 ] );
     
         /// build reference(s) model(s) -- multithreaded
-        n_models   = decModel.getN_models();
-        n_threads  = decModel.getN_threads();                       /// set based on command line
+        n_models   = mixModel.getN_models();
+        n_threads  = mixModel.getN_threads();                       /// set based on command line
         arrThrSize = (n_models > n_threads) ? n_threads : n_models; /// size of threads array
-//        arrThread  = new thread[ arrThrSize ];
-//        for (U8 i = 0; i < n_models; i += arrThrSize)
-//        {
+        arrThread  = new thread[ arrThrSize ];
+        for (U8 i = 0; i < n_models; i += arrThrSize)
+        {
 //            for (U8 j = 0; j < arrThrSize && i+j < n_models; ++j)
-//                arrThread[ j ] = thread( &FCM::buildModel, &decModel,
-//                                         mixModel.getRefAddr(), decModel.getIR()[ i+j ],
-//                                         decModel.getCtxDepth()[ i+j ], i + j );
+//                arrThread[ j ] = thread( &FCM::buildModel, &mixModel,
+//                                         mixModel.getRefAddr(), mixModel.getIR()[ i+j ],
+//                                         mixModel.getCtxDepth()[ i+j ], i + j );
 //            for (U8 j = 0; j < arrThrSize && i+j < n_models; ++j)
 //                arrThread[ j ].join();
-//        }
-//        delete[] arrThread;
+        }
+        delete[] arrThread;
     
         
         
         
-        cout<<(int)decModel.getCtxDepth()[0];
+//        cout<<(int)mixModel.getIR()[1];
         
 //        cout<<(int)decModel.getCtxDepth()[0];
-//        cout<<decModel.getTables()[0][2]
-////            <<decModel.getTables()[1][2]
-//                ;
+        cout<<mixModel.getTables()[0][1];
+        
         
         
 //        arrThread = new thread[ arrThrSize ];                           /// threads array
