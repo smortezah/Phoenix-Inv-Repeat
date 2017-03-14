@@ -54,8 +54,9 @@ public:
     
     
     const  vector<U64*> &getTables ()  const  { return tables;}
-
-
+    double getGamma ()    { return gamma;}
+    vector<U16> getAlpha ()    { return alphaDens;}
+    char getCompmode ()    { return compMode;}
 
 private:
     std::mutex       mut;                           /// mutex
