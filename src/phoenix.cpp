@@ -82,19 +82,19 @@ int main (int argc, char *argv[])
     /// decompress target(s) using reference(s) model(s) -- multithreaded
     if ( mixModel.getDecompFlag() )
     {
-//        FCM decModel;
+        FCM decModel;
 //mixModel.clearModel();
-        
         /// extract header information
-//        mixModel.extractHeader( mixModel.getTarAddr()[ 0 ] );
-//        cout<<mixModel.getCompmode();
-        
+        decModel.extractHeader( mixModel.getTarAddr()[ 0 ] );
+//        cout<<decModel.getRefAddr()[0];
+    
         /// build reference(s) model(s) -- multithreaded
         n_models   = mixModel.getN_models();
         n_threads  = mixModel.getN_threads();                       /// set based on command line
         arrThrSize = (n_models > n_threads) ? n_threads : n_models; /// size of threads array
         
 //        cout<<mixModel.getRefAddr()[0]<<mixModel.getIR()[0]<<(int)mixModel.getCtxDepth()[0];
+//        decModel.buildModel(decModel.getRefAddr(), decModel.getIR()[ 0 ], decModel.getCtxDepth()[ 0 ], 0);
 //        mixModel.buildModel(mixModel.getRefAddr(), mixModel.getIR()[ 0 ], mixModel.getCtxDepth()[ 0 ], 0);
 //        mixModel.buildModel(mixModel.getRefAddr(), mixModel.getIR()[ 1 ], mixModel.getCtxDepth()[ 1 ], 1);
         
@@ -102,9 +102,9 @@ int main (int argc, char *argv[])
         for (U8 i = 0; i < n_models; i += arrThrSize)
         {
 //            for (U8 j = 0; j < arrThrSize && i+j < n_models; ++j)
-//                arrThread[ j ] = thread( &FCM::buildModel, &mixModel,
-//                                         mixModel.getRefAddr(), mixModel.getIR()[ i+j ],
-//                                         mixModel.getCtxDepth()[ i+j ], i + j );
+//                arrThread[ j ] = thread( &FCM::buildModel, &decModel,
+//                                         mixModel.getRefAddr(), decModel.getIR()[ i+j ],
+//                                         decModel.getCtxDepth()[ i+j ], i + j );
 //            for (U8 j = 0; j < arrThrSize && i+j < n_models; ++j)
 //                arrThread[ j ].join();
         }
@@ -116,7 +116,7 @@ int main (int argc, char *argv[])
 //        cout << (int) decModel.getCtxDepth()[ 0 ] << (int) decModel.getCtxDepth()[ 1 ];
 //        cout << (int) mixModel.getCtxDepth()[ 0 ] << (int) mixModel.getCtxDepth()[ 1 ];
         
-        for (int i = 0; i < 30; i++)
+        for (int i = 0; i < 36; i++)
             cout << mixModel.getTables()[ 0 ][ i ] << ' ';
             cout<<'\n';
 //        for (int i = 0; i < 36; i++)
