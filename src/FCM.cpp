@@ -46,21 +46,21 @@ FCM::FCM ()
 /***********************************************************
     build reference(s) model
 ************************************************************/
-void FCM::buildModel (const vector<string> &refFilesNames,
+void FCM::buildModel (const vector<string> &refsNames,
                       bool invRepeat, U8 ctxDepth, U8 modelIndex)
 {
-    U8 refsNo = (U8) refFilesNames.size();          /// number of references
-
+    U8 refsNo = (U8) refsNames.size();      /// number of references
+    
     /// check if reference(s) file(s) cannot be opened, or are empty
     ifstream refsIn[ refsNo ];
     for (U8 i = refsNo; i--;)
     {
-        refsIn[ i ].open( refFilesNames[ i ], ios::in );
-        if (!refsIn[ i ])                           /// error occurred while opening file(s)
+        refsIn[ i ].open( refsNames[ i ], ios::in );
+        if (!refsIn[ i ])                   /// error occurred while opening file(s)
         {
-            cerr << "The file '" << refFilesNames[ i ] << "' cannot be opened, or it is empty.\n";
-            refsIn[ i ].close();                    /// close file(s)
-            return;                                 /// exit this function
+            cerr << "The file '" << refsNames[ i ] << "' cannot be opened, or it is empty.\n";
+            refsIn[ i ].close();            /// close file(s)
+            return;                         /// exit this function
         }
     }
     
@@ -440,7 +440,7 @@ void FCM::compress (const string &tarFileName)
 /***********************************************************
     decompress target(s) based on reference(s) model
 ************************************************************/
-void FCM::decompress (const string &tarFileName, const vector<string> &refFilesNames)
+void FCM::decompress (const string &tarFileName, const vector<string> &refsNames)
 {
     size_t lastSlash_Tar = tarFileName.find_last_of("/");           /// position of last slash
     string tarNamePure   = tarFileName.substr(lastSlash_Tar + 1);   /// target file name without slash
@@ -462,9 +462,9 @@ void FCM::decompress (const string &tarFileName, const vector<string> &refFilesN
     }
     U64    file_size  = ReadNBits(    46, Reader );                 /// file size
     double gamma      = std::round((double) ReadNBits(32,Reader)/65536 * 100) / 100;    /// gamma
-    U64    num_models = ReadNBits(    16, Reader );                 /// number of models
-    U64    invRepeats[num_models], ctxDepths[num_models], alphaDens[num_models];
-    for (U8 n = 0; n < num_models; ++n)
+    U64    no_models  = ReadNBits(    16, Reader );                 /// number of models
+    U64    invRepeats[no_models], ctxDepths[no_models], alphaDens[no_models];
+    for (U8 n = 0; n < no_models; ++n)
     {
         invRepeats[ n ] = ReadNBits(   1, Reader );                 /// inverted repeats
         ctxDepths[ n ]  = ReadNBits(  16, Reader );                 /// context depths

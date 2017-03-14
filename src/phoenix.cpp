@@ -77,13 +77,28 @@ int main (int argc, char *argv[])
         for (U8 j = 0; j < arrThrSize && i + j < n_targets; ++j)
             arrThread[ j ].join();
     }
-//    delete[] arrThread;
+    delete[] arrThread;
     
    /// decompress target(s) using reference(s) model(s) -- multithreaded
-    if (mixModel.getDecompFlag() )
+    if ( mixModel.getDecompFlag() )
     {
-        
-        
+    
+    
+        /// build reference(s) model(s) -- multithreaded
+//        const U8 n_models  = mixModel.getN_models();
+//        const U8 n_threads = mixModel.getN_threads();
+//        U8    arrThrSize   = (n_models > n_threads) ? n_threads : n_models;  /// size of threads array
+//        arrThread          = new thread[ arrThrSize ];
+//        for (U8 i = 0; i < n_models; i += arrThrSize)
+//        {
+//            for (U8 j = 0; j < arrThrSize && i + j < n_models; ++j)
+//                arrThread[ j ] = thread( &FCM::buildModel, &mixModel,
+//                                         mixModel.getRefAddr(), mixModel.getIR()[ i + j ],
+//                                         mixModel.getCtxDepth()[ i + j ], i + j );
+//            for (U8 j = 0; j < arrThrSize && i + j < n_models; ++j)
+//                arrThread[ j ].join();
+//        }
+//        delete[] arrThread;
         
         
         
