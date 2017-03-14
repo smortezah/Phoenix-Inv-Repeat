@@ -78,17 +78,16 @@ int main (int argc, char *argv[])
             arrThread[ j ].join();
     }
     delete[] arrThread;
-    
-   /// decompress target(s) using reference(s) model(s) -- multithreaded
+
+    /// decompress target(s) using reference(s) model(s) -- multithreaded
     if ( mixModel.getDecompFlag() )
     {
 //        FCM decModel;
+//mixModel.clearModel();
         
         /// extract header information
-        mixModel.extractHeader( mixModel.getTarAddr()[ 0 ] );
+//        mixModel.extractHeader( mixModel.getTarAddr()[ 0 ] );
 //        cout<<mixModel.getCompmode();
-        
-//    cout<<mixModel.getRefAddr()[0];
         
         /// build reference(s) model(s) -- multithreaded
         n_models   = mixModel.getN_models();
@@ -96,36 +95,33 @@ int main (int argc, char *argv[])
         arrThrSize = (n_models > n_threads) ? n_threads : n_models; /// size of threads array
         
 //        cout<<mixModel.getRefAddr()[0]<<mixModel.getIR()[0]<<(int)mixModel.getCtxDepth()[0];
-        mixModel.buildModel(mixModel.getRefAddr(), mixModel.getIR()[ 0 ], mixModel.getCtxDepth()[ 0 ], 0);
+//        mixModel.buildModel(mixModel.getRefAddr(), mixModel.getIR()[ 0 ], mixModel.getCtxDepth()[ 0 ], 0);
+//        mixModel.buildModel(mixModel.getRefAddr(), mixModel.getIR()[ 1 ], mixModel.getCtxDepth()[ 1 ], 1);
         
-//        arrThread  = new thread[ arrThrSize ];
-//        for (U8 i = 0; i < n_models; i += arrThrSize)
-//        {
-////            for (U8 j = 0; j < arrThrSize && i+j < n_models; ++j)
-////                arrThread[ j ] = thread( &FCM::buildModel, &decModel,
-////                                         mixModel.getRefAddr(), decModel.getIR()[ i+j ],
-////                                         decModel.getCtxDepth()[ i+j ], i + j );
-////            for (U8 j = 0; j < arrThrSize && i+j < n_models; ++j)
-////                arrThread[ j ].join();
-//
-////            for (U8 j = 0; j < arrThrSize && i+j < n_models; ++j)
-////                arrThread[ j ] = thread( &FCM::buildModel, &decModel,
-////                                         mixModel.getRefAddr(), mixModel.getIR()[ i+j ],
-////                                         mixModel.getCtxDepth()[ i+j ], i + j );
-////            for (U8 j = 0; j < arrThrSize && i+j < n_models; ++j)
-////                arrThread[ j ].join();
-//        }
-//        delete[] arrThread;
+        arrThread  = new thread[ arrThrSize ];
+        for (U8 i = 0; i < n_models; i += arrThrSize)
+        {
+//            for (U8 j = 0; j < arrThrSize && i+j < n_models; ++j)
+//                arrThread[ j ] = thread( &FCM::buildModel, &mixModel,
+//                                         mixModel.getRefAddr(), mixModel.getIR()[ i+j ],
+//                                         mixModel.getCtxDepth()[ i+j ], i + j );
+//            for (U8 j = 0; j < arrThrSize && i+j < n_models; ++j)
+//                arrThread[ j ].join();
+        }
+        delete[] arrThread;
     
     
     
 //        cout << (int) decModel.getIR()[ 0 ] << (int) decModel.getIR()[ 1 ];
 //        cout << (int) decModel.getCtxDepth()[ 0 ] << (int) decModel.getCtxDepth()[ 1 ];
 //        cout << (int) mixModel.getCtxDepth()[ 0 ] << (int) mixModel.getCtxDepth()[ 1 ];
-        for(int i=0;i<30;i++)
-        cout<<mixModel.getTables()[0][i]<<' '
-//            <<mixModel.getTables()[1][1]<<mixModel.getTables()[1][2]
-        ;
+        
+        for (int i = 0; i < 30; i++)
+            cout << mixModel.getTables()[ 0 ][ i ] << ' ';
+            cout<<'\n';
+//        for (int i = 0; i < 36; i++)
+//            cout << mixModel.getTables()[ 1 ][ i ] << ' ';
+        
         
         
         

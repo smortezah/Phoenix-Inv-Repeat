@@ -57,6 +57,18 @@ public:
     double getGamma ()    { return gamma;}
     vector<U16> getAlpha ()    { return alphaDens;}
     char getCompmode ()    { return compMode;}
+    
+    
+    
+    
+    
+    void clearModel(){tables.clear();hashTables.clear();}
+    
+    
+    
+    
+    
+    
 
 private:
     std::mutex       mut;                           /// mutex

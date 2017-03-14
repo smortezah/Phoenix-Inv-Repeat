@@ -126,7 +126,7 @@ void FCM::buildModel (const vector<string> &refsNames,
                     }
                 }   /// end while
             }   /// end for
-    
+//    cout<<table[0]<<'+';
             mut.lock(); setTable(table, modelIndex);    mut.unlock();       /// set table
         }   /// end case
             break;

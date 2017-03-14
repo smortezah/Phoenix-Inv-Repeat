@@ -16,7 +16,7 @@ for ir in $INV_REPEATS; do
 #     for((ctx=$MIN_CTX; ctx<=$MAX_CTX; ctx+=1)); do
 #     ./phoenix -m $ir,$ctx,$alphaDen -r $FLD_dataset/$refDataset -t $FLD_dataset/$tarDataset \
 #      ./phoenix -n 4 -d -m 0,1,100:0,2,10\
-      ./phoenix -n 4 -d -m 0,3,100 \
+      ./phoenix -n 4 -d -m 0,1,100 \
       -r x \
       -t y
 #      ./phoenix -n 4 -d -m 0,1,100\
