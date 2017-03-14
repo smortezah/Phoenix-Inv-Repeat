@@ -85,7 +85,9 @@ int main (int argc, char *argv[])
         FCM decModel;
 //mixModel.clearModel();
         /// extract header information
-        decModel.extractHeader( mixModel.getTarAddr()[ 0 ] );
+        decModel.extractHeader( mixModel.getTarAddr()[ 0 ],decModel );
+        vector<string> refAddr = mixModel.getRefAddr();
+        
 //        cout<<decModel.getRefAddr()[0];
     
         /// build reference(s) model(s) -- multithreaded
@@ -94,7 +96,7 @@ int main (int argc, char *argv[])
         arrThrSize = (n_models > n_threads) ? n_threads : n_models; /// size of threads array
         
 //        cout<<mixModel.getRefAddr()[0]<<mixModel.getIR()[0]<<(int)mixModel.getCtxDepth()[0];
-//        decModel.buildModel(decModel.getRefAddr(), decModel.getIR()[ 0 ], decModel.getCtxDepth()[ 0 ], 0);
+//        decModel.buildModel(refAddr, decModel.getIR()[ 0 ], decModel.getCtxDepth()[ 0 ], 0);
 //        mixModel.buildModel(mixModel.getRefAddr(), mixModel.getIR()[ 0 ], mixModel.getCtxDepth()[ 0 ], 0);
 //        mixModel.buildModel(mixModel.getRefAddr(), mixModel.getIR()[ 1 ], mixModel.getCtxDepth()[ 1 ], 1);
         

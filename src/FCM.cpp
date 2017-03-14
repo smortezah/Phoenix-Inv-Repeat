@@ -441,7 +441,7 @@ void FCM::compress (const string &tarFileName)
 /***********************************************************
     read header for decompression
 ************************************************************/
-void FCM::extractHeader (const string &tarFileName)
+void FCM::extractHeader (const string &tarFileName,FCM& decModel)
 {
     size_t lastSlash_Tar = tarFileName.find_last_of("/");           /// position of last slash
     string tarNamePure   = tarFileName.substr(lastSlash_Tar + 1);   /// target file name without slash
@@ -459,9 +459,9 @@ void FCM::extractHeader (const string &tarFileName)
         exit(1);
     }
     ReadNBits(                          46, Reader );        /// file size
-    setGamma( round((double) ReadNBits( 32, Reader )/65536 * 100) / 100 );    /// gamma
+    this->setGamma( round((double) ReadNBits( 32, Reader )/65536 * 100) / 100 );    /// gamma
     U64 no_models = ReadNBits(          16, Reader );       /// number of models
-    setN_models( (U8) no_models );
+    this->setN_models( (U8) no_models );
     bool ir; U8 k; U16 aD;
     invRepeats.clear(); ctxDepths.clear();  alphaDens.clear();
     for (U8 n = 0; n < no_models; ++n)
@@ -469,7 +469,8 @@ void FCM::extractHeader (const string &tarFileName)
         ir = (bool) ReadNBits(           1, Reader );
         k  = (U8)   ReadNBits(          16, Reader );
         aD = (U16)  ReadNBits(          16, Reader );
-        pushParams( ir, k, aD );                                  /// ir, ctx depth, alpha denom
+//        this->invRepeats[n] = ir;
+//        pushParams( ir, k, aD );                                  /// ir, ctx depth, alpha denom
     }
     setCompMode( (char) ReadNBits(      16, Reader ) );      /// compression mode
 
