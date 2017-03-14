@@ -40,17 +40,17 @@ int main (int argc, char *argv[])
     thread *arrThread;  /// array of threads
 
     /// build reference(s) model(s) -- multithreaded
-    const U8 n_models  = mixModel.getN_models();
-    const U8 n_threads = mixModel.getN_threads();
-    U8    arrThrSize   = (n_models > n_threads) ? n_threads : n_models;  /// size of threads array
-    arrThread          = new thread[ arrThrSize ];
+    U8 n_models   = mixModel.getN_models();
+    U8 n_threads  = mixModel.getN_threads();
+    U8 arrThrSize = (n_models > n_threads) ? n_threads : n_models;  /// size of threads array
+    arrThread     = new thread[ arrThrSize ];
     for (U8 i = 0; i < n_models; i += arrThrSize)
     {
-        for (U8 j = 0; j < arrThrSize && i + j < n_models; ++j)
+        for (U8 j = 0; j < arrThrSize && i+j < n_models; ++j)
             arrThread[ j ] = thread( &FCM::buildModel, &mixModel,
-                                     mixModel.getRefAddr(), mixModel.getIR()[ i + j ],
-                                     mixModel.getCtxDepth()[ i + j ], i + j );
-        for (U8 j = 0; j < arrThrSize && i + j < n_models; ++j)
+                                     mixModel.getRefAddr(), mixModel.getIR()[ i+j ],
+                                     mixModel.getCtxDepth()[ i+j ], i + j );
+        for (U8 j = 0; j < arrThrSize && i+j < n_models; ++j)
             arrThread[ j ].join();
     }
     delete[] arrThread;
@@ -72,9 +72,9 @@ int main (int argc, char *argv[])
     arrThread    = new thread[ arrThrSize ];                            /// resize threads array
     for (U8 i = 0; i < n_targets; i += arrThrSize)
     {
-        for (U8 j = 0; j < arrThrSize && i + j < n_targets; ++j)
-            arrThread[ j ] = thread(&FCM::compress, &mixModel, mixModel.getTarAddr()[ i + j ] );
-        for (U8 j = 0; j < arrThrSize && i + j < n_targets; ++j)
+        for (U8 j = 0; j < arrThrSize && i+j < n_targets; ++j)
+            arrThread[ j ] = thread(&FCM::compress, &mixModel, mixModel.getTarAddr()[ i+j ] );
+        for (U8 j = 0; j < arrThrSize && i+j < n_targets; ++j)
             arrThread[ j ].join();
     }
     delete[] arrThread;
@@ -82,47 +82,57 @@ int main (int argc, char *argv[])
    /// decompress target(s) using reference(s) model(s) -- multithreaded
     if ( mixModel.getDecompFlag() )
     {
-    
+        FCM decModel;
+        
+        /// extract header information
+        decModel.extractHeader( mixModel.getTarAddr()[ 0 ], decModel );
     
         /// build reference(s) model(s) -- multithreaded
-//        const U8 n_models  = mixModel.getN_models();
-//        const U8 n_threads = mixModel.getN_threads();
-//        U8    arrThrSize   = (n_models > n_threads) ? n_threads : n_models;  /// size of threads array
-//        arrThread          = new thread[ arrThrSize ];
+        n_models   = decModel.getN_models();
+        n_threads  = decModel.getN_threads();                       /// set based on command line
+        arrThrSize = (n_models > n_threads) ? n_threads : n_models; /// size of threads array
+//        arrThread  = new thread[ arrThrSize ];
 //        for (U8 i = 0; i < n_models; i += arrThrSize)
 //        {
-//            for (U8 j = 0; j < arrThrSize && i + j < n_models; ++j)
-//                arrThread[ j ] = thread( &FCM::buildModel, &mixModel,
-//                                         mixModel.getRefAddr(), mixModel.getIR()[ i + j ],
-//                                         mixModel.getCtxDepth()[ i + j ], i + j );
-//            for (U8 j = 0; j < arrThrSize && i + j < n_models; ++j)
+//            for (U8 j = 0; j < arrThrSize && i+j < n_models; ++j)
+//                arrThread[ j ] = thread( &FCM::buildModel, &decModel,
+//                                         mixModel.getRefAddr(), decModel.getIR()[ i+j ],
+//                                         decModel.getCtxDepth()[ i+j ], i + j );
+//            for (U8 j = 0; j < arrThrSize && i+j < n_models; ++j)
 //                arrThread[ j ].join();
 //        }
 //        delete[] arrThread;
+    
         
         
+        
+        cout<<(int)decModel.getCtxDepth()[0];
+        
+//        cout<<(int)decModel.getCtxDepth()[0];
+//        cout<<decModel.getTables()[0][2]
+////            <<decModel.getTables()[1][2]
+//                ;
         
         
 //        arrThread = new thread[ arrThrSize ];                           /// threads array
-        for (U8 i = 0; i < n_targets; i += arrThrSize)
-        {
-            for (U8 j = 0; j < arrThrSize && i + j < n_targets; ++j)
-                arrThread[ j ] = thread(&FCM::decompress, &mixModel,
-                                        mixModel.getTarAddr()[ i + j ], mixModel.getRefAddr());
-            for (U8 j = 0; j < arrThrSize && i + j < n_targets; ++j)
-                arrThread[ j ].join();
-        }
+//        for (U8 i = 0; i < n_targets; i += arrThrSize)
+//        {
+//            for (U8 j = 0; j < arrThrSize && i+j < n_targets; ++j)
+//                arrThread[ j ] = thread(&FCM::decompress, &mixModel,
+//                                        mixModel.getTarAddr()[ i+j ], mixModel.getRefAddr());
+//            for (U8 j = 0; j < arrThrSize && i+j < n_targets; ++j)
+//                arrThread[ j ].join();
+//        }
 //        delete[] arrThread;
     }
-    delete[] arrThread;
 
+    
 //    /// check if decompressed file and target file are exactly the same (check: lossless compression)
 //    cout<<areFilesEqual("y","DECOMP.de");
 
     
     
     
-//    U64 a=1;  for (int i = 0; i < 1000000000; ++i) a*65535;//a<<16-a; //
     
     
     

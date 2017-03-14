@@ -21,14 +21,15 @@ public:
     
     void   buildModel     (const vector<string>&,
                            bool, U8, U8);           /// build reference(s) model
-    void   compress       (const string &);         /// compress target file
-    void   decompress     (const string &,
+    void   compress       (const string&);          /// compress target file
+    void   extractHeader  (const string &, FCM&);   /// extract header information for decompression
+    void   decompress     (const string&,
                            const vector<string>&);  /// decompress target file
     
     inline char   symIntToChar (U8)       const;    /// 01234 -> ACNGT
     inline U8     symCharToInt (char)     const;    /// ACNGT -> 01234
     inline double fastPow      (double, double);    /// fast power
-    inline U64    fileSize     (const string &);    /// size of file
+    inline U64    fileSize     (const string&);     /// size of file
     
 //    void buildHashTable_str ();                      /// build hash table (string key)
     void   printHashTable ()              const;    /// print hash table
@@ -45,12 +46,17 @@ public:
     const  vector<U8>     &getCtxDepth () const;    /// get context depth(es)
     void   pushParams     (bool, U8, U16);          /// set model(s) params (ir, ctx_depth, alpha_denom)
     const  vector<string> &getTarAddr  () const;    /// get target files addresses
-    void   pushTarAddr    (const string &);         /// pushB back target files addresses
+    void   pushTarAddr    (const string&);          /// pushB back target files addresses
     const  vector<string> &getRefAddr  () const;    /// get reference files addresses
-    void   pushRefAddr    (const string &);         /// push back reference files addresses
+    void   pushRefAddr    (const string&);          /// push back reference files addresses
     void   setTable       (U64*, U8);               /// set table(s)
     void   setHashTable   (const htable_t&, U8);    /// set hash table(s)
     
+    
+    const  vector<U64*> &getTables ()  const  { return tables;}
+
+
+
 private:
     std::mutex       mut;                           /// mutex
     

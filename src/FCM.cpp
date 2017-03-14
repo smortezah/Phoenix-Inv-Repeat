@@ -27,6 +27,7 @@ using std::memmove;
 using std::fixed;
 using std::setprecision;
 using std::fill_n;
+using std::round;
 
 // TODO: TEST
 //using std::chrono::high_resolution_clock;
@@ -438,6 +439,43 @@ void FCM::compress (const string &tarFileName)
 
 
 /***********************************************************
+    read header for decompression
+************************************************************/
+void FCM::extractHeader (const string &tarFileName, FCM &decModel)
+{
+    size_t lastSlash_Tar = tarFileName.find_last_of("/");           /// position of last slash
+    string tarNamePure   = tarFileName.substr(lastSlash_Tar + 1);   /// target file name without slash
+    const  char *tarCo   = (tarNamePure + ".co").c_str();           /// compressed file. convert string to char*
+    FILE   *Reader       = fopen(tarCo, "r");                       /// to process the compressed file
+    
+    /// starting
+    startinputtingbits();                                           /// start arithmetic decoding process
+    start_decode(Reader);
+    
+    /// extract header information
+    if (ReadNBits(26, Reader) != WATERMARK)                         /// watermark check-in
+    {
+        cerr << "ERROR: Invalid compressed file!\n";
+        exit(1);
+    }
+    ReadNBits(                                   46, Reader );        /// file size
+    decModel.setGamma( round((double) ReadNBits( 32, Reader )/65536 * 100) / 100 );    /// gamma
+    U64 no_models = ReadNBits(                   16, Reader ) ;       /// number of models
+    decModel.setN_models( (U8) no_models );
+    for (U8 n = 0; n < no_models; ++n)
+        decModel.pushParams( (bool) ReadNBits(    1, Reader),
+                             (U8)   ReadNBits(   16, Reader),
+                             (U16)  ReadNBits(   16, Reader) );       /// ir, ctx depth, alpha denom
+    decModel.setCompMode( (char) ReadNBits(      16, Reader ) );      /// compression mode
+
+    /// finishing
+    finish_decode();
+    doneinputtingbits();                                            /// decode last bit
+    fclose(Reader);                                                 /// close compressed file
+}
+
+
+/***********************************************************
     decompress target(s) based on reference(s) model
 ************************************************************/
 void FCM::decompress (const string &tarFileName, const vector<string> &refsNames)
@@ -460,6 +498,7 @@ void FCM::decompress (const string &tarFileName, const vector<string> &refsNames
         cerr << "ERROR: Invalid compressed file!\n";
         exit(1);
     }
+    
     U64    file_size  = ReadNBits(    46, Reader );                 /// file size
     double gamma      = std::round((double) ReadNBits(32,Reader)/65536 * 100) / 100;    /// gamma
     U64    no_models  = ReadNBits(    16, Reader );                 /// number of models
@@ -471,7 +510,7 @@ void FCM::decompress (const string &tarFileName, const vector<string> &refsNames
         alphaDens[ n ]  = ReadNBits(  16, Reader );                 /// alplha denoms
     }
     char compMode = (char) ReadNBits( 16, Reader );                 /// compression mode
-    
+
 //    cout<<ctxDepths[0];
 
 ////    void FCM::buildModel (bool invRepeat, U8 ctxDepth, U8 modelIndex)
@@ -604,30 +643,30 @@ void FCM::decompress (const string &tarFileName, const vector<string> &refsNames
 //
 //    for (U8 i = refsNumber; i--;)
 //        refFilesIn[ i ].close();       /// close file(s)
-  
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //    int freqs[5];
 //    int sym;
 //    freqs[ 0 ] = 1, freqs[ 1 ] = 65536, freqs[ 2 ] = 65536, freqs[ 3 ] = 1, freqs[ 4 ] = 1;
@@ -644,7 +683,7 @@ void FCM::decompress (const string &tarFileName, const vector<string> &refsNames
 //
 //    if (idxOut != 0)
 //        fwrite(outBuffer, 1, idxOut, Writer);
-
+    
     finish_decode();
     doneinputtingbits();                                       /// decode last bit
     fclose(Reader);                                            /// close compressed file
