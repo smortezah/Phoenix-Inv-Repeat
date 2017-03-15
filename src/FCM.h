@@ -32,7 +32,7 @@ public:
     inline U64    fileSize     (const string&);     /// size of file
     
 //    void buildHashTable_str ();                      /// build hash table (string key)
-    void   printHashTable ()              const;    /// print hash table
+    void   printHashTable (U8)      const;    /// print hash table
     
     bool   getDecompFlag  ()              const;    /// get decompress flag
     void   setDecompFlag  (bool);                   /// set decompress flag
@@ -54,7 +54,9 @@ public:
     
     
     
-    const  vector<U64*> &getTables ()  const  { return tables;}
+    const  vector<U64*> &getTables ()  const  { return this->tables;}
+    const  vector<htable_t> &getHashTables ()  const  { return this->hashTables;}
+    
     double getGamma ()    { return gamma;}
     vector<U16> getAlpha ()    { return alphaDens;}
     
@@ -62,12 +64,7 @@ public:
     
     
     
-    void clearModel(){tables.clear();hashTables.clear();}
     
-    
-    
-    
-
 private:
     std::mutex       mut;                           /// mutex
     
