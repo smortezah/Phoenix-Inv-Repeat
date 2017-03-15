@@ -54,34 +54,33 @@ public:
     
     
     
-    const  vector<U64*> &getTables ()  const  { return this->tables;}
-    const  vector<htable_t> &getHashTables ()  const  { return this->hashTables;}
+    U64** getTables ()  const  { return this->tables;}
+      htable_t* getHashTables ()  const  { return this->hashTables;}
     
-    double getGamma ()    { return gamma;}
-    vector<U16> getAlpha ()    { return alphaDens;}
+    double getGamma ()    { return gamma; }
+    vector<U16> getAlpha ()    { return alphaDens; }
     
-    char getCompmode ()    { return compMode;}
-    
-    
+    char getCompmode ()    { return compMode; }
     
     
+
 private:
-    std::mutex       mut;                           /// mutex
+    std::mutex     mut;                           /// mutex
     
-    U8               n_threads;                     /// number of threads
-    bool             decompFlag;                    /// decompress flag
+    U8             n_threads;                     /// number of threads
+    bool           decompFlag;                    /// decompress flag
     
-    char             compMode;                      /// compression mode (table / hash table)
-    U8               n_models;                      /// number of models
-    double           gamma;                         /// gamma (for mixture of FCMs)
-    vector<bool>     invRepeats;                    /// inverted repeat(s)
-    vector<U8>       ctxDepths;                     /// context depthe(s) (SIZE <= 255)
-    vector<U16>      alphaDens;                     /// alpha denominator(s)
-    vector<string>   tarAddr;                       /// target files addresses
-    vector<string>   refAddr;                       /// reference files addresses
-    vector<U64*>     tables;                        /// table(s)
-    vector<htable_t> hashTables;                    /// hash table(s)
-//    htable_str_t   hashTable_str;                   /// hash table (string key)
+    char           compMode;                      /// compression mode (table / hash table)
+    U8             n_models;                      /// number of models
+    double         gamma;                         /// gamma (for mixture of FCMs)
+    vector<bool>   invRepeats;                    /// inverted repeat(s)
+    vector<U8>     ctxDepths;                     /// context depthe(s) (SIZE <= 255)
+    vector<U16>    alphaDens;                     /// alpha denominator(s)
+    vector<string> tarAddr;                       /// target files addresses
+    vector<string> refAddr;                       /// reference files addresses
+    U64**          tables;                        /// table(s)
+    htable_t*      hashTables;                    /// hash table(s)
+//    htable_str_t hashTable_str;                   /// hash table (string key)
 };
 
 

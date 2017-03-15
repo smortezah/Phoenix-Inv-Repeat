@@ -66,7 +66,6 @@ void FCM::buildModel (const vector<string> &refsNames,
     }
     
     U64 context;                       	    /// context (integer), that slides in the dataset
-////    U64 maxPlaceValue = (U64) pow(ALPH_SIZE, ctxDepth);
     U64 maxPlaceValue = POWER5[ ctxDepth ];
     U64 befMaxPlaceValue = POWER5[ ctxDepth-1 ];
     U64 invRepContext;                      /// inverted repeat context (integer)
@@ -74,19 +73,16 @@ void FCM::buildModel (const vector<string> &refsNames,
     U64 iRCtxCurrSym;                       /// concat of inverted repeat context and current symbol
     U8  currSymInt;                         /// current symbol integer
                                             
-    string refLine;                         /// keep each line of a file
+    string refLine;                         /// keep each line of the file
     
     switch ( compMode )                     /// build model based on 't'=table, or 'h'=hash table
     {
         case 't':
         {
             U64 tableSize = maxPlaceValue * ALPH_SUM_SIZE;
-            U64 *table = new U64[ tableSize ];      fill_n(table, tableSize, 0);
-            /*
-            /// initialize table with 0's
-//            memset(table, 0, sizeof(table[ 0 ]) * tableSize);
-//            std::fill_n(table,tableSize,(double) 1/alphaDenom);
-            */
+            U64 *table = new U64[ tableSize ];
+            memset( table, 0, sizeof(table[ 0 ]) * tableSize );   /// zero initialize table
+////            fill_n(table, tableSize, 0);
             U64 rowIndex;                   /// to update table
             
             for (U8 i = refsNo; i--;)
@@ -123,24 +119,24 @@ void FCM::buildModel (const vector<string> &refsNames,
 ////                        context = (U64) (rowIndex - context + currSymInt) % maxPlaceValue;
 ////                        context = (U64) (rowIndex - context) % maxPlaceValue + currSymInt;
                         context = (U64) (context % befMaxPlaceValue) * 5 + currSymInt;
-//                        cout<<table[0]<<'+';
                     }
                 }   /// end while
             }   /// end for
+            
             mut.lock(); this->setTable(table, modelIndex);  mut.unlock();       /// set table
         }   /// end case
             break;
             
         case 'h':       /// adding 'sum' column, makes hash table slower
         {
-            htable_t hashTable; //     hashTable.clear();
-            
+            htable_t hashTable;
+    
             for (int i = refsNo; i--;)
             {
                 /// reset in the beginning of each reference file
                 context = 0;
                 invRepContext = maxPlaceValue - 1;
-                
+
                 while ( getline(refsIn[ i ], refLine) )
                 {
                     /// fill hash table by number of occurrences of symbols A, C, N, G, T
@@ -159,9 +155,9 @@ void FCM::buildModel (const vector<string> &refsNames,
                             /// update hash table considering inverted repeats
                             ++hashTable[ invRepContext ][ iRCtxCurrSym % ALPH_SIZE ];
                         }
-                        
+
                         ++hashTable[ context ][ currSymInt ];   /// update hash table
-                        
+
                         /// update context. (rowIndex - context) == (context * ALPH_SIZE)
 ////                        context = (U64) (rowIndex - context + currSymInt) % maxPlaceValue;
 ////                        context = (U64) (rowIndex - context) % maxPlaceValue + currSymInt;
@@ -170,17 +166,6 @@ void FCM::buildModel (const vector<string> &refsNames,
                 }
             }   /// end for
     
-    cout<<'*';
-//            for (htable_t::iterator it = hashTable.begin(); it != hashTable.end(); ++it)
-//            {
-//                cout << it->first << "\t";
-//                for (U64 i : it->second)    cout << i << "\t";
-//                cout << '\n';
-//            }
-            
-            
-            
-            
             mut.lock();  this->setHashTable(hashTable, modelIndex);  mut.unlock();    /// set hash table
         }   /// end case
             break;
@@ -257,7 +242,7 @@ void FCM::compress (const string &tarFileName)
     const char *tar = (tarNamePure + ".co").c_str();            /// convert string to char*
     
     FILE *Writer = fopen(tar, "w");     /// to save compressed file
-    
+
     startoutputtingbits();              /// start arithmetic encoding process
     start_encode();
 
@@ -273,14 +258,14 @@ void FCM::compress (const string &tarFileName)
         WriteNBits( alphaDens[ n ],       16, Writer );         /// alpha denoms
     }
     WriteNBits( (U64) compMode,           16, Writer );         /// compression mode
-    
+
     switch ( compMode )
     {
         case 't':
         {
             U64 rowIndex;                   /// index of a row in the table
             sumOfEntropies = 0;             /// sum of entropies
-            
+
             while ( getline(tarFileIn, tarLine) )
             {
                 ++n_fileLines;                              /// number of file lines
@@ -316,16 +301,16 @@ void FCM::compress (const string &tarFileName)
                         /// weight before normalization
                         rawWeight[ i ] = fastPow(weight[ i ], gamma) * prob_i;
                         sumOfWeights = sumOfWeights + rawWeight[ i ];   /// sum of weights. used for normalization
-                        
+
                         /// update context. (rowIndex - tarContext[i]) = (tarContext[i] * ALPH_SIZE)
                         tarContext[ i ] = (U64) (rowIndex - tarContext[i] + currSymInt) % maxPlaceValue[ i ];
 ////                        tarContext[ i ] = (U64) (tarContext[i] * ALPH_SIZE + currSymInt) % maxPlaceValue[ i ];
                     }
                     /// update weights
                     for (U8 i = n_models; i--;) weight[ i ] = rawWeight[ i ] / sumOfWeights;
-                    
+
                     sumOfEntropies = sumOfEntropies + log2(probability);        /// sum( log_2 P(s|c^t) )
-                    
+
                     /// frequencies (integer)
                     freqs[ 0 ] = (int) (1 + (freqsDouble[0] * DOUBLE_TO_INT));
                     freqs[ 1 ] = (int) (1 + (freqsDouble[1] * DOUBLE_TO_INT));
@@ -359,12 +344,12 @@ void FCM::compress (const string &tarFileName)
 
                     probability  = 0;
                     sumOfWeights = 0;
-
+                    
                     for (U8 i = n_models; i--;)
                     {
                         /// save the row of hash table into an array
                         hTRowArray = hashTables[ i ][ tarContext[i] ];
-
+                        
                         /// frequencies (double)
                         freqsDouble[ 0 ] += weight[ i ] * hTRowArray[ 0 ];
                         freqsDouble[ 1 ] += weight[ i ] * hTRowArray[ 1 ];
@@ -386,7 +371,7 @@ void FCM::compress (const string &tarFileName)
                         /// sum of weights. used for normalization
                         sumOfWeights = sumOfWeights + rawWeight[ i ];
 
-                        /// update context
+                        /// update context  //todo: test: 1 ya 2 khat ezafi be hash table mixModel ezafe mikone. varesh darim NRC ghalat mishe
                         tarContext[ i ] = (U64) (tarContext[i] * ALPH_SIZE + currSymInt) % maxPlaceValue[ i ];
                     }
                     /// update weights
@@ -402,7 +387,7 @@ void FCM::compress (const string &tarFileName)
                     freqs[ 4 ] = (int) (1 + (freqsDouble[4] * DOUBLE_TO_INT));
 
                     sumFreqs = 0;   for (int f : freqs) sumFreqs += f;      /// sum of frequencies
-    
+
                     AESym( currSymInt, freqs, sumFreqs, Writer );           /// Arithmetic encoding
                 }   /// end for
             }   /// end while
@@ -411,18 +396,18 @@ void FCM::compress (const string &tarFileName)
 
         default: break;
     }   /// end switch
-    
+
     finish_encode( Writer );
     doneoutputtingbits( Writer );   /// encode the last bit
     fclose( Writer );               /// close compressed file
-    
+
     tarFileIn.close();              /// close target file
-    
+
     /// (file_size - n_fileLines) is number of symbols in file
     /// n_fileLines is number of '\n's, which are accounted in file_size
     /// H_N = -1/N sum( log_2 P(s|c^t) )
     averageEntropy = (double) (-1) * sumOfEntropies / (file_size - n_fileLines);
-    
+
     /// print reference and target file names
     U8 refsAdressesSize = (U8) getRefAddr().size();
     size_t lastSlash_Ref[ refsAdressesSize ];
@@ -443,7 +428,7 @@ void FCM::compress (const string &tarFileName)
          << std::fixed << setprecision(5) << averageEntropy << '\t'
          << std::fixed << setprecision(5) << averageEntropy / LOG2_ALPH_SIZE << '\n'
             ;
-    
+
 ////    cout.width(2);  cout << std::left << getInvertedRepeat() << "   ";
     mut.unlock();///======================================================
 }
@@ -485,7 +470,7 @@ void FCM::extractHeader (const string &tarFileName)
     this->setCompMode( compMode );      /// compression mode
     /// initialize vector of tables or hash tables
     compMode == 'h' ? this->initHashTables() : this->initTables();
-
+    
     /// finishing
     finish_decode();
     doneinputtingbits();                                            /// decode last bit
@@ -1084,13 +1069,13 @@ void FCM::buildHashTable_str ()
 ************************************************************/
 void FCM::printHashTable (U8 idx) const
 {
-//    htable_t hT = this->getHashTables()[idx];
-//    for (htable_t::iterator it = hT.begin(); it != hT.end(); ++it)
-//    {
-//        cout << it->first << "\t";
-//        for (U64 i : it->second)    cout << i << "\t";
-//        cout << '\n';
-//    }
+    htable_t hT = this->getHashTables()[idx];
+    for (htable_t::iterator it = hT.begin(); it != hT.end(); ++it)
+    {
+        cout << it->first << "\t";
+        for (U64 i : it->second)    cout << i << "\t";
+        cout << '\n';
+    }
     
 //**********************************************************************
     
@@ -1139,9 +1124,9 @@ const  vector<string>      &FCM::getTarAddr  ()  const  { return tarAddr;       
 void   FCM::pushTarAddr    (const string &tFAs)         { tarAddr.push_back(tFAs);      }
 const  vector<string>      &FCM::getRefAddr  ()  const  { return refAddr;               }
 void   FCM::pushRefAddr    (const string &rFAs)         { refAddr.push_back(rFAs);      }
-void   FCM::initTables     ()                           { tables.reserve(n_models);     }
+void   FCM::initTables     ()                           { tables = new U64*[n_models];     }
 void   FCM::setTable       (U64 *tbl, U8 idx)           { tables[ idx ] = tbl;          }
-void   FCM::initHashTables ()                           { hashTables.reserve(n_models); }
+void   FCM::initHashTables ()                           { hashTables = new htable_t[n_models]; }
 void   FCM::setHashTable   (const htable_t &ht, U8 idx) { hashTables[ idx ] = ht;       }
 void   FCM::pushParams     (bool iR, U8 ctx, U16 aD)    { invRepeats.push_back(iR);
                                                           ctxDepths.push_back(ctx);
