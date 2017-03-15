@@ -22,7 +22,7 @@ public:
     void   buildModel     (const vector<string>&,
                            bool, U8, U8);           /// build reference(s) model
     void   compress       (const string&);          /// compress target file
-    void   extractHeader  (const string &,FCM&);         /// extract header information for decompression
+    void   extractHeader  (const string &);         /// extract header information for decompression
     void   decompress     (const string&,
                            const vector<string>&);  /// decompress target file
     
@@ -44,27 +44,25 @@ public:
     void   setGamma       (double);                 /// set gamma
     const  vector<bool>   &getIR       () const;    /// get inverted repeat(s)
     const  vector<U8>     &getCtxDepth () const;    /// get context depth(es)
-    void   pushParams     (bool, U8, U16);          /// set model(s) params (ir, ctx_depth, alpha_denom)
+    void   pushParams     (bool, U8, U16);          /// push back model(s) params (ir, ctx_depth, alpha_denom)
     const  vector<string> &getTarAddr  () const;    /// get target files addresses
-    void   pushTarAddr    (const string&);          /// pushB back target files addresses
+    void   pushTarAddr    (const string&);          /// push back target files addresses
     const  vector<string> &getRefAddr  () const;    /// get reference files addresses
     void   pushRefAddr    (const string&);          /// push back reference files addresses
     void   setTable       (U64*, U8);               /// set table(s)
     void   setHashTable   (const htable_t&, U8);    /// set hash table(s)
     
     
+    
     const  vector<U64*> &getTables ()  const  { return tables;}
     double getGamma ()    { return gamma;}
     vector<U16> getAlpha ()    { return alphaDens;}
+    
     char getCompmode ()    { return compMode;}
     
     
     
-    
-    
     void clearModel(){tables.clear();hashTables.clear();}
-    
-    
     
     
     

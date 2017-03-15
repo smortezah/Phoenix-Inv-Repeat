@@ -126,8 +126,8 @@ void FCM::buildModel (const vector<string> &refsNames,
                     }
                 }   /// end while
             }   /// end for
-//    cout<<table[0]<<'+';
-            mut.lock(); setTable(table, modelIndex);    mut.unlock();       /// set table
+            
+            mut.lock(); this->setTable(table, modelIndex);    mut.unlock();       /// set table
         }   /// end case
             break;
             
@@ -170,7 +170,7 @@ void FCM::buildModel (const vector<string> &refsNames,
                 }
             }   /// end for
             
-            mut.lock();  setHashTable(hashTable, modelIndex);  mut.unlock();    /// set hash table
+            mut.lock();  this->setHashTable(hashTable, modelIndex);  mut.unlock();    /// set hash table
         }   /// end case
             break;
             
@@ -441,7 +441,7 @@ void FCM::compress (const string &tarFileName)
 /***********************************************************
     read header for decompression
 ************************************************************/
-void FCM::extractHeader (const string &tarFileName,FCM& decModel)
+void FCM::extractHeader (const string &tarFileName)
 {
     size_t lastSlash_Tar = tarFileName.find_last_of("/");           /// position of last slash
     string tarNamePure   = tarFileName.substr(lastSlash_Tar + 1);   /// target file name without slash
@@ -463,16 +463,18 @@ void FCM::extractHeader (const string &tarFileName,FCM& decModel)
     U64 no_models = ReadNBits(          16, Reader );       /// number of models
     this->setN_models( (U8) no_models );
     bool ir; U8 k; U16 aD;
-    invRepeats.clear(); ctxDepths.clear();  alphaDens.clear();
+//    invRepeats.clear(); ctxDepths.clear();  alphaDens.clear();
     for (U8 n = 0; n < no_models; ++n)
     {
         ir = (bool) ReadNBits(           1, Reader );
         k  = (U8)   ReadNBits(          16, Reader );
         aD = (U16)  ReadNBits(          16, Reader );
-//        this->invRepeats[n] = ir;
-//        pushParams( ir, k, aD );                                  /// ir, ctx depth, alpha denom
+        this->pushParams(ir,k,aD);          /// ir, ctx depth, alpha denom
     }
-    setCompMode( (char) ReadNBits(      16, Reader ) );      /// compression mode
+    char compMode = (char) ReadNBits(      16, Reader );
+    this->setCompMode( compMode );      /// compression mode
+    /// initialize vector of tables or hash tables
+    compMode == 'h' ? this->initHashTables() : this->initTables();
 
     /// finishing
     finish_decode();
