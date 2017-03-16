@@ -79,7 +79,7 @@ int main (int argc, char *argv[])
     }
     delete[] arrThread;
     
-    /// decompress target(s) using reference(s) model(s) -- multithreaded
+    /// decompress
     if ( mixModel.getDecompFlag() )
     {
         FCM decModel;
@@ -114,7 +114,7 @@ int main (int argc, char *argv[])
         
 //        for (int i = 0; i < 18; i++)    cout << mixModel.getTables()[ 0 ][ i ] << ' ';  cout<<"\n+++++\n";
 //        for (int i = 0; i < 18; i++)    cout << decModel.getTables()[ 0 ][ i ] << ' ';  cout<<'\n';
-
+        
 //        decModel.printHashTable(0);
 //        cout<<'\n';
 //        decModel.printHashTable(1);
@@ -123,7 +123,7 @@ int main (int argc, char *argv[])
 //        cout<<'\n';
 //        mixModel.printHashTable(1);
         
-        
+        /// decompress target(s) using reference(s) model(s) -- multithreaded
         arrThrSize = (n_targets > n_threads) ? n_threads : n_targets;     /// modify threads array size
         arrThread  = new thread[ arrThrSize ];                           /// threads array
         for (U8 i = 0; i < n_targets; i += arrThrSize)
