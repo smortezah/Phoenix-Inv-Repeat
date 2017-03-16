@@ -31,6 +31,8 @@ using std::array;
 #define N_FREE_THREADS    1
 #define DEFAULT_GAMMA     0.95        /// default gamma (for mixture of FCMs)
 
+#define COMP_FILETYPE     ".co"       /// compressed file type
+#define DECOMP_FILETYPE   ".de"       /// decompressed file type
 #define WATERMARK         20170313    /// used in compression/decompression
 #define BUFFER_SIZE       262144      /// used in decompression
 #define DOUBLE_TO_INT     65535       /// for converting double to integer
