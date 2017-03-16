@@ -23,8 +23,7 @@ public:
                            bool, U8, U8);           /// build reference(s) model
     void   compress       (const string&);          /// compress target file
     void   extractHeader  (const string &);         /// extract header information for decompression
-    void   decompress     (const string&,
-                           const vector<string>&);  /// decompress target file
+    void   decompress     (const string&);  /// decompress target file
     
     inline char   symIntToChar (U8)       const;    /// 01234 -> ACNGT
     inline U8     symCharToInt (char)     const;    /// ACNGT -> 01234
@@ -54,8 +53,8 @@ public:
     
     
     
-    U64** getTables ()  const  { return this->tables;}
-      htable_t* getHashTables ()  const  { return this->hashTables;}
+    U64** getTables ()  const  { return tables;}
+      htable_t* getHashTables ()  const  { return hashTables;}
     
     double getGamma ()    { return gamma; }
     vector<U16> getAlpha ()    { return alphaDens; }

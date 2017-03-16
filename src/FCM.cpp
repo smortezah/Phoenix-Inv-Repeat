@@ -189,7 +189,7 @@ void FCM::compress (const string &tarFileName)
         alpha[ i ] = (double) 1 / alphaDens[ i ];
         sumAlphas[ i ] = ALPH_SIZE * alpha[ i ];
     }
-
+    
     /// open target file
     ifstream tarFileIn( tarFileName, ios::in );
 
@@ -370,8 +370,11 @@ void FCM::compress (const string &tarFileName)
                         rawWeight[ i ] = fastPow(weight[ i ], gamma) * prob_i;
                         /// sum of weights. used for normalization
                         sumOfWeights = sumOfWeights + rawWeight[ i ];
-
-                        /// update context  //todo: test: 1 ya 2 khat ezafi be hash table mixModel ezafe mikone. varesh darim NRC ghalat mishe
+                        
+                        /* TODO: ba update e tarContext[i], hash table mixModel ro ham
+                         * update mikone, chon object mixModel ba reference (&mixModel) be in
+                         * tabe' (compress) ferestade mishe. varesh darim NRC ghalat mishe */
+                        /// update context
                         tarContext[ i ] = (U64) (tarContext[i] * ALPH_SIZE + currSymInt) % maxPlaceValue[ i ];
                     }
                     /// update weights
@@ -481,8 +484,9 @@ void FCM::extractHeader (const string &tarFileName)
 /***********************************************************
     decompress target(s) based on reference(s) model
 ************************************************************/
-void FCM::decompress (const string &tarFileName, const vector<string> &refsNames)
+void FCM::decompress (const string &tarFileName)
 {
+    vector<string> refsNames = this->getRefAddr();
     size_t lastSlash_Tar = tarFileName.find_last_of("/");           /// position of last slash
     string tarNamePure   = tarFileName.substr(lastSlash_Tar + 1);   /// target file name without slash
     const  char *tarCo   = (tarNamePure + ".co").c_str();           /// compressed file. convert string to char*
@@ -515,10 +519,9 @@ void FCM::decompress (const string &tarFileName, const vector<string> &refsNames
     char compMode = (char) ReadNBits( 16, Reader );                 /// compression mode
 
 //    cout<<ctxDepths[0];
+    
 
-
-
-
+    
 
 //    int freqs[5];
 //    int sym;
