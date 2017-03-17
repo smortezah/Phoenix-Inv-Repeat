@@ -122,11 +122,7 @@ int main (int argc, char *argv[])
 ////        mixModel.printHashTable(0);
 ////        cout<<'\n';
 ////        mixModel.printHashTable(1);
-//
-    
-        
-        
-//        mixModel.decompress("y");
+
         
         /// decompress target(s) using reference(s) model(s) -- multithreaded
         arrThrSize = (n_targets > n_threads) ? n_threads : n_targets;     /// modify threads array size
@@ -134,8 +130,7 @@ int main (int argc, char *argv[])
         for (U8 i = 0; i < n_targets; i += arrThrSize)
         {
             for (U8 j = 0; j < arrThrSize && i+j < n_targets; ++j)
-//                arrThread[ j ] = thread(&FCM::decompress, &decModel, decModel.getTarAddr()[ i+j ]);
-            arrThread[ j ] = thread(&FCM::decompress, &mixModel, mixModel.getTarAddr()[ i+j ]);
+                arrThread[ j ] = thread(&FCM::decompress, &decModel, decModel.getTarAddr()[ i+j ]);
             for (U8 j = 0; j < arrThrSize && i+j < n_targets; ++j)
                 arrThread[ j ].join();
         }

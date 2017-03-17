@@ -15,7 +15,7 @@ using std::vector;
 class FCM
 {
 public:
-    FCM ();                                         /// constructor
+    FCM ();                                           /// constructor
     void     initTables     ();                       /// initialize vector of tables
     void     initHashTables ();                       /// initialize vector of hash tables
              
@@ -23,12 +23,13 @@ public:
                              bool, U8, U8);           /// build reference(s) model
     void     compress       (const string&);          /// compress target file
     void     extractHeader  (const string &);         /// extract header information for decompression
-    void     decompress     (const string&);  /// decompress target file
+    void     decompress     (const string&);          /// decompress target file
              
     inline   char   symIntToChar (U8)       const;    /// 01234 -> ACNGT
     inline   U8     symCharToInt (char)     const;    /// ACNGT -> 01234
     inline   double fastPow      (double, double);    /// fast power
     inline   U64    fileSize     (const string&);     /// size of file
+    inline   U64    countSymbols (const string&);     /// count number of symbols in a file
     
 //    void   buildHashTable_str ();                      /// build hash table (string key)
     void     printHashTable (U8)            const;    /// print hash table
@@ -58,7 +59,6 @@ public:
 //    vector<U16> getAlpha ()    { return alphaDens; }
 //
 //    char getCompmode ()    { return compMode; }
-    
     
 
 private:
