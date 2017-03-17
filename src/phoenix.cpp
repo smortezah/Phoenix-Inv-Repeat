@@ -89,7 +89,7 @@ int main (int argc, char *argv[])
         
         for (string s : mixModel.getRefAddr())   decModel.pushRefAddr(s);   /// reference(s) address(es)
         for (string s : mixModel.getTarAddr())   decModel.pushTarAddr(s);   /// target(s) address(es)
-
+        
         /// build reference(s) model(s) -- multithreaded
         n_models   = mixModel.getN_models();
         n_threads  = mixModel.getN_threads();                       /// set based on command line
@@ -105,8 +105,8 @@ int main (int argc, char *argv[])
                 arrThread[ j ].join();
         }
         delete[] arrThread;
-
-
+        
+        
 ////        for (int i = 0; i < 36; i++)    cout << mixModel.getTables()[ 0 ][ i ] << ' ';  cout<<"\n+++++\n";
 ////        for (int i = 0; i < 36; i++)    cout << decModel.getTables()[ 0 ][ i ] << ' ';  cout<<'\n';
 ////        for (int i = 0; i < 18; i++)    cout << mixModel.getTables()[ 1 ][ i ] << ' ';  cout<<"\n+++++\n";
@@ -122,7 +122,7 @@ int main (int argc, char *argv[])
 ////        mixModel.printHashTable(0);
 ////        cout<<'\n';
 ////        mixModel.printHashTable(1);
-
+        
         
         /// decompress target(s) using reference(s) model(s) -- multithreaded
         arrThrSize = (n_targets > n_threads) ? n_threads : n_targets;     /// modify threads array size
