@@ -135,14 +135,18 @@ int main (int argc, char *argv[])
                 arrThread[ j ].join();
         }
         delete[] arrThread;
+        
+        /// check equality of decompressed and target files (check: lossless compression)
+        string tarAddr;
+        for (U8 i = n_targets; i--;)
+        {
+            tarAddr = decModel.getTarAddr()[ i ];
+            
+            cout << "Lossless compression of '" << tarAddr << "' was ";
+            if ( areFilesEqual(tarAddr, tarAddr+DECOMP_FILETYPE) )  cout << "successful.\n";
+            else cout << "not successful.\n";
+        }
     }
-
-    
-//    /// check if decompressed file and target file are exactly the same (check: lossless compression)
-//    cout<<areFilesEqual("y","DECOMP.de");
-
-    
-    
     
     
     
