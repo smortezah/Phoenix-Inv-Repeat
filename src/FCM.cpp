@@ -473,7 +473,7 @@ void FCM::extractHeader (const string &tarFileName)
     this->setCompMode( compMode );
     /// initialize vector of tables/hash tables
     compMode == 'h' ? this->initHashTables() : this->initTables();
-    
+
     /// finishing
     finish_decode();
     doneinputtingbits();                                            /// decode last bit
@@ -504,6 +504,20 @@ void FCM::decompress (const string &tarFileName)
     /// extract header information
     ReadNBits(26, Reader);  /// watermark
     U64 file_size  = ReadNBits(    46, Reader );                 /// file size
+    ReadNBits(32,Reader);    /// gamma
+    ReadNBits(    16, Reader );                 /// number of models
+    U8 no_models = this->getN_models();
+//    U64    iR[no_models], ctxDpth[no_models], alphaDn[no_models];
+    for (U8 n = 0; n < no_models; ++n)
+    {
+        ReadNBits(   1, Reader );                 /// inverted repeats
+        ReadNBits(  16, Reader );                 /// context depths
+        ReadNBits(  16, Reader );                 /// alplha denoms
+//        invRepeats[ n ] = ReadNBits(   1, Reader );                 /// inverted repeats
+//        ctxDepths[ n ]  = ReadNBits(  16, Reader );                 /// context depths
+//        alphaDens[ n ]  = ReadNBits(  16, Reader );                 /// alplha denoms
+    }
+    ReadNBits( 16, Reader );                 /// compression mode
 ////    double gamma      = std::round((double) ReadNBits(32,Reader)/65536 * 100) / 100;    /// gamma
 ////    U64    no_models  = ReadNBits(    16, Reader );                 /// number of models
 ////    U64    invRepeats[no_models], ctxDepths[no_models], alphaDens[no_models];
@@ -516,8 +530,7 @@ void FCM::decompress (const string &tarFileName)
 ////    char compMode = (char) ReadNBits( 16, Reader );                 /// compression mode
 
 
-
-    U8 no_models = this->getN_models();
+//    U8 no_models = this->getN_models();
 
     /// alpha and ALPH_SIZE*alpha: used in P numerator and denominator
     double alpha[ no_models ], sumAlphas[ no_models ];
@@ -584,7 +597,7 @@ void FCM::decompress (const string &tarFileName)
 
                 /// table includes the number of occurrences of symbols A, C, N, G, T
 //                for (string::iterator lineIt = tarLine.begin(); lineIt != tarLine.end(); ++lineIt)
-                for (int k=0; k<4; ++k)
+                for (int k=0; k<3; ++k)
                 {
                     fill_n( freqsDouble, ALPH_SIZE, 0 );    /// reset array of frequencies
 
@@ -595,14 +608,14 @@ void FCM::decompress (const string &tarFileName)
 
                     for (U8 i = no_models; i--;)
                     {
-//                        rowIndex = tarContext[ i ] * ALPH_SUM_SIZE;
+//                        rowIndex = sym * ALPH_SUM_SIZE;
 
                         /// frequencies (double)
-                        freqsDouble[ 0 ] += weight[ i ] * this->getTables()[ i ][ sym ];
-                        freqsDouble[ 1 ] += weight[ i ] * this->getTables()[ i ][ sym + 1 ];
-                        freqsDouble[ 2 ] += weight[ i ] * this->getTables()[ i ][ sym + 2 ];
-                        freqsDouble[ 3 ] += weight[ i ] * this->getTables()[ i ][ sym + 3 ];
-                        freqsDouble[ 4 ] += weight[ i ] * this->getTables()[ i ][ sym + 4 ];
+                        freqsDouble[ 0 ] += weight[ i ] * this->getTables()[ i ][ rowIndex ];
+                        freqsDouble[ 1 ] += weight[ i ] * this->getTables()[ i ][ rowIndex + 1 ];
+                        freqsDouble[ 2 ] += weight[ i ] * this->getTables()[ i ][ rowIndex + 2 ];
+                        freqsDouble[ 3 ] += weight[ i ] * this->getTables()[ i ][ rowIndex + 3 ];
+                        freqsDouble[ 4 ] += weight[ i ] * this->getTables()[ i ][ rowIndex + 4 ];
 
 //                        nSym = tables[ i ][ rowIndex + currSymInt ];    /// number of symbols
 //////                          nSym = X;
@@ -620,8 +633,6 @@ void FCM::decompress (const string &tarFileName)
 //////                        tarContext[ i ] = (U64) (tarContext[i] * ALPH_SIZE + currSymInt) % maxPlaceValue[ i ];
                     }
     
-            
-            
 //                    /// update weights
 //                    for (U8 i = no_models; i--;) weight[ i ] = rawWeight[ i ] / sumOfWeights;
 //
@@ -633,26 +644,29 @@ void FCM::decompress (const string &tarFileName)
                     freqs[ 2 ] = (int) (1 + (freqsDouble[2] * DOUBLE_TO_INT));
                     freqs[ 3 ] = (int) (1 + (freqsDouble[3] * DOUBLE_TO_INT));
                     freqs[ 4 ] = (int) (1 + (freqsDouble[4] * DOUBLE_TO_INT));
-
+    
                     sumFreqs = 0;   for (int f : freqs) sumFreqs += f;          /// sum of frequencies
-    
+
                     sym = ArithDecodeSymbol(ALPH_SIZE, freqs, sumFreqs, Reader);              /// Arithmetic decoding
-    
+                    
+                    rowIndex = (U64) sym * ALPH_SUM_SIZE;
+                    
+//                    for (int j = 0; j < 5; ++j)
+//                        cout<<freqs[j]<<' ';
+//                    cout<<'\n'<<sym<<'\n';
+                    
                     outBuffer[ idxOut ] = symIntToChar((U8) sym);                            /// output buffer
-    
+
                     if (++idxOut == BUFFER_SIZE)
                     {
                         fwrite(outBuffer, 1, idxOut, Writer);                         /// write output
                         idxOut = 0;
                     }
-    
-    
                 }   /// end for
-    
     
             if (idxOut != 0)
                 fwrite(outBuffer, 1, idxOut, Writer);
-
+            
 //            }   /// end while
         }   /// end case
             break;
@@ -730,7 +744,9 @@ void FCM::decompress (const string &tarFileName)
 
         default: break;
     }   /// end switch
-
+    
+    
+    
     
     
 //    tarFileIn.close();              /// close target file

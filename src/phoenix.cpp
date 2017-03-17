@@ -89,7 +89,7 @@ int main (int argc, char *argv[])
         
         for (string s : mixModel.getRefAddr())   decModel.pushRefAddr(s);   /// reference(s) address(es)
         for (string s : mixModel.getTarAddr())   decModel.pushTarAddr(s);   /// target(s) address(es)
-        
+
         /// build reference(s) model(s) -- multithreaded
         n_models   = mixModel.getN_models();
         n_threads  = mixModel.getN_threads();                       /// set based on command line
@@ -105,23 +105,28 @@ int main (int argc, char *argv[])
                 arrThread[ j ].join();
         }
         delete[] arrThread;
+
+
+////        for (int i = 0; i < 36; i++)    cout << mixModel.getTables()[ 0 ][ i ] << ' ';  cout<<"\n+++++\n";
+////        for (int i = 0; i < 36; i++)    cout << decModel.getTables()[ 0 ][ i ] << ' ';  cout<<'\n';
+////        for (int i = 0; i < 18; i++)    cout << mixModel.getTables()[ 1 ][ i ] << ' ';  cout<<"\n+++++\n";
+////        for (int i = 0; i < 18; i++)    cout << decModel.getTables()[ 1 ][ i ] << ' ';  cout<<'\n';
+//
+////        for (int i = 0; i < 18; i++)    cout << mixModel.getTables()[ 0 ][ i ] << ' ';  cout<<"\n+++++\n";
+////        for (int i = 0; i < 18; i++)    cout << decModel.getTables()[ 0 ][ i ] << ' ';  cout<<'\n';
+//
+////        decModel.printHashTable(0);
+////        cout<<'\n';
+////        decModel.printHashTable(1);
+////cout<<"\n+++\n";
+////        mixModel.printHashTable(0);
+////        cout<<'\n';
+////        mixModel.printHashTable(1);
+//
+    
         
         
-//        for (int i = 0; i < 36; i++)    cout << mixModel.getTables()[ 0 ][ i ] << ' ';  cout<<"\n+++++\n";
-//        for (int i = 0; i < 36; i++)    cout << decModel.getTables()[ 0 ][ i ] << ' ';  cout<<'\n';
-//        for (int i = 0; i < 18; i++)    cout << mixModel.getTables()[ 1 ][ i ] << ' ';  cout<<"\n+++++\n";
-//        for (int i = 0; i < 18; i++)    cout << decModel.getTables()[ 1 ][ i ] << ' ';  cout<<'\n';
-        
-//        for (int i = 0; i < 18; i++)    cout << mixModel.getTables()[ 0 ][ i ] << ' ';  cout<<"\n+++++\n";
-//        for (int i = 0; i < 18; i++)    cout << decModel.getTables()[ 0 ][ i ] << ' ';  cout<<'\n';
-        
-//        decModel.printHashTable(0);
-//        cout<<'\n';
-//        decModel.printHashTable(1);
-//cout<<"\n+++\n";
-//        mixModel.printHashTable(0);
-//        cout<<'\n';
-//        mixModel.printHashTable(1);
+//        mixModel.decompress("y");
         
         /// decompress target(s) using reference(s) model(s) -- multithreaded
         arrThrSize = (n_targets > n_threads) ? n_threads : n_targets;     /// modify threads array size
@@ -129,7 +134,8 @@ int main (int argc, char *argv[])
         for (U8 i = 0; i < n_targets; i += arrThrSize)
         {
             for (U8 j = 0; j < arrThrSize && i+j < n_targets; ++j)
-                arrThread[ j ] = thread(&FCM::decompress, &decModel, decModel.getTarAddr()[ i+j ]);
+//                arrThread[ j ] = thread(&FCM::decompress, &decModel, decModel.getTarAddr()[ i+j ]);
+            arrThread[ j ] = thread(&FCM::decompress, &mixModel, mixModel.getTarAddr()[ i+j ]);
             for (U8 j = 0; j < arrThrSize && i+j < n_targets; ++j)
                 arrThread[ j ].join();
         }
