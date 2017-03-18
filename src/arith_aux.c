@@ -24,9 +24,9 @@ and every copy made of these files.
 
 /*----------------------------------------------------------------------------*/
 
-void GetInterval (U64 *low, U64 *high, U64 *count, U64 symbol)
+void GetInterval (int *low, int *high, int *count, U8 symbol)
 {
-    U64 n;
+    U8 n;
     
     *low = 0;
     for (n = 0; n < symbol; n++)
@@ -37,7 +37,7 @@ void GetInterval (U64 *low, U64 *high, U64 *count, U64 symbol)
 
 /*----------------------------------------------------------------------------*/
 
-U8 GetSymbol (U64 *low, U64 *high, U64 *count, U64 target, U64 nSymbols)
+U8 GetSymbol (int *low, int *high, int *count, int target, int nSymbols)
 {
     U8 n;
     
@@ -56,7 +56,7 @@ U8 GetSymbol (U64 *low, U64 *high, U64 *count, U64 target, U64 nSymbols)
 
 /*----------------------------------------------------------------------------*/
 
-void WriteNBits (U64 bits, U64 nBits, FILE *oFp)
+void WriteNBits (U64 bits, int nBits, FILE *oFp)
 {
     while (nBits--)
     {
@@ -72,10 +72,10 @@ void WriteNBits (U64 bits, U64 nBits, FILE *oFp)
 
 /*----------------------------------------------------------------------------*/
 
-U64 ReadNBits (U64 nBits, FILE *iFp)
+int ReadNBits (U32 nBits, FILE *iFp)
 {
-    U64 bits = 0;
-    U64 target, low, high, count[2] = {1, 1};
+    int bits = 0;
+    int target, low, high, count[2] = {1, 1};
     
     while (nBits--)
     {
@@ -90,9 +90,9 @@ U64 ReadNBits (U64 nBits, FILE *iFp)
 
 /*----------------------------------------------------------------------------*/
 
-void AESym (U64 symbol, U64 *counters, U64 totalCount, FILE *oFp)
+void AESym (U8 symbol, int *counters, int totalCount, FILE *oFp)
 {
-    U64 low, high;
+    int low, high;
     
     GetInterval(&low, &high, counters, symbol);
     arithmetic_encode(low, high, totalCount, oFp);
@@ -100,9 +100,9 @@ void AESym (U64 symbol, U64 *counters, U64 totalCount, FILE *oFp)
 
 /*----------------------------------------------------------------------------*/
 
-U8 ArithDecodeSymbol (U64 nSymbols, U64 *counters, U64 totalCount, FILE *iFp)
+U8 ArithDecodeSymbol (U8 nSymbols, int *counters, int totalCount, FILE *iFp)
 {
-    U64 low, high;
+    int low, high;
     U8 symbol = GetSymbol(&low, &high, counters,
                            arithmetic_decode_target(totalCount), nSymbols);
     

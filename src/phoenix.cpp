@@ -79,14 +79,14 @@ int main (int argc, char *argv[])
     }
     delete[] arrThread;
     
-//    /// decompress
-//    if ( mixModel.getDecompFlag() )
-//    {
-//        FCM decModel;
-//
+    /// decompress
+    if ( mixModel.getDecompFlag() )
+    {
+        FCM decModel;
+
 //        for (string s : mixModel.getRefAddr()) decModel.pushRefAddr(s); /// reference(s) address(es)
 //        for (string s : mixModel.getTarAddr()) decModel.pushTarAddr(s); /// target(s) address(es)
-//
+
 //        /// extract header information
 //        decModel.extractHeader( decModel.getTarAddr()[ 0 ] );
 //
@@ -117,7 +117,7 @@ int main (int argc, char *argv[])
 //                arrThread[ j ].join();
 //        }
 //        delete[] arrThread;
-//
+
 //        /// check equality of decompressed and target files (check: lossless compression)
 //        for (string s : decModel.getTarAddr())
 //            if ( !areFilesEqual(s, s + DECOMP_FILETYPE) )
@@ -136,7 +136,7 @@ int main (int argc, char *argv[])
 //        cout << "Lossless compression and decompression of '";
 //        for (int i = 0; i < tarsNo - 1; ++i)  cout << tarNamesPure[ i ] << "', '";
 //        cout << tarNamesPure[ tarsNo-1 ] << "' was successful.\n";
-//    }   /// end decompress
+    }   /// end decompress
     
     
     
