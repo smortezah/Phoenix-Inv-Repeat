@@ -50,6 +50,8 @@ December 1999
 #include "arith.h"
 #include "bitio.h"
 
+#include "def.h"
+
 #define		Half		((code_value) 1 << (B_bits-1))
 #define		Quarter		((code_value) 1 << (B_bits-2))
 

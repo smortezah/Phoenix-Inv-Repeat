@@ -39,11 +39,11 @@ December 1999
 	/* Default B_bits and F_bits */
 
 #ifndef B_BITS
-#define		B_BITS		32
+#define		B_BITS		64//32
 #endif
 
 #ifndef F_BITS
-#define		F_BITS		27
+#define		F_BITS		27//27
 #endif
 
 /* Change these types for different precision calculations.  They may affect
@@ -53,16 +53,20 @@ December 1999
  * must be able to accomodate f_bits+1 bits, instead of f_bits, to avoid
  * overflows.  Ie: For an f_bits of up to 31, type freq_value must be 32 bits.
  */
-typedef unsigned long   code_value;	/* B_BITS of precision */
-typedef unsigned long	freq_value;	/* F_BITS+1 of precision */
-typedef unsigned long	div_value;	/* B_BITS-F_BITS of precision */
+//typedef unsigned long   code_value;	/* B_BITS of precision */
+//typedef unsigned long	freq_value;	/* F_BITS+1 of precision */
+//typedef unsigned long	div_value;	/* B_BITS-F_BITS of precision */
+typedef U64	code_value;	/* B_BITS of precision */
+typedef U64	freq_value;	/* F_BITS+1 of precision */
+typedef U64	div_value;	/* B_BITS-F_BITS of precision */
 
 
 /* MAX_BITS_OUTSTANDING is a bound on bits_outstanding
  * If bits_outstanding ever gets above this number (extremely unlikely)
  * the program will abort with an error message.  (See arith.c for details).
  */
-#define 	MAX_BITS_OUTSTANDING	((unsigned long)1<<31)
+//#define 	MAX_BITS_OUTSTANDING	((unsigned long)1<<31)
+#define 	MAX_BITS_OUTSTANDING	((U64)1<<63)
 
 
 /* ================= END USER ADJUSTABLE PARAMETERS =================== */
@@ -72,7 +76,8 @@ typedef unsigned long	div_value;	/* B_BITS-F_BITS of precision */
  * to store them.  Also, that MAX_F_BITS <= MAX_B_BITS-2
  */
 
-#define		MAX_B_BITS   (int)( sizeof(code_value) * 8)
+//#define		MAX_B_BITS   (int)( sizeof(code_value) * 8)
+#define		MAX_B_BITS   (U64)( sizeof(code_value) * 8)
 #define		MAX_F_BITS   (int)((sizeof(freq_value)*8)-1 < MAX_B_BITS - 2\
 				?  (sizeof(freq_value)*8)-1 : MAX_B_BITS - 2)
 

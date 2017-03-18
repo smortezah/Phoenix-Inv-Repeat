@@ -218,8 +218,10 @@ void FCM::compress (const string &tarFileName)
     double  averageEntropy = 0;         /// average entropy (H)
     double  sumOfWeights;               /// sum of weights. used for normalization
     double  freqsDouble[ ALPH_SIZE ];   /// frequencies of each symbol (double)
-    int     freqs[ ALPH_SIZE ];         /// frequencies of each symbol (integer)
-    int     sumFreqs;                   /// sum of frequencies of each symbol
+//    int     freqs[ ALPH_SIZE ];         /// frequencies of each symbol (integer)
+//    int     sumFreqs;                   /// sum of frequencies of each symbol
+    U64    freqs[ ALPH_SIZE ];         /// frequencies of each symbol (integer)
+    U64    sumFreqs;                   /// sum of frequencies of each symbol
     U8      currSymInt;                 /// current symbol in integer format
     
     /*
@@ -309,14 +311,27 @@ void FCM::compress (const string &tarFileName)
                     sumOfEntropies = sumOfEntropies + log2(probability);        /// sum( log_2 P(s|c^t) )
 
                     /// frequencies (integer)
-                    freqs[ 0 ] = (int) (1 + (freqsDouble[0] * DOUBLE_TO_INT));
-                    freqs[ 1 ] = (int) (1 + (freqsDouble[1] * DOUBLE_TO_INT));
-                    freqs[ 2 ] = (int) (1 + (freqsDouble[2] * DOUBLE_TO_INT));
-                    freqs[ 3 ] = (int) (1 + (freqsDouble[3] * DOUBLE_TO_INT));
-                    freqs[ 4 ] = (int) (1 + (freqsDouble[4] * DOUBLE_TO_INT));
-
-                    sumFreqs = 0;   for (int f : freqs) sumFreqs += f;          /// sum of frequencies
-
+//                    freqs[ 0 ] = (int) (1 + (freqsDouble[0] * DOUBLE_TO_INT));
+//                    freqs[ 1 ] = (int) (1 + (freqsDouble[1] * DOUBLE_TO_INT));
+//                    freqs[ 2 ] = (int) (1 + (freqsDouble[2] * DOUBLE_TO_INT));
+//                    freqs[ 3 ] = (int) (1 + (freqsDouble[3] * DOUBLE_TO_INT));
+//                    freqs[ 4 ] = (int) (1 + (freqsDouble[4] * DOUBLE_TO_INT));
+//
+//                    sumFreqs = 0;   for (int f : freqs) sumFreqs += f;          /// sum of frequencies
+                    freqs[ 0 ] = (U64) (1 + (freqsDouble[0] * DOUBLE_TO_INT));
+                    freqs[ 1 ] = (U64) (1 + (freqsDouble[1] * DOUBLE_TO_INT));
+                    freqs[ 2 ] = (U64) (1 + (freqsDouble[2] * DOUBLE_TO_INT));
+                    freqs[ 3 ] = (U64) (1 + (freqsDouble[3] * DOUBLE_TO_INT));
+                    freqs[ 4 ] = (U64) (1 + (freqsDouble[4] * DOUBLE_TO_INT));
+    
+                    sumFreqs = 0;   for (U64 f : freqs) sumFreqs += f;          /// sum of frequencies
+                    
+                    //todo test
+//                    for (int j = 0; j < 5; ++j)
+//                    {
+//                        if( freqs[j]<0) cout<< "manfi";
+//                    }
+                    
                     AESym( currSymInt, freqs, sumFreqs, Writer );               /// Arithmetic encoding
                 }   /// end for
             }   /// end while
@@ -377,14 +392,21 @@ void FCM::compress (const string &tarFileName)
                     sumOfEntropies = sumOfEntropies + log2(probability);    /// sum( log_2 P(s|c^t) )
 
                     /// frequencies (integer)
-                    freqs[ 0 ] = (int) (1 + (freqsDouble[0] * DOUBLE_TO_INT));
-                    freqs[ 1 ] = (int) (1 + (freqsDouble[1] * DOUBLE_TO_INT));
-                    freqs[ 2 ] = (int) (1 + (freqsDouble[2] * DOUBLE_TO_INT));
-                    freqs[ 3 ] = (int) (1 + (freqsDouble[3] * DOUBLE_TO_INT));
-                    freqs[ 4 ] = (int) (1 + (freqsDouble[4] * DOUBLE_TO_INT));
-
-                    sumFreqs = 0;   for (int f : freqs) sumFreqs += f;      /// sum of frequencies
-
+//                    freqs[ 0 ] = (int) (1 + (freqsDouble[0] * DOUBLE_TO_INT));
+//                    freqs[ 1 ] = (int) (1 + (freqsDouble[1] * DOUBLE_TO_INT));
+//                    freqs[ 2 ] = (int) (1 + (freqsDouble[2] * DOUBLE_TO_INT));
+//                    freqs[ 3 ] = (int) (1 + (freqsDouble[3] * DOUBLE_TO_INT));
+//                    freqs[ 4 ] = (int) (1 + (freqsDouble[4] * DOUBLE_TO_INT));
+//
+//                    sumFreqs = 0;   for (int f : freqs) sumFreqs += f;      /// sum of frequencies
+                    freqs[ 0 ] = (U64) (1 + (freqsDouble[0] * DOUBLE_TO_INT));
+                    freqs[ 1 ] = (U64) (1 + (freqsDouble[1] * DOUBLE_TO_INT));
+                    freqs[ 2 ] = (U64) (1 + (freqsDouble[2] * DOUBLE_TO_INT));
+                    freqs[ 3 ] = (U64) (1 + (freqsDouble[3] * DOUBLE_TO_INT));
+                    freqs[ 4 ] = (U64) (1 + (freqsDouble[4] * DOUBLE_TO_INT));
+    
+                    sumFreqs = 0;   for (U64 f : freqs) sumFreqs += f;      /// sum of frequencies
+//todo change
                     AESym( currSymInt, freqs, sumFreqs, Writer );           /// Arithmetic encoding
                 }   /// end for
             }   /// end while
@@ -481,10 +503,11 @@ void FCM::decompress (const string &tarFileName)
     string tarNamePure   = tarFileName.substr(lastSlash_Tar + 1);   /// target file name without slash
     const  char *tarCo   = (tarNamePure+COMP_FILETYPE).c_str();     /// compressed file. convert string to char*
     const  char *tarDe   = (tarNamePure+DECOMP_FILETYPE).c_str();   /// decompressed file
-    FILE   *Reader       = fopen(tarCo, "r");                       /// to process the compressed file
+//    FILE   *Reader       = fopen(tarCo, "r");                       /// to process the compressed file
     
     mut.lock();///========================================================
     remove(tarDe);                                                  /// remove pre-existing decompressed file(s)
+    FILE   *Reader       = fopen(tarCo, "r");                       /// to process the compressed file
     
     FILE *Writer = fopen(tarDe, "w");                               /// to save decompressed file
     mut.unlock();///======================================================
@@ -494,7 +517,7 @@ void FCM::decompress (const string &tarFileName)
 
     startinputtingbits();                                           /// start arithmetic decoding process
     start_decode( Reader );
-
+    
     /// extract header information
     ReadNBits(26, Reader);  /// watermark
     U64 symsNo  = ReadNBits(    46, Reader );                 /// number of symbols
@@ -530,8 +553,10 @@ void FCM::decompress (const string &tarFileName)
     double  weight[ no_models ];  fill_n(weight, no_models, (double) 1 / no_models);   /// each model weight
     double  sumOfWeights;               /// sum of weights. used for normalization
     double  freqsDouble[ ALPH_SIZE ];   /// frequencies of each symbol (double)
-    int     freqs[ ALPH_SIZE ];         /// frequencies of each symbol (integer)
-    int     sumFreqs;                   /// sum of frequencies of each symbol
+//    int     freqs[ ALPH_SIZE ];         /// frequencies of each symbol (integer)
+//    int     sumFreqs;                   /// sum of frequencies of each symbol
+    U64     freqs[ ALPH_SIZE ];         /// frequencies of each symbol (integer)
+    U64     sumFreqs;                   /// sum of frequencies of each symbol
     U8      currSymInt;                 /// current symbol in integer format
     
     switch ( compMode )
@@ -556,16 +581,25 @@ void FCM::decompress (const string &tarFileName)
                     freqsDouble[ 4 ] += weight[ i ] * this->getTables()[ i ][ rowIndex + 4 ];
                 }
                 /// frequencies (integer)
-                freqs[ 0 ] = (int) (1 + (freqsDouble[ 0 ] * DOUBLE_TO_INT));
-                freqs[ 1 ] = (int) (1 + (freqsDouble[ 1 ] * DOUBLE_TO_INT));
-                freqs[ 2 ] = (int) (1 + (freqsDouble[ 2 ] * DOUBLE_TO_INT));
-                freqs[ 3 ] = (int) (1 + (freqsDouble[ 3 ] * DOUBLE_TO_INT));
-                freqs[ 4 ] = (int) (1 + (freqsDouble[ 4 ] * DOUBLE_TO_INT));
-
-                sumFreqs = 0;   for (int f : freqs) sumFreqs += f;          /// sum of frequencies
+//                freqs[ 0 ] = (int) (1 + (freqsDouble[ 0 ] * DOUBLE_TO_INT));
+//                freqs[ 1 ] = (int) (1 + (freqsDouble[ 1 ] * DOUBLE_TO_INT));
+//                freqs[ 2 ] = (int) (1 + (freqsDouble[ 2 ] * DOUBLE_TO_INT));
+//                freqs[ 3 ] = (int) (1 + (freqsDouble[ 3 ] * DOUBLE_TO_INT));
+//                freqs[ 4 ] = (int) (1 + (freqsDouble[ 4 ] * DOUBLE_TO_INT));
+//
+//                sumFreqs = 0;   for (int f : freqs) sumFreqs += f;          /// sum of frequencies
+//
+//                currSymInt = (U8) ArithDecodeSymbol(ALPH_SIZE, freqs, sumFreqs, Reader);              /// Arithmetic decoding
+                freqs[ 0 ] = (U64) (1 + (freqsDouble[ 0 ] * DOUBLE_TO_INT));
+                freqs[ 1 ] = (U64) (1 + (freqsDouble[ 1 ] * DOUBLE_TO_INT));
+                freqs[ 2 ] = (U64) (1 + (freqsDouble[ 2 ] * DOUBLE_TO_INT));
+                freqs[ 3 ] = (U64) (1 + (freqsDouble[ 3 ] * DOUBLE_TO_INT));
+                freqs[ 4 ] = (U64) (1 + (freqsDouble[ 4 ] * DOUBLE_TO_INT));
     
-                currSymInt = (U8) ArithDecodeSymbol(ALPH_SIZE, freqs, sumFreqs, Reader);              /// Arithmetic decoding
-    
+                sumFreqs = 0;   for (U64 f : freqs) sumFreqs += f;          /// sum of frequencies
+    //todo change
+                currSymInt = ArithDecodeSymbol(ALPH_SIZE, freqs, sumFreqs, Reader); /// Arithmetic decoding
+                
                 outBuffer[ idxOut ] = symIntToChar( currSymInt);                            /// output buffer
                 if (++idxOut == BUFFER_SIZE)
                 {
@@ -619,15 +653,24 @@ void FCM::decompress (const string &tarFileName)
                     freqsDouble[ 4 ] += weight[ i ] * hTRowArray[ 4 ];
                 }
                 /// frequencies (integer)
-                freqs[ 0 ] = (int) (1 + (freqsDouble[ 0 ] * DOUBLE_TO_INT));
-                freqs[ 1 ] = (int) (1 + (freqsDouble[ 1 ] * DOUBLE_TO_INT));
-                freqs[ 2 ] = (int) (1 + (freqsDouble[ 2 ] * DOUBLE_TO_INT));
-                freqs[ 3 ] = (int) (1 + (freqsDouble[ 3 ] * DOUBLE_TO_INT));
-                freqs[ 4 ] = (int) (1 + (freqsDouble[ 4 ] * DOUBLE_TO_INT));
-            
-                sumFreqs = 0;   for (int f : freqs) sumFreqs += f;          /// sum of frequencies
+//                freqs[ 0 ] = (int) (1 + (freqsDouble[ 0 ] * DOUBLE_TO_INT));
+//                freqs[ 1 ] = (int) (1 + (freqsDouble[ 1 ] * DOUBLE_TO_INT));
+//                freqs[ 2 ] = (int) (1 + (freqsDouble[ 2 ] * DOUBLE_TO_INT));
+//                freqs[ 3 ] = (int) (1 + (freqsDouble[ 3 ] * DOUBLE_TO_INT));
+//                freqs[ 4 ] = (int) (1 + (freqsDouble[ 4 ] * DOUBLE_TO_INT));
+//
+//                sumFreqs = 0;   for (int f : freqs) sumFreqs += f;          /// sum of frequencies
+//
+//                currSymInt = (U8) ArithDecodeSymbol(ALPH_SIZE, freqs, sumFreqs, Reader);              /// Arithmetic decoding
+                freqs[ 0 ] = (U64) (1 + (freqsDouble[ 0 ] * DOUBLE_TO_INT));
+                freqs[ 1 ] = (U64) (1 + (freqsDouble[ 1 ] * DOUBLE_TO_INT));
+                freqs[ 2 ] = (U64) (1 + (freqsDouble[ 2 ] * DOUBLE_TO_INT));
+                freqs[ 3 ] = (U64) (1 + (freqsDouble[ 3 ] * DOUBLE_TO_INT));
+                freqs[ 4 ] = (U64) (1 + (freqsDouble[ 4 ] * DOUBLE_TO_INT));
     
-                currSymInt = (U8) ArithDecodeSymbol(ALPH_SIZE, freqs, sumFreqs, Reader);              /// Arithmetic decoding
+                sumFreqs = 0;   for (U64 f : freqs) sumFreqs += f;          /// sum of frequencies
+    //todo change
+                currSymInt = ArithDecodeSymbol(ALPH_SIZE, freqs, sumFreqs, Reader);              /// Arithmetic decoding
     
                 outBuffer[ idxOut ] = symIntToChar( currSymInt);                            /// output buffer
                 if (++idxOut == BUFFER_SIZE)
@@ -663,37 +706,6 @@ void FCM::decompress (const string &tarFileName)
     
         default: break;
     }   /// end switch
-    
-    
-    
-//    tarFileIn.close();              /// close target file
-
-//    averageEntropy = (double) (-1) * sumOfEntropies / symsNo;
-
-//    /// print reference and target file names
-//    U8 refsAdressesSize = (U8) getRefAddr().size();
-//    size_t lastSlash_Ref[ refsAdressesSize ];
-//    string refNamesPure[ refsAdressesSize ];
-//    for (U8 i = refsAdressesSize; i--;)
-//    {
-//        lastSlash_Ref[ i ] = getRefAddr()[ i ].find_last_of("/");
-//        refNamesPure[ i ]  = getRefAddr()[ i ].substr(lastSlash_Ref[ i ] + 1);
-//    }
-//
-//    mut.lock();///========================================================
-//    for (int i = 0; i < refsAdressesSize - 1; ++i)  cout << refNamesPure[ i ] << ',';
-//    cout << refNamesPure[ refsAdressesSize-1 ] << '\t'
-//         << tarNamePure << '\t'
-//         ////         << invertedRepeat << '\t'
-//         ////         << std::fixed << setprecision(4) << alpha << '\t'
-//         ////         << (int) contextDepth << '\t'
-//         << std::fixed << setprecision(5) << averageEntropy << '\t'
-//         << std::fixed << setprecision(5) << averageEntropy / LOG2_ALPH_SIZE << '\n'
-//            ;
-//
-//////    cout.width(2);  cout << std::left << getInvertedRepeat() << "   ";
-//    mut.unlock();///======================================================
-    
     
     finish_decode();
     doneinputtingbits();                                       /// decode last bit

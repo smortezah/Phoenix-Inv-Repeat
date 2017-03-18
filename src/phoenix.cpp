@@ -46,7 +46,7 @@ int main (int argc, char *argv[])
     arrThread     = new thread[ arrThrSize ];
     for (U8 i = 0; i < n_models; i += arrThrSize)
     {
-        for (U8 j = 0; j < arrThrSize && i+j < n_models; ++j)
+        for (U8 j = 0; j < arrThrSize && i+j < n_models; ++j)   //TODO: aya jaygozini vase sharte "i+j < n_models" has?
             arrThread[ j ] = thread( &FCM::buildModel, &mixModel,
                                      mixModel.getRefAddr(), mixModel.getIR()[ i+j ],
                                      mixModel.getCtxDepth()[ i+j ], i + j );
@@ -79,58 +79,66 @@ int main (int argc, char *argv[])
     }
     delete[] arrThread;
     
-    /// decompress
-    if ( mixModel.getDecompFlag() )
-    {
-        FCM decModel;
-
-        for (string s : mixModel.getRefAddr())   decModel.pushRefAddr(s);   /// reference(s) address(es)
-        for (string s : mixModel.getTarAddr())   decModel.pushTarAddr(s);   /// target(s) address(es)
-        
-        /// extract header information
-        decModel.extractHeader( decModel.getTarAddr()[ 0 ] );
-        
-        /// build reference(s) model(s) -- multithreaded
-        n_models   = mixModel.getN_models();
-        n_threads  = mixModel.getN_threads();                       /// set based on command line
-        arrThrSize = (n_models > n_threads) ? n_threads : n_models; /// size of threads array
-        arrThread  = new thread[ arrThrSize ];
-        for (U8 i = 0; i < n_models; i += arrThrSize)
-        {
-            for (U8 j = 0; j < arrThrSize && i+j < n_models; ++j)
-                arrThread[ j ] = thread( &FCM::buildModel, &decModel,
-                                         decModel.getRefAddr(), decModel.getIR()[ i+j ],
-                                         decModel.getCtxDepth()[ i+j ], i + j );
-            for (U8 j = 0; j < arrThrSize && i+j < n_models; ++j)
-                arrThread[ j ].join();
-        }
-        delete[] arrThread;
-
-        /// decompress target(s) using reference(s) model(s) -- multithreaded
-        arrThrSize = (n_targets > n_threads) ? n_threads : n_targets;     /// modify threads array size
-        arrThread  = new thread[ arrThrSize ];                           /// threads array
-        for (U8 i = 0; i < n_targets; i += arrThrSize)
-        {
-            for (U8 j = 0; j < arrThrSize && i+j < n_targets; ++j)
-                arrThread[ j ] = thread(&FCM::decompress, &decModel, decModel.getTarAddr()[ i+j ]);
-            for (U8 j = 0; j < arrThrSize && i+j < n_targets; ++j)
-                arrThread[ j ].join();
-        }
-        delete[] arrThread;
-        
-        //TODO: aval ckeck kon age ye doonash fail shode, chap kon, ELSE hamaro list kon o begoo successful bood
-        /// check equality of decompressed and target files (check: lossless compression)
-        string tarStr;
-        for (string s : decModel.getTarAddr())
-        {
-            if ( !areFilesEqual(s, s+DECOMP_FILETYPE) )
-            {
-                cout << "Lossless compression/decompression of '" << s << "' failed.\n";
-                exit(1);
-            }
-            else cout << "Lossless compression and decompression of '" << s << "' was successful.\n";
-        }
-    }
+//    /// decompress
+//    if ( mixModel.getDecompFlag() )
+//    {
+//        FCM decModel;
+//
+//        for (string s : mixModel.getRefAddr()) decModel.pushRefAddr(s); /// reference(s) address(es)
+//        for (string s : mixModel.getTarAddr()) decModel.pushTarAddr(s); /// target(s) address(es)
+//
+//        /// extract header information
+//        decModel.extractHeader( decModel.getTarAddr()[ 0 ] );
+//
+//        /// build reference(s) model(s) -- multithreaded
+//        n_models   = mixModel.getN_models();
+//        n_threads  = mixModel.getN_threads();                           /// set based on command line
+//        arrThrSize = (n_models > n_threads) ? n_threads : n_models;     /// size of threads array
+//        arrThread  = new thread[ arrThrSize ];
+//        for (U8 i = 0; i < n_models; i += arrThrSize)
+//        {
+//            for (U8 j = 0; j < arrThrSize && i+j < n_models; ++j)
+//                arrThread[ j ] = thread( &FCM::buildModel, &decModel,
+//                                         decModel.getRefAddr(), decModel.getIR()[ i+j ],
+//                                         decModel.getCtxDepth()[ i+j ], i + j );
+//            for (U8 j = 0; j < arrThrSize && i+j < n_models; ++j)
+//                arrThread[ j ].join();
+//        }
+//        delete[] arrThread;
+//
+//        /// decompress target(s) using reference(s) model(s) -- multithreaded
+//        arrThrSize = (n_targets > n_threads) ? n_threads : n_targets;   /// modify threads array size
+//        arrThread  = new thread[ arrThrSize ];                          /// threads array
+//        for (U8 i = 0; i < n_targets; i += arrThrSize)
+//        {
+//            for (U8 j = 0; j < arrThrSize && i+j < n_targets; ++j)
+//                arrThread[ j ] = thread(&FCM::decompress, &decModel, decModel.getTarAddr()[ i+j ]);
+//            for (U8 j = 0; j < arrThrSize && i+j < n_targets; ++j)
+//                arrThread[ j ].join();
+//        }
+//        delete[] arrThread;
+//
+//        /// check equality of decompressed and target files (check: lossless compression)
+//        for (string s : decModel.getTarAddr())
+//            if ( !areFilesEqual(s, s + DECOMP_FILETYPE) )
+//            {
+//                cout << "Lossless compression/decompression of '" << s << "' failed.\n";
+//                exit(1);
+//            }
+//        U8 tarsNo = (U8) decModel.getTarAddr().size();
+//        size_t lastSlashPos;
+//        string tarNamesPure[ tarsNo ];
+//        for (U8 i = tarsNo; i--;)
+//        {
+//            lastSlashPos = decModel.getTarAddr()[ i ].find_last_of("/");
+//            tarNamesPure[ i ] = decModel.getTarAddr()[ i ].substr(lastSlashPos + 1);
+//        }
+//        cout << "Lossless compression and decompression of '";
+//        for (int i = 0; i < tarsNo - 1; ++i)  cout << tarNamesPure[ i ] << "', '";
+//        cout << tarNamesPure[ tarsNo-1 ] << "' was successful.\n";
+//    }   /// end decompress
+    
+    
     
     
     

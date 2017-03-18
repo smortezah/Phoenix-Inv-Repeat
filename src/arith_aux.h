@@ -20,12 +20,12 @@ and every copy made of these files.
 #include "def.h"
 
 
-void GetInterval(int *low, int *high, int *count, int symbol);
-int GetSymbol(int *low, int *high, int *count, int target, int nSymbols);
-void WriteNBits(U64 bits, int nBits, FILE *oFp);
-U64 ReadNBits(int nBits, FILE *iFp);
-void AESym(int symbol, int *counters, int totalCount, FILE *oFp);
-int ArithDecodeSymbol(int nSymbols, int *counters, int totalCount, FILE *iFp);
+void GetInterval(U64 *low, U64 *high, U64 *count, U64 symbol);
+U8 GetSymbol(U64 *low, U64 *high, U64 *count, U64 target, U64 nSymbols);
+void WriteNBits(U64 bits, U64 nBits, FILE *oFp);
+U64 ReadNBits(U64 nBits, FILE *iFp);
+void AESym(U64 symbol, U64 *counters, U64 totalCount, FILE *oFp);
+U8 ArithDecodeSymbol(U64 nSymbols, U64 *counters, U64 totalCount, FILE *iFp);
 
 #endif /* ARITH_AUX_H_INCLUDED */
 
