@@ -65,7 +65,7 @@ int main (int argc, char *argv[])
     U8 arrThrSize = (n_targets > n_threads_available) ? n_threads_available : n_targets;
     thread *arrThread = new thread[arrThrSize];             /// array of threads
     */
-
+    
     /// compress target(s) using reference(s) model(s) -- multithreaded
     U8 n_targets = (U8) mixModel.getTarAddr().size();                   /// up to 2^8=256 targets
     arrThrSize   = (n_targets > n_threads) ? n_threads : n_targets;     /// modify threads array size
@@ -83,12 +83,12 @@ int main (int argc, char *argv[])
     if ( mixModel.getDecompFlag() )
     {
         FCM decModel;
-        
-        /// extract header information
-        decModel.extractHeader( mixModel.getTarAddr()[ 0 ] );
-        
+
         for (string s : mixModel.getRefAddr())   decModel.pushRefAddr(s);   /// reference(s) address(es)
         for (string s : mixModel.getTarAddr())   decModel.pushTarAddr(s);   /// target(s) address(es)
+        
+        /// extract header information
+        decModel.extractHeader( decModel.getTarAddr()[ 0 ] );
         
         /// build reference(s) model(s) -- multithreaded
         n_models   = mixModel.getN_models();
@@ -105,25 +105,7 @@ int main (int argc, char *argv[])
                 arrThread[ j ].join();
         }
         delete[] arrThread;
-        
-        
-////        for (int i = 0; i < 36; i++)    cout << mixModel.getTables()[ 0 ][ i ] << ' ';  cout<<"\n+++++\n";
-////        for (int i = 0; i < 36; i++)    cout << decModel.getTables()[ 0 ][ i ] << ' ';  cout<<'\n';
-////        for (int i = 0; i < 18; i++)    cout << mixModel.getTables()[ 1 ][ i ] << ' ';  cout<<"\n+++++\n";
-////        for (int i = 0; i < 18; i++)    cout << decModel.getTables()[ 1 ][ i ] << ' ';  cout<<'\n';
-//
-////        for (int i = 0; i < 18; i++)    cout << mixModel.getTables()[ 0 ][ i ] << ' ';  cout<<"\n+++++\n";
-////        for (int i = 0; i < 18; i++)    cout << decModel.getTables()[ 0 ][ i ] << ' ';  cout<<'\n';
-//
-////        decModel.printHashTable(0);
-////        cout<<'\n';
-////        decModel.printHashTable(1);
-////cout<<"\n+++\n";
-////        mixModel.printHashTable(0);
-////        cout<<'\n';
-////        mixModel.printHashTable(1);
-        
-        
+
         /// decompress target(s) using reference(s) model(s) -- multithreaded
         arrThrSize = (n_targets > n_threads) ? n_threads : n_targets;     /// modify threads array size
         arrThread  = new thread[ arrThrSize ];                           /// threads array
@@ -136,15 +118,17 @@ int main (int argc, char *argv[])
         }
         delete[] arrThread;
         
+        //TODO: aval ckeck kon age ye doonash fail shode, chap kon, ELSE hamaro list kon o begoo successful bood
         /// check equality of decompressed and target files (check: lossless compression)
-        string tarAddr;
-        for (U8 i = n_targets; i--;)
+        string tarStr;
+        for (string s : decModel.getTarAddr())
         {
-            tarAddr = decModel.getTarAddr()[ i ];
-            
-            cout << "Lossless compression of '" << tarAddr << "' was ";
-            if ( areFilesEqual(tarAddr, tarAddr+DECOMP_FILETYPE) )  cout << "successful.\n";
-            else cout << "not successful.\n";
+            if ( !areFilesEqual(s, s+DECOMP_FILETYPE) )
+            {
+                cout << "Lossless compression/decompression of '" << s << "' failed.\n";
+                exit(1);
+            }
+            else cout << "Lossless compression and decompression of '" << s << "' was successful.\n";
         }
     }
     

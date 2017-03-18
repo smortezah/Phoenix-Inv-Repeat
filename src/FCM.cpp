@@ -29,9 +29,6 @@ using std::setprecision;
 using std::fill_n;
 using std::round;
 
-// TODO: TEST
-//using std::chrono::high_resolution_clock;
-
 
 /***********************************************************
     constructor
@@ -241,11 +238,15 @@ void FCM::compress (const string &tarFileName)
     string tarNamePure = tarFileName.substr(lastSlash_Tar + 1); /// target file name without slash
     const char *tar = (tarNamePure + COMP_FILETYPE).c_str();            /// convert string to char*
     
+    mut.lock();///========================================================
+    remove(tar);                        /// remove pre-existing compressed file(s)
+    
     FILE *Writer = fopen(tar, "w");     /// to save compressed file
-
+    mut.unlock();///======================================================
+    
     startoutputtingbits();              /// start arithmetic encoding process
     start_encode();
-
+   
     /// model(s) properties, being sent to decoder as header
     WriteNBits( WATERMARK,                26, Writer );         /// WriteNBits: just writes header
     WriteNBits( symsNo,                   46, Writer );         /// number of symbols, in byte
@@ -258,7 +259,7 @@ void FCM::compress (const string &tarFileName)
         WriteNBits( alphaDens[ n ],       16, Writer );         /// alpha denoms
     }
     WriteNBits( (U64) compMode,           16, Writer );         /// compression mode
-
+    
     switch ( compMode )
     {
         case 't':
@@ -418,7 +419,7 @@ void FCM::compress (const string &tarFileName)
 ////         << invertedRepeat << '\t'
 ////         << std::fixed << setprecision(4) << alpha << '\t'
 ////         << (int) contextDepth << '\t'
-         << std::fixed << setprecision(5) << averageEntropy << '\t'
+//         << std::fixed << setprecision(5) << averageEntropy << '\t'
          << std::fixed << setprecision(5) << averageEntropy / LOG2_ALPH_SIZE << '\n'
             ;
 
@@ -434,7 +435,7 @@ void FCM::extractHeader (const string &tarFileName)
 {
     size_t lastSlash_Tar = tarFileName.find_last_of("/");           /// position of last slash
     string tarNamePure   = tarFileName.substr(lastSlash_Tar + 1);   /// target file name without slash
-    const  char *tarCo   = (tarNamePure + COMP_FILETYPE).c_str();           /// compressed file. convert string to char*
+    const  char *tarCo   = (tarNamePure + COMP_FILETYPE).c_str();   /// compressed file. convert string to char*
     FILE   *Reader       = fopen(tarCo, "r");                       /// to process the compressed file
     
     /// starting
@@ -478,10 +479,16 @@ void FCM::decompress (const string &tarFileName)
 {
     size_t lastSlash_Tar = tarFileName.find_last_of("/");           /// position of last slash
     string tarNamePure   = tarFileName.substr(lastSlash_Tar + 1);   /// target file name without slash
-    const  char *tarCo   = (tarNamePure + COMP_FILETYPE).c_str();           /// compressed file. convert string to char*
-    const  char *tarDe   = (tarNamePure + DECOMP_FILETYPE).c_str();           /// decompressed file
+    const  char *tarCo   = (tarNamePure+COMP_FILETYPE).c_str();     /// compressed file. convert string to char*
+    const  char *tarDe   = (tarNamePure+DECOMP_FILETYPE).c_str();   /// decompressed file
     FILE   *Reader       = fopen(tarCo, "r");                       /// to process the compressed file
-    FILE   *Writer       = fopen(tarDe, "w");                       /// to save decompressed file
+    
+    mut.lock();///========================================================
+    remove(tarDe);                                                  /// remove pre-existing decompressed file(s)
+    
+    FILE *Writer = fopen(tarDe, "w");                               /// to save decompressed file
+    mut.unlock();///======================================================
+    
     I32    idxOut        = 0;
     char   *outBuffer    = (char*) calloc(BUFFER_SIZE, sizeof(uint8_t));
 
@@ -525,8 +532,8 @@ void FCM::decompress (const string &tarFileName)
     double  freqsDouble[ ALPH_SIZE ];   /// frequencies of each symbol (double)
     int     freqs[ ALPH_SIZE ];         /// frequencies of each symbol (integer)
     int     sumFreqs;                   /// sum of frequencies of each symbol
-    int      currSymInt;                 /// current symbol in integer format//TODO: change int to U8
-
+    U8      currSymInt;                 /// current symbol in integer format
+    
     switch ( compMode )
     {
         case 't':
@@ -556,10 +563,10 @@ void FCM::decompress (const string &tarFileName)
                 freqs[ 4 ] = (int) (1 + (freqsDouble[ 4 ] * DOUBLE_TO_INT));
 
                 sumFreqs = 0;   for (int f : freqs) sumFreqs += f;          /// sum of frequencies
-
-                currSymInt = ArithDecodeSymbol(ALPH_SIZE, freqs, sumFreqs, Reader);              /// Arithmetic decoding
-                
-                outBuffer[ idxOut ] = symIntToChar((U8) currSymInt);                            /// output buffer
+    
+                currSymInt = (U8) ArithDecodeSymbol(ALPH_SIZE, freqs, sumFreqs, Reader);              /// Arithmetic decoding
+    
+                outBuffer[ idxOut ] = symIntToChar( currSymInt);                            /// output buffer
                 if (++idxOut == BUFFER_SIZE)
                 {
                     fwrite(outBuffer, 1, idxOut, Writer);                         /// write output
@@ -619,10 +626,10 @@ void FCM::decompress (const string &tarFileName)
                 freqs[ 4 ] = (int) (1 + (freqsDouble[ 4 ] * DOUBLE_TO_INT));
             
                 sumFreqs = 0;   for (int f : freqs) sumFreqs += f;          /// sum of frequencies
-            
-                currSymInt = ArithDecodeSymbol(ALPH_SIZE, freqs, sumFreqs, Reader);              /// Arithmetic decoding
-            
-                outBuffer[ idxOut ] = symIntToChar((U8) currSymInt);                            /// output buffer
+    
+                currSymInt = (U8) ArithDecodeSymbol(ALPH_SIZE, freqs, sumFreqs, Reader);              /// Arithmetic decoding
+    
+                outBuffer[ idxOut ] = symIntToChar( currSymInt);                            /// output buffer
                 if (++idxOut == BUFFER_SIZE)
                 {
                     fwrite(outBuffer, 1, idxOut, Writer);                         /// write output
@@ -810,7 +817,7 @@ inline U64 FCM::fileSize (const string &fileName)
 //    const U8 contextDepth  = getContextDepth();    /// get context depth
 //    const U16 alphaDen     = getAlphaDenom();      /// get alpha denominator
 //    const bool isInvertedRepeat = getInvertedRepeat();  /// get inverted repeat
-//    /// TODO: supprt for both target and reference file addresses
+
 //    string fileName = getTarFileAddress();              /// get target file address
 //
 //
@@ -963,7 +970,7 @@ inline U64 FCM::fileSize (const string &fileName)
 //    const U8 contextDepth  = getContextDepth();    /// get context depth
 //    const U16 alphaDen     = getAlphaDenom();      /// get alpha denominator
 //    const bool isInvertedRepeat = getInvertedRepeat();  /// get inverted repeat
-//    /// TODO: supprt for both target and reference file addresses
+
 //    string fileName = getTarFileAddress();              /// get target file address
 //
 //
@@ -1115,7 +1122,7 @@ void FCM::buildHashTable_str ()
     const U8 contextDepth  = getContextDepth();    /// get context depth
     const U16 alphaDen     = getAlphaDenom();      /// get alpha denominator
     const bool isInvertedRepeat = getInvertedRepeat();  /// get inverted repeat
-    /// TODO: supprt for both target and reference file addresses
+
     string fileName = getTarFileAddress();              /// get target file address
 
 

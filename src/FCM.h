@@ -62,22 +62,22 @@ public:
     
 
 private:
-    std::mutex     mut;                           /// mutex
-    
-    U8             n_threads;                     /// number of threads
-    bool           decompFlag;                    /// decompress flag
-    
-    char           compMode;                      /// compression mode (table / hash table)
-    U8             n_models;                      /// number of models
-    double         gamma;                         /// gamma (for mixture of FCMs)
-    vector<bool>   invRepeats;                    /// inverted repeat(s)
-    vector<U8>     ctxDepths;                     /// context depthe(s) (SIZE <= 255)
-    vector<U16>    alphaDens;                     /// alpha denominator(s)
-    vector<string> tarAddr;                       /// target files addresses
-    vector<string> refAddr;                       /// reference files addresses
-    U64**          tables;                        /// table(s)
-    htable_t*      hashTables;                    /// hash table(s)
-//    htable_str_t hashTable_str;                   /// hash table (string key)
+    std::mutex     mut;                               /// mutex
+                                                      
+    U8             n_threads;                         /// number of threads
+    bool           decompFlag;                        /// decompress flag
+                                                      
+    char           compMode;                          /// compression mode (table / hash table)
+    U8             n_models;                          /// number of models
+    double         gamma;                             /// gamma (for mixture of FCMs)
+    vector<bool>   invRepeats;                        /// inverted repeat(s)
+    vector<U8>     ctxDepths;                         /// context depthe(s) (SIZE <= 255)
+    vector<U16>    alphaDens;                         /// alpha denominator(s)
+    vector<string> tarAddr;                           /// target files addresses
+    vector<string> refAddr;                           /// reference files addresses
+    U64**          tables;                            /// table(s)
+    htable_t*      hashTables;                        /// hash table(s)
+//    htable_str_t hashTable_str;                       /// hash table (string key)
 };
 
 
