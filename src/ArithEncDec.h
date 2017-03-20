@@ -128,67 +128,6 @@ static code_value out_L;					/// lower bound
 static code_value out_R;					/// code range
 static unsigned long out_bits_outstanding;	/// follow bit count
 
-/******************************************************************************
-  BIT_PLUS_FOLLOW(b, s)
-  responsible for outputting the bit passed to it and an opposite number of
-  bit equal to the value stored in bits_outstanding
-******************************************************************************/
-#define ORIG_BIT_PLUS_FOLLOW(b, s)	\
-do                                      \
-{ 	  			        \
-    OUTPUT_BIT((b), s);           	\
-    while (out_bits_outstanding > 0)	\
-    { 					\
-	OUTPUT_BIT(!(b), s);      	\
-	out_bits_outstanding--;    	\
-    } 	                		\
-} while (0)
-
-#define BIT_PLUS_FOLLOW(x, s)	ORIG_BIT_PLUS_FOLLOW(x, s)
-
-/******************************************************************************
-  output code bits until the range has been expanded to above QUARTER
-  With FRUGAL_BITS option, ignore first zero bit output (a redundant zero
-  will otherwise be emitted every time the encoder is started)
-******************************************************************************/
-#define ENCODE_RENORMALISE(s)		\
-do {					\
-    while (out_R <= Quarter)		\
-    {					\
-        if (out_L >= Half)		\
-    	{				\
-    	    BIT_PLUS_FOLLOW(1, s);	\
-    	    out_L -= Half;		\
-    	}				\
-    	else if (out_L+out_R <= Half)	\
-    	{				\
-    	    BIT_PLUS_FOLLOW(0, s);	\
-    	}				\
-    	else 				\
-    	{				\
-    	    out_bits_outstanding++;	\
-    	    out_L -= Quarter;		\
-    	}				\
-    	out_L <<= 1;			\
-    	out_R <<= 1;			\
-    }					\
-} while (0)
-
-/******************************************************************************
-  input code bits until range has been expanded to more than QUARTER.
-  Mimics encoder.
-  FRUGAL_BITS option also keeps track of bitstream input so it can work out
-  exactly how many disambiguating bits the encoder put out (1,2 or 3).
-******************************************************************************/
-#define DECODE_RENORMALISE(s)			\
-do {						\
-    while (in_R <= Quarter)			\
-    {						\
-    	in_R <<= 1;				\
-    	ADD_NEXT_INPUT_BIT(in_D, 0, s);		\
-    }						\
-} while (0)
-
 ///-------------------------------------------------------------------------------------
 
 /******************************************************************************
@@ -348,6 +287,11 @@ public:
     
 //    void binary_arithmetic_encode(freq_value, freq_value, int, FILE*);
 //    int  binary_arithmetic_decode(freq_value, freq_value, FILE*);
+    
+private:
+    inline void BIT_PLUS_FOLLOW    (int, FILE*);
+    inline void ENCODE_RENORMALISE (FILE *);
+    inline void DECODE_RENORMALISE (FILE *);
 };
 
 
@@ -694,6 +638,76 @@ void ArithEncDec::doneoutputtingbits (FILE *s)
 void ArithEncDec::doneinputtingbits (void)
 {
 	_in_bit_ptr = 0;	/// "Wipe" buffer (in case more input follows)
+}
+
+
+/***********************************************************
+    responsible for outputting the bit passed to it and
+    an opposite number of bit equal to the value stored
+    in bits_outstanding
+************************************************************/
+inline void ArithEncDec::BIT_PLUS_FOLLOW (int b, FILE *s)
+{
+    do
+    {
+        OUTPUT_BIT((b), s);
+        while (out_bits_outstanding > 0)
+        {
+            OUTPUT_BIT(!(b), s);
+            out_bits_outstanding--;
+        }
+    } while (0);
+}
+
+
+/******************************************************************************
+  output code bits until the range has been expanded to above QUARTER
+  With FRUGAL_BITS option, ignore first zero bit output (a redundant zero
+  will otherwise be emitted every time the encoder is started)
+******************************************************************************/
+inline void ArithEncDec::ENCODE_RENORMALISE (FILE *s)
+{
+    do
+    {
+        while (out_R <= Quarter)
+        {
+            if (out_L >= Half)
+            {
+                BIT_PLUS_FOLLOW(1, s);
+                out_L -= Half;
+            }
+            else if (out_L + out_R <= Half)
+            {
+                BIT_PLUS_FOLLOW(0, s);
+            }
+            else
+            {
+                out_bits_outstanding++;
+                out_L -= Quarter;
+            }
+            out_L <<= 1;
+            out_R <<= 1;
+        }
+    } while (0);
+}
+
+
+/******************************************************************************
+  input code bits until range has been expanded to more than QUARTER.
+  Mimics encoder.
+  FRUGAL_BITS option also keeps track of bitstream input so it can work out
+  exactly how many disambiguating bits the encoder put out (1,2 or 3).
+******************************************************************************/
+inline void ArithEncDec::DECODE_RENORMALISE (FILE *s)
+{
+    do
+    {
+        while (in_R <= Quarter)
+        {
+            in_R <<= 1;
+            ADD_NEXT_INPUT_BIT(in_D, 0, s);
+        }
+    } while (0);
 }
 
 
