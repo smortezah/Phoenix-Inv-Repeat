@@ -2,17 +2,17 @@
 #define PHOENIX_ARITHENCDEC_H
 
 /******************************************************************************
-Authors:   John Carpinelli   (johnfc@ecr.mu.oz.au)
-           Wayne Salamonsen  (wbs@mundil.cs.mu.oz.au)
-           Lang Stuiver      (langs@cs.mu.oz.au)
-           Radford Neal      (radford@ai.toronto.edu)
-
-Purpose:   Data compression using a revised arithmetic coding method.
-
-Based on:  A. Moffat, R. Neal, I.H. Witten, "Arithmetic Coding Revisted",
-           Proc. IEEE Data Compression Conference, Snowbird, Utah, March 1995.
-
-           Low-Precision Arithmetic Coding Implementation by Radford M. Neal
+Authors:  John Carpinelli   (johnfc@ecr.mu.oz.au)
+          Wayne Salamonsen  (wbs@mundil.cs.mu.oz.au)
+          Lang Stuiver      (langs@cs.mu.oz.au)
+          Radford Neal      (radford@ai.toronto.edu)
+          
+Purpose:  Data compression using a revised arithmetic coding method.
+          
+Based on: A. Moffat, R. Neal, I.H. Witten, "Arithmetic Coding Revisted",
+          Proc. IEEE Data Compression Conference, Snowbird, Utah, March 1995.
+          
+          Low-Precision Arithmetic Coding Implementation by Radford M. Neal
 
 Copyright 1995 John Carpinelli and Wayne Salamonsen, All Rights Reserved.
 Copyright 1996 Lang Stuiver, All Rights Reserved.
@@ -38,10 +38,11 @@ part of each and every copy made of these files.
   Initial revision
 ******************************************************************************
 
-	Code adapted by Armando J. Pinho and Morteza Hosseini
-	ap@ua.pt, seyedmorteza@ua.pt
-	University of Aveiro, DETI/IEETA, 3810-193 Aveiro, Portugal
-	December 1999, March 2017
+  Code adapted by Armando J. Pinho	(ap@ua.pt)
+  				  Morteza Hosseini	(seyedmorteza@ua.pt)
+  				  
+  University of Aveiro, DETI/IEETA, 3810-193 Aveiro, Portugal
+  December 1999, March 2017
  
 ******************************************************************************/
 
@@ -55,83 +56,83 @@ part of each and every copy made of these files.
 
 
 /* ================= USER ADJUSTABLE PARAMETERS =================== */
-
-/* Default B_bits and F_bits */
+/******************************************************************************
+  Default B_bits and F_bits
+******************************************************************************/
 #ifndef B_BITS
-#define		B_BITS		32
+#define B_BITS 32
 #endif
 
 #ifndef F_BITS
-#define		F_BITS		27
+#define F_BITS 27
 #endif
 
-/* Change these types for different precision calculations.  They may affect
- * the speed of the arithmetic operations (multiplcation, division, shift,
- * etc).
- * The way the stats module is implemented, the type of freq_value
- * must be able to accomodate f_bits+1 bits, instead of f_bits, to avoid
- * overflows.  Ie: For an f_bits of up to 31, type freq_value must be 32 bits.
- */
-typedef unsigned long   code_value;	/* B_BITS of precision */
-typedef unsigned long	freq_value;	/* F_BITS+1 of precision */
-typedef unsigned long	div_value;	/* B_BITS-F_BITS of precision */
+/******************************************************************************
+  Change these types for different precision calculations.  They may affect
+  the speed of the arithmetic operations (multiplcation, division, shift, etc).
+  The way the stats module is implemented, the type of freq_value must be
+  able to accomodate f_bits+1 bits, instead of f_bits, to avoid overflows.
+  Ie: For an f_bits of up to 31, type freq_value must be 32 bits.
+******************************************************************************/
+typedef unsigned long	code_value;		/// B_BITS of precision
+typedef unsigned long	freq_value;		/// F_BITS+1 of precision
+typedef unsigned long	div_value;		/// B_BITS-F_BITS of precision
 //typedef U64	code_value;	/* B_BITS of precision */
 //typedef U64	freq_value;	/* F_BITS+1 of precision */
 //typedef U64	div_value;	/* B_BITS-F_BITS of precision */
 
-
-/* MAX_BITS_OUTSTANDING is a bound on bits_outstanding
- * If bits_outstanding ever gets above this number (extremely unlikely)
- * the program will abort with an error message.  (See arith.c for details).
- */
-#define 	MAX_BITS_OUTSTANDING	((unsigned long)1<<31)
-//#define 	MAX_BITS_OUTSTANDING	((U64)1<<63)
-
+/******************************************************************************
+  MAX_BITS_OUTSTANDING is a bound on bits_outstanding
+  If bits_outstanding ever gets above this number (extremely unlikely)
+  the program will abort with an error message.
+******************************************************************************/
+#define MAX_BITS_OUTSTANDING ((unsigned long)1<<31)
+//#define MAX_BITS_OUTSTANDING ((U64)1<<63)
 /* ================= END USER ADJUSTABLE PARAMETERS =================== */
 
-/* Determine maximum bits allowed, based on size of the types used
- * to store them.  Also, that MAX_F_BITS <= MAX_B_BITS-2
- */
+/******************************************************************************
+  Determine maximum bits allowed, based on size of the types used
+  to store them.  Also, that MAX_F_BITS <= MAX_B_BITS-2
+******************************************************************************/
+#define MAX_B_BITS (int) (sizeof(code_value) * 8)
+//#define MAX_B_BITS (U64)( sizeof(code_value) * 8)
+#define MAX_F_BITS (int)((sizeof(freq_value)*8)-1 < MAX_B_BITS - 2\
+					  ?  (sizeof(freq_value)*8)-1 : MAX_B_BITS - 2)
 
-#define		MAX_B_BITS   (int) (sizeof(code_value) * 8)
-//#define		MAX_B_BITS   (U64)( sizeof(code_value) * 8)
-#define		MAX_F_BITS   (int)((sizeof(freq_value)*8)-1 < MAX_B_BITS - 2\
-				?  (sizeof(freq_value)*8)-1 : MAX_B_BITS - 2)
-
-/* If varying bits, variables are B_bits, F_bits, Half and Quarter,
- *	otherwise #define them
- * These variables will be read (and possibly changed) by main.c and
- *  stats.c
- */
-
+/******************************************************************************
+  Determine maximum bits allowed, based on size of the types used
+  If varying bits, variables are B_bits, F_bits, Half and Quarter,
+   otherwise #define them
+  These variables will be read (and possibly changed) by main.c and stats.c
+******************************************************************************/
 #define		B_bits		B_BITS
 #define		F_bits  	F_BITS
 
 extern char *coder_desc;
 
-///-------------------------------------------------------------------------------------
+///----------------------------------------------------------------------------
 
-#define		Half		((code_value) 1 << (B_bits-1))
-#define		Quarter		((code_value) 1 << (B_bits-2))
+#define Half	((code_value) 1 << (B_bits-1))
+#define Quarter ((code_value) 1 << (B_bits-2))
 
-/* Separate input and output */
-/* Input decoding state */
-static code_value	in_R;				/* code range */
-static code_value	in_D;				/* = V-L (V offset)*/
-static div_value	in_r;				/* normalized range */
+/******************************************************************************
+  Separate input and output
+******************************************************************************/
+/// Input decoding state
+static code_value in_R;						/// code range
+static code_value in_D;						/// = V-L (V offset)
+static div_value  in_r;						/// normalized range
+                                			
+/// Output encoding state
+static code_value out_L;					/// lower bound
+static code_value out_R;					/// code range
+static unsigned long out_bits_outstanding;	/// follow bit count
 
-/* Output encoding state */
-static code_value	out_L;				/* lower bound */
-static code_value	out_R;				/* code range */
-static unsigned long	out_bits_outstanding;		/* follow bit count */
-
-
-/*
- * BIT_PLUS_FOLLOW(b, s)
- * responsible for outputting the bit passed to it and an opposite number of
- * bit equal to the value stored in bits_outstanding
- *
- */
+/******************************************************************************
+  BIT_PLUS_FOLLOW(b, s)
+  responsible for outputting the bit passed to it and an opposite number of
+  bit equal to the value stored in bits_outstanding
+******************************************************************************/
 #define ORIG_BIT_PLUS_FOLLOW(b, s)	\
 do                                      \
 { 	  			        \
@@ -143,17 +144,13 @@ do                                      \
     } 	                		\
 } while (0)
 
+#define BIT_PLUS_FOLLOW(x, s)	ORIG_BIT_PLUS_FOLLOW(x, s)
 
-#  define BIT_PLUS_FOLLOW(x, s)	ORIG_BIT_PLUS_FOLLOW(x, s)
-
-/*
- * ENCODE_RENORMALISE
- * output code bits until the range has been expanded
- * to above QUARTER
- * With FRUGAL_BITS option, ignore first zero bit output
- * (a redundant zero will otherwise be emitted every time the encoder is
- * started)
- */
+/******************************************************************************
+  output code bits until the range has been expanded to above QUARTER
+  With FRUGAL_BITS option, ignore first zero bit output (a redundant zero
+  will otherwise be emitted every time the encoder is started)
+******************************************************************************/
 #define ENCODE_RENORMALISE(s)		\
 do {					\
     while (out_R <= Quarter)		\
@@ -177,14 +174,12 @@ do {					\
     }					\
 } while (0)
 
-
-/*
- * DECODE_RENORMALISE
- * input code bits until range has been expanded to
- * more than QUARTER. Mimics encoder.
- * FRUGAL_BITS option also keeps track of bitstream input so it can work out
- * exactly how many disambiguating bits the encoder put out (1,2 or 3).
- */
+/******************************************************************************
+  input code bits until range has been expanded to more than QUARTER.
+  Mimics encoder.
+  FRUGAL_BITS option also keeps track of bitstream input so it can work out
+  exactly how many disambiguating bits the encoder put out (1,2 or 3).
+******************************************************************************/
 #define DECODE_RENORMALISE(s)			\
 do {						\
     while (in_R <= Quarter)			\
@@ -207,31 +202,24 @@ do {						\
   char at a time, while bytes are output immediately)
 ******************************************************************************/
 
-#define		BYTE_SIZE		8
+#define BYTE_SIZE 8
 
-/* As declared in bitio.c */
 extern unsigned int	_bytes_input, _bytes_output;
 
-extern int 		_in_buffer;		/* Input buffer	 	    */
-extern unsigned char	_in_bit_ptr;		/* Input bit pointer 	    */
-extern int		_in_garbage;		/* # of bytes read past EOF */
+extern int _in_buffer;				/// Input buffer
+extern unsigned char _in_bit_ptr;	/// Input bit pointer
+extern int _in_garbage;				/// # of bytes read past EOF
 
-extern int		_out_buffer;		/* Output buffer 	    */
-extern int		_out_bits_to_go;	/* Output bits in buffer    */
+extern int _out_buffer;				/// Output buffer
+extern int _out_bits_to_go;			///Output bits in buffer
 
 #ifndef FAST_BITIO
-extern int		_bitio_tmp;		/* Used by i/o macros to    */
-#endif						/* keep function ret values */
+extern int _bitio_tmp;				/// Used by i/o macros to
+#endif								/// keep function ret values
 
-
-/*
- * OUTPUT_BIT(b)
- *
- * Outputs bit 'b' to stdout.  (Builds up a buffer, writing a byte
- * at a time.)
- *
- */
-
+/******************************************************************************
+  Outputs bit 'b' to stdout.  (Builds up a buffer, writing a byte at a time.)
+******************************************************************************/
 #define OUTPUT_BIT(b, s)				\
 do {						\
    _out_buffer <<= 1;				\
@@ -246,25 +234,20 @@ do {						\
     }						\
 } while (0)
 
-/*
- * ADD_NEXT_INPUT_BIT(v, garbage_bits)
- *
- * Returns a bit from stdin, by shifting 'v' left one bit, and adding
- * next bit as lsb (possibly reading upto garbage_bits extra bits beyond
- * valid input)
- *
- * garbage_bits:  Number of bits (to nearest byte) past end of file to
- * be allowed to 'read' before printing an error message and halting.
- * This is needed by our arithmetic coding module when the FRUGAL_BITS
- * option is defined, as upto B_bits extra bits may be needed to keep
- * the code buffer full (although the actual bitvalue is not important)
- * at the end of decoding.
- *
- * The buffer is not shifted, instead a bit flag (_in_bit_ptr) is moved
- * to point to the next bit that is to be read.  When it is zero, the
- * next byte is read, and it is reset to point to the msb.
- *
- */
+/******************************************************************************
+  Returns a bit from stdin, by shifting 'v' left one bit, and adding next bit
+  as lsb (possibly reading upto garbage_bits extra bits beyond valid input)
+ 
+  garbage_bits:  Number of bits (to nearest byte) past end of file to be
+  allowed to 'read' before printing an error message and halting. This is
+  needed by our arithmetic coding module when the FRUGAL_BITS option is
+  defined, as upto B_bits extra bits may be needed to keep the code buffer
+  full (although the actual bitvalue is not important) at the end of decoding.
+ 
+  The buffer is not shifted, instead a bit flag (_in_bit_ptr) is moved to
+  point to the next bit that is to be read.  When it is zero, the next byte
+  is read, and it is reset to point to the msb.
+******************************************************************************/
 #define ADD_NEXT_INPUT_BIT(v, garbage_bits, s)				\
 do {									\
     if (_in_bit_ptr == 0)						\
@@ -289,56 +272,53 @@ do {									\
     _in_bit_ptr >>= 1;							\
 } while (0)
 
-
-/*#define FAST_BITIO*/
-/* Normally count input and output bytes so program can report stats
- * With FAST_BITIO set, no counting is maintained, which means file sizes
- * reported with the '-v' option will be meaningless, but should improve
- * speed slightly.
- */
+/******************************************************************************
+  #define FAST_BITIO
+  Normally count input and output bytes so program can report stats With
+  FAST_BITIO set, no counting is maintained, which means file sizes reported
+  with the '-v' option will be meaningless, but should improve speed slightly.
+******************************************************************************/
 #ifdef FAST_BITIO
-#  define OUTPUT_BYTE(x, s)  putc(x, s)
-#  define INPUT_BYTE(s)    getc(s)
-#  define BITIO_FREAD(ptr, size, nitems)     fread(ptr, size, nitems, stdin)
-#  define BITIO_FWRITE(ptr, size, nitems)    fwrite(ptr, size, nitems, stdout)
+	#define OUTPUT_BYTE(x, s) 				putc(x, s)
+	#define INPUT_BYTE(s)	  				getc(s)
+	#define BITIO_FREAD(ptr, size, nitems)	fread(ptr, size, nitems, stdin)
+	#define BITIO_FWRITE(ptr, size, nitems) fwrite(ptr, size, nitems, stdout)
 #else
-#  define OUTPUT_BYTE(x, s)	( _bytes_output++, putc(x, s) )
+	#define OUTPUT_BYTE(x, s)	( _bytes_output++, putc(x, s) )
 
-#  define INPUT_BYTE(s)	( _bitio_tmp = getc(s), 			\
+	#define INPUT_BYTE(s)	( _bitio_tmp = getc(s), 			\
 			  _bytes_input += (_bitio_tmp == EOF ) ? 0 : 1, \
 			  _bitio_tmp  )
 
-#  define BITIO_FREAD(ptr, size, nitems)			\
-	( _bitio_tmp = fread(ptr, size, nitems, stdin),		\
-	  _bytes_input += _bitio_tmp * size,			\
-	  _bitio_tmp )				/* Return result of fread */
+	#define BITIO_FREAD(ptr, size, nitems)			\
+		( _bitio_tmp = fread(ptr, size, nitems, stdin),		\
+		  _bytes_input += _bitio_tmp * size,			\
+	  	  _bitio_tmp )				/// Return result of fread
 
-#  define BITIO_FWRITE(ptr, size, nitems)				\
+	#define BITIO_FWRITE(ptr, size, nitems)				\
 	( _bitio_tmp = fwrite(ptr, size, nitems, stdout),	\
 	  _bytes_output += _bitio_tmp * size,			\
-	  _bitio_tmp )				/* Return result of fwrite */
+	  _bitio_tmp )				/// Return result of fwrite
 #endif
 
 ///-------------------------------------------------------------------------------------
 
-/*
- * The following variables are supposedly local, but actually global so they
- * can be referenced by macro
- */
+/// The following variables are supposedly local, but actually global so
+/// they can be referenced by macro
 
-unsigned int	_bytes_input = 0;
-unsigned int	_bytes_output = 0;
+unsigned int _bytes_input  = 0;
+unsigned int _bytes_output = 0;
 
-int		_in_buffer;			/* I/O buffer */
-unsigned char	_in_bit_ptr = 0;		/* bits left in buffer */
-int		_in_garbage;			/* bytes read beyond eof */
+int _in_buffer;					/// I/O buffer
+unsigned char _in_bit_ptr = 0;	/// bits left in buffer
+int _in_garbage;				/// bytes read beyond eof
 
-int		_out_buffer;			/* I/O buffer */
-int		_out_bits_to_go;		/* bits to fill buffer */
+int _out_buffer;				/// I/O buffer
+int	_out_bits_to_go;			///bits to fill buffer
 
 #ifndef FAST_BITIO
-int		_bitio_tmp;			/* Used by some of the */
-#endif						/* bitio.h macros */
+int _bitio_tmp;					/// Used by some of the
+#endif
 
 ///-------------------------------------------------------------------------------------
 
