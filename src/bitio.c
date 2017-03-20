@@ -96,4 +96,3 @@ void doneinputtingbits(void)
 {
       _in_bit_ptr = 0;	      /* "Wipe" buffer (in case more input follows) */
 }
-

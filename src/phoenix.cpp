@@ -86,7 +86,7 @@ int main (int argc, char *argv[])
 
 //        for (string s : mixModel.getRefAddr()) decModel.pushRefAddr(s); /// reference(s) address(es)
 //        for (string s : mixModel.getTarAddr()) decModel.pushTarAddr(s); /// target(s) address(es)
-
+//
 //        /// extract header information
 //        decModel.extractHeader( decModel.getTarAddr()[ 0 ] );
 //
@@ -117,7 +117,7 @@ int main (int argc, char *argv[])
 //                arrThread[ j ].join();
 //        }
 //        delete[] arrThread;
-
+//
 //        /// check equality of decompressed and target files (check: lossless compression)
 //        for (string s : decModel.getTarAddr())
 //            if ( !areFilesEqual(s, s + DECOMP_FILETYPE) )

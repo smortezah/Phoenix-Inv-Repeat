@@ -278,20 +278,17 @@ freq_value arithmetic_decode_target(freq_value total)
  */
 
 void arithmetic_decode(freq_value low, freq_value high, freq_value total,
-  FILE *s)
-{     
+                       FILE *s)
+{
     code_value temp;
 
     /* assume r has been set by decode_target */
     temp = in_r*low;
     in_D -= temp;
-    if (high < total)
-	in_R = in_r*(high-low);
-    else
-	in_R -= temp;
+    if (high < total)   in_R = in_r*(high-low);
+    else                in_R -= temp;
 
     DECODE_RENORMALISE(s);
-
 }
 
 
@@ -343,7 +340,7 @@ void finish_encode(FILE *s)
  */
 void start_decode(FILE *s)
 {
- int i;
+  int i;
   in_D = 0;			/* Initial offset in range is 0 */
   in_R = Half;			/* Range = Half */
 
@@ -368,4 +365,3 @@ void finish_decode(void)
 {
 	/* No action */
 }
-

@@ -76,7 +76,7 @@ typedef unsigned long	div_value;	/* B_BITS-F_BITS of precision */
  * to store them.  Also, that MAX_F_BITS <= MAX_B_BITS-2
  */
 
-#define		MAX_B_BITS   (int)( sizeof(code_value) * 8)
+#define		MAX_B_BITS   (int) (sizeof(code_value) * 8)
 //#define		MAX_B_BITS   (U64)( sizeof(code_value) * 8)
 #define		MAX_F_BITS   (int)((sizeof(freq_value)*8)-1 < MAX_B_BITS - 2\
 				?  (sizeof(freq_value)*8)-1 : MAX_B_BITS - 2)
@@ -99,7 +99,7 @@ void arithmetic_encode(freq_value l, freq_value h, freq_value t, FILE *s);
 freq_value arithmetic_decode_target(freq_value t);
 void arithmetic_decode(freq_value l, freq_value h, freq_value t, FILE *s);
 void binary_arithmetic_encode(freq_value c0, freq_value c1, int bit, FILE *s);
-int binary_arithmetic_decode(freq_value c0, freq_value c1, FILE *s);
+int  binary_arithmetic_decode(freq_value c0, freq_value c1, FILE *s);
 void start_encode(void);
 void finish_encode(FILE *s);
 void start_decode(FILE *s);
