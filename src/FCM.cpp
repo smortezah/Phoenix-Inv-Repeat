@@ -8,8 +8,6 @@
 
 #include "FCM.h"
 #include "ArithEncDec.h"
-#include "bitio.h"
-#include "bitio.c"
 
 using std::cout;
 using std::cerr;
@@ -245,7 +243,7 @@ void FCM::compress (const string &tarFileName)
     FILE *Writer = fopen(tar, "w");     /// to save compressed file
     mut.unlock();///======================================================
     
-    startoutputtingbits();              /// start arithmetic encoding process
+    arithObj.startoutputtingbits();              /// start arithmetic encoding process
     arithObj.start_encode();
     
     /// model(s) properties, being sent to decoder as header
@@ -267,7 +265,6 @@ void FCM::compress (const string &tarFileName)
         {
             U64 rowIndex;                   /// index of a row in the table
 
-            
             
             
             //todo test
@@ -446,7 +443,7 @@ void FCM::compress (const string &tarFileName)
     }   /// end switch
 
     arithObj.finish_encode( Writer );
-    doneoutputtingbits( Writer );   /// encode the last bit
+    arithObj.doneoutputtingbits( Writer );   /// encode the last bit
     fclose( Writer );               /// close compressed file
 
     tarFileIn.close();              /// close target file
@@ -492,7 +489,7 @@ void FCM::extractHeader (const string &tarFileName)
     FILE   *Reader       = fopen(tarCo, "r");                       /// to process the compressed file
     
     /// starting
-    startinputtingbits();                                           /// start arithmetic decoding process
+    arithObj.startinputtingbits();                                           /// start arithmetic decoding process
     arithObj.start_decode(Reader);
     
     /// extract header information
@@ -520,7 +517,7 @@ void FCM::extractHeader (const string &tarFileName)
 
     /// finishing
     arithObj.finish_decode();
-    doneinputtingbits();                                            /// decode last bit
+    arithObj.doneinputtingbits();                                            /// decode last bit
     fclose(Reader);                                                 /// close compressed file
 }
 
@@ -552,7 +549,7 @@ void FCM::decompress (const string &tarFileName)
     
     
 //    mut.lock();
-    startinputtingbits();                                           /// start arithmetic decoding process
+    arithObj.startinputtingbits();                                           /// start arithmetic decoding process
     arithObj.start_decode( Reader );
 //    mut.unlock();
     
@@ -769,7 +766,7 @@ void FCM::decompress (const string &tarFileName)
     
 //    mut.lock();
     arithObj.finish_decode();
-    doneinputtingbits();                                      /// decode last bit
+    arithObj.doneinputtingbits();                                      /// decode last bit
     fclose(Reader);                                           /// close compressed file
     fclose(Writer);                                           /// close decompressed file
 //    mut.unlock();
@@ -1368,25 +1365,25 @@ void FCM::printHashTable (U8 idx) const
 /***********************************************************
     getters and setters
 ************************************************************/
-void      FCM::pushParams     (bool iR, U8 ctx, U16 aD) { invRepeats.push_back(iR);
-                               ctxDepths.push_back(ctx);  alphaDens.push_back(aD);     }
-void      FCM::setDecompFlag  (bool dF)                 { FCM::decompFlag = dF;        }
-void      FCM::setN_threads   (U8 nT)                   { n_threads = nT;              }
-void      FCM::setCompMode    (char cM)                 { compMode = cM;               }
-void      FCM::setN_models    (U8 n)                    { n_models = n;                }
-void      FCM::setGamma       (double g)                { gamma = g;                   }
-void      FCM::pushTarAddr    (const string &tFAs)      { tarAddr.push_back(tFAs);     }
-void      FCM::pushRefAddr    (const string &rFAs)      { refAddr.push_back(rFAs);     }
-void      FCM::initTables     ()                        { tables = new U64*[n_models]; }
-void      FCM::setTable       (U64 *tbl, U8 idx)        { tables[ idx ] = tbl;         }
-void      FCM::initHashTables ()                { hashTables = new htable_t[n_models]; }
-void      FCM::setHashTable   (const htable_t &ht, U8 idx) { hashTables[ idx ] = ht;   }
-bool      FCM::getDecompFlag  ()          const         { return decompFlag;           }
-U8        FCM::getN_threads   ()          const         { return n_threads;            }
-U8        FCM::getN_models    ()          const         { return n_models;             }
-U64**     FCM::getTables      ()          const         { return tables;               }
-htable_t* FCM::getHashTables  ()          const         { return hashTables;           }
-const vector<bool>   &FCM::getIR       () const         { return invRepeats;           }
-const vector<U8>     &FCM::getCtxDepth () const         { return ctxDepths;            }
-const vector<string> &FCM::getTarAddr  () const         { return tarAddr;              }
-const vector<string> &FCM::getRefAddr  () const         { return refAddr;              }
+const vector<bool>       &FCM::getIR         () const  { return invRepeats;           }
+const vector<U8>         &FCM::getCtxDepth   () const  { return ctxDepths;            }
+const vector<string>     &FCM::getTarAddr    () const  { return tarAddr;              }
+const vector<string>     &FCM::getRefAddr    () const  { return refAddr;              }
+bool                      FCM::getDecompFlag () const  { return decompFlag;           }
+U8                        FCM::getN_threads  () const  { return n_threads;            }
+U8                        FCM::getN_models   () const  { return n_models;             }
+U64**                     FCM::getTables     () const  { return tables;               }
+htable_t*                 FCM::getHashTables () const  { return hashTables;           }
+void  FCM::setDecompFlag  (bool dF)                    { FCM::decompFlag = dF;        }
+void  FCM::setN_threads   (U8 nT)                      { n_threads = nT;              }
+void  FCM::setCompMode    (char cM)                    { compMode = cM;               }
+void  FCM::setN_models    (U8 n)                       { n_models = n;                }
+void  FCM::setGamma       (double g)                   { gamma = g;                   }
+void  FCM::pushTarAddr    (const string &tFAs)         { tarAddr.push_back(tFAs);     }
+void  FCM::pushRefAddr    (const string &rFAs)         { refAddr.push_back(rFAs);     }
+void  FCM::setTable       (U64 *tbl, U8 idx)           { tables[ idx ] = tbl;         }
+void  FCM::setHashTable   (const htable_t &ht, U8 idx) { hashTables[ idx ] = ht;      }
+void  FCM::initTables     ()                           { tables = new U64*[n_models]; }
+void  FCM::initHashTables ()                   { hashTables = new htable_t[n_models]; }
+void  FCM::pushParams     (bool iR, U8 ctx, U16 aD)    { invRepeats.push_back(iR);
+                               ctxDepths.push_back(ctx); alphaDens.push_back(aD);     }

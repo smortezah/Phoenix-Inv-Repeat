@@ -3,5 +3,5 @@ project(phoenix)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread")
 
-set(SOURCE_FILES src/phoenix.cpp src/FCM.cpp src/messages.cpp src/ArithEncDec.cpp)
+set(SOURCE_FILES src/phoenix.cpp src/FCM.cpp src/messages.cpp)
 add_executable(phoenix ${SOURCE_FILES})
