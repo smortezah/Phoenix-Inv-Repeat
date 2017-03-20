@@ -352,7 +352,7 @@ public:
 
 
 ///-------------------------------------------------------------------------------------
-/// implementations
+/// class functions implementation
 ///-------------------------------------------------------------------------------------
 
 /***********************************************************
@@ -366,11 +366,8 @@ ArithEncDec::ArithEncDec () {}
 ************************************************************/
 void ArithEncDec::GetInterval (int *low, int *high, int *count, U8 symbol)
 {
-	U8 n;
-
-	*low = 0;
-	for (n = 0; n < symbol; n++)    *low += count[ n ];
-
+	*low = 0;	for (U8 n = 0; n < symbol; n++) *low += count[ n ];
+	
 	*high = *low + count[ symbol ];
 }
 
@@ -385,13 +382,12 @@ U8 ArithEncDec::GetSymbol (int *low, int *high, int *count, int target, U8 nSymb
 	*low = 0;
 	for (n = 0; n < nSymbols; n++)
 	{
-		if (*low + count[ n ] > target) break;
-
+		if (*low + count[ n ] > target)	break;
 		*low += count[ n ];
 	}
-
 	*high = *low + count[ n ];
-	return (n);
+	
+	return n;
 }
 
 
@@ -446,10 +442,11 @@ void ArithEncDec::AESym (U8 symbol, int *counters, int totalCount, FILE *oFp)
 U8 ArithEncDec::ADSym (U8 nSymbols, int *counters, int totalCount, FILE *iFp)
 {
 	int low, high;
+	
 	U8 symbol = GetSymbol(&low, &high, counters,
 						  arithmetic_decode_target(totalCount), nSymbols);
-
 	arithmetic_decode(low, high, totalCount, iFp);
+	
 	return symbol;
 }
 
@@ -457,7 +454,8 @@ U8 ArithEncDec::ADSym (U8 nSymbols, int *counters, int totalCount, FILE *iFp)
 /***********************************************************
     encode a symbol given its low, high and total frequencies
 ************************************************************/
-void ArithEncDec::arithmetic_encode (freq_value low, freq_value high, freq_value total, FILE *s)
+void ArithEncDec::arithmetic_encode (freq_value low, freq_value high,
+									 freq_value total, FILE *s)
 {
 	/*
     The following pseudocode is a concise (but slow due to arithmetic
@@ -481,34 +479,29 @@ void ArithEncDec::arithmetic_encode (freq_value low, freq_value high, freq_value
     The following code describes this function:
     (The actual code is only written less legibly to improve speed)
 
-       L += low*(R/total);			* Adjust low bound	*
+       L += low*(R/total);		/// Adjust low bound
 
-       if (high < total)			* 			*
-           R = (high-low) * (R/total);	* Restrict range	*
-       else					* If symbol at end of	*
-           R = R   -  low * (R/total);	*   range.  Restrict &	*
-                           *   allocate excess 	*
-                            *   codelength to it.	*
-       ENCODE_RENORMALISE;			* Expand code range	*
-                           *   and output bits	*
+	   /// Restrict range. If symbol at end of range.
+	   /// Restrict & allocate excess codelength to it.
+       if (high < total) R = (high-low) * (R/total);
+       else				 R = R - low * (R/total);
+       
+       ENCODE_RENORMALISE;		/// Expand code range and output bits
 
-       if (bits_outstanding > MAX_BITS_OUTSTANDING)
-           abort();			* EXTREMELY improbable	*
-                           * (see comments below) *
+	   /// EXTREMELY improbable
+       if (bits_outstanding > MAX_BITS_OUTSTANDING)	abort();
     */
 
 	code_value temp;
 
 	{
 		div_value out_r;
-		out_r = out_R/total;		/* Calc range:freq ratio */
-		temp = out_r*low;			/* Calc low increment */
-		out_L += temp;			/* Increase L */
-		if (high < total)
-			out_R = out_r*(high-low);	/* Restrict R */
-		else
-			out_R -= temp;			/* If at end of freq range */
-		/* Give symbol excess code range */
+		out_r = out_R/total;		/// Calc range:freq ratio
+		temp = out_r*low;			/// Calc low increment
+		out_L += temp;				/// Increase L
+		if (high < total)	out_R = out_r*(high-low);  /// Restrict R
+		else				out_R -= temp;			   /// If at end of freq range
+		/* Give symbol excess code range  */
 	}
 
 	ENCODE_RENORMALISE(s);
@@ -537,24 +530,22 @@ void ArithEncDec::arithmetic_encode (freq_value low, freq_value high, freq_value
 /***********************************************************
   decode the target value using the current total frequency
   and the coder's state variables
-
+  
   The following code describes this function:
   The actual code is only written less legibly to improve speed,
   including storing the ratio in_r = R/total for use by arithmetic_decode()
 
-   target = D / (R/total);	* D = V-L.  (Old terminology) 		*
- 				* D is the location within the range R	*
- 				* that the code value is located	*
- 				* Dividing by (R/total) translates it	*
- 				* to its correspoding frequency value	*
+  target = D / (R/total);	* D = V-L.  (Old terminology)
+    * D is the location within the range R that the code value is located
+    * Dividing by (R/total) translates it to its correspoding frequency value
 
-   if (target < total) 	* The approximate calculations mean the *
- 	return target;		* encoder may have coded outside the	*
-   else			* valid frequency range (in the excess	*
- 	return total-1;		* code range).  This indicates that the	*
- 				* symbol at the end of the frequency	*
- 				* range was coded.  Hence return end of *
- 				* range (total-1)			*
+  The approximate calculations mean the encoder may have coded outside the
+  valid frequency range (in the excess code range).  This indicates that the
+  symbol at the end of the frequency range was coded.  Hence return end of
+  range (total-1)
+  
+  if (target < total)	return target;
+  else					return total-1;
 ************************************************************/
 freq_value ArithEncDec::arithmetic_decode_target (freq_value total)
 {
@@ -575,20 +566,19 @@ freq_value ArithEncDec::arithmetic_decode_target (freq_value total)
   See the comments for arithmetic_encode() which is essentially the
   same process.
 
-  D -= low * (R/total);		* Adjust current code value 	   *
+  D -= low * (R/total);		/// Adjust current code value
 
-  if (high < total)
- 	R = (high-low) * (R/total);	* Adjust range 			   *
-  else
- 	R -= low * (R/total);		* End of range is a special case   *
+  if (high < total)	R = (high-low) * (R/total);	/// Adjust range
+  else				R -= low * (R/total);		/// End of range is a special case
 
-  DECODE_RENORMALISE;			* Expand code range and input bits *
+  DECODE_RENORMALISE;		/// Expand code range and input bits
 ************************************************************/
-void ArithEncDec::arithmetic_decode (freq_value low, freq_value high, freq_value total, FILE *s)
+void ArithEncDec::arithmetic_decode (freq_value low, freq_value high,
+									 freq_value total, FILE *s)
 {
 	code_value temp;
 
-	/* assume r has been set by decode_target */
+	/// assume r has been set by decode_target
 	temp = in_r*low;
 	in_D -= temp;
 	if (high < total)   in_R = in_r*(high-low);
@@ -603,8 +593,9 @@ void ArithEncDec::arithmetic_decode (freq_value low, freq_value high, freq_value
 ************************************************************/
 void ArithEncDec::start_encode (void)
 {
-	out_L = 0;				/* Set initial coding range to	*/
-	out_R = Half;			/* [0,Half)			*/
+	/// Set initial coding range to [0,Half)
+	out_L = 0;
+	out_R = Half;
 	out_bits_outstanding = 0;
 }
 
@@ -616,13 +607,14 @@ void ArithEncDec::start_encode (void)
 ************************************************************/
 void ArithEncDec::finish_encode (FILE *s)
 {
-	int nbits, i;
+	int nbits;
 	code_value bits;
 
 	nbits = B_bits;
 	bits  = out_L;
-	for (i = 1; i <= nbits; i++)        /* output the nbits integer bits */
-		BIT_PLUS_FOLLOW(((bits >> (nbits-i)) & 1), s);
+	
+	/// output the nbits integer bits
+	for (int i = 1; i <= nbits; i++)  BIT_PLUS_FOLLOW(((bits >> (nbits-i)) & 1), s);
 }
 
 
@@ -640,12 +632,11 @@ void ArithEncDec::finish_encode (FILE *s)
 ************************************************************/
 void ArithEncDec::start_decode (FILE *s)
 {
-	int i;
-	in_D = 0;			/* Initial offset in range is 0 */
-	in_R = Half;			/* Range = Half */
-
-	for (i = 0; i<B_bits; i++)			/* Fill D */
-		ADD_NEXT_INPUT_BIT(in_D, 0, s);
+	in_D = 0;		/// Initial offset in range is 0
+	in_R = Half;	/// Range = Half
+	
+	/// Fill D
+	for (int i = 0; i<B_bits; i++)	ADD_NEXT_INPUT_BIT(in_D, 0, s);
 
 	if (in_D >= Half)
 	{
@@ -662,7 +653,7 @@ void ArithEncDec::start_decode (FILE *s)
 ************************************************************/
 void ArithEncDec::finish_decode (void)
 {
-	/* No action */
+	/// No action
 }
 
 
@@ -681,8 +672,8 @@ void ArithEncDec::startoutputtingbits (void)
 ************************************************************/
 void ArithEncDec::startinputtingbits (void)
 {
-	_in_garbage = 0;	/* Number of bytes read past end of file */
-	_in_bit_ptr = 0;	/* No valid bits yet in input buffer */
+	_in_garbage = 0;	/// Number of bytes read past end of file
+	_in_bit_ptr = 0;	/// No valid bits yet in input buffer
 }
 
 
@@ -700,9 +691,9 @@ void ArithEncDec::doneoutputtingbits (FILE *s)
 /***********************************************************
     complete inputting bits
 ************************************************************/
-void ArithEncDec::doneinputtingbits(void)
+void ArithEncDec::doneinputtingbits (void)
 {
-	_in_bit_ptr = 0;	      /* "Wipe" buffer (in case more input follows) */
+	_in_bit_ptr = 0;	/// "Wipe" buffer (in case more input follows)
 }
 
 
