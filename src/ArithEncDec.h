@@ -2,6 +2,14 @@
 #define PHOENIX_ARITHENCDEC_H
 
 /******************************************************************************
+  Armando J. Pinho	(ap@ua.pt)
+  Morteza Hosseini	(seyedmorteza@ua.pt)
+  				  
+  University of Aveiro, DETI/IEETA, 3810-193 Aveiro, Portugal
+  December 1999, March 2017
+  
+Adapted based on:
+  
 Authors:  John Carpinelli   (johnfc@ecr.mu.oz.au)
           Wayne Salamonsen  (wbs@mundil.cs.mu.oz.au)
           Lang Stuiver      (langs@cs.mu.oz.au)
@@ -36,14 +44,6 @@ part of each and every copy made of these files.
 
   Revision 1.1  1996/08/07 01:34:11  langs
   Initial revision
-******************************************************************************
-
-  Code adapted by Armando J. Pinho	(ap@ua.pt)
-  				  Morteza Hosseini	(seyedmorteza@ua.pt)
-  				  
-  University of Aveiro, DETI/IEETA, 3810-193 Aveiro, Portugal
-  December 1999, March 2017
- 
 ******************************************************************************/
 
 
@@ -53,6 +53,8 @@ part of each and every copy made of these files.
 #include <stdint.h>
 
 #include "def.h"
+
+using std::cerr;
 
 
 /* ================= USER ADJUSTABLE PARAMETERS =================== */
@@ -77,9 +79,6 @@ part of each and every copy made of these files.
 typedef unsigned long	code_value;		/// B_BITS of precision
 typedef unsigned long	freq_value;		/// F_BITS+1 of precision
 typedef unsigned long	div_value;		/// B_BITS-F_BITS of precision
-//typedef U64	code_value;	/* B_BITS of precision */
-//typedef U64	freq_value;	/* F_BITS+1 of precision */
-//typedef U64	div_value;	/* B_BITS-F_BITS of precision */
 
 /******************************************************************************
   MAX_BITS_OUTSTANDING is a bound on bits_outstanding
@@ -105,12 +104,10 @@ typedef unsigned long	div_value;		/// B_BITS-F_BITS of precision
    otherwise #define them
   These variables will be read (and possibly changed) by main.c and stats.c
 ******************************************************************************/
-#define		B_bits		B_BITS
-#define		F_bits  	F_BITS
+#define B_bits B_BITS
+#define	F_bits F_BITS
 
 extern char *coder_desc;
-
-///----------------------------------------------------------------------------
 
 #define Half	((code_value) 1 << (B_bits-1))
 #define Quarter ((code_value) 1 << (B_bits-2))
@@ -128,8 +125,6 @@ static code_value out_L;					/// lower bound
 static code_value out_R;					/// code range
 static unsigned long out_bits_outstanding;	/// follow bit count
 
-///-------------------------------------------------------------------------------------
-
 /******************************************************************************
   Bit and byte input output functions.
   Input/Output to stdin/stdout 1 bit at a time.
@@ -145,71 +140,16 @@ static unsigned long out_bits_outstanding;	/// follow bit count
 
 extern unsigned int	_bytes_input, _bytes_output;
 
-extern int _in_buffer;				/// Input buffer
-extern unsigned char _in_bit_ptr;	/// Input bit pointer
-extern int _in_garbage;				/// # of bytes read past EOF
+extern int _in_buffer;              /// Input buffer
+extern unsigned char _in_bit_ptr;   /// Input bit pointer
+extern int _in_garbage;		        /// # of bytes read past EOF
 
-extern int _out_buffer;				/// Output buffer
-extern int _out_bits_to_go;			///Output bits in buffer
+extern int _out_buffer;             /// Output buffer
+extern int _out_bits_to_go;         ///Output bits in buffer
 
 #ifndef FAST_BITIO
-extern int _bitio_tmp;				/// Used by i/o macros to
+extern int _bitio_tmp;              /// Used by i/o macros to
 #endif								/// keep function ret values
-
-/******************************************************************************
-  Outputs bit 'b' to stdout.  (Builds up a buffer, writing a byte at a time.)
-******************************************************************************/
-#define OUTPUT_BIT(b, s)				\
-do {						\
-   _out_buffer <<= 1;				\
-   if (b)					\
-	_out_buffer |= 1;			\
-   _out_bits_to_go--;				\
-   if (_out_bits_to_go == 0)			\
-    {						\
-	OUTPUT_BYTE(_out_buffer, s);		\
-	_out_bits_to_go = BYTE_SIZE;		\
-        _out_buffer = 0;			\
-    }						\
-} while (0)
-
-/******************************************************************************
-  Returns a bit from stdin, by shifting 'v' left one bit, and adding next bit
-  as lsb (possibly reading upto garbage_bits extra bits beyond valid input)
- 
-  garbage_bits:  Number of bits (to nearest byte) past end of file to be
-  allowed to 'read' before printing an error message and halting. This is
-  needed by our arithmetic coding module when the FRUGAL_BITS option is
-  defined, as upto B_bits extra bits may be needed to keep the code buffer
-  full (although the actual bitvalue is not important) at the end of decoding.
- 
-  The buffer is not shifted, instead a bit flag (_in_bit_ptr) is moved to
-  point to the next bit that is to be read.  When it is zero, the next byte
-  is read, and it is reset to point to the msb.
-******************************************************************************/
-#define ADD_NEXT_INPUT_BIT(v, garbage_bits, s)				\
-do {									\
-    if (_in_bit_ptr == 0)						\
-    {									\
-	_in_buffer = getc(s);						\
-	if (_in_buffer==EOF) 						\
-	   {								\
-		_in_garbage++;						\
-		if ((_in_garbage-1)*8 >= garbage_bits)			\
-		  {							\
-		    fprintf(stderr,"Bad input file - attempted "	\
-		 		   "read past end of file.\n");		\
-		    exit(1);						\
-		  }							\
-	   }								\
-	else								\
-	   { _bytes_input++; }						\
-	_in_bit_ptr = (1<<(BYTE_SIZE-1));				\
-    }									\
-    v = (v << 1);							\
-    if (_in_buffer & _in_bit_ptr) v++;					\
-    _in_bit_ptr >>= 1;							\
-} while (0)
 
 /******************************************************************************
   #define FAST_BITIO
@@ -223,28 +163,27 @@ do {									\
 	#define BITIO_FREAD(ptr, size, nitems)	fread(ptr, size, nitems, stdin)
 	#define BITIO_FWRITE(ptr, size, nitems) fwrite(ptr, size, nitems, stdout)
 #else
-	#define OUTPUT_BYTE(x, s)	( _bytes_output++, putc(x, s) )
+	#define OUTPUT_BYTE(x, s)   ( _bytes_output++, putc(x, s) )
 
-	#define INPUT_BYTE(s)	( _bitio_tmp = getc(s), 			\
-			  _bytes_input += (_bitio_tmp == EOF ) ? 0 : 1, \
-			  _bitio_tmp  )
+	#define INPUT_BYTE(s)       ( _bitio_tmp = getc(s), 			         \
+			                    _bytes_input += (_bitio_tmp == EOF) ? 0 : 1, \
+			                    _bitio_tmp )
 
-	#define BITIO_FREAD(ptr, size, nitems)			\
-		( _bitio_tmp = fread(ptr, size, nitems, stdin),		\
+    /// Return result of fread
+	#define BITIO_FREAD(ptr, size, nitems)			    \
+		( _bitio_tmp = fread(ptr, size, nitems, stdin), \
 		  _bytes_input += _bitio_tmp * size,			\
-	  	  _bitio_tmp )				/// Return result of fread
+	  	  _bitio_tmp )
 
+    /// Return result of fwrite
 	#define BITIO_FWRITE(ptr, size, nitems)				\
 	( _bitio_tmp = fwrite(ptr, size, nitems, stdout),	\
-	  _bytes_output += _bitio_tmp * size,			\
-	  _bitio_tmp )				/// Return result of fwrite
+	  _bytes_output += _bitio_tmp * size,			    \
+	  _bitio_tmp )
 #endif
-
-///-------------------------------------------------------------------------------------
 
 /// The following variables are supposedly local, but actually global so
 /// they can be referenced by macro
-
 unsigned int _bytes_input  = 0;
 unsigned int _bytes_output = 0;
 
@@ -259,13 +198,13 @@ int	_out_bits_to_go;			///bits to fill buffer
 int _bitio_tmp;					/// Used by some of the
 #endif
 
-///-------------------------------------------------------------------------------------
+///----------------------------------------------------------------------------
 
 
 class ArithEncDec
 {
 public:
-    ArithEncDec ();                                 /// constructor
+    ArithEncDec ();                                         /// constructor
     
     void GetInterval         (int*, int*, int*, U8);
     U8   GetSymbol           (int*, int*, int*, int, U8);
@@ -289,15 +228,12 @@ public:
 //    int  binary_arithmetic_decode(freq_value, freq_value, FILE*);
     
 private:
-    inline void BIT_PLUS_FOLLOW    (int, FILE*);
-    inline void ENCODE_RENORMALISE (FILE *);
-    inline void DECODE_RENORMALISE (FILE *);
+    inline void bitPlusFollow     (int, FILE*);
+    inline void encodeRenormalise (FILE*);
+    inline void decodeRenormalise (FILE*);
+    inline void outputBit         (int, FILE*);
+    inline void addNextInputBit   (code_value, int, FILE*);
 };
-
-
-///-------------------------------------------------------------------------------------
-/// class functions implementation
-///-------------------------------------------------------------------------------------
 
 /***********************************************************
     constructor
@@ -311,7 +247,6 @@ ArithEncDec::ArithEncDec () {}
 void ArithEncDec::GetInterval (int *low, int *high, int *count, U8 symbol)
 {
 	*low = 0;	for (U8 n = 0; n < symbol; n++) *low += count[ n ];
-	
 	*high = *low + count[ symbol ];
 }
 
@@ -430,7 +365,7 @@ void ArithEncDec::arithmetic_encode (freq_value low, freq_value high,
        if (high < total) R = (high-low) * (R/total);
        else				 R = R - low * (R/total);
        
-       ENCODE_RENORMALISE;		/// Expand code range and output bits
+       encodeRenormalise;		/// Expand code range and output bits
 
 	   /// EXTREMELY improbable
        if (bits_outstanding > MAX_BITS_OUTSTANDING)	abort();
@@ -447,8 +382,8 @@ void ArithEncDec::arithmetic_encode (freq_value low, freq_value high,
 		else				out_R -= temp;			   /// If at end of freq range
 		/* Give symbol excess code range  */
 	}
-
-	ENCODE_RENORMALISE(s);
+    
+    encodeRenormalise(s);
 
 	if (out_bits_outstanding > MAX_BITS_OUTSTANDING)
 	{
@@ -465,7 +400,7 @@ void ArithEncDec::arithmetic_encode (freq_value low, freq_value high,
         digits long (decimal).
         */
 
-		fprintf(stderr,"Bits_outstanding limit reached - File too large\n");
+		cerr << "Bits_outstanding limit reached - File too large\n";
 		exit(1);
 	}
 }
@@ -527,8 +462,8 @@ void ArithEncDec::arithmetic_decode (freq_value low, freq_value high,
 	in_D -= temp;
 	if (high < total)   in_R = in_r*(high-low);
 	else                in_R -= temp;
-
-	DECODE_RENORMALISE(s);
+    
+    decodeRenormalise(s);
 }
 
 
@@ -558,7 +493,8 @@ void ArithEncDec::finish_encode (FILE *s)
 	bits  = out_L;
 	
 	/// output the nbits integer bits
-	for (int i = 1; i <= nbits; i++)  BIT_PLUS_FOLLOW(((bits >> (nbits-i)) & 1), s);
+	for (int i = 1; i <= nbits; i++)
+        bitPlusFollow(((bits >> (nbits - i)) & 1), s);
 }
 
 
@@ -578,13 +514,12 @@ void ArithEncDec::start_decode (FILE *s)
 {
 	in_D = 0;		/// Initial offset in range is 0
 	in_R = Half;	/// Range = Half
-	
-	/// Fill D
-	for (int i = 0; i<B_bits; i++)	ADD_NEXT_INPUT_BIT(in_D, 0, s);
+    
+	for (int i = 0; i<B_bits; i++)  addNextInputBit(in_D, 0, s);  /// Fill D
 
 	if (in_D >= Half)
 	{
-		fprintf(stderr,"Corrupt input file (start_decode())\n");
+		cerr << "Corrupt input file (start_decode())\n";
 		exit(1);
 	}
 }
@@ -646,14 +581,14 @@ void ArithEncDec::doneinputtingbits (void)
     an opposite number of bit equal to the value stored
     in bits_outstanding
 ************************************************************/
-inline void ArithEncDec::BIT_PLUS_FOLLOW (int b, FILE *s)
+inline void ArithEncDec::bitPlusFollow (int b, FILE *s)
 {
     do
     {
-        OUTPUT_BIT((b), s);
+        outputBit((b), s);
         while (out_bits_outstanding > 0)
         {
-            OUTPUT_BIT(!(b), s);
+            outputBit(!(b), s);
             out_bits_outstanding--;
         }
     } while (0);
@@ -665,7 +600,7 @@ inline void ArithEncDec::BIT_PLUS_FOLLOW (int b, FILE *s)
   With FRUGAL_BITS option, ignore first zero bit output (a redundant zero
   will otherwise be emitted every time the encoder is started)
 ******************************************************************************/
-inline void ArithEncDec::ENCODE_RENORMALISE (FILE *s)
+inline void ArithEncDec::encodeRenormalise (FILE *s)
 {
     do
     {
@@ -673,12 +608,12 @@ inline void ArithEncDec::ENCODE_RENORMALISE (FILE *s)
         {
             if (out_L >= Half)
             {
-                BIT_PLUS_FOLLOW(1, s);
+                bitPlusFollow(1, s);
                 out_L -= Half;
             }
             else if (out_L + out_R <= Half)
             {
-                BIT_PLUS_FOLLOW(0, s);
+                bitPlusFollow(0, s);
             }
             else
             {
@@ -698,15 +633,77 @@ inline void ArithEncDec::ENCODE_RENORMALISE (FILE *s)
   FRUGAL_BITS option also keeps track of bitstream input so it can work out
   exactly how many disambiguating bits the encoder put out (1,2 or 3).
 ******************************************************************************/
-inline void ArithEncDec::DECODE_RENORMALISE (FILE *s)
+inline void ArithEncDec::decodeRenormalise (FILE *s)
 {
     do
     {
         while (in_R <= Quarter)
         {
             in_R <<= 1;
-            ADD_NEXT_INPUT_BIT(in_D, 0, s);
+            addNextInputBit(in_D, 0, s);
         }
+    } while (0);
+}
+
+
+/******************************************************************************
+  Outputs bit 'b' to stdout.  (Builds up a buffer, writing a byte at a time.)
+******************************************************************************/
+inline void ArithEncDec::outputBit (int b, FILE *s)
+{
+    do
+    {
+        _out_buffer <<= 1;
+        if (b)  _out_buffer |= 1;
+        
+        _out_bits_to_go--;
+        if (_out_bits_to_go == 0)
+        {
+            OUTPUT_BYTE(_out_buffer, s);
+            _out_bits_to_go = BYTE_SIZE;
+            _out_buffer = 0;
+        }
+    } while (0);
+}
+
+
+/******************************************************************************
+  Returns a bit from stdin, by shifting 'v' left one bit, and adding next bit
+  as lsb (possibly reading upto garbage_bits extra bits beyond valid input)
+ 
+  garbage_bits:  Number of bits (to nearest byte) past end of file to be
+  allowed to 'read' before printing an error message and halting. This is
+  needed by our arithmetic coding module when the FRUGAL_BITS option is
+  defined, as upto B_bits extra bits may be needed to keep the code buffer
+  full (although the actual bitvalue is not important) at the end of decoding.
+ 
+  The buffer is not shifted, instead a bit flag (_in_bit_ptr) is moved to
+  point to the next bit that is to be read.  When it is zero, the next byte
+  is read, and it is reset to point to the msb.
+******************************************************************************/
+inline void ArithEncDec::addNextInputBit (code_value v, int garbage_bits, FILE *s)
+{
+    do
+    {
+        if (_in_bit_ptr == 0)
+        {
+            _in_buffer = getc(s);
+            if (_in_buffer == EOF)
+            {
+                _in_garbage++;
+                if ((_in_garbage - 1) * 8 >= garbage_bits)
+                {
+                    cerr << "Bad input file - attempted read past end of file.\n";
+                    exit(1);
+                }
+            }
+            else    _bytes_input++;
+            
+            _in_bit_ptr = (1 << (BYTE_SIZE - 1));
+        }
+        v = (v << 1);
+        if (_in_buffer & _in_bit_ptr)   v++;
+        _in_bit_ptr >>= 1;
     } while (0);
 }
 
