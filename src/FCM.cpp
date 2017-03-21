@@ -459,7 +459,7 @@ void FCM::compress (const string &tarFileName)
         lastSlash_Ref[ i ] = getRefAddr()[ i ].find_last_of("/");
         refNamesPure[ i ]  = getRefAddr()[ i ].substr(lastSlash_Ref[ i ] + 1);
     }
-
+    
     mut.lock();///========================================================
     for (int i = 0; i < refsAdressesSize - 1; ++i)  cout << refNamesPure[ i ] << ',';
     cout << refNamesPure[ refsAdressesSize-1 ] << '\t'
@@ -468,9 +468,9 @@ void FCM::compress (const string &tarFileName)
 ////         << std::fixed << setprecision(4) << alpha << '\t'
 ////         << (int) contextDepth << '\t'
 //         << std::fixed << setprecision(5) << averageEntropy << '\t'
-         << std::fixed << setprecision(5) << averageEntropy / LOG2_ALPH_SIZE << '\n'
+         << std::fixed << setprecision(5) << averageEntropy / LOG2_ALPH_SIZE << '\n'  /// NRC
             ;
-
+    
 ////    cout.width(2);  cout << std::left << getInvertedRepeat() << "   ";
     mut.unlock();///======================================================
 }
