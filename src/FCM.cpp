@@ -25,57 +25,57 @@ using std::fill_n;
 using std::round;
 
 
-/***********************************************************
+/********************************************************************************************
     constructor
-************************************************************/
+********************************************************************************************/
 FCM::FCM ()
 {
-    n_threads  = DEFAULT_N_THREADS;                 /// number of threads
-    gamma      = DEFAULT_GAMMA;                     /// gamma
-    decompFlag = false;                             /// decompression flag
+    n_threads = DEFAULT_N_THREADS;    /// number of threads
+    gamma = DEFAULT_GAMMA;        /// gamma
+    decompFlag = false;                /// decompression flag
 }
 
 
-/***********************************************************
+/********************************************************************************************
     build reference(s) model
-************************************************************/
-void FCM::buildModel (const vector<string> &refsNames,
+********************************************************************************************/
+void FCM::buildModel (const vector< string > &refsNames,
                       bool invRepeat, U8 ctxDepth, U8 modelIndex)
 {
-    U8 refsNo = (U8) refsNames.size();      /// number of references
+    U8 refsNo = (U8) refsNames.size();    /// number of references
     
     /// check if reference(s) file(s) cannot be opened, or are empty
-    ifstream refsIn[ refsNo ];
+    ifstream refsIn[refsNo];
     for (U8 i = refsNo; i--;)
     {
-        refsIn[ i ].open( refsNames[ i ], ios::in );
-        if (!refsIn[ i ])                   /// error occurred while opening file(s)
+        refsIn[ i ].open(refsNames[ i ], ios::in);
+        if (!refsIn[ i ])        /// error occurred while opening file(s)
         {
-            cerr << "The file '" << refsNames[ i ] << "' cannot be opened, or it is empty.\n";
-            refsIn[ i ].close();            /// close file(s)
-            return;                         /// exit this function
+            cerr << "The file '" << refsNames[i] << "' cannot be opened, or it is empty.\n";
+            refsIn[ i ].close(); /// close file(s)
+            return;              /// exit this function
         }
     }
     
-    U64 context;                       	    /// context (integer), that slides in the dataset
+    U64 context;                 /// context (integer), that slides in the dataset
     U64 maxPlaceValue = POWER5[ ctxDepth ];
-    U64 befMaxPlaceValue = POWER5[ ctxDepth-1 ];
-    U64 invRepContext;                      /// inverted repeat context (integer)
+    U64 befMaxPlaceValue = POWER5[ ctxDepth - 1 ];
+    U64 invRepContext;           /// inverted repeat context (integer)
     
-    U64 iRCtxCurrSym;                       /// concat of inverted repeat context and current symbol
-    U8  currSymInt;                         /// current symbol integer
-                                            
-    string refLine;                         /// keep each line of the file
+    U64 iRCtxCurrSym;            /// concat of inverted repeat context and current symbol
+    U8 currSymInt;              /// current symbol integer
     
-    switch ( compMode )                     /// build model based on 't'=table, or 'h'=hash table
+    string refLine;              /// keep each line of the file
+    
+    switch (compMode)          /// build model based on 't'=table, or 'h'=hash table
     {
         case 't':
         {
             U64 tableSize = maxPlaceValue * ALPH_SUM_SIZE;
-            U64 *table = new U64[ tableSize ];
-            memset( table, 0, sizeof(table[ 0 ]) * tableSize );   /// zero initialize table
+            U64 *table = new U64[tableSize];
+            memset(table, 0, sizeof(table[ 0 ]) * tableSize);   /// zero initialize table
 ////            fill_n(table, tableSize, 0);
-            U64 rowIndex;                   /// to update table
+            U64 rowIndex;        /// to update table
             
             for (U8 i = refsNo; i--;)
             {
@@ -83,59 +83,64 @@ void FCM::buildModel (const vector<string> &refsNames,
                 context = 0;
                 invRepContext = maxPlaceValue - 1;
                 
-                while ( getline(refsIn[ i ], refLine) )
+                while (getline(refsIn[ i ], refLine))
                 {
                     /// fill table by number of occurrences of symbols A, C, N, G, T
-                    for (string::iterator lineIt = refLine.begin(); lineIt != refLine.end(); ++lineIt)
+                    for (string::iterator lineIt = refLine.begin();
+                         lineIt != refLine.end(); ++lineIt)
                     {
                         currSymInt = symCharToInt(*lineIt);
                         
-                        if (invRepeat)      /// considering inverted repeats to update table
+                        if (invRepeat)    /// considering inverted repeats to update table
                         {
                             /// concatenation of inverted repeat context and current symbol
                             iRCtxCurrSym = (4 - currSymInt) * maxPlaceValue + invRepContext;
                             /// update inverted repeat context (integer)
                             invRepContext = (U64) iRCtxCurrSym / ALPH_SIZE;
                             
-                            /// update table, including 'sum' column, considering inverted repeats
+                            /// update table, including 'sum' column,
+                            /// considering inverted repeats
                             rowIndex = invRepContext * ALPH_SUM_SIZE;
                             ++table[ rowIndex + iRCtxCurrSym % ALPH_SIZE ]; /// update table
-                            ++table[ rowIndex + ALPH_SIZE ];                /// update 'sum' column
+                            ++table[ rowIndex + ALPH_SIZE ];         /// update 'sum' column
                         }
                         
                         rowIndex = context * ALPH_SUM_SIZE;
-                        ++table[ rowIndex + currSymInt ];                   /// update table
-                        ++table[ rowIndex + ALPH_SIZE ];                    /// update 'sum' column
+                        ++table[ rowIndex + currSymInt ];            /// update table
+                        ++table[ rowIndex + ALPH_SIZE ];             /// update 'sum' column
                         
                         /// update context. (rowIndex - context) == (context * ALPH_SIZE)
-////                        context = (U64) (rowIndex - context + currSymInt) % maxPlaceValue;
-////                        context = (U64) (rowIndex - context) % maxPlaceValue + currSymInt;
+////                      context = (U64) (rowIndex - context + currSymInt) % maxPlaceValue;
+////                      context = (U64) (rowIndex - context) % maxPlaceValue + currSymInt;
                         context = (U64) (context % befMaxPlaceValue) * 5 + currSymInt;
                     }
                 }   /// end while
             }   /// end for
             
-            mut.lock(); this->setTable(table, modelIndex);  mut.unlock();       /// set table
+            mut.lock();
+            this->setTable(table, modelIndex);
+            mut.unlock();     /// set table
         }   /// end case
             break;
-            
+        
         case 'h':       /// adding 'sum' column, makes hash table slower
         {
             htable_t hashTable;
-    
+            
             for (int i = refsNo; i--;)
             {
                 /// reset in the beginning of each reference file
                 context = 0;
                 invRepContext = maxPlaceValue - 1;
-
-                while ( getline(refsIn[ i ], refLine) )
+                
+                while (getline(refsIn[ i ], refLine))
                 {
                     /// fill hash table by number of occurrences of symbols A, C, N, G, T
-                    for (string::iterator lineIt = refLine.begin(); lineIt != refLine.end(); ++lineIt)
+                    for (string::iterator lineIt = refLine.begin();
+                         lineIt != refLine.end(); ++lineIt)
                     {
                         currSymInt = symCharToInt(*lineIt);
-
+                        
                         /// considering inverted repeats to update hash table
                         if (invRepeat)
                         {
@@ -143,41 +148,46 @@ void FCM::buildModel (const vector<string> &refsNames,
                             iRCtxCurrSym = (4 - currSymInt) * maxPlaceValue + invRepContext;
                             /// update inverted repeat context (integer)
                             invRepContext = (U64) iRCtxCurrSym / ALPH_SIZE;
-
+                            
                             /// update hash table considering inverted repeats
                             ++hashTable[ invRepContext ][ iRCtxCurrSym % ALPH_SIZE ];
                         }
-
+                        
                         ++hashTable[ context ][ currSymInt ];   /// update hash table
-
+                        
                         /// update context. (rowIndex - context) == (context * ALPH_SIZE)
-////                        context = (U64) (rowIndex - context + currSymInt) % maxPlaceValue;
-////                        context = (U64) (rowIndex - context) % maxPlaceValue + currSymInt;
+////                      context = (U64) (rowIndex - context + currSymInt) % maxPlaceValue;
+////                      context = (U64) (rowIndex - context) % maxPlaceValue + currSymInt;
                         context = (U64) (context % befMaxPlaceValue) * 5 + currSymInt;
                     }
                 }
             }   /// end for
-    
-            mut.lock();  this->setHashTable(hashTable, modelIndex);  mut.unlock();    /// set hash table
+            
+            /// set hash table
+            mut.lock();
+            this->setHashTable(hashTable, modelIndex);
+            mut.unlock();
         }   /// end case
             break;
-            
-        default: break;
+        
+        default:
+            break;
     }   /// end switch
     
-    for (U8 i = refsNo; i--;)  refsIn[i].close();       /// close file(s)
+    for (U8 i = refsNo; i--;)
+        refsIn[ i ].close();       /// close file(s)
 }
 
 
-/***********************************************************
+/********************************************************************************************
     compress target(s) based on reference(s) model
-************************************************************/
+********************************************************************************************/
 void FCM::compress (const string &tarFileName)
 {
     ArithEncDec arithObj;   /// to work with arithmetic encoder/decoder class
     
     /// alpha and ALPH_SIZE*alpha: used in P numerator and denominator
-    double alpha[ n_models ], sumAlphas[ n_models ];
+    double alpha[n_models], sumAlphas[n_models];
     for (U8 i = n_models; i--;)
     {
         alpha[ i ] = (double) 1 / alphaDens[ i ];
@@ -185,8 +195,8 @@ void FCM::compress (const string &tarFileName)
     }
     
     /// open target file
-    ifstream tarFileIn( tarFileName, ios::in );
-
+    ifstream tarFileIn(tarFileName, ios::in);
+    
     mut.lock();///========================================================
     if (!tarFileIn)                     /// error occurred while opening file
     {
@@ -196,30 +206,33 @@ void FCM::compress (const string &tarFileName)
     }
     mut.unlock();///======================================================
     
-    U64     maxPlaceValue[ n_models ];
-    for (U8 i = n_models; i--;)  maxPlaceValue[ i ] = POWER5[ ctxDepths[i] ];
-////    for (U8 i = n_models; i--;)  maxPlaceValue[ i ] = (U64) pow( ALPH_SIZE, ctxDepths[ i ] );
+    U64 maxPlaceValue[n_models];
+    for (U8 i = n_models; i--;)
+        maxPlaceValue[ i ] = POWER5[ ctxDepths[ i ]];
     
     /// context(s) (integer) sliding through the dataset
-    U64     tarContext[ n_models ];     fill_n(tarContext, n_models, 0);
-    string  tarLine;                    /// keep each line of the file
-    U64     nSym;                       /// number of symbols (n_s). in probability numerator
-    U64     sumNSym;                    /// sum of number of symbols (sum n_a). in probability denominator
-    double  prob_i;                     /// probability of a symbol for each model
-    double  rawWeight[ n_models ];      /// weight before normalization for each model. init: 1/M
-    double  weight[ n_models ];  fill_n(weight, n_models, (double) 1 / n_models);   /// each model weight
-    double  probability;                /// final probability of a symbol
-    double  sumOfEntropies = 0;             /// sum of entropies for different symbols
-//    U64     file_size = fileSize(tarFileName);      /// size of file, including '\n' symbols
-    U64     symsNo = countSymbols(tarFileName);      /// number of symbols
-    double  averageEntropy = 0;         /// average entropy (H)
-    double  sumOfWeights;               /// sum of weights. used for normalization
-    double  freqsDouble[ ALPH_SIZE ];   /// frequencies of each symbol (double)
-    int     freqs[ ALPH_SIZE ];         /// frequencies of each symbol (integer)
-    int     sumFreqs;                   /// sum of frequencies of each symbol
+    U64 tarContext[n_models];
+    fill_n(tarContext, n_models, 0);
+    string tarLine;                    /// keep each line of the file
+    U64 nSym;                       /// number of symbols (n_s). in probability numerator
+    U64 sumNSym;       /// sum of number of symbols (sum n_a). in probability denominator
+    double prob_i;                     /// probability of a symbol for each model
+    double rawWeight[n_models];  /// weight before normalization for each model. init: 1/M
+    
+    double weight[n_models];
+    fill_n(weight, n_models, (double) 1 / n_models);   /// each model weight
+    double probability;                /// final probability of a symbol
+    double sumOfEntropies = 0;             /// sum of entropies for different symbols
+//    U64     file_size = fileSize(tarFileName);   /// size of file, including '\n' symbols
+    U64 symsNo = countSymbols(tarFileName);      /// number of symbols
+    double averageEntropy = 0;         /// average entropy (H)
+    double sumOfWeights;               /// sum of weights. used for normalization
+    double freqsDouble[ALPH_SIZE];   /// frequencies of each symbol (double)
+    int freqs[ALPH_SIZE];         /// frequencies of each symbol (integer)
+    int sumFreqs;                   /// sum of frequencies of each symbol
 //    U64    freqs[ ALPH_SIZE ];         /// frequencies of each symbol (integer)
 //    U64    sumFreqs;                   /// sum of frequencies of each symbol
-    U8      currSymInt;                 /// current symbol in integer format
+    U8 currSymInt;                 /// current symbol in integer format
     
     /*
     /// using macros make this code slower
@@ -234,8 +247,9 @@ void FCM::compress (const string &tarFileName)
     */
     
     size_t lastSlash_Tar = tarFileName.find_last_of("/");       /// position of last slash
-    string tarNamePure = tarFileName.substr(lastSlash_Tar + 1); /// target file name without slash
-    const char *tar = (tarNamePure + COMP_FILETYPE).c_str();            /// convert string to char*
+    
+    string tarNamePure = tarFileName.substr(lastSlash_Tar + 1); /// tar. name without slash
+    const char *tar = (tarNamePure + COMP_FILETYPE).c_str();    /// convert string to char*
     
     mut.lock();///========================================================
     remove(tar);                        /// remove pre-existing compressed file(s)
@@ -243,82 +257,92 @@ void FCM::compress (const string &tarFileName)
     FILE *Writer = fopen(tar, "w");     /// to save compressed file
     mut.unlock();///======================================================
     
+    
     arithObj.startoutputtingbits();              /// start arithmetic encoding process
     arithObj.start_encode();
     
     /// model(s) properties, being sent to decoder as header
-    arithObj.WriteNBits( WATERMARK,                26, Writer );    /// WriteNBits: just writes header
-    arithObj.WriteNBits( symsNo,                   46, Writer );    /// number of symbols, in byte
-    arithObj.WriteNBits( (U64) (gamma * 65536),    32, Writer );    /// gamma
-    arithObj.WriteNBits( n_models,                 16, Writer );    /// number of models
+    arithObj.WriteNBits(WATERMARK, 26, Writer);    /// WriteNBits: just writes header
+    arithObj.WriteNBits(symsNo, 46, Writer);    /// number of symbols, in byte
+    arithObj.WriteNBits((U64) (gamma * 65536), 32, Writer);    /// gamma
+    arithObj.WriteNBits(n_models, 16, Writer);    /// number of models
     for (U8 n = 0; n < n_models; ++n)
     {
-        arithObj.WriteNBits( (U8) invRepeats[ n ],  1, Writer );    /// inverted repeats
-        arithObj.WriteNBits( ctxDepths[ n ],       16, Writer );    /// context depths
-        arithObj.WriteNBits( alphaDens[ n ],       16, Writer );    /// alpha denoms
+        arithObj.WriteNBits((U8) invRepeats[ n ], 1, Writer);    /// inverted repeats
+        arithObj.WriteNBits(ctxDepths[ n ], 16, Writer);    /// context depths
+        arithObj.WriteNBits(alphaDens[ n ], 16, Writer);    /// alpha denoms
     }
-    arithObj.WriteNBits( (U64) compMode,           16, Writer );    /// compression mode
+    arithObj.WriteNBits((U64) compMode, 16, Writer);    /// compression mode
     
-    switch ( compMode )
+    switch (compMode)
     {
         case 't':
         {
             U64 rowIndex;                   /// index of a row in the table
-
+            
             
             
             //todo test
-            U64 test_n_line=0;
-    
-//            while ( getline(tarFileIn, tarLine) && test_n_line < 11416) //todo test r=PTY t=PTY
-            while ( getline(tarFileIn, tarLine) && test_n_line < 1)       //todo test r=PTY t=HS21
+            U64 test_n_line = 0;
+            //todo test r=PTY t=PTY
+//          while ( getline(tarFileIn, tarLine) && test_n_line < 11416)
+            while (getline(tarFileIn, tarLine) && test_n_line < 1)  //todo test r=PTY t=HS21
             {
                 
                 //todo test
                 ++test_n_line;
                 
-    
+                
                 /// table includes the number of occurrences of symbols A, C, N, G, T
-                for (string::iterator lineIt = tarLine.begin(); lineIt != tarLine.end(); ++lineIt)
+                for (string::iterator lineIt = tarLine.begin();
+                     lineIt != tarLine.end(); ++lineIt)
                 {
                     fill_n(freqsDouble, ALPH_SIZE, 0);    /// reset array of frequencies
-        
-                    currSymInt = symCharToInt(*lineIt);     /// integer version of the current symbol
-        
+                    
+                    /// integer version of the current symbol
+                    currSymInt = symCharToInt(*lineIt);
+                    
                     probability = 0;
                     sumOfWeights = 0;
-        
+                    
                     for (U8 i = n_models; i--;)
                     {
                         rowIndex = tarContext[ i ] * ALPH_SUM_SIZE;
-            
+                        
                         /// frequencies (double)
                         freqsDouble[ 0 ] += weight[ i ] * tables[ i ][ rowIndex ];
                         freqsDouble[ 1 ] += weight[ i ] * tables[ i ][ rowIndex + 1 ];
                         freqsDouble[ 2 ] += weight[ i ] * tables[ i ][ rowIndex + 2 ];
                         freqsDouble[ 3 ] += weight[ i ] * tables[ i ][ rowIndex + 3 ];
                         freqsDouble[ 4 ] += weight[ i ] * tables[ i ][ rowIndex + 4 ];
-            
-                        nSym = tables[ i ][ rowIndex + currSymInt ];    /// number of symbols
+                        
+                        nSym = tables[ i ][ rowIndex + currSymInt ];  /// number of symbols
 ////                          nSym = X;
-                        sumNSym = tables[ i ][ rowIndex + ALPH_SIZE ];  /// sum of number of symbols
+                        
+                        /// sum of number of symbols
+                        sumNSym = tables[ i ][ rowIndex + ALPH_SIZE ];
 ////                          Y(sumNSyms);
-                        prob_i = (nSym + alpha[ i ]) / (sumNSym + sumAlphas[ i ]);  /// P(s|c^t)
-                        probability = probability + weight[ i ] * prob_i;       /// P_1*W_1 + P_2*W_2 + ...
-            
+                        /// P(s|c^t)
+                        prob_i = (nSym + alpha[ i ]) / (sumNSym + sumAlphas[ i ]);
+                        /// P_1*W_1 + P_2*W_2 + ...
+                        probability = probability + weight[ i ] * prob_i;
+                        
                         /// weight before normalization
                         rawWeight[ i ] = fastPow(weight[ i ], gamma) * prob_i;
-                        sumOfWeights = sumOfWeights + rawWeight[ i ];   /// sum of weights. used for normalization
-            
-                        /// update context. (rowIndex - tarContext[i]) = (tarContext[i] * ALPH_SIZE)
-                        tarContext[ i ] = (U64) (rowIndex - tarContext[ i ] + currSymInt) % maxPlaceValue[ i ];
+                        /// sum of weights. used for normalization
+                        sumOfWeights = sumOfWeights + rawWeight[ i ];
+                        
+                        /// update context
+                        /// (rowIndex - tarContext[i]) = (tarContext[i] * ALPH_SIZE)
+                        tarContext[ i ] = (U64) (rowIndex - tarContext[ i ] + currSymInt)
+                                          % maxPlaceValue[ i ];
                     }
                     /// update weights
-                    for (U8 i = n_models; i--;)
-                        weight[ i ] = rawWeight[ i ] / sumOfWeights;
-        
-                    sumOfEntropies = sumOfEntropies + log2(probability);        /// sum( log_2 P(s|c^t) )
-        
+                    for (U8 i = n_models; i--;) weight[ i ] = rawWeight[ i ] / sumOfWeights;
+    
+                    /// sum( log_2 P(s|c^t) )
+                    sumOfEntropies = sumOfEntropies + log2(probability);
+                    
                     /// frequencies (integer)
                     freqs[ 0 ] = (int) (1 + (freqsDouble[ 0 ] * DOUBLE_TO_INT));
                     freqs[ 1 ] = (int) (1 + (freqsDouble[ 1 ] * DOUBLE_TO_INT));
@@ -336,16 +360,19 @@ void FCM::compress (const string &tarFileName)
 //                            exit(1);
 //                        }
 //                    }
-        
-                    sumFreqs = 0;   for (int f : freqs) sumFreqs += f;          /// sum of frequencies
+                    
+                    sumFreqs = 0;
+                    for (int f : freqs)
+                        sumFreqs += f;          /// sum of frequencies
 //                    freqs[ 0 ] = (U64) (1 + (freqsDouble[0] * DOUBLE_TO_INT));
 //                    freqs[ 1 ] = (U64) (1 + (freqsDouble[1] * DOUBLE_TO_INT));
 //                    freqs[ 2 ] = (U64) (1 + (freqsDouble[2] * DOUBLE_TO_INT));
 //                    freqs[ 3 ] = (U64) (1 + (freqsDouble[3] * DOUBLE_TO_INT));
 //                    freqs[ 4 ] = (U64) (1 + (freqsDouble[4] * DOUBLE_TO_INT));
 //
-//                    sumFreqs = 0;   for (U64 f : freqs) sumFreqs += f;          /// sum of frequencies
-        
+                    /// sum of frequencies
+//                    sumFreqs = 0;   for (U64 f : freqs) sumFreqs += f;
+                    
                     //todo test
 
 //                    if(sumFreqs > 720886)
@@ -357,33 +384,37 @@ void FCM::compress (const string &tarFileName)
 //                    {
 //                        if( freqs[j]<0) cout<< "manfi";
 //                    }
-    
-                    arithObj.AESym(currSymInt, freqs, sumFreqs, Writer);               /// Arithmetic encoding
+                    
+                    /// Arithmetic encoding
+                    arithObj.AESym(currSymInt, freqs, sumFreqs, Writer);
                 }   /// end for
             }   /// end while
         }   /// end case
-        break;
-
+            break;
+        
         case 'h':
         {
-            array< U64, ALPH_SIZE > hTRowArray;     /// hash table row array -- to save a row of hTable
-
-            while ( getline(tarFileIn, tarLine) )
+            /// hash table row array -- to save a row of hTable
+            array< U64, ALPH_SIZE > hTRowArray;
+            
+            while (getline(tarFileIn, tarLine))
             {
                 /// hash table includes the number of occurrences of symbols A, C, N, G, T
-                for (string::iterator lineIt = tarLine.begin(); lineIt != tarLine.end(); ++lineIt)
+                for (string::iterator lineIt = tarLine.begin();
+                     lineIt != tarLine.end(); ++lineIt)
                 {
-                    fill_n( freqsDouble, ALPH_SIZE, 0 );    /// reset array of frequencies
-
-                    currSymInt = symCharToInt(*lineIt);     /// integer version of the current symbol
-
-                    probability  = 0;
+                    fill_n(freqsDouble, ALPH_SIZE, 0);    /// reset array of frequencies
+    
+                    /// integer version of the current symbol
+                    currSymInt = symCharToInt(*lineIt);
+                    
+                    probability = 0;
                     sumOfWeights = 0;
                     
                     for (U8 i = n_models; i--;)
                     {
                         /// save the row of hash table into an array
-                        hTRowArray = hashTables[ i ][ tarContext[i] ];
+                        hTRowArray = hashTables[ i ][ tarContext[ i ]];
                         
                         /// frequencies (double)
                         freqsDouble[ 0 ] += weight[ i ] * hTRowArray[ 0 ];
@@ -391,217 +422,238 @@ void FCM::compress (const string &tarFileName)
                         freqsDouble[ 2 ] += weight[ i ] * hTRowArray[ 2 ];
                         freqsDouble[ 3 ] += weight[ i ] * hTRowArray[ 3 ];
                         freqsDouble[ 4 ] += weight[ i ] * hTRowArray[ 4 ];
-
+                        
                         /// sum of number of symbols
-                        sumNSym = 0;    for (U64 u : hTRowArray) sumNSym = sumNSym + u;
+                        sumNSym = 0;
+                        for (U64 u : hTRowArray)
+                            sumNSym = sumNSym + u;
 ////                        Y(sumNSym);
                         nSym = hTRowArray[ currSymInt ];        /// number of symbols
 ////                          nSym = X;
 ////                          X(nSym);
-                        prob_i = (nSym + alpha[ i ]) / (sumNSym + sumAlphas[ i ]);  /// P(s|c^t)
-                        probability = probability + weight[ i ] * prob_i;   /// P_1*W_1 + P_2*W_2 + ...
-
+                        /// P(s|c^t)
+                        prob_i = (nSym + alpha[ i ]) / (sumNSym + sumAlphas[ i ]);
+                        /// P_1*W_1 + P_2*W_2 + ...
+                        probability = probability + weight[ i ] * prob_i;
+                        
                         /// weight before normalization
                         rawWeight[ i ] = fastPow(weight[ i ], gamma) * prob_i;
                         /// sum of weights. used for normalization
                         sumOfWeights = sumOfWeights + rawWeight[ i ];
                         
                         /* TODO: ba update e tarContext[i], hash table mixModel ro ham
-                         * update mikone, chon object mixModel ba reference (&mixModel) be in
-                         * tabe' (compress) ferestade mishe. varesh darim NRC ghalat mishe */
+                         * update mikone, chon object mixModel ba reference (&mixModel)
+                         * be in tabe' (compress) ferestade mishe. varesh darim NRC
+                         * ghalat mishe */
                         /// update context
-                        tarContext[ i ] = (U64) (tarContext[i] * ALPH_SIZE + currSymInt) % maxPlaceValue[ i ];
+                        tarContext[ i ] = (U64) (tarContext[ i ] * ALPH_SIZE + currSymInt)
+                                          % maxPlaceValue[ i ];
                     }
                     /// update weights
                     for (U8 i = n_models; i--;) weight[ i ] = rawWeight[ i ] / sumOfWeights;
-
-                    sumOfEntropies = sumOfEntropies + log2(probability);    /// sum( log_2 P(s|c^t) )
-
+                    
+                    /// sum( log_2 P(s|c^t) )
+                    sumOfEntropies = sumOfEntropies + log2(probability);
+                    
                     /// frequencies (integer)
-                    freqs[ 0 ] = (int) (1 + (freqsDouble[0] * DOUBLE_TO_INT));
-                    freqs[ 1 ] = (int) (1 + (freqsDouble[1] * DOUBLE_TO_INT));
-                    freqs[ 2 ] = (int) (1 + (freqsDouble[2] * DOUBLE_TO_INT));
-                    freqs[ 3 ] = (int) (1 + (freqsDouble[3] * DOUBLE_TO_INT));
-                    freqs[ 4 ] = (int) (1 + (freqsDouble[4] * DOUBLE_TO_INT));
-
-                    sumFreqs = 0;   for (int f : freqs) sumFreqs += f;      /// sum of frequencies
+                    freqs[ 0 ] = (int) (1 + (freqsDouble[ 0 ] * DOUBLE_TO_INT));
+                    freqs[ 1 ] = (int) (1 + (freqsDouble[ 1 ] * DOUBLE_TO_INT));
+                    freqs[ 2 ] = (int) (1 + (freqsDouble[ 2 ] * DOUBLE_TO_INT));
+                    freqs[ 3 ] = (int) (1 + (freqsDouble[ 3 ] * DOUBLE_TO_INT));
+                    freqs[ 4 ] = (int) (1 + (freqsDouble[ 4 ] * DOUBLE_TO_INT));
+                    
+                    sumFreqs = 0;
+                    for (int f : freqs)
+                        sumFreqs += f;      /// sum of frequencies
 //                    freqs[ 0 ] = (U64) (1 + (freqsDouble[0] * DOUBLE_TO_INT));
 //                    freqs[ 1 ] = (U64) (1 + (freqsDouble[1] * DOUBLE_TO_INT));
 //                    freqs[ 2 ] = (U64) (1 + (freqsDouble[2] * DOUBLE_TO_INT));
 //                    freqs[ 3 ] = (U64) (1 + (freqsDouble[3] * DOUBLE_TO_INT));
 //                    freqs[ 4 ] = (U64) (1 + (freqsDouble[4] * DOUBLE_TO_INT));
 //
-//                    sumFreqs = 0;   for (U64 f : freqs) sumFreqs += f;      /// sum of frequencies
+                    /// sum of frequencies
+//                    sumFreqs = 0;   for (U64 f : freqs) sumFreqs += f;
 //todo change
-                    arithObj.AESym( currSymInt, freqs, sumFreqs, Writer );           /// Arithmetic encoding
+                    /// Arithmetic encoding
+                    arithObj.AESym(currSymInt, freqs, sumFreqs, Writer);
                 }   /// end for
             }   /// end while
         }   /// end case
-        break;
-
-        default: break;
+            break;
+        
+        default:
+            break;
     }   /// end switch
-
-    arithObj.finish_encode( Writer );
-    arithObj.doneoutputtingbits( Writer );   /// encode the last bit
-    fclose( Writer );               /// close compressed file
-
+    
+    arithObj.finish_encode(Writer);
+    arithObj.doneoutputtingbits(Writer);   /// encode the last bit
+    fclose(Writer);               /// close compressed file
+    
     tarFileIn.close();              /// close target file
-
+    
     averageEntropy = (double) (-1) * sumOfEntropies / symsNo;
-
+    
     /// print reference and target file names
     U8 refsAdressesSize = (U8) getRefAddr().size();
-    size_t lastSlash_Ref[ refsAdressesSize ];
-    string refNamesPure[ refsAdressesSize ];
+    size_t lastSlash_Ref[refsAdressesSize];
+    string refNamesPure[refsAdressesSize];
     for (U8 i = refsAdressesSize; i--;)
     {
         lastSlash_Ref[ i ] = getRefAddr()[ i ].find_last_of("/");
-        refNamesPure[ i ]  = getRefAddr()[ i ].substr(lastSlash_Ref[ i ] + 1);
+        refNamesPure[ i ] = getRefAddr()[ i ].substr(lastSlash_Ref[ i ] + 1);
     }
     
     mut.lock();///========================================================
-    for (int i = 0; i < refsAdressesSize - 1; ++i)  cout << refNamesPure[ i ] << ',';
-    cout << refNamesPure[ refsAdressesSize-1 ] << '\t'
+    for (int i = 0; i < refsAdressesSize - 1; ++i)
+        cout << refNamesPure[ i ] << ',';
+    cout << refNamesPure[ refsAdressesSize - 1 ] << '\t'
          << tarNamePure << '\t'
-////         << invertedRepeat << '\t'
-////         << std::fixed << setprecision(4) << alpha << '\t'
-////         << (int) contextDepth << '\t'
-//         << std::fixed << setprecision(5) << averageEntropy << '\t'
-         << std::fixed << setprecision(5) << averageEntropy / LOG2_ALPH_SIZE << '\n'  /// NRC
+         ////         << invertedRepeat << '\t'
+         ////         << std::fixed << setprecision(4) << alpha << '\t'
+         ////         << (int) contextDepth << '\t'
+         //         << std::fixed << setprecision(5) << averageEntropy << '\t'
+         << std::fixed << setprecision(5) << averageEntropy / LOG2_ALPH_SIZE << '\n' /// NRC
             ;
-    
+
 ////    cout.width(2);  cout << std::left << getInvertedRepeat() << "   ";
     mut.unlock();///======================================================
 }
 
 
-/***********************************************************
+/********************************************************************************************
     read header for decompression
-************************************************************/
+********************************************************************************************/
 void FCM::extractHeader (const string &tarFileName)
 {
     ArithEncDec arithObj;   /// to work with arithmetic encoder/decoder class
     
-    size_t lastSlash_Tar = tarFileName.find_last_of("/");           /// position of last slash
-    string tarNamePure   = tarFileName.substr(lastSlash_Tar + 1);   /// target file name without slash
-    const  char *tarCo   = (tarNamePure + COMP_FILETYPE).c_str();   /// compressed file. convert string to char*
-    FILE   *Reader       = fopen(tarCo, "r");                       /// to process the compressed file
+    size_t lastSlash_Tar = tarFileName.find_last_of("/");       /// position of last slash
+    string tarNamePure = tarFileName.substr(lastSlash_Tar + 1); /// tar. name without slash
+    /// compressed file. convert string to char*
+    const char *tarCo = (tarNamePure + COMP_FILETYPE).c_str();
+    FILE *Reader = fopen(tarCo, "r");                 /// to process the compressed file
     
     /// starting
-    arithObj.startinputtingbits();                                           /// start arithmetic decoding process
+    arithObj.startinputtingbits();                   /// start arithmetic decoding process
     arithObj.start_decode(Reader);
     
     /// extract header information
-    if (arithObj.ReadNBits(26, Reader) != WATERMARK)                         /// watermark check-in
+    if (arithObj.ReadNBits(26, Reader) != WATERMARK)         /// watermark check-in
     {
         cerr << "ERROR: Invalid compressed file!\n";
         exit(1);
     }
-    arithObj.ReadNBits(                          46, Reader );        /// file size
-    this->setGamma( round((double) arithObj.ReadNBits( 32, Reader )/65536 * 100) / 100 );    /// gamma
-    U64 no_models = arithObj.ReadNBits(          16, Reader );       /// number of models
-    this->setN_models( (U8) no_models );
-    bool ir; U8 k; U16 aD;
+    arithObj.ReadNBits(46, Reader);        /// file size
+    /// gamma
+    this->setGamma(round((double) arithObj.ReadNBits(32, Reader) / 65536 * 100) / 100);
+    U64 no_models = arithObj.ReadNBits(16, Reader);       /// number of models
+    this->setN_models((U8) no_models);
+    bool ir;
+    U8 k;
+    U16 aD;
     for (U8 n = 0; n < no_models; ++n)
     {
-        ir = (bool) arithObj.ReadNBits(           1, Reader );
-        k  = (U8)   arithObj.ReadNBits(          16, Reader );
-        aD = (U16)  arithObj.ReadNBits(          16, Reader );
+        ir = (bool) arithObj.ReadNBits(1, Reader);
+        k = (U8) arithObj.ReadNBits(16, Reader);
+        aD = (U16) arithObj.ReadNBits(16, Reader);
         this->pushParams(ir, k, aD);          /// ir, ctx depth, alpha denom
     }
-    char compMode = (char) arithObj.ReadNBits(      16, Reader );    /// compression mode
-    this->setCompMode( compMode );
+    char compMode = (char) arithObj.ReadNBits(16, Reader);    /// compression mode
+    this->setCompMode(compMode);
     /// initialize vector of tables/hash tables
     compMode == 'h' ? this->initHashTables() : this->initTables();
-
+    
     /// finishing
     arithObj.finish_decode();
-    arithObj.doneinputtingbits();                                            /// decode last bit
-    fclose(Reader);                                                 /// close compressed file
+    arithObj.doneinputtingbits();         /// decode last bit
+    fclose(Reader);                       /// close compressed file
 }
 
 
-/***********************************************************
+/********************************************************************************************
     decompress target(s) based on reference(s) model
-************************************************************/
+********************************************************************************************/
 void FCM::decompress (const string &tarFileName)
 {
     ArithEncDec arithObj;   /// to work with arithmetic encoder/decoder class
     
-    size_t lastSlash_Tar = tarFileName.find_last_of("/");           /// position of last slash
-    string tarNamePure   = tarFileName.substr(lastSlash_Tar + 1);   /// target file name without slash
-    const  char *tarCo   = (tarNamePure+COMP_FILETYPE).c_str();     /// compressed file. convert string to char*
-    const  char *tarDe   = (tarNamePure+DECOMP_FILETYPE).c_str();   /// decompressed file
-//    FILE   *Reader       = fopen(tarCo, "r");                       /// to process the compressed file
+    size_t lastSlash_Tar = tarFileName.find_last_of("/");     /// position of last slash
+    string tarNamePure = tarFileName.substr(lastSlash_Tar + 1);/// tar. name without slash
+    /// compressed file. convert string to char*
+    const char *tarCo = (tarNamePure + COMP_FILETYPE).c_str();
+    const char *tarDe = (tarNamePure + DECOMP_FILETYPE).c_str();   /// decompressed file
+//    FILE   *Reader       = fopen(tarCo, "r");       /// to process the compressed file
     
     mut.lock();///========================================================
-    remove(tarDe);                                                  /// remove pre-existing decompressed file(s)
-    FILE   *Reader       = fopen(tarCo, "r");                       /// to process the compressed file
+    remove(tarDe);                         /// remove pre-existing decompressed file(s)
+    FILE *Reader = fopen(tarCo, "r");      /// to process the compressed file
     
-    FILE *Writer = fopen(tarDe, "w");                               /// to save decompressed file
+    FILE *Writer = fopen(tarDe, "w");      /// to save decompressed file
     mut.unlock();///======================================================
     
-    I32    idxOut        = 0;
-    char   *outBuffer    = (char*) calloc(BUFFER_SIZE, sizeof(uint8_t));
-    
-    
-    
-    
+    I32 idxOut = 0;
+    char *outBuffer = (char *) calloc(BUFFER_SIZE, sizeof(uint8_t));
+
+
+
+
 //    mut.lock();
-    arithObj.startinputtingbits();                                           /// start arithmetic decoding process
-    arithObj.start_decode( Reader );
+    arithObj.startinputtingbits();         /// start arithmetic decoding process
+    arithObj.start_decode(Reader);
 //    mut.unlock();
-    
-    
-    
-    
-    
+
+
+
+
+
 //    mut.lock();
     /// extract header information
     arithObj.ReadNBits(26, Reader);  /// watermark
-    U64 symsNo = (U64) arithObj.ReadNBits(    46, Reader );                 /// number of symbols
-    arithObj.ReadNBits(32,Reader);    /// gamma
-    arithObj.ReadNBits(    16, Reader );                 /// number of models
+    U64 symsNo = (U64) arithObj.ReadNBits(46, Reader);                 /// number of symbols
+    arithObj.ReadNBits(32, Reader);    /// gamma
+    arithObj.ReadNBits(16, Reader);                 /// number of models
     U8 no_models = this->getN_models();
     for (U8 n = 0; n < no_models; ++n)
     {
-        arithObj.ReadNBits(   1, Reader );                 /// inverted repeats
-        arithObj.ReadNBits(  16, Reader );                 /// context depths
-        arithObj.ReadNBits(  16, Reader );                 /// alplha denoms
+        arithObj.ReadNBits(1, Reader);                 /// inverted repeats
+        arithObj.ReadNBits(16, Reader);                 /// context depths
+        arithObj.ReadNBits(16, Reader);                 /// alplha denoms
     }
-    arithObj.ReadNBits( 16, Reader );                 /// compression mode
+    arithObj.ReadNBits(16, Reader);                 /// compression mode
 //    mut.unlock();
     
     
     /// alpha and ALPH_SIZE*alpha: used in P numerator and denominator
-    double alpha[ no_models ], sumAlphas[ no_models ];
+    double alpha[no_models], sumAlphas[no_models];
     for (U8 i = no_models; i--;)
     {
         alpha[ i ] = (double) 1 / alphaDens[ i ];
         sumAlphas[ i ] = ALPH_SIZE * alpha[ i ];
     }
-
-    U64     maxPlaceValue[ no_models ];
-    for (U8 i = no_models; i--;)  maxPlaceValue[ i ] = POWER5[ ctxDepths[i] ];
-
+    
+    U64 maxPlaceValue[no_models];
+    for (U8 i = no_models; i--;)
+        maxPlaceValue[ i ] = POWER5[ ctxDepths[ i ]];
+    
     /// context(s) (integer) sliding through the dataset
-    U64     tarContext[ no_models ];     fill_n(tarContext, no_models, 0);
-    string  tarLine;                    /// keep each line of the file
-    U64     nSym;                       /// number of symbols (n_s). in probability numerator
-    U64     sumNSym;                    /// sum of number of symbols (sum n_a). in probability denominator
-    double  prob_i;                     /// probability of a symbol for each model
-    double  rawWeight[ no_models ];      /// weight before normalization for each model. init: 1/M
-    double  weight[ no_models ];  fill_n(weight, no_models, (double) 1 / no_models);   /// each model weight
-    double  sumOfWeights;               /// sum of weights. used for normalization
-    double  freqsDouble[ ALPH_SIZE ];   /// frequencies of each symbol (double)
-    int     freqs[ ALPH_SIZE ];         /// frequencies of each symbol (integer)
-    int     sumFreqs;                   /// sum of frequencies of each symbol
+    U64 tarContext[no_models];
+    fill_n(tarContext, no_models, 0);
+    string tarLine;                    /// keep each line of the file
+    U64 nSym;                       /// number of symbols (n_s). in probability numerator
+    U64 sumNSym;          /// sum of number of symbols (sum n_a). in probability denominator
+    double prob_i;                     /// probability of a symbol for each model
+    double rawWeight[no_models];  /// weight before normalization for each model. init: 1/M
+    double weight[no_models];
+    fill_n(weight, no_models, (double) 1 / no_models);   /// each model weight
+    double sumOfWeights;               /// sum of weights. used for normalization
+    double freqsDouble[ALPH_SIZE];   /// frequencies of each symbol (double)
+    int freqs[ALPH_SIZE];         /// frequencies of each symbol (integer)
+    int sumFreqs;                   /// sum of frequencies of each symbol
 //    U64     freqs[ ALPH_SIZE ];         /// frequencies of each symbol (integer)
 //    U64     sumFreqs;                   /// sum of frequencies of each symbol
-    U8      currSymInt;                 /// current symbol in integer format
+    U8 currSymInt;                 /// current symbol in integer format
     
-    switch ( compMode )
+    switch (compMode)
     {
         case 't':
         {
@@ -609,18 +661,18 @@ void FCM::decompress (const string &tarFileName)
             
             for (int k = 0; k < symsNo; ++k)
             {
-                fill_n( freqsDouble, ALPH_SIZE, 0 );    /// reset array of frequencies
+                fill_n(freqsDouble, ALPH_SIZE, 0);    /// reset array of frequencies
                 
                 /// decode first symbol
                 for (U8 i = no_models; i--;)
                 {
                     rowIndex = tarContext[ i ] * ALPH_SUM_SIZE;
                     
-                    freqsDouble[ 0 ] += weight[ i ] * this->getTables()[ i ][ rowIndex ];
-                    freqsDouble[ 1 ] += weight[ i ] * this->getTables()[ i ][ rowIndex + 1 ];
-                    freqsDouble[ 2 ] += weight[ i ] * this->getTables()[ i ][ rowIndex + 2 ];
-                    freqsDouble[ 3 ] += weight[ i ] * this->getTables()[ i ][ rowIndex + 3 ];
-                    freqsDouble[ 4 ] += weight[ i ] * this->getTables()[ i ][ rowIndex + 4 ];
+                    freqsDouble[ 0 ] += weight[i] * this->getTables()[ i ][ rowIndex ];
+                    freqsDouble[ 1 ] += weight[i] * this->getTables()[ i ][ rowIndex + 1 ];
+                    freqsDouble[ 2 ] += weight[i] * this->getTables()[ i ][ rowIndex + 2 ];
+                    freqsDouble[ 3 ] += weight[i] * this->getTables()[ i ][ rowIndex + 3 ];
+                    freqsDouble[ 4 ] += weight[i] * this->getTables()[ i ][ rowIndex + 4 ];
                 }
                 /// frequencies (integer)
                 freqs[ 0 ] = (int) (1 + (freqsDouble[ 0 ] * DOUBLE_TO_INT));
@@ -628,81 +680,92 @@ void FCM::decompress (const string &tarFileName)
                 freqs[ 2 ] = (int) (1 + (freqsDouble[ 2 ] * DOUBLE_TO_INT));
                 freqs[ 3 ] = (int) (1 + (freqsDouble[ 3 ] * DOUBLE_TO_INT));
                 freqs[ 4 ] = (int) (1 + (freqsDouble[ 4 ] * DOUBLE_TO_INT));
-
-                sumFreqs = 0;   for (int f : freqs) sumFreqs += f;          /// sum of frequencies
                 
-                currSymInt = (U8) arithObj.ADSym(ALPH_SIZE, freqs, sumFreqs, Reader);   /// Arithmetic decoding
+                sumFreqs = 0;
+                for (int f : freqs)
+                    sumFreqs += f;    /// sum of frequencies
+                /// Arithmetic decoding
+                currSymInt = (U8) arithObj.ADSym(ALPH_SIZE, freqs, sumFreqs, Reader);
 //                freqs[ 0 ] = (U64) (1 + (freqsDouble[ 0 ] * DOUBLE_TO_INT));
 //                freqs[ 1 ] = (U64) (1 + (freqsDouble[ 1 ] * DOUBLE_TO_INT));
 //                freqs[ 2 ] = (U64) (1 + (freqsDouble[ 2 ] * DOUBLE_TO_INT));
 //                freqs[ 3 ] = (U64) (1 + (freqsDouble[ 3 ] * DOUBLE_TO_INT));
 //                freqs[ 4 ] = (U64) (1 + (freqsDouble[ 4 ] * DOUBLE_TO_INT));
 //
-//                sumFreqs = 0;   for (U64 f : freqs) sumFreqs += f;          /// sum of frequencies
+//                /// sum of frequencies
+//                sumFreqs = 0;   for (U64 f : freqs) sumFreqs += f;
 //
 //    //todo change
 //                mut.lock();
-//                currSymInt = ArithDecodeSymbol(ALPH_SIZE, freqs, sumFreqs, Reader); /// Arithmetic decoding
+//                /// Arithmetic decoding
+//                currSymInt = ArithDecodeSymbol(ALPH_SIZE, freqs, sumFreqs, Reader);
 //                mut.unlock();
                 
                 
-                outBuffer[ idxOut ] = symIntToChar( currSymInt);                            /// output buffer
-                
-                
-                
+                outBuffer[ idxOut ] = symIntToChar(currSymInt);       /// output buffer
+
+
+
 //                mut.lock();
                 if (++idxOut == BUFFER_SIZE)
                 {
-                    fwrite(outBuffer, 1, idxOut, Writer);                         /// write output
+                    fwrite(outBuffer, 1, idxOut, Writer);              /// write output
                     idxOut = 0;
                 }
 //                mut.unlock();
-    
-    
+                
+                
                 sumOfWeights = 0;
-
+                
                 for (U8 i = no_models; i--;)
                 {
                     rowIndex = tarContext[ i ] * ALPH_SUM_SIZE;
-    
+                    
                     nSym = tables[ i ][ rowIndex + currSymInt ];    /// number of symbols
-                    sumNSym = tables[ i ][ rowIndex + ALPH_SIZE ];  /// sum of number of symbols
-                    prob_i = (nSym + alpha[ i ]) / (sumNSym + sumAlphas[ i ]);  /// P(s|c^t)
-
+                    /// sum of number of symbols
+                    sumNSym = tables[ i ][ rowIndex + ALPH_SIZE ];
+                    prob_i = (nSym + alpha[ i ]) / (sumNSym + sumAlphas[ i ]); /// P(s|c^t)
+                    
                     /// weight before normalization
                     rawWeight[ i ] = fastPow(weight[ i ], gamma) * prob_i;
-                    sumOfWeights = sumOfWeights + rawWeight[ i ];   /// sum of weights. used for normalization
-
-                    /// update context. (rowIndex - tarContext[i]) = (tarContext[i] * ALPH_SIZE)
-                    tarContext[ i ] = (U64) (rowIndex - tarContext[i] + currSymInt) % maxPlaceValue[ i ];
+                    /// sum of weights. used for normalization
+                    sumOfWeights = sumOfWeights + rawWeight[ i ];
+                    
+                    /// update context
+                    /// (rowIndex - tarContext[i]) = (tarContext[i] * ALPH_SIZE)
+                    tarContext[ i ] = (U64) (rowIndex - tarContext[ i ] + currSymInt)
+                                      % maxPlaceValue[ i ];
                 }
                 /// update weights
-                for (U8 i = no_models; i--;)    weight[ i ] = rawWeight[ i ] / sumOfWeights;
+                for (U8 i = no_models; i--;)
+                    weight[ i ] = rawWeight[ i ] / sumOfWeights;
             }   /// end for
-    
-    
-            
-            
+
+
+
+
 //            mut.lock();
-            if (idxOut != 0)    fwrite(outBuffer, 1, idxOut, Writer);
+            if (idxOut != 0)
+                fwrite(outBuffer, 1, idxOut, Writer);
 //            mut.unlock();
         }   /// end case
             break;
-            
+        
         case 'h':
         {
-            array< U64, ALPH_SIZE > hTRowArray;     /// hash table row array -- to save a row of hTable
+            /// hash table row array -- to save a row of hTable
+            array< U64, ALPH_SIZE > hTRowArray;
             
             for (int k = 0; k < symsNo; ++k)
             {
-                fill_n( freqsDouble, ALPH_SIZE, 0 );    /// reset array of frequencies
+                fill_n(freqsDouble, ALPH_SIZE, 0);    /// reset array of frequencies
                 
                 /// decode first symbol
                 for (U8 i = no_models; i--;)
                 {
                     /// save the row of hash table into an array
-                    hTRowArray = this->getHashTables()[ i ][ tarContext[i] ];
-    
+                    hTRowArray = this->getHashTables()[ i ][ tarContext[ i ]];
+                    
                     freqsDouble[ 0 ] += weight[ i ] * hTRowArray[ 0 ];
                     freqsDouble[ 1 ] += weight[ i ] * hTRowArray[ 1 ];
                     freqsDouble[ 2 ] += weight[ i ] * hTRowArray[ 2 ];
@@ -715,79 +778,98 @@ void FCM::decompress (const string &tarFileName)
                 freqs[ 2 ] = (int) (1 + (freqsDouble[ 2 ] * DOUBLE_TO_INT));
                 freqs[ 3 ] = (int) (1 + (freqsDouble[ 3 ] * DOUBLE_TO_INT));
                 freqs[ 4 ] = (int) (1 + (freqsDouble[ 4 ] * DOUBLE_TO_INT));
-
-                sumFreqs = 0;   for (int f : freqs) sumFreqs += f;          /// sum of frequencies
-    
-                currSymInt = (U8) arithObj.ADSym(ALPH_SIZE, freqs, sumFreqs, Reader);              /// Arithmetic decoding
+                
+                sumFreqs = 0;
+                for (int f : freqs)
+                    sumFreqs += f;          /// sum of frequencies
+                /// Arithmetic decoding
+                currSymInt = (U8) arithObj.ADSym(ALPH_SIZE, freqs, sumFreqs, Reader);
 //                freqs[ 0 ] = (U64) (1 + (freqsDouble[ 0 ] * DOUBLE_TO_INT));
 //                freqs[ 1 ] = (U64) (1 + (freqsDouble[ 1 ] * DOUBLE_TO_INT));
 //                freqs[ 2 ] = (U64) (1 + (freqsDouble[ 2 ] * DOUBLE_TO_INT));
 //                freqs[ 3 ] = (U64) (1 + (freqsDouble[ 3 ] * DOUBLE_TO_INT));
 //                freqs[ 4 ] = (U64) (1 + (freqsDouble[ 4 ] * DOUBLE_TO_INT));
 //
-//                sumFreqs = 0;   for (U64 f : freqs) sumFreqs += f;          /// sum of frequencies
+//                /// sum of frequencies
+//                sumFreqs = 0;   for (U64 f : freqs) sumFreqs += f;
 //    //todo change
-//                currSymInt = ArithDecodeSymbol(ALPH_SIZE, freqs, sumFreqs, Reader);              /// Arithmetic decoding
-    
-                outBuffer[ idxOut ] = symIntToChar( currSymInt);                            /// output buffer
+//                /// Arithmetic decoding
+//                currSymInt = ArithDecodeSymbol(ALPH_SIZE, freqs, sumFreqs, Reader);
+                
+                outBuffer[ idxOut ] = symIntToChar(currSymInt);   /// output buffer
                 if (++idxOut == BUFFER_SIZE)
                 {
-                    fwrite(outBuffer, 1, idxOut, Writer);                         /// write output
+                    fwrite(outBuffer, 1, idxOut, Writer);      /// write output
                     idxOut = 0;
                 }
-            
+                
                 sumOfWeights = 0;
-            
+                
                 for (U8 i = no_models; i--;)
                 {
-                    hTRowArray = this->getHashTables()[ i ][ tarContext[i] ];
+                    hTRowArray = this->getHashTables()[ i ][ tarContext[ i ]];
                     
-                    sumNSym = 0;    for (U64 u : hTRowArray) sumNSym = sumNSym + u;
+                    sumNSym = 0;
+                    for (U64 u : hTRowArray)
+                        sumNSym = sumNSym + u;
                     nSym = hTRowArray[ currSymInt ];        /// number of symbols
-                    prob_i = (nSym + alpha[ i ]) / (sumNSym + sumAlphas[ i ]);  /// P(s|c^t)
-                
+                    prob_i = (nSym + alpha[ i ]) / (sumNSym + sumAlphas[ i ]);/// P(s|c^t)
+                    
                     /// weight before normalization
                     rawWeight[ i ] = fastPow(weight[ i ], gamma) * prob_i;
-                    sumOfWeights = sumOfWeights + rawWeight[ i ];   /// sum of weights. used for normalization
-                
-                    /// update context. (rowIndex - tarContext[i]) = (tarContext[i] * ALPH_SIZE)
-                    tarContext[ i ] = (U64) (tarContext[i] * ALPH_SIZE + currSymInt) % maxPlaceValue[ i ];
+                    /// sum of weights. used for normalization
+                    sumOfWeights = sumOfWeights + rawWeight[ i ];
+                    
+                    /// update context
+                    /// (rowIndex - tarContext[i]) = (tarContext[i] * ALPH_SIZE)
+                    tarContext[ i ] = (U64) (tarContext[ i ] * ALPH_SIZE + currSymInt)
+                                      % maxPlaceValue[ i ];
                 }
                 /// update weights
-                for (U8 i = no_models; i--;)    weight[ i ] = rawWeight[ i ] / sumOfWeights;
+                for (U8 i = no_models; i--;)
+                    weight[ i ] = rawWeight[ i ] / sumOfWeights;
             }   /// end for
-        
-            if (idxOut != 0)    fwrite(outBuffer, 1, idxOut, Writer);
+            
+            if (idxOut != 0)
+                fwrite(outBuffer, 1, idxOut, Writer);
         }   /// end case
             break;
-    
-        default: break;
+        
+        default:
+            break;
     }   /// end switch
-    
+
 //    mut.lock();
     arithObj.finish_decode();
-    arithObj.doneinputtingbits();                                      /// decode last bit
-    fclose(Reader);                                           /// close compressed file
-    fclose(Writer);                                           /// close decompressed file
+    arithObj.doneinputtingbits();    /// decode last bit
+    fclose(Reader);                  /// close compressed file
+    fclose(Writer);                  /// close decompressed file
 //    mut.unlock();
 }
 
 
-/***********************************************************
+/********************************************************************************************
     convert char base to integer (U8): ACNGT -> 01234
-************************************************************/
+********************************************************************************************/
 inline U8 FCM::symCharToInt (char charSym) const
 {
     switch (charSym)
     {
-        case 'A':   return 0;
-        case 'C':   return 1;
-        case 'T':   return 4;
-        case 'G':   return 3;
-        case 'N':   return 2;
-        default:    cerr << "ERROR: unknown symbol '" << charSym << "'\n";  exit(1);
+        case 'A':
+            return 0;
+        case 'C':
+            return 1;
+        case 'T':
+            return 4;
+        case 'G':
+            return 3;
+        case 'N':
+            return 2;
+        default:
+            cerr << "ERROR: unknown symbol '" << charSym << "'\n";
+            exit(1);
     }
-
+    
     /*
     switch (ch)
     {
@@ -799,28 +881,35 @@ inline U8 FCM::symCharToInt (char charSym) const
 }
 
 
-/***********************************************************
+/********************************************************************************************
     convert inteter (U8) base to char: 01234 -> ACNGT
-************************************************************/
+********************************************************************************************/
 inline char FCM::symIntToChar (U8 intSym) const
 {
-    switch(intSym)
+    switch (intSym)
     {
-        case 0:     return 'A';
-        case 1:     return 'C';
-        case 4:     return 'T';
-        case 3:     return 'G';
-        case 2:     return 'N';
-        default:    cerr << "ERROR: unknown integer '" << intSym << "'\n";  exit(1);
+        case 0:
+            return 'A';
+        case 1:
+            return 'C';
+        case 4:
+            return 'T';
+        case 3:
+            return 'G';
+        case 2:
+            return 'N';
+        default:
+            cerr << "ERROR: unknown integer '" << intSym << "'\n";
+            exit(1);
     }
 }
 
 
-/***********************************************************
+/********************************************************************************************
     fast power
     by Martin Ankerl
     http://martin.ankerl.com/2012/01/25/optimized-approximative-pow-in-c-and-cpp/
-************************************************************/
+********************************************************************************************/
 inline double FCM::fastPow (double base, double exponent)
 {
     union
@@ -836,12 +925,12 @@ inline double FCM::fastPow (double base, double exponent)
 }
 
 
-/***********************************************************
+/********************************************************************************************
     count number of symbols in a file
-************************************************************/
+********************************************************************************************/
 inline U64 FCM::countSymbols (const string &fileName)
 {
-    ifstream fileIn( fileName, ios::in );   /// open file
+    ifstream fileIn(fileName, ios::in);   /// open file
     
     /// error handling
     if (!fileIn)
@@ -854,7 +943,7 @@ inline U64 FCM::countSymbols (const string &fileName)
     string fileLine;    /// each line of file
     U64 symsNo = 0;     /// number of symbols
     
-    while ( getline(fileIn, fileLine) )
+    while (getline(fileIn, fileLine))
         for (string::iterator it = fileLine.begin(); it != fileLine.end(); ++it)
             ++symsNo;
     
@@ -862,13 +951,13 @@ inline U64 FCM::countSymbols (const string &fileName)
 }
 
 
-/***********************************************************
+/********************************************************************************************
     size of file, in bytes
-************************************************************/
+********************************************************************************************/
 inline U64 FCM::fileSize (const string &fileName)
 {
     /// ios::ate seeks to end immediately after opening
-    ifstream fileIn( fileName, ios::in | ios::ate );
+    ifstream fileIn(fileName, ios::in | ios::ate);
     return (U64) fileIn.tellg();
 }
 
@@ -1319,21 +1408,22 @@ void FCM::buildHashTable_str ()
 */ // end of COMMENT
 
 
-/***********************************************************
+/********************************************************************************************
     print hash table
-************************************************************/
+********************************************************************************************/
 void FCM::printHashTable (U8 idx) const
 {
-    htable_t hT = this->getHashTables()[idx];
+    htable_t hT = this->getHashTables()[ idx ];
     for (htable_t::iterator it = hT.begin(); it != hT.end(); ++it)
     {
         cout << it->first << "\t";
-        for (U64 i : it->second)    cout << i << "\t";
+        for (U64 i : it->second)
+            cout << i << "\t";
         cout << '\n';
     }
-    
+
 //**********************************************************************
-    
+
 //    cout
 //         << " >>> Context order size:\t" << (U16) contextDepth << '\n'
 //         << " >>> Alpha denominator:\t\t" << (U16) alphaDenom << '\n'
@@ -1362,28 +1452,28 @@ void FCM::printHashTable (U8 idx) const
 }
 
 
-/***********************************************************
+/********************************************************************************************
     getters and setters
-************************************************************/
-const vector<bool>       &FCM::getIR         () const  { return invRepeats;           }
-const vector<U8>         &FCM::getCtxDepth   () const  { return ctxDepths;            }
-const vector<string>     &FCM::getTarAddr    () const  { return tarAddr;              }
-const vector<string>     &FCM::getRefAddr    () const  { return refAddr;              }
-bool                      FCM::getDecompFlag () const  { return decompFlag;           }
-U8                        FCM::getN_threads  () const  { return n_threads;            }
-U8                        FCM::getN_models   () const  { return n_models;             }
-U64**                     FCM::getTables     () const  { return tables;               }
-htable_t*                 FCM::getHashTables () const  { return hashTables;           }
-void  FCM::setDecompFlag  (bool dF)                    { FCM::decompFlag = dF;        }
-void  FCM::setN_threads   (U8 nT)                      { n_threads = nT;              }
-void  FCM::setCompMode    (char cM)                    { compMode = cM;               }
-void  FCM::setN_models    (U8 n)                       { n_models = n;                }
-void  FCM::setGamma       (double g)                   { gamma = g;                   }
-void  FCM::pushTarAddr    (const string &tFAs)         { tarAddr.push_back(tFAs);     }
-void  FCM::pushRefAddr    (const string &rFAs)         { refAddr.push_back(rFAs);     }
-void  FCM::setTable       (U64 *tbl, U8 idx)           { tables[ idx ] = tbl;         }
-void  FCM::setHashTable   (const htable_t &ht, U8 idx) { hashTables[ idx ] = ht;      }
-void  FCM::initTables     ()                           { tables = new U64*[n_models]; }
-void  FCM::initHashTables ()                   { hashTables = new htable_t[n_models]; }
-void  FCM::pushParams     (bool iR, U8 ctx, U16 aD)    { invRepeats.push_back(iR);
-                               ctxDepths.push_back(ctx); alphaDens.push_back(aD);     }
+********************************************************************************************/
+const vector<bool>&   FCM::getIR         () const    { return invRepeats;                   }
+const vector<U8>&     FCM::getCtxDepth   () const    { return ctxDepths;                    }
+const vector<string>& FCM::getTarAddr    () const    { return tarAddr;                      }
+const vector<string>& FCM::getRefAddr    () const    { return refAddr;                      }
+U64**                 FCM::getTables     () const    { return tables;                       }
+htable_t*             FCM::getHashTables () const    { return hashTables;                   }
+bool  FCM::getDecompFlag                 () const    { return decompFlag;                   }
+U8    FCM::getN_threads                  () const    { return n_threads;                    }
+U8    FCM::getN_models                   () const    { return n_models;                     }
+void  FCM::initTables                    ()          { tables = new U64 *[n_models];        }
+void  FCM::initHashTables                ()          { hashTables = new htable_t[n_models]; }
+void  FCM::setDecompFlag (bool dF)                   { FCM::decompFlag = dF;                }
+void  FCM::setN_threads  (U8 nT)                     { n_threads = nT;                      }
+void  FCM::setCompMode   (char cM)                   { compMode = cM;                       }
+void  FCM::setN_models   (U8 n)                      { n_models = n;                        }
+void  FCM::setGamma      (double g)                  { gamma = g;                           }
+void  FCM::pushTarAddr   (const string &tFAs)        { tarAddr.push_back(tFAs);             }
+void  FCM::pushRefAddr   (const string &rFAs)        { refAddr.push_back(rFAs);             }
+void  FCM::setTable      (U64 *tbl, U8 idx)          { tables[ idx ] = tbl;                 }
+void  FCM::setHashTable  (const htable_t &ht, U8 idx){ hashTables[ idx ] = ht;              }
+void  FCM::pushParams    (bool iR, U8 ctx, U16 aD)   { invRepeats.push_back(iR);
+                             ctxDepths.push_back(ctx); alphaDens.push_back(aD);             }
