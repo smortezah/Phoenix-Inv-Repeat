@@ -31,9 +31,13 @@ using std::array;
 
 #define COMP_FILETYPE     ".co"           /// compressed file type
 #define DECOMP_FILETYPE   ".de"           /// decompressed file type
-#define WATERMARK         20170313        /// used in compression/decompression
+#define WATERMARK         20170324        /// used in compression/decompression
 #define BUFFER_SIZE       262144          /// used in decompression
+
 #define DOUBLE_TO_INT     65535           /// for converting double to integer
+#define MAX_INT           2147483647      /// maximum possible integer (32 bit)
+/// max number of bases allowed for each cell of table = (MAX_INT-1)/65535 = 2^15
+#define MAX_NO_BASE       32768
 
 
 /********************************************************************************************

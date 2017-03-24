@@ -117,6 +117,22 @@ void FCM::buildModel (const vector< string > &refsNames,
                 }   /// end while
             }   /// end for
             
+            
+            
+            
+            //todo: test
+//            for (int j = 0; j < 6; ++j) cout << table[ j ] << ' ';
+//            cout<<'\n';
+//
+//            for (int k = 0; k < befMaxPlaceValue; ++k)
+//            {
+//                if(table[k*ALPH_SUM_SIZE+ALPH_SIZE]>MAX_NO_BASE)
+//                    cout<<"stop "<<k*ALPH_SUM_SIZE+ALPH_SIZE << '\n';
+//                cout<< (table[k*ALPH_SUM_SIZE+ALPH_SIZE] / MAX_NO_BASE) << ' ';
+//            }
+            
+            
+            
             mut.lock();
             this->setTable(table, modelIndex);
             mut.unlock();     /// set table
@@ -328,6 +344,7 @@ void FCM::compress (const string &tarFileName)
                         probability = probability + weight[ i ] * prob_i;
                         
                         /// weight before normalization
+                        //todo: fastPow(1,0.95) != 1. halate n_models=1 bas joda she
                         rawWeight[ i ] = fastPow(weight[ i ], gamma) * prob_i;
                         /// sum of weights. used for normalization
                         sumOfWeights = sumOfWeights + rawWeight[ i ];
@@ -350,8 +367,9 @@ void FCM::compress (const string &tarFileName)
                     freqs[ 3 ] = (int) (1 + (freqsDouble[ 3 ] * DOUBLE_TO_INT));
                     freqs[ 4 ] = (int) (1 + (freqsDouble[ 4 ] * DOUBLE_TO_INT));
 
-
 //                    //todo test
+                    for (int j = 0; j < 5; ++j) cout << freqsDouble[ j ] << ' '; cout<<'\n';
+                    for (int j = 0; j < 5; ++j) cout << freqs[ j ] << ' '; cout<<'\n';
 //                    for (int j = 0; j < 5; ++j)
 //                    {
 //                        if(freqs[j] > 4294967295)
@@ -675,9 +693,7 @@ void FCM::decompress (const string &tarFileName)
                 freqs[ 3 ] = (int) (1 + (freqsDouble[ 3 ] * DOUBLE_TO_INT));
                 freqs[ 4 ] = (int) (1 + (freqsDouble[ 4 ] * DOUBLE_TO_INT));
                 
-                sumFreqs = 0;
-                for (int f : freqs)
-                    sumFreqs += f;    /// sum of frequencies
+                sumFreqs = 0;  for (int f : freqs) sumFreqs += f;    /// sum of frequencies
                 /// Arithmetic decoding
                 currSymInt = (U8) arithObj.ADSym(ALPH_SIZE, freqs, sumFreqs, Reader);
 //                freqs[ 0 ] = (U64) (1 + (freqsDouble[ 0 ] * DOUBLE_TO_INT));

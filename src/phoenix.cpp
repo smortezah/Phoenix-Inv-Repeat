@@ -88,13 +88,13 @@ int main (int argc, char *argv[])
     if (mixModel.getDecompFlag())
     {
         FCM decModel;
-//        /// reference(s) and target(s) address(es)
-//        for (string s : mixModel.getRefAddr())  decModel.pushRefAddr(s);
-//        for (string s : mixModel.getTarAddr())  decModel.pushTarAddr(s);
-//
-//        /// extract header information
-//        decModel.extractHeader(decModel.getTarAddr()[ 0 ]);
-//
+        /// reference(s) and target(s) address(es)
+        for (string s : mixModel.getRefAddr())  decModel.pushRefAddr(s);
+        for (string s : mixModel.getTarAddr())  decModel.pushTarAddr(s);
+        
+        /// extract header information
+        decModel.extractHeader(decModel.getTarAddr()[ 0 ]);
+        
 //        /// build reference(s) model(s) -- multithreaded
 //        n_models = mixModel.getN_models();
 //        n_threads = mixModel.getN_threads();                   /// set based on command line
@@ -109,7 +109,7 @@ int main (int argc, char *argv[])
 //            for (U8 j = 0; j < arrThrSize && i + j < n_models; ++j) arrThread[ j ].join();
 //        }
 //        delete[] arrThread;
-//
+
 //        /// decompress target(s) using reference(s) model(s) -- multithreaded
 //        /// modify thre. arr. size
 //        arrThrSize = (n_targets > n_threads) ? n_threads : n_targets;
