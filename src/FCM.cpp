@@ -339,7 +339,7 @@ void FCM::compress (const string &tarFileName)
                     }
                     /// update weights
                     for (U8 i = n_models; i--;) weight[ i ] = rawWeight[ i ] / sumOfWeights;
-    
+                    
                     /// sum( log_2 P(s|c^t) )
                     sumOfEntropies = sumOfEntropies + log2(probability);
                     
@@ -361,9 +361,7 @@ void FCM::compress (const string &tarFileName)
 //                        }
 //                    }
                     
-                    sumFreqs = 0;
-                    for (int f : freqs)
-                        sumFreqs += f;          /// sum of frequencies
+                    sumFreqs = 0;   for (int f : freqs) sumFreqs += f; /// sum of frequencies
 //                    freqs[ 0 ] = (U64) (1 + (freqsDouble[0] * DOUBLE_TO_INT));
 //                    freqs[ 1 ] = (U64) (1 + (freqsDouble[1] * DOUBLE_TO_INT));
 //                    freqs[ 2 ] = (U64) (1 + (freqsDouble[2] * DOUBLE_TO_INT));
@@ -424,9 +422,7 @@ void FCM::compress (const string &tarFileName)
                         freqsDouble[ 4 ] += weight[ i ] * hTRowArray[ 4 ];
                         
                         /// sum of number of symbols
-                        sumNSym = 0;
-                        for (U64 u : hTRowArray)
-                            sumNSym = sumNSym + u;
+                        sumNSym = 0;  for (U64 u : hTRowArray) sumNSym = sumNSym + u;
 ////                        Y(sumNSym);
                         nSym = hTRowArray[ currSymInt ];        /// number of symbols
 ////                          nSym = X;
@@ -462,9 +458,7 @@ void FCM::compress (const string &tarFileName)
                     freqs[ 3 ] = (int) (1 + (freqsDouble[ 3 ] * DOUBLE_TO_INT));
                     freqs[ 4 ] = (int) (1 + (freqsDouble[ 4 ] * DOUBLE_TO_INT));
                     
-                    sumFreqs = 0;
-                    for (int f : freqs)
-                        sumFreqs += f;      /// sum of frequencies
+                    sumFreqs = 0;  for (int f : freqs) sumFreqs += f; /// sum of frequencies
 //                    freqs[ 0 ] = (U64) (1 + (freqsDouble[0] * DOUBLE_TO_INT));
 //                    freqs[ 1 ] = (U64) (1 + (freqsDouble[1] * DOUBLE_TO_INT));
 //                    freqs[ 2 ] = (U64) (1 + (freqsDouble[2] * DOUBLE_TO_INT));

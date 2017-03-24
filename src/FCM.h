@@ -46,17 +46,17 @@ public:
     bool  getDecompFlag                 () const;   /// get decompress flag
     U8    getN_threads                  () const;   /// get number of threads
     U8    getN_models                   () const;   /// get number of models
-    void  setDecompFlag (bool);                     /// set decompress flag
-    void  setN_threads  (U8);                       /// set number of threads
-    void  setCompMode   (char);                     /// set compression mode
-    void  setN_models   (U8);                       /// set number of models
-    void  setGamma      (double);                   /// set gamma
-    void  pushTarAddr   (const string&);            /// push back target files addresses
-    void  pushRefAddr   (const string&);            /// push back reference files addresses
-    void  setTable      (U64*, U8);                 /// set table(s)
-    void  setHashTable  (const htable_t&, U8);      /// set hash table(s)
+    void  setDecompFlag   (bool);                   /// set decompress flag
+    void  setN_threads    (U8);                     /// set number of threads
+    void  setCompMode     (char);                   /// set compression mode
+    void  setN_models     (U8);                     /// set number of models
+    void  setGamma        (double);                 /// set gamma
+    void  pushTarAddr     (const string&);          /// push back target files addresses
+    void  pushRefAddr     (const string&);          /// push back reference files addresses
+    void  setTable        (U64*, U8);               /// set table(s)
+    void  setHashTable    (const htable_t&, U8);    /// set hash table(s)
     /// push back model(s) params (ir, ctx_depth, alpha_denom)
-    void  pushParams    (bool, U8, U16);
+    void  pushParams      (bool, U8, U16);
    
    
 //   double getGamma ()    { return gamma; }
