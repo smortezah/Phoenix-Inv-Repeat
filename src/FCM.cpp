@@ -182,12 +182,10 @@ void FCM::buildModel (const vector< string > &refsNames,
         }   /// end case
             break;
         
-        default:
-            break;
+        default:    break;
     }   /// end switch
     
-    for (U8 i = refsNo; i--;)
-        refsIn[ i ].close();       /// close file(s)
+    for (U8 i = refsNo; i--;)   refsIn[ i ].close();       /// close file(s)
 }
 
 
@@ -196,7 +194,7 @@ void FCM::buildModel (const vector< string > &refsNames,
 ********************************************************************************************/
 void FCM::compress (const string &tarFileName)
 {
-    ArithEncDec arithObj;   /// to work with arithmetic encoder/decoder class
+//    ArithEncDec arithObj;   /// to work with arithmetic encoder/decoder class
     
     /// alpha and ALPH_SIZE*alpha: used in P numerator and denominator
     double alpha[n_models], sumAlphas[n_models];
@@ -269,15 +267,29 @@ void FCM::compress (const string &tarFileName)
     mut.unlock();///======================================================
     
     //todo: test
+    _bytes_output = 0;                  /// output bytes
 //    arithObj.startoutputtingbits();              /// start arithmetic encoding process
 //    arithObj.start_encode();
     startoutputtingbits();              /// start arithmetic encoding process
     start_encode();
     
     /// model(s) properties, being sent to decoder as header
+    
+    WriteNBits(WATERMARK, 26, Writer);    /// WriteNBits: just writes header
+//    WriteNBits(symsNo, 46, Writer);    /// number of symbols, in byte
+//    WriteNBits((U64) (gamma * 65536), 32, Writer);    /// gamma
+//    WriteNBits(n_models, 16, Writer);    /// number of models
+//    for (U8 n = 0; n < n_models; ++n)
+//    {
+//        WriteNBits((U8) invRepeats[ n ], 1, Writer);    /// inverted repeats
+//        WriteNBits(ctxDepths[ n ], 16, Writer);    /// context depths
+//        WriteNBits(alphaDens[ n ], 16, Writer);    /// alpha denoms
+//    }
+//    WriteNBits((U64) compMode, 16, Writer);    /// compression mode
+    
+//     = _bytes_output;     /// [n_bits/8]
 
 //    arithObj.WriteNBits(WATERMARK, 26, Writer);    /// WriteNBits: just writes header
-    WriteNBits(WATERMARK, 26, Writer);    /// WriteNBits: just writes header
 //    arithObj.WriteNBits(symsNo, 46, Writer);    /// number of symbols, in byte
 //    arithObj.WriteNBits((U64) (gamma * 65536), 32, Writer);    /// gamma
 //    arithObj.WriteNBits(n_models, 16, Writer);    /// number of models
@@ -300,8 +312,8 @@ void FCM::compress (const string &tarFileName)
             //todo test
             U64 test_n_line = 0;
             //todo test r=PTY t=PTY
-            while (getline(tarFileIn, tarLine) && test_n_line < 1)  //todo test r=PTY t=HS21
-//            while (getline(tarFileIn, tarLine))
+//            while (getline(tarFileIn, tarLine) && test_n_line < 1)  //todo test r=PTY t=HS21
+            while (getline(tarFileIn, tarLine))
             {
                 
                 //todo test
@@ -401,7 +413,9 @@ void FCM::compress (const string &tarFileName)
 //                    }
                     
                     /// Arithmetic encoding
+                    //todo: test
 //                    arithObj.AESym(currSymInt, freqs, sumFreqs, Writer);
+                    AESym(currSymInt, freqs, sumFreqs, Writer);
                 }   /// end for
             }   /// end while
         }   /// end case
@@ -540,14 +554,14 @@ void FCM::compress (const string &tarFileName)
 ********************************************************************************************/
 void FCM::extractHeader (const string &tarFileName)
 {
-    ArithEncDec arithObj;   /// to work with arithmetic encoder/decoder class
+//    ArithEncDec arithObj;   /// to work with arithmetic encoder/decoder class
     
     size_t lastSlash_Tar = tarFileName.find_last_of("/");       /// position of last slash
     string tarNamePure = tarFileName.substr(lastSlash_Tar + 1); /// tar. name without slash
     /// compressed file. convert string to char*
     const char *tarCo = (tarNamePure + COMP_FILETYPE).c_str();
     FILE *Reader = fopen(tarCo, "r");                 /// to process the compressed file
-    
+
     /// starting
     //todo: test
 //    arithObj.startinputtingbits();                   /// start arithmetic decoding process
@@ -557,12 +571,35 @@ void FCM::extractHeader (const string &tarFileName)
     
     /// extract header information
     //todo: test
-//    if (arithObj.ReadNBits(26, Reader) != WATERMARK)         /// watermark check-in
     if (ReadNBits(26, Reader) != WATERMARK)         /// watermark check-in
     {
         cerr << "ERROR: Invalid compressed file!\n";
         exit(1);
     }
+//    ReadNBits(46, Reader);        /// file size
+//    /// gamma
+//    this->setGamma(round((double) ReadNBits(32, Reader) / 65536 * 100) / 100);
+//    U64 no_models = ReadNBits(16, Reader);       /// number of models
+//    this->setN_models((U8) no_models);
+//    bool ir;    U8 k;   U16 aD;
+//    for (U8 n = 0; n < no_models; ++n)
+//    {
+//        ir = (bool) ReadNBits(1, Reader);
+//        k = (U8) ReadNBits(16, Reader);
+//        aD = (U16) ReadNBits(16, Reader);
+//        this->pushParams(ir, k, aD);          /// ir, ctx depth, alpha denom
+//    }
+//    char compMode = (char) ReadNBits(16, Reader);    /// compression mode
+//    this->setCompMode(compMode);
+//    /// initialize vector of tables/hash tables
+//    compMode == 'h' ? this->initHashTables() : this->initTables();
+    
+    
+//    if (arithObj.ReadNBits(26, Reader) != WATERMARK)         /// watermark check-in
+//    {
+//        cerr << "ERROR: Invalid compressed file!\n";
+//        exit(1);
+//    }
 //    arithObj.ReadNBits(46, Reader);        /// file size
 //    /// gamma
 //    this->setGamma(round((double) arithObj.ReadNBits(32, Reader) / 65536 * 100) / 100);
@@ -881,16 +918,11 @@ inline U8 FCM::symCharToInt (char charSym) const
 {
     switch (charSym)
     {
-        case 'A':
-            return 0;
-        case 'C':
-            return 1;
-        case 'T':
-            return 4;
-        case 'G':
-            return 3;
-        case 'N':
-            return 2;
+        case 'A':   return 0;
+        case 'C':   return 1;
+        case 'T':   return 4;
+        case 'G':   return 3;
+        case 'N':   return 2;
         default:
             cerr << "ERROR: unknown symbol '" << charSym << "'\n";
             exit(1);
@@ -914,16 +946,11 @@ inline char FCM::symIntToChar (U8 intSym) const
 {
     switch (intSym)
     {
-        case 0:
-            return 'A';
-        case 1:
-            return 'C';
-        case 4:
-            return 'T';
-        case 3:
-            return 'G';
-        case 2:
-            return 'N';
+        case 0: return 'A';
+        case 1: return 'C';
+        case 4: return 'T';
+        case 3: return 'G';
+        case 2: return 'N';
         default:
             cerr << "ERROR: unknown integer '" << intSym << "'\n";
             exit(1);

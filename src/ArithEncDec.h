@@ -118,7 +118,7 @@ extern char *coder_desc;
 static code_value in_R;						/// code range
 static code_value in_D;						/// = V-L (V offset)
 static div_value  in_r;						/// normalized range
-                                			
+
 /// Output encoding state
 static code_value out_L;					/// lower bound
 static code_value out_R;					/// code range
@@ -998,7 +998,7 @@ int ReadNBits (U32 nBits, FILE *iFp)
     while (nBits--)
     {
         bits <<= 1;
-        target = arithmetic_decode_target(2);
+        target = (int) arithmetic_decode_target(2);
         bits |= GetSymbol(&low, &high, count, target, 2);
         arithmetic_decode(low, high, 2, iFp);
     }
@@ -1116,6 +1116,9 @@ void arithmetic_encode (freq_value low, freq_value high,
 }
 
 
+/********************************************************************************************
+
+********************************************************************************************/
 void WriteNBits (U64 bits, int nBits, FILE *oFp)
 {
     while (nBits--)
@@ -1142,6 +1145,43 @@ void finish_decode (void)
 void doneinputtingbits (void)
 {
 	_in_bit_ptr = 0;	/// "Wipe" buffer (in case more input follows)
+}
+
+
+/********************************************************************************************
+
+********************************************************************************************/
+void GetInterval (int *low, int *high, int *count, U8 symbol)
+{
+	*low = 0;	for (U8 n = 0; n < symbol; n++) *low += count[ n ];
+	*high = *low + count[ symbol ];
+}
+
+
+/********************************************************************************************
+
+********************************************************************************************/
+void AESym (U8 symbol, int *counters, int totalCount, FILE *oFp)
+{
+	int low, high;
+
+	GetInterval(&low, &high, counters, symbol);
+	arithmetic_encode(low, high, totalCount, oFp);
+}
+
+
+/********************************************************************************************
+
+********************************************************************************************/
+U8 ADSym (U8 nSymbols, int *counters, int totalCount, FILE *iFp)
+{
+	int low, high;
+
+	U8 symbol = GetSymbol(&low, &high, counters,
+						  arithmetic_decode_target(totalCount), nSymbols);
+	arithmetic_decode(low, high, totalCount, iFp);
+
+	return symbol;
 }
 
 
