@@ -88,12 +88,12 @@ int main (int argc, char *argv[])
     if (mixModel.getDecompFlag())
     {
         FCM decModel;
-        /// reference(s) and target(s) address(es)
-        for (string s : mixModel.getRefAddr())  decModel.pushRefAddr(s);
-        for (string s : mixModel.getTarAddr())  decModel.pushTarAddr(s);
-        
-        /// extract header information
-        decModel.extractHeader(decModel.getTarAddr()[ 0 ]);
+//        /// reference(s) and target(s) address(es)
+//        for (string s : mixModel.getRefAddr())  decModel.pushRefAddr(s);
+//        for (string s : mixModel.getTarAddr())  decModel.pushTarAddr(s);
+//
+//        /// extract header information
+//        decModel.extractHeader(decModel.getTarAddr()[ 0 ]);
         
 //        /// build reference(s) model(s) -- multithreaded
 //        n_models = mixModel.getN_models();
