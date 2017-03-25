@@ -22,9 +22,7 @@ public:
     void   buildModel          (const vector<string>&,
                                 bool, U8, U8);      /// build reference(s) model
     void   compress            (const string&);     /// compress target file
-    
-    /// extract header information for decompression
-    void   extractHeader       (const string &);
+    void   extractHeader       (const string&);     /// extract header inf. for decompression
     void   decompress          (const string&);     /// decompress target file
                                                    
     inline char   symIntToChar (U8)        const;   /// 01234 -> ACNGT
@@ -34,7 +32,7 @@ public:
     inline U64    countSymbols (const string&);     /// count number of symbols in a file
            
 //    void buildHashTable_str ();                    /// build hash table (string key)
-    void   printHashTable (U8)           const;     /// print hash table
+    inline void   printHashTable (U8)      const;   /// print hash table
     
     /// getters and setters
     const vector<bool>&   getIR         () const;   /// get inverted repeat(s)
