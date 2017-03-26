@@ -24,57 +24,55 @@ using std::thread;
 using std::ios;
 
 
-/********************************************************************************************
+/******************************************************************************
     parse command line
-********************************************************************************************/
+******************************************************************************/
 void commandLineParser (int argc, char **argv, FCM &mixModel)
 {
-    Messages messageObj;                /// object for showing messages
+    Messages messageObj;               /// object for showing messages
     
     /// using these flags, if both short and long arguments
     /// are entered, just one of them is considered
-    static int h_flag;                  /// option 'h' (help)
-    static int A_flag;                  /// option 'A' (about)
-    static int v_flag;                  /// option 'v' (verbose)
-    static int d_flag;                  /// option 'd' (decompress)
+    static int h_flag;                 /// option 'h' (help)
+    static int A_flag;                 /// option 'A' (about)
+    static int v_flag;                 /// option 'v' (verbose)
+    static int d_flag;                 /// option 'd' (decompress)
     
     /// mandatory arguments
-    bool m_flag = false;                /// model(s) parameters entered
-    bool r_flag = false;                /// reference(s) file name entered
-    bool t_flag = false;                /// target(s) file name entered
-    string strModelsParameters = "";    /// argument of option 'm'
-    string refFilesNames = "";          /// argument of option 'r'
-    string tarFilesNames = "";          /// argument of option 't'
+    bool m_flag = false;               /// model(s) parameters entered
+    bool r_flag = false;               /// reference(s) file name entered
+    bool t_flag = false;               /// target(s) file name entered
+    string strModelsParameters = "";   /// argument of option 'm'
+    string refFilesNames = "";         /// argument of option 'r'
+    string tarFilesNames = "";         /// argument of option 't'
     
-    int c;                              /// deal with getopt_long()
-    int option_index;                   /// option index stored by getopt_long()
+    int c;                             /// deal with getopt_long()
+    int option_index;                  /// option index stored by getopt_long()
     
-    opterr = 0;            /// force getopt_long() to remain silent when it finds a problem
+    opterr = 0;/// force getopt_long() to remain silent when it finds a problem
     
     static struct option long_options[] =
-            {
-                    {"help",      no_argument,       &h_flag, (int) 'h'}, /// help
-                    {"about",     no_argument,       &A_flag, (int) 'A'}, /// About
-                    {"verbose",   no_argument,       &v_flag, (int) 'v'}, /// verbose
-                    {"decompress",no_argument,       &d_flag, (int) 'd'}, /// decompress
-                    {"model",     required_argument, 0,             'm'}, /// model(s)
-                    {"reference", required_argument, 0,             'r'}, /// ref. file(s)
-                    {"target",    required_argument, 0,             't'}, /// tar. file(s)
-                    {"n_threads", required_argument, 0,             'n'}, /// no_threads>=1
-                    {"gamma",     required_argument, 0,             'g'}, /// 0 <= gamma < 1
-                    {0,           0,                 0,               0}
-            };
+    {
+       {"help",      no_argument,       &h_flag, (int) 'h'}, /// help
+       {"about",     no_argument,       &A_flag, (int) 'A'}, /// About
+       {"verbose",   no_argument,       &v_flag, (int) 'v'}, /// verbose
+       {"decompress",no_argument,       &d_flag, (int) 'd'}, /// decompress
+       {"model",     required_argument, 0,             'm'}, /// model(s)
+       {"reference", required_argument, 0,             'r'}, /// ref. file(s)
+       {"target",    required_argument, 0,             't'}, /// tar. file(s)
+       {"n_threads", required_argument, 0,             'n'}, /// no_threads>=1
+       {"gamma",     required_argument, 0,             'g'}, /// 0 <= gamma < 1
+       {0,           0,                 0,               0}
+    };
     
     while (1)
     {
-        /// getopt_long() stores the option index here.
-        option_index = 0;
+        option_index = 0;   /// getopt_long() stores the option index here.
         
-        c = getopt_long(argc, argv, ":hAvdm:r:t:n:g:", long_options, &option_index);
-        
-        /// Detect the end of the options.
-        if (c == -1)
-            break;
+        c = getopt_long(argc, argv, ":hAvdm:r:t:n:g:",
+                        long_options, &option_index);
+             
+        if (c == -1)    break;  /// Detect the end of the options.
         
         switch (c)
         {
@@ -82,7 +80,8 @@ void commandLineParser (int argc, char **argv, FCM &mixModel)
                 /// If this option set a flag, do nothing else now.
                 if (long_options[ option_index ].flag != 0) break;
                 
-                cout << "option '" << long_options[ option_index ].name << "'\n";
+                cout << "option '" << long_options[ option_index ].name
+                     << "'\n";
                 if (optarg) cout << " with arg " << optarg << '\n';
                 break;
             
@@ -108,17 +107,17 @@ void commandLineParser (int argc, char **argv, FCM &mixModel)
             
             case 'm':   /// needs model(s) parameters
                 m_flag = true;
-                strModelsParameters = (string) optarg;/// keep argument = model(s) parameters
+                strModelsParameters = (string) optarg; /// keep model(s) params
                 break;
             
             case 'r':   /// needs reference file(s) name(s)
                 r_flag = true;
-                refFilesNames = (string) optarg;    /// keep argument = reference files names
+                refFilesNames = (string) optarg;      /// keep ref. files names
                 break;
             
             case 't':   /// needs target file(s) name(s)
                 t_flag = true;
-                tarFilesNames = (string) optarg;     /// keep argument = target files names
+                tarFilesNames = (string) optarg;      /// keep tar. files names
                 break;
             
             case 'n':   /// needs an integer argument
@@ -126,11 +125,12 @@ void commandLineParser (int argc, char **argv, FCM &mixModel)
                 {
                     U8 n_threads = (U8) stoi((string) optarg);
                     mixModel.setN_threads( (n_threads < 1)
-                                           ? (U8) DEFAULT_N_THREADS : n_threads );
+                                         ? (U8) DEFAULT_N_THREADS : n_threads);
                 }
                 catch (const invalid_argument &ia)
                 {
-                    cerr << "ERROR: Option 'n' ('n_threads') has an invalid argument.\n";
+                    cerr << "ERROR: Option 'n' ('n_threads') has an "
+                            "invalid argument.\n";
                     return;
                 }
                 break;
@@ -139,22 +139,26 @@ void commandLineParser (int argc, char **argv, FCM &mixModel)
                 try
                 {
                     double gamma = stod( (string) optarg );
-                    mixModel.setGamma( (gamma < 0 || gamma >= 1) ? DEFAULT_GAMMA : gamma );
+                    mixModel.setGamma( (gamma < 0 || gamma >= 1)
+                                       ? DEFAULT_GAMMA : gamma );
                 }
                 catch (const invalid_argument &ia)
                 {
-                    cerr << "ERROR: Option 'g' ('gamma') has an invalid argument.\n";
+                    cerr << "ERROR: Option 'g' ('gamma') has an "
+                            "invalid argument.\n";
                     return;
                 }
                 break;
             
             case ':':   /// missing option argument
-                cerr << "ERROR: Option '" << (char) optopt << "' requires an argument.\n";
+                cerr << "ERROR: Option '" << (char) optopt
+                     << "' requires an argument.\n";
                 break;
             
             case '?':   /// invalid option
             default:
-                cerr << "ERROR: Option '" << (char) optopt << "' is invalid.\n";
+                cerr << "ERROR: Option '" << (char) optopt
+                     << "' is invalid.\n";
                 break;
         }
     }
@@ -162,7 +166,8 @@ void commandLineParser (int argc, char **argv, FCM &mixModel)
     /// save target file(s) name(s)
     if (t_flag)
     {
-        string::iterator begIter = tarFilesNames.begin(),   endIter = tarFilesNames.end();
+        string::iterator begIter = tarFilesNames.begin();
+        string::iterator endIter = tarFilesNames.end();
         /// all target files names but the last one
         for (string::iterator it = begIter; it != endIter; ++it)
             if (*it == ',')
@@ -170,7 +175,7 @@ void commandLineParser (int argc, char **argv, FCM &mixModel)
                 mixModel.pushTarAddr( string(begIter, it) );
                 begIter = it + 1;
             }
-        mixModel.pushTarAddr( string(begIter, endIter) );   /// last target file name
+        mixModel.pushTarAddr( string(begIter, endIter) );    /// last tar. name
         
         /*  slower
         U8 tarIndex = (U8) tarFilesNames.size();
@@ -179,7 +184,8 @@ void commandLineParser (int argc, char **argv, FCM &mixModel)
         {
             if (tarFilesNames[ i ] == ',')
             {
-                mixModel.pushBackTarAddresses(tarFilesNames.substr(i + 1, tarIndex - i - 1));
+                mixModel.pushBackTarAddresses(
+                        tarFilesNames.substr(i + 1, tarIndex - i - 1));
                 tarIndex = i;
             }
         }
@@ -191,7 +197,8 @@ void commandLineParser (int argc, char **argv, FCM &mixModel)
     /// save reference file(s) name(s)
     if (r_flag)
     {
-        string::iterator begIter = refFilesNames.begin(),   endIter = refFilesNames.end();
+        string::iterator begIter = refFilesNames.begin();
+        string::iterator endIter = refFilesNames.end();
         /// all reference files names but the last one
         for (string::iterator it = begIter; it != endIter; ++it)
             if (*it == ',')
@@ -199,7 +206,7 @@ void commandLineParser (int argc, char **argv, FCM &mixModel)
                 mixModel.pushRefAddr(string(begIter, it));
                 begIter = it + 1;
             }
-        mixModel.pushRefAddr(string(begIter, endIter));    /// last reference file name
+        mixModel.pushRefAddr(string(begIter, endIter));      /// last ref. name
         
         /*  slower
         U8 refIndex = (U8) refFilesNames.size();
@@ -208,7 +215,8 @@ void commandLineParser (int argc, char **argv, FCM &mixModel)
         {
             if (refFilesNames[ i ] == ',')
             {
-                mixModel.pushBackRefAddresses(refFilesNames.substr(i + 1, refIndex - i - 1));
+                mixModel.pushBackRefAddresses(
+                        refFilesNames.substr(i + 1, refIndex - i - 1));
                 refIndex = i;
             }
         }
@@ -220,7 +228,7 @@ void commandLineParser (int argc, char **argv, FCM &mixModel)
     /// save model(s) parameters and process the model(s)
     if (m_flag)
     {
-        vector< string > vecModelsParams;             /// parameters for different models
+        vector< string > vecModelsParams;   /// parameters for different models
         string::iterator begIter = strModelsParameters.begin();
         string::iterator endIter = strModelsParameters.end();
         /// all models parameters but the last one
@@ -230,17 +238,19 @@ void commandLineParser (int argc, char **argv, FCM &mixModel)
                 vecModelsParams.push_back( string(begIter, it) );
                 begIter = it + 1;
             }
-        vecModelsParams.push_back( string(begIter, endIter) ); /// last model parameters
+        /// last model parameters
+        vecModelsParams.push_back( string(begIter, endIter) );
                                                                
-        vector< string > modelParams;                          /// parameters for each model
-        U8 n_models = (U8) vecModelsParams.size();             /// number of models
-        mixModel.setN_models(n_models);                        /// set number of models
-                                                               
+        vector< string > modelParams;              /// params for each model
+        U8 n_models = (U8) vecModelsParams.size(); /// number of models
+        mixModel.setN_models(n_models);            /// set number of models
+                                                   
         for (U8 n = n_models; n--;)
         {
-            modelParams.clear();                               /// reset vector modelParams
+            modelParams.clear();                   /// reset vector modelParams
             
-            begIter = vecModelsParams[ n ].begin(), endIter = vecModelsParams[ n ].end();
+            begIter = vecModelsParams[ n ].begin();
+            endIter = vecModelsParams[ n ].end();
             /// all paramaeters for each model but the last one
             for (string::iterator it = begIter; it != endIter; ++it)
                 if (*it == ',')
@@ -252,20 +262,22 @@ void commandLineParser (int argc, char **argv, FCM &mixModel)
             modelParams.push_back( string(begIter, endIter) );
                                                                
             /// set model(s) parameters
-            mixModel.pushParams((bool) stoi(modelParams[ 0 ]), /// inverted repeat
-                                (U8) stoi(modelParams[ 1 ]),   /// context depth
-                                (U16) stoi(modelParams[ 2 ])); /// alpha denominator
+            mixModel.pushParams((bool) stoi(modelParams[ 0 ]), /// IR
+                                (U8) stoi(modelParams[ 1 ]),   /// ctx depth
+                                (U16) stoi(modelParams[ 2 ])); /// alpha denom.
         }
         
         /// set compression mode: 't'=table, 'h'=hash table
         /// 5^k_1 + 5^k_2 + ... > 5^12 ==> mode: hash table
         U64 cmpModeSum = 0;
-        for (U8 k : mixModel.getCtxDepth())    cmpModeSum = cmpModeSum + POWER5[k];
-        const char compressionMode = (cmpModeSum > POWER5[TABLE_MAX_CTX]) ? 'h' : 't';
+        for(U8 k : mixModel.getCtxDepth()) cmpModeSum = cmpModeSum + POWER5[k];
+        const char compressionMode = (cmpModeSum > POWER5[TABLE_MAX_CTX])
+                                     ? 'h' : 't';
         mixModel.setCompMode(compressionMode);
         
         /// initialize vector of tables or hash tables
-        compressionMode == 'h' ? mixModel.initHashTables() : mixModel.initTables();
+        compressionMode == 'h' ? mixModel.initHashTables()
+                               : mixModel.initTables();
     }
     
     /// Print any remaining command line arguments (not options).
@@ -279,9 +291,9 @@ void commandLineParser (int argc, char **argv, FCM &mixModel)
 }   /// end commandLineParser
 
 
-/********************************************************************************************
+/******************************************************************************
     check if original and decompressed files are identical
-********************************************************************************************/
+******************************************************************************/
 bool areFilesEqual (const string &first, const string &second)
 {
     ifstream firstFile  (first,  ios::in);  /// open first file
@@ -290,12 +302,14 @@ bool areFilesEqual (const string &first, const string &second)
     /// error occurred while opening files
     if (!firstFile)
     {
-        cerr << "ERROR: The file '" << first << "' cannot be opened, or it is empty.\n";
+        cerr << "ERROR: The file '" << first
+             << "' cannot be opened, or it is empty.\n";
         exit(1);                            /// exit this function
     }
     else if (!secondFile)
     {
-        cerr << "ERROR: The file '" << second << "' cannot be opened, or it is empty.\n";
+        cerr << "ERROR: The file '" << second
+             << "' cannot be opened, or it is empty.\n";
         exit(1);                            /// exit this function
     }
     
@@ -311,7 +325,7 @@ bool areFilesEqual (const string &first, const string &second)
     }
     while ( getline(secondFile, secondLine) )
     {
-        secondLine.erase( std::remove(secondLine.begin(), secondLine.end(), '\n'),
+        secondLine.erase(std::remove(secondLine.begin(),secondLine.end(),'\n'),
                           secondLine.end() );
         secondStr += secondLine;
     }
@@ -323,9 +337,9 @@ bool areFilesEqual (const string &first, const string &second)
 }
 
 
-/********************************************************************************************
+/******************************************************************************
     check if file opened correctly
-********************************************************************************************/
+******************************************************************************/
 /*
 //bool isFileCorrect (const string &fileName)
 bool Functions::isFileCorrect (ifstream &fileIn)

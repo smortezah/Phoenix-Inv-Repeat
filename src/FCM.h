@@ -15,44 +15,44 @@ using std::vector;
 class FCM
 {
 public:
-    FCM ();                                         /// constructor
-    void   initTables          ();                  /// initialize vector of tables
-    void   initHashTables      ();                  /// initialize vector of hash tables
+    FCM ();                                /// constructor
+    void   initTables          ();         /// initialize vector of tables
+    void   initHashTables      ();         /// initialize vector of hash tables
                                                        
     void   buildModel          (const vector<string>&,
-                                bool, U8, U8);      /// build reference(s) model
-    void   compress            (const string&);     /// compress target file
-    void   extractHeader       (const string&);     /// extract header inf. for decompression
-    void   decompress          (const string&);     /// decompress target file
+                                bool, U8, U8);     /// build reference(s) model
+    void   compress            (const string&);    /// compress target file
+    void   extractHeader       (const string&);    /// header inf. for decomp.
+    void   decompress          (const string&);    /// decompress target file
                                                    
-    inline char   symIntToChar (U8)        const;   /// 01234 -> ACNGT
-    inline U8     symCharToInt (char)      const;   /// ACNGT -> 01234
-    inline double fastPow      (double, double);    /// fast power
-    inline U64    fileSize     (const string&);     /// size of file
-    inline U64    countSymbols (const string&);     /// count number of symbols in a file
+    inline char   symIntToChar (U8)        const;  /// 01234 -> ACNGT
+    inline U8     symCharToInt (char)      const;  /// ACNGT -> 01234
+    inline double fastPow      (double, double);   /// fast power
+    inline U64    fileSize     (const string&);    /// size of file
+    inline U64    countSymbols (const string&);    /// count no. syms in a file
            
-//    void buildHashTable_str ();                    /// build hash table (string key)
-    inline void   printHashTable (U8)      const;   /// print hash table
+//    void buildHashTable_str ();             /// build hash table (string key)
+    inline void   printHashTable (U8)      const;  /// print hash table
     
     /// getters and setters
-    const vector<bool>&   getIR         () const;   /// get inverted repeat(s)
-    const vector<U8>&     getCtxDepth   () const;   /// get context depth(es)
-    const vector<string>& getTarAddr    () const;   /// get target files addresses
-    const vector<string>& getRefAddr    () const;   /// get reference files addresses
-    U64**                 getTables     () const;   /// get table(s)
-    htable_t*             getHashTables () const;   /// get hash table(s)
-    bool  getDecompFlag                 () const;   /// get decompress flag
-    U8    getN_threads                  () const;   /// get number of threads
-    U8    getN_models                   () const;   /// get number of models
-    void  setDecompFlag   (bool);                   /// set decompress flag
-    void  setN_threads    (U8);                     /// set number of threads
-    void  setCompMode     (char);                   /// set compression mode
-    void  setN_models     (U8);                     /// set number of models
-    void  setGamma        (double);                 /// set gamma
-    void  pushTarAddr     (const string&);          /// push back target files addresses
-    void  pushRefAddr     (const string&);          /// push back reference files addresses
-    void  setTable        (U64*, U8);               /// set table(s)
-    void  setHashTable    (const htable_t&, U8);    /// set hash table(s)
+    const vector<bool>&   getIR         () const;  /// get inverted repeat(s)
+    const vector<U8>&     getCtxDepth   () const;  /// get context depth(es)
+    const vector<string>& getTarAddr    () const;  /// get tar. files addresses
+    const vector<string>& getRefAddr    () const;  /// get ref. files addresses
+    U64**                 getTables     () const;  /// get table(s)
+    htable_t*             getHashTables () const;  /// get hash table(s)
+    bool  getDecompFlag                 () const;  /// get decompress flag
+    U8    getN_threads                  () const;  /// get number of threads
+    U8    getN_models                   () const;  /// get number of models
+    void  setDecompFlag   (bool);                  /// set decompress flag
+    void  setN_threads    (U8);                    /// set number of threads
+    void  setCompMode     (char);                  /// set compression mode
+    void  setN_models     (U8);                    /// set number of models
+    void  setGamma        (double);                /// set gamma
+    void  pushTarAddr     (const string&);         /// push back tars. addr.
+    void  pushRefAddr     (const string&);         /// push back refs. addr.
+    void  setTable        (U64*, U8);              /// set table(s)
+    void  setHashTable    (const htable_t&, U8);   /// set hash table(s)
     /// push back model(s) params (ir, ctx_depth, alpha_denom)
     void  pushParams      (bool, U8, U16);
    
@@ -64,22 +64,22 @@ public:
     
 
 private:
-    std::mutex     mut;                             /// mutex
-                                                    
-    U8             n_threads;                       /// number of threads
-    bool           decompFlag;                      /// decompress flag
-                                                    
-    char           compMode;                        /// compression mode (table / hash table)
-    U8             n_models;                        /// number of models
-    double         gamma;                           /// gamma (for mixture of FCMs)
-    vector<bool>   invRepeats;                      /// inverted repeat(s)
-    vector<U8>     ctxDepths;                       /// context depthe(s) (SIZE <= 255)
-    vector<U16>    alphaDens;                       /// alpha denominator(s)
-    vector<string> tarAddr;                         /// target files addresses
-    vector<string> refAddr;                         /// reference files addresses
-    U64**          tables;                          /// table(s)
-    htable_t*      hashTables;                      /// hash table(s)
-//    htable_str_t hashTable_str;                     /// hash table (string key)
+    std::mutex     mut;               /// mutex
+                                      
+    U8             n_threads;         /// number of threads
+    bool           decompFlag;        /// decompress flag
+                                      
+    char           compMode;          /// compression mode (table / hash table)
+    U8             n_models;          /// number of models
+    double         gamma;             /// gamma (for mixture of FCMs)
+    vector<bool>   invRepeats;        /// inverted repeat(s)
+    vector<U8>     ctxDepths;         /// context depthe(s) (SIZE <= 255)
+    vector<U16>    alphaDens;         /// alpha denominator(s)
+    vector<string> tarAddr;           /// target files addresses
+    vector<string> refAddr;           /// reference files addresses
+    U64**          tables;            /// table(s)
+    htable_t*      hashTables;        /// hash table(s)
+//    htable_str_t hashTable_str;     /// hash table (string key)
 };
 
 
