@@ -62,7 +62,7 @@ Options:
 
 ## CITATION
 Please cite the following papers, if you use <i>Phoenix</i>:
-* M. Hosseini, D. Pratas and A.J. Pinho, "On the role of inverted repeats in DNA sequence similarity," 11th International Conference on Practical Applications of Computational Biology & Bioinformatics (PACBB 2017). Springer International Publishing, 2017. [**ACCEPTED**]
+* M. Hosseini, D. Pratas and A.J. Pinho, "On the role of inverted repeats in DNA sequence similarity," *11th International Conference on Practical Applications of Computational Biology & Bioinformatics (PACBB 2017)*, Springer International Publishing, 2017. [**ACCEPTED**]
 
 ## ISSUES
 Please let me know if there is any issues, at [issues]
