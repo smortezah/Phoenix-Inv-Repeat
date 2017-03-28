@@ -62,6 +62,7 @@ typedef unordered_map< U64 , array< U64, ALPH_SIZE > > htable_t;
 ******************************************************************************/
 static const U64 POWER5[28] =   /// 5^0 to 5^27, which needs less than 64 bits
         {
+                
                                   1,                  5,                  25,
                                 125,                625,                3125,
                               15625,              78125,              390625,

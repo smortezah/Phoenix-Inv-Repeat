@@ -120,7 +120,7 @@ int main (int argc, char *argv[])
                 arrThread[ j ].join();
         }
         delete[] arrThread;
-
+        
         /// decompress target(s) using reference(s) model(s) -- multithreaded
         /// modify thread array size
         arrThrSize = (n_targets > n_threads) ? n_threads : n_targets;
@@ -134,7 +134,7 @@ int main (int argc, char *argv[])
                 arrThread[ j ].join();
         }
         delete[] arrThread;
-
+        
         /// check equality of decompressed & tar. files (check lossless comp.)
         for (string s : decModel.getTarAddr())
             if (!areFilesEqual(s, s + DECOMP_FILETYPE))
