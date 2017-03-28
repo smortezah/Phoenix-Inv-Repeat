@@ -61,14 +61,14 @@ public:
 //   vector<U16> getAlpha ()    { return alphaDens; }
 //
 //   char getCompmode ()    { return compMode; }
-    
+
 
 private:
     std::mutex     mut;               /// mutex
-                                      
+    
     U8             n_threads;         /// number of threads
     bool           decompFlag;        /// decompress flag
-                                      
+    
     char           compMode;          /// compression mode (table / hash table)
     U8             n_models;          /// number of models
     double         gamma;             /// gamma (for mixture of FCMs)

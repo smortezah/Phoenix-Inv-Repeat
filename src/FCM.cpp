@@ -68,6 +68,14 @@ void FCM::buildModel (const vector< string > &refsNames,
     
     string refLine;           /// keep each line of the file
     
+    
+    
+    
+    int overflowCheck = 0;
+    int no_div = 0;
+    
+    
+    
     switch (compMode)     /// build model based on 't'=table, or 'h'=hash table
     {
         case 't':
@@ -109,9 +117,28 @@ void FCM::buildModel (const vector< string > &refsNames,
                         
                         rowIndex = context * ALPH_SUM_SIZE;
                         ++table[ rowIndex + currSymInt ];  /// update table
-                        ++table[ rowIndex + ALPH_SIZE ];   /// update 'sum' col
+//                        ++table[ rowIndex + ALPH_SIZE ];   /// update 'sum' col
                         
-             /// update context. (rowIndex - context) == (context * ALPH_SIZE)
+                        //todo test
+                        overflowCheck = ++table[ rowIndex + ALPH_SIZE ];
+                        
+                        if(overflowCheck == MAX_NO_BASE)
+                        {
+                            ++no_div;
+                            
+                            //fard o zojesh test she
+                            table[ rowIndex ] /= 2;
+                            table[ rowIndex + 1 ] >>= 1;
+                            table[ rowIndex + 2 ] >>= 1;
+                            table[ rowIndex + 3 ] >>= 1;
+                            table[ rowIndex + 4 ] >>= 1;
+                            table[ rowIndex + 5 ] >>= 1;
+                        }
+                            
+                        
+                        
+                        
+                        /// update context. (rowIndex - context) == (context * ALPH_SIZE)
 ////         context = (U64) (rowIndex - context + currSymInt) % maxPlaceValue;
 ////         context = (U64) (rowIndex - context) % maxPlaceValue + currSymInt;
                         context = (U64)(context % befMaxPlaceValue) * ALPH_SIZE
@@ -124,8 +151,9 @@ void FCM::buildModel (const vector< string > &refsNames,
             
             
             //todo: test
-//            for (int j = 0; j < 30; ++j) cout << table[ j ] << ' ';
-//            cout<<'\n';
+            for (int j = 0; j < 30; ++j) cout << table[ j ] << ' ';
+            cout<<'\n';
+//            cout<<no_div;
 //
 //            for (int k = 0; k < befMaxPlaceValue; ++k)
 //            {
@@ -282,9 +310,9 @@ void FCM::compress (const string &tarFileName)
     arithObj.WriteNBits( n_models, 16, Writer ); /// number of models
     for (U8 n = 0; n < n_models; ++n)
     {
-        arithObj.WriteNBits( (U8) invRepeats[ n ], 1,  Writer ); /// IRs
-        arithObj.WriteNBits( ctxDepths[ n ],       16, Writer ); /// ctx depths
-        arithObj.WriteNBits( alphaDens[ n ],       16, Writer);/// alpha denoms
+        arithObj.WriteNBits( (U8)invRepeats[ n ], 1,  Writer ); /// IRs
+        arithObj.WriteNBits( ctxDepths[ n ],      16, Writer ); /// ctx depths
+        arithObj.WriteNBits( alphaDens[ n ],      16, Writer );/// alpha denoms
     }
     arithObj.WriteNBits( (U64) compMode, 16, Writer );     /// compression mode
 
@@ -326,16 +354,11 @@ void FCM::compress (const string &tarFileName)
                         rowIndex = tarContext[ i ] * ALPH_SUM_SIZE;
                         
                         /// frequencies (double)
-                        freqsDouble[ 0 ] +=
-                                weight[ i ] * tables[ i ][ rowIndex ];
-                        freqsDouble[ 1 ] +=
-                                weight[ i ] * tables[ i ][ rowIndex + 1 ];
-                        freqsDouble[ 2 ] +=
-                                weight[ i ] * tables[ i ][ rowIndex + 2 ];
-                        freqsDouble[ 3 ] +=
-                                weight[ i ] * tables[ i ][ rowIndex + 3 ];
-                        freqsDouble[ 4 ] +=
-                                weight[ i ] * tables[ i ][ rowIndex + 4 ];
+                        freqsDouble[0] += weight[i] * tables[i][rowIndex];
+                        freqsDouble[1] += weight[i] * tables[i][rowIndex + 1];
+                        freqsDouble[2] += weight[i] * tables[i][rowIndex + 2];
+                        freqsDouble[3] += weight[i] * tables[i][rowIndex + 3];
+                        freqsDouble[4] += weight[i] * tables[i][rowIndex + 4];
                         
                         nSym = tables[ i ][ rowIndex + currSymInt ];/// no.syms
 ////                          nSym = X;
@@ -374,12 +397,16 @@ void FCM::compress (const string &tarFileName)
                     freqs[ 2 ] = (int) (1 + (freqsDouble[2] * DOUBLE_TO_INT));
                     freqs[ 3 ] = (int) (1 + (freqsDouble[3] * DOUBLE_TO_INT));
                     freqs[ 4 ] = (int) (1 + (freqsDouble[4] * DOUBLE_TO_INT));
-
+                    
+                    sumFreqs = 0;   for (int f : freqs) sumFreqs += f;
+                    
                     //todo test
 //                    for (int j = 0; j < 5; ++j)
 //                      cout << freqsDouble[ j ] << ' '; cout<<'\n';
 //                    for (int j = 0; j < 5; ++j)
 //                      cout << freqs[ j ] << ' '; cout<<'\n';
+//                    cout << sumFreqs;
+                    
 //                    for (int j = 0; j < 5; ++j)
 //                    {
 //                        if(freqs[j] > 4294967295)
@@ -389,19 +416,14 @@ void FCM::compress (const string &tarFileName)
 //                        }
 //                    }
                     
-                    sumFreqs = 0;   for (int f : freqs) sumFreqs += f;
-                    
                     //todo test
-
 //                    if(sumFreqs > 720886)
 //                    {
 //                        cout << "HEHE";
 //                        exit(1);
 //                    }
 //                    for (int j = 0; j < 5; ++j)
-//                    {
 //                        if( freqs[j]<0) cout<< "manfi";
-//                    }
                     
                     /// Arithmetic encoding
                     arithObj.AESym(currSymInt, freqs, sumFreqs, Writer);
@@ -465,7 +487,7 @@ void FCM::compress (const string &tarFileName)
                         /// update context
                         tarContext[ i ] = (U64)
                                          (tarContext[i]*ALPH_SIZE + currSymInt)
-                                         % maxPlaceValue[ i ];
+                                         % maxPlaceValue[i];
                     }
                     /// update weights
                     for (U8 i = n_models; i--;)
@@ -557,7 +579,7 @@ void FCM::extractHeader (const string &tarFileName)
     arithObj.ReadNBits(46, Reader);     /// file size
     this->setGamma( round((double) arithObj.ReadNBits(32, Reader)/65536 * 100)
                    / 100 );              /// gamma
-    U64 no_models = arithObj.ReadNBits(16, Reader);       /// number of models
+    U64 no_models = (U64) arithObj.ReadNBits(16, Reader);       /// number of models
     this->setN_models((U8) no_models);
     bool ir;    U8 k;   U16 aD;
     for (U8 n = 0; n < no_models; ++n)
@@ -712,8 +734,8 @@ void FCM::decompress (const string &tarFileName)
                                                                 
 //                mut.lock();
                 if (++idxOut == BUFFER_SIZE)
-                {
-                    fwrite(outBuffer, 1, idxOut, Writer);      /// write output
+                {   /// write output
+                    fwrite(outBuffer, 1, (size_t) idxOut, Writer);
                     idxOut = 0;
                 }
 //                mut.unlock();
@@ -751,7 +773,7 @@ void FCM::decompress (const string &tarFileName)
 
 
 //            mut.lock();
-            if (idxOut != 0)    fwrite(outBuffer, 1, idxOut, Writer);
+            if (idxOut != 0)    fwrite(outBuffer, 1, (size_t) idxOut, Writer);
 //            mut.unlock();
         }   /// end case
             break;
@@ -797,8 +819,8 @@ void FCM::decompress (const string &tarFileName)
                 
                 outBuffer[ idxOut ] = symIntToChar(currSymInt);  /// out buffer
                 if (++idxOut == BUFFER_SIZE)
-                {
-                    fwrite(outBuffer, 1, idxOut, Writer);      /// write output
+                {   /// write output
+                    fwrite(outBuffer, 1, (size_t) idxOut, Writer);
                     idxOut = 0;
                 }
                 
@@ -829,7 +851,7 @@ void FCM::decompress (const string &tarFileName)
                     weight[ i ] = rawWeight[ i ] / sumOfWeights;
             }   /// end for
             
-            if (idxOut != 0)    fwrite(outBuffer, 1, idxOut, Writer);
+            if (idxOut != 0)    fwrite(outBuffer, 1, (size_t) idxOut, Writer);
         }   /// end case
             break;
         
