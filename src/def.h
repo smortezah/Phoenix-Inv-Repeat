@@ -34,11 +34,14 @@ using std::array;
 #define BUFFER_SIZE       262144     /// used in decompression
 
 #define DOUBLE_TO_INT     65535      /// for converting double to integer
-#define MAX_INT           2147483647 /// maximum possible integer (32 bit)
+//#define MAX_INT           2147483647 /// maximum possible integer = 2^31-1
+#define MAX_INT           1073741823 /// maximum possible integer = 2^30-1
 /// max no. of bases allowed for sum col. of table = (MAX_INT-1)/65535 = 2^15
-#define MAX_N_BASE_SUM    32768
+#define MAX_N_BASE_SUM    16384
+//#define MAX_N_BASE_SUM    32768
 /// max no. of bases allowed for each cell = MAX_N_BASE_SUM / 5
-#define MAX_N_BASE        6553
+#define MAX_N_BASE        3276
+//#define MAX_N_BASE        6553
 
 
 /******************************************************************************
@@ -56,7 +59,8 @@ typedef int64_t  I64;
 /// vaghti bishtar az 65,535 (uint16_t max) shod, hameye adad ha nesf mishan.
 /// ye variable ro ham tanzim kon ke maloom she chand bar nesf kardim
 //typedef unordered_map< string, array< U64, ALPH_SIZE > > htable_str_t;
-typedef unordered_map< U64 , array< U64, ALPH_SIZE > > htable_t;
+typedef unordered_map< U64 , array< U16, ALPH_SIZE > > htable_t;
+//typedef unordered_map< U64 , array< U64, ALPH_SIZE > > htable_t;
 
 
 /******************************************************************************
