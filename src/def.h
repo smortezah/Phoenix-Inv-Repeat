@@ -35,8 +35,10 @@ using std::array;
 
 #define DOUBLE_TO_INT     65535      /// for converting double to integer
 #define MAX_INT           2147483647 /// maximum possible integer (32 bit)
-/// max no. of bases allowed for each cell of table = (MAX_INT-1)/65535 = 2^15
-#define MAX_NO_BASE       32768
+/// max no. of bases allowed for sum col. of table = (MAX_INT-1)/65535 = 2^15
+#define MAX_N_BASE_SUM    32768
+/// max no. of bases allowed for each cell = MAX_N_BASE_SUM / 5
+#define MAX_N_BASE        6553
 
 
 /******************************************************************************
@@ -60,9 +62,8 @@ typedef unordered_map< U64 , array< U64, ALPH_SIZE > > htable_t;
 /******************************************************************************
     lookup tables
 ******************************************************************************/
-static const U64 POWER5[28] =   /// 5^0 to 5^27, which needs less than 64 bits
+static const U64 POWER5[28] =    /// 5^0 to 5^27, which needs less than 64 bits
         {
-                
                                   1,                  5,                  25,
                                 125,                625,                3125,
                               15625,              78125,              390625,
