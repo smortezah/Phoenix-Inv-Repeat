@@ -62,7 +62,7 @@ void FCM::buildModel (const vector< string > &refsNames,
     U64 maxPlaceValue = POWER5[ ctxDepth ];
     U64 befMaxPlaceValue = POWER5[ ctxDepth - 1 ];
     U64 invRepContext;         /// inverted repeat context (integer)
-//    U32 n_div = 0;             /// no. divisions for no. syms at table/hash tbl
+    U32 n_div = 0;             /// no. divisions for no. syms at table/hash tbl
     
     U64 iRCtxCurrSym;          /// concat of IR context and current symbol
     U8  currSymInt;            /// current symbol integer
@@ -117,13 +117,13 @@ void FCM::buildModel (const vector< string > &refsNames,
                         
                         rowIndex = context * ALPH_SUM_SIZE;
                         ++table[ rowIndex + currSymInt ];  /// update table
-//                        ++table[ rowIndex + ALPH_SIZE ]; /// update 'sum' col
-                        if (++table[ rowIndex + ALPH_SIZE ] >= MAX_N_BASE_SUM)
-                        {
+                        ++table[ rowIndex + ALPH_SIZE ]; /// update 'sum' col
+//                        if (++table[ rowIndex + ALPH_SIZE ] >= MAX_N_BASE_SUM)
+//                        {
 //                            ++n_div;               /// count no. of divisions
-                            for (U8 j = ALPH_SUM_SIZE; j--;)
-                                table[ rowIndex + j ] >>= 1;
-                        }
+//                            for (U8 j = ALPH_SUM_SIZE; j--;)
+//                                table[ rowIndex + j ] >>= 1;
+//                        }
                             
                         /// update context.
                         /// (rowIndex - context) == (context * ALPH_SIZE)
@@ -142,7 +142,8 @@ void FCM::buildModel (const vector< string > &refsNames,
                   cout << table[ j * 6 + k ] << '\t';
               cout << '\n';
           }
-//          cout<<n_div;
+          cout<<n_div;
+            
             
             /// set table
             mut.lock();   this->setTable(table, modelIndex);   mut.unlock();
@@ -199,14 +200,29 @@ void FCM::buildModel (const vector< string > &refsNames,
                          * NRC ha alan yeki nist
                          */
                         hTRowArray = hashTable[ context ];
-                        sumRow = 0;  for (U16 u : hTRowArray)  sumRow += u;
-                        if (sumRow >= MAX_N_BASE_SUM)
-                        {
-//                            ++n_div;            /// count no. of divisions
-                            for (U8 j = ALPH_SIZE; j--;)
-                                hashTable[ context ][ j ] >>= 1;
-                        }
                         
+                        //todo test
+//                        for (int k = 0; k < 5; ++k)
+//                        {
+//                         cout<<hTRowArray[k]<<' ';
+//                        }
+//                        cout<<'\n';
+                        
+                        
+                        sumRow = 0;  for (U16 u : hTRowArray)  sumRow += u;
+    
+                        //todo test
+//                        cout<<sumRow<<' ';
+//                        cout<<'\n';
+                        
+    
+//                        if (sumRow >= MAX_N_BASE_SUM)
+//                        {
+//                            ++n_div;            /// count no. of divisions
+//                            for (U8 j = ALPH_SIZE; j--;)
+//                                hashTable[ context ][ j ] >>= 1;
+//                        }
+    
                         /// update context.
                         /// (rowIndex - context) == (context * ALPH_SIZE)
 //////       context = (U64) (rowIndex - context + currSymInt) % maxPlaceValue;
@@ -226,6 +242,7 @@ void FCM::buildModel (const vector< string > &refsNames,
                 for (U16 i : it->second)    cout << i << "\t";
                 cout << '\n';
             }
+            cout<<n_div;
             
             /// set hash table
             mut.lock(); this->setHashTable(hashTable,modelIndex); mut.unlock();
