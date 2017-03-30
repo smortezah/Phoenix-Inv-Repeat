@@ -22,6 +22,7 @@ using std::array;
 #define ALPH_SUM_SIZE     6          /// ALPHABET_SIZE+1: 1 more col. for 'sum'
 #define LOG2_ALPH_SIZE    2.3219281  /// log2 of 5 (ALPHABET_SIZE)
 #define TABLE_MAX_CTX     12         /// max context depth for building table
+//#define TABLE_MAX_CTX     0         /// max context depth for building table
 #define IR_MAGIC_NUM      4          /// for IR calculation
 
 #define DEFAULT_N_THREADS 2          /// default number of threads

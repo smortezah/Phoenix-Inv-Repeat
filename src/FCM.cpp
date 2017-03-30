@@ -136,7 +136,12 @@ void FCM::buildModel (const vector< string > &refsNames,
             }   /// end for
             
             //todo: test
-//          for (int j = 0; j < 30; ++j) cout << table[ j ] << ' '; cout<<'\n';
+          for (int j = 0; j < 5; ++j)
+          {
+              for (int k = 0; k < 5; ++k)
+                  cout << table[ j * 6 + k ] << '\t';
+              cout << '\n';
+          }
 //          cout<<n_div;
             
             /// set table
@@ -201,12 +206,6 @@ void FCM::buildModel (const vector< string > &refsNames,
                             for (U8 j = ALPH_SIZE; j--;)
                                 hashTable[ context ][ j ] >>= 1;
                         }
-//                        if (++hashTable[context][currSymInt] >= MAX_N_BASE)
-//                        {
-////                            ++n_div;            /// count no. of divisions
-//                            for (U8 j = ALPH_SIZE; j--;)
-//                                hashTable[ context ][ j ] >>= 1;
-//                        }
                         
                         /// update context.
                         /// (rowIndex - context) == (context * ALPH_SIZE)
@@ -217,6 +216,16 @@ void FCM::buildModel (const vector< string > &refsNames,
                     }
                 }
             }   /// end for
+            
+            
+            //todo test
+            for (htable_t::iterator it = hashTable.begin();
+                 it != hashTable.end(); ++it)
+            {
+                cout << it->first << "\t";
+                for (U16 i : it->second)    cout << i << "\t";
+                cout << '\n';
+            }
             
             /// set hash table
             mut.lock(); this->setHashTable(hashTable,modelIndex); mut.unlock();
