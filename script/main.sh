@@ -8,6 +8,10 @@ make
 FLD_chromosomes="chromosomes"
 FLD_dat="dat"
 FLD_dataset="dataset"
+FLD_archaea="archaea"
+FLD_fungi="fungi"
+FLD_bacteria="bacteria"
+FLD_viruses="viruses"
 FLD_GOOSE="goose"
 FLD_GULL="GULL"
 FLD_XS="XS"
@@ -18,22 +22,25 @@ FLD_script="script"
 . $FLD_script/par.sh;
 
 
-GET_HUMAN=0              # download Human choromosomes and make SEQ out of FASTA
-GET_CHIMPANZEE=0         # download Chimpanzee chrs and make SEQ out of FASTA
-GET_GORILLA=0            # download Gorilla chrs and make SEQ out of FASTA
-GET_CHICKEN=0            # download Chicken chrs and make SEQ out of FASTA
-GET_TURKEY=0             # download Turkey chrs and make SEQ out of FASTA
-INSTALL_XS=0             # install "XS" from Github
-INSTALL_GOOSE=0          # install "GOOSE" from Github
-INSTALL_GULL=0           # install "GULL" from Github
-GEN_DATASET=0            # generate datasets using "XS"
-GEN_MUTATIONS=0          # generate mutations using "GOOSE"
-GEN_ARCHAEA=0            # generate archea dataset by "GOOSE" -- output: out#.fa
-RUN_PHOENIX=1            # run Phoenix
-PLOT_RESULT=0            # plot results using "gnuplot"
-BUILD_MATRIX=0           # build matrix from datasets
-PLOT_MATRIX=0            # plot matrix from datasets
-PLOT_MATRIX_ARCHEA=0     # plot matrix Archaea from datasets
+GET_HUMAN=0            # download Human choromosomes and make SEQ out of FASTA
+GET_CHIMPANZEE=0       # download Chimpanzee chrs and make SEQ out of FASTA
+GET_GORILLA=0          # download Gorilla chrs and make SEQ out of FASTA
+GET_CHICKEN=0          # download Chicken chrs and make SEQ out of FASTA
+GET_TURKEY=0           # download Turkey chrs and make SEQ out of FASTA
+GET_ARCHAEA=0          # get Archaea SEQ using "GOOSE" & downloadArchaea.pl
+GET_FUNGI=0            # get Fungi SEQ using "GOOSE" & downloadFungi.pl
+GET_BACTERIA=0         # get Bacteria SEQ using "GOOSE" & downloadBacteria.pl
+GET_VIRUSES=0          # get Viruses SEQ using "GOOSE" & downloadViruses.pl
+INSTALL_XS=0           # install "XS" from Github
+INSTALL_GOOSE=0        # install "GOOSE" from Github
+INSTALL_GULL=0         # install "GULL" from Github
+GEN_DATASET=0          # generate datasets using "XS"
+GEN_MUTATIONS=0        # generate mutations using "GOOSE"
+RUN_PHOENIX=0          # run Phoenix
+PLOT_RESULT=0          # plot results using "gnuplot"
+BUILD_MATRIX=0         # build matrix from datasets
+PLOT_MATRIX=0          # plot matrix from datasets
+PLOT_MATRIX_ARCHEA=0   # plot matrix Archaea from datasets
 
 ### reference parameters
 REF_SPECIES=$HUMAN_CHR; REF_SPECIES_NAME=$HUMAN_LBL;
@@ -42,6 +49,9 @@ REF_SPECIES=$HUMAN_CHR; REF_SPECIES_NAME=$HUMAN_LBL;
 #REF_SPECIES=$CHICKEN_CHR; REF_SPECIES_NAME=$CHICKEN_LBL;
 #REF_SPECIES=$TURKEY_CHR; REF_SPECIES_NAME=$TURKEY_LBL;
 #REF_SPECIES=$ARCHAEA_CHR; REF_SPECIES_NAME=$ARCHAEA_LBL;
+#REF_SPECIES=$FUNGI_CHR; REF_SPECIES_NAME=$FUNGI_LBL;
+#REF_SPECIES=$BACTERIA_CHR; REF_SPECIES_NAME=$BACTERIA_LBL;
+#REF_SPECIES=$VIRUSES_CHR; REF_SPECIES_NAME=$VIRUSES_LBL;
 ### all chromosomes for that species, e.g. HS_SEQ_RUN
 tempRefSeqRun=${REF_SPECIES}_SEQ_RUN;    REF_SEQ_RUN=${!tempRefSeqRun}
 
@@ -64,6 +74,9 @@ TAR_SPECIES=$HUMAN_CHR; TAR_SPECIES_NAME=$HUMAN_LBL;
 #TAR_SPECIES=$CHICKEN_CHR; TAR_SPECIES_NAME=$CHICKEN_LBL;
 #TAR_SPECIES=$TURKEY_CHR; TAR_SPECIES_NAME=$TURKEY_LBL;
 #TAR_SPECIES=$ARCHAEA_CHR; TAR_SPECIES_NAME=$ARCHAEA_LBL;
+#TAR_SPECIES=$FUNGI_CHR; TAR_SPECIES_NAME=$FUNGI_LBL;
+#TAR_SPECIES=$BACTERIA_CHR; TAR_SPECIES_NAME=$BACTERIA_LBL;
+#TAR_SPECIES=$VIRUSES_CHR; TAR_SPECIES_NAME=$VIRUSES_LBL;
 ### all chromosomes for that species, e.g. HS_SEQ_RUN
 tempTarSeqRun=${TAR_SPECIES}_SEQ_RUN;    TAR_SEQ_RUN=${!tempTarSeqRun}
 
@@ -102,6 +115,15 @@ if [[ $GET_CHICKEN -eq 1 ]]; then . $FLD_script/get_chicken.sh; fi
 #>>>>  download Turkey choromosomes and make SEQ out of FASTA
 if [[ $GET_TURKEY -eq 1 ]]; then . $FLD_script/get_turkey.sh; fi
 
+#>>>>  download Fungi choromosomes and make SEQ out of FASTA
+if [[ $GET_FUNGI -eq 1 ]]; then . $FLD_script/get_fungi.sh; fi
+
+#>>>>  download Bacteria choromosomes and make SEQ out of FASTA
+if [[ $GET_BACTERIA -eq 1 ]]; then . $FLD_script/get_bacteria.sh; fi
+
+#>>>>  download Viruses choromosomes and make SEQ out of FASTA
+if [[ $GET_VIRUSES -eq 1 ]]; then . $FLD_script/get_viruses.sh; fi
+
 #>>>>  install "XS" from Github
 if [[ $INSTALL_XS -eq 1 ]]; then . $FLD_script/install_XS.sh; fi
 
@@ -117,7 +139,7 @@ if [[ $GEN_DATASET -eq 1 ]]; then . $FLD_script/generate_dataset.sh; fi
 #>>>>  generate mutations using "GOOSE"
 if [[ $GEN_MUTATIONS -eq 1 ]]; then . $FLD_script/generate_mutation.sh; fi
 
-#>>>>  generate archaea dataset using "GOOSE" -- output: out#.fa
+#>>>>  generate Archaea dataset using "GOOSE" -- output: out#.fa
 if [[ $GEN_ARCHAEA -eq 1 ]]; then . $FLD_script/generate_archaea.sh; fi
 
 #>>>>  run Phoenix
