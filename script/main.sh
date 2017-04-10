@@ -100,61 +100,24 @@ MIN_CTX=10              # min context-order size
 MAX_CTX=11              # max context-order size
 
 
-#>>>>  download Human choromosomes and make SEQ out of FASTA
-if [[ $GET_HUMAN -eq 1 ]]; then . $FLD_script/get_human.sh; fi
-
-#>>>>  download Chimpanzee choromosomes and make SEQ out of FASTA
-if [[ $GET_CHIMPANZEE -eq 1 ]]; then . $FLD_script/get_chimpanzee.sh; fi
-
-#>>>>  download Gorilla choromosomes and make SEQ out of FASTA
-if [[ $GET_GORILLA -eq 1 ]]; then . $FLD_script/get_gorilla.sh; fi
-
-#>>>>  download Chicken choromosomes and make SEQ out of FASTA
-if [[ $GET_CHICKEN -eq 1 ]]; then . $FLD_script/get_chicken.sh; fi
-
-#>>>>  download Turkey choromosomes and make SEQ out of FASTA
-if [[ $GET_TURKEY -eq 1 ]]; then . $FLD_script/get_turkey.sh; fi
-
-#>>>>  download Fungi choromosomes and make SEQ out of FASTA
-if [[ $GET_FUNGI -eq 1 ]]; then . $FLD_script/get_fungi.sh; fi
-
-#>>>>  download Bacteria choromosomes and make SEQ out of FASTA
-if [[ $GET_BACTERIA -eq 1 ]]; then . $FLD_script/get_bacteria.sh; fi
-
-#>>>>  download Viruses choromosomes and make SEQ out of FASTA
-if [[ $GET_VIRUSES -eq 1 ]]; then . $FLD_script/get_viruses.sh; fi
-
-#>>>>  install "XS" from Github
-if [[ $INSTALL_XS -eq 1 ]]; then . $FLD_script/install_XS.sh; fi
-
-#>>>>  install "GOOSE" from Github
-if [[ $INSTALL_GOOSE -eq 1 ]]; then . $FLD_script/install_GOOSE.sh; fi
-
-#>>>>  install "GULL" from Github
-if [[ $INSTALL_GULL -eq 1 ]]; then . $FLD_script/install_GULL.sh; fi
-
-#>>>>  generate datasets using "XS"
-if [[ $GEN_DATASET -eq 1 ]]; then . $FLD_script/generate_dataset.sh; fi
-
-#>>>>  generate mutations using "GOOSE"
-if [[ $GEN_MUTATIONS -eq 1 ]]; then . $FLD_script/generate_mutation.sh; fi
-
-#>>>>  generate Archaea dataset using "GOOSE" -- output: out#.fa
-if [[ $GEN_ARCHAEA -eq 1 ]]; then . $FLD_script/generate_archaea.sh; fi
-
-#>>>>  run Phoenix
-if [[ $RUN_PHOENIX -eq 1 ]]; then . $FLD_script/run_phoenix.sh; fi
-
-#>>>>  plot results using "gnuplot"
-if [[ $PLOT_RESULT -eq 1 ]]; then . $FLD_script/plot_result.sh; fi
-
-#>>>>  build matrix from Reference Target correspondence
-if [[ $BUILD_MATRIX -eq 1 ]]; then . $FLD_script/build_matrix.sh; fi
-
-#>>>>  plot matrix from Reference Target correspondence
-if [[ $PLOT_MATRIX -eq 1 ]]; then . $FLD_script/plot_matrix.sh; fi
-
-#>>>>  plot matrix Archaea from Reference Target correspondence
+if [[ $GET_HUMAN      -eq 1 ]];    then . $FLD_script/get_human.sh;           fi
+if [[ $GET_CHIMPANZEE -eq 1 ]];    then . $FLD_script/get_chimpanzee.sh;      fi
+if [[ $GET_GORILLA    -eq 1 ]];    then . $FLD_script/get_gorilla.sh;         fi
+if [[ $GET_CHICKEN    -eq 1 ]];    then . $FLD_script/get_chicken.sh;         fi
+if [[ $GET_TURKEY     -eq 1 ]];    then . $FLD_script/get_turkey.sh;          fi
+if [[ $GET_ARCHAEA    -eq 1 ]];    then . $FLD_script/get_archaea.sh;         fi
+if [[ $GET_FUNGI      -eq 1 ]];    then . $FLD_script/get_fungi.sh;           fi
+if [[ $GET_BACTERIA   -eq 1 ]];    then . $FLD_script/get_bacteria.sh;        fi
+if [[ $GET_VIRUSES    -eq 1 ]];    then . $FLD_script/get_viruses.sh;         fi
+if [[ $INSTALL_XS     -eq 1 ]];    then . $FLD_script/install_XS.sh;          fi
+if [[ $INSTALL_GOOSE  -eq 1 ]];    then . $FLD_script/install_GOOSE.sh;       fi
+if [[ $INSTALL_GULL   -eq 1 ]];    then . $FLD_script/install_GULL.sh;        fi
+if [[ $GEN_DATASET    -eq 1 ]];    then . $FLD_script/generate_dataset.sh;    fi
+if [[ $GEN_MUTATIONS  -eq 1 ]];    then . $FLD_script/generate_mutation.sh;   fi
+if [[ $RUN_PHOENIX    -eq 1 ]];    then . $FLD_script/run_phoenix.sh;         fi
+if [[ $PLOT_RESULT    -eq 1 ]];    then . $FLD_script/plot_result.sh;         fi
+if [[ $BUILD_MATRIX   -eq 1 ]];    then . $FLD_script/build_matrix.sh;        fi
+if [[ $PLOT_MATRIX    -eq 1 ]];    then . $FLD_script/plot_matrix.sh;         fi
 if [[ $PLOT_MATRIX_ARCHEA -eq 1 ]];then . $FLD_script/plot_matrix_archaea.sh; fi
 
 ########################
