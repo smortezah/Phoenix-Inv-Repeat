@@ -2,13 +2,12 @@
 
 
 for ir in $INV_REPEATS; do
- for alphaDen in $ALPHA_DENS; do
-#  for dataset in $datasets; do
-#   for mut in $MUT_LIST; do
+    for alphaDen in $ALPHA_DENS; do
+#        for dataset in $datasets; do
+#            for mut in $MUT_LIST; do
 
 gnuplot <<- EOF
 set term $PIX_FORMAT        # set terminal for output picture format
-
 
 ##########################    bpb    ##########################
 #set xlabel "% mutation"                 # set label of x axis
@@ -120,7 +119,7 @@ set term $PIX_FORMAT        # set terminal for output picture format
 # the following line (EOF) MUST be left as it is; i.e. no space, etc
 EOF
 
-#   done
-#  done
- done
+#            done
+#        done
+    done
 done

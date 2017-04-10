@@ -78,10 +78,10 @@ int main (int argc, char *argv[])
     */
     
     /// compress target(s) using reference(s) model(s) -- multithreaded
-    U8 n_targets = (U8) mixModel.getTarAddr().size(); /// up to 2^8=256 targets
+    U8 n_targets = (U8) mixModel.getTarAddr().size();  /// up to 2^8=256 targets
     /// modify threads array size
     arrThrSize = (n_targets > n_threads) ? n_threads : n_targets;
-    arrThread = new thread[arrThrSize];               /// resize threads array
+    arrThread = new thread[arrThrSize];                /// resize threads array
     for (U8 i = 0; i < n_targets; i += arrThrSize)
     {
         for (U8 j = 0; j < arrThrSize && i + j < n_targets; ++j)
@@ -105,9 +105,9 @@ int main (int argc, char *argv[])
 //
 //        /// build reference(s) model(s) -- multithreaded
 //        n_models   = mixModel.getN_models();
-//        n_threads  = mixModel.getN_threads();    /// set based on command line
+//        n_threads  = mixModel.getN_threads();      /// set based on command line
 //        arrThrSize = (n_models > n_threads)
-//                     ? n_threads : n_models; /// size of threads array
+//                     ? n_threads : n_models;       /// size of threads array
 //        arrThread = new thread[arrThrSize];
 //        for (U8 i = 0; i < n_models; i += arrThrSize)
 //        {
@@ -124,7 +124,7 @@ int main (int argc, char *argv[])
 //        /// decompress target(s) using reference(s) model(s) -- multithreaded
 //        /// modify thread array size
 //        arrThrSize = (n_targets > n_threads) ? n_threads : n_targets;
-//        arrThread = new thread[arrThrSize];              /// threads array
+//        arrThread = new thread[arrThrSize];     /// threads array
 //        for (U8 i = 0; i < n_targets; i += arrThrSize)
 //        {
 //            for (U8 j = 0; j < arrThrSize && i + j < n_targets; ++j)
@@ -149,14 +149,11 @@ int main (int argc, char *argv[])
 //        for (U8 i = tarsNo; i--;)
 //        {
 //            lastSlashPos = decModel.getTarAddr()[ i ].find_last_of("/");
-//            tarNamesPure[ i ] =
-//                    decModel.getTarAddr()[ i ].substr(lastSlashPos + 1);
+//            tarNamesPure[i] = decModel.getTarAddr()[i].substr(lastSlashPos + 1);
 //        }
 //        cout << "Lossless compression and decompression of '";
-//        for (int i = 0; i < tarsNo - 1; ++i)
-//            cout << tarNamesPure[ i ] << "', '";
+//        for (int i = 0; i < tarsNo-1; ++i) cout << tarNamesPure[ i ] << "', '";
 //        cout << tarNamesPure[ tarsNo - 1 ] << "' was successful.\n";
-//
     }   /// end decompress
     
     

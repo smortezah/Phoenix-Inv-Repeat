@@ -641,10 +641,10 @@ inline void ArithEncDec::ADD_NEXT_INPUT_BIT (code_value &v, int garbage_bits,
 }
 
 
-/******************************************************************************
+/*******************************************************************************
     responsible for outputting the bit passed to it and an opposite number of
     bit equal to the value stored in bits_outstanding
-******************************************************************************/
+*******************************************************************************/
 inline void ArithEncDec::ORIG_BIT_PLUS_FOLLOW (int b, FILE *s)
 {
     do
@@ -664,11 +664,11 @@ inline void ArithEncDec::BIT_PLUS_FOLLOW (int b, FILE *s)
 }
 
 
-/******************************************************************************
+/*******************************************************************************
     output code bits until the range has been expanded to above QUARTER With
     FRUGAL_BITS option, ignore first zero bit output (a redundant zero will
     otherwise be emitted every time the encoder is started)
-******************************************************************************/
+*******************************************************************************/
 inline void ArithEncDec::ENCODE_RENORMALISE (FILE *s)
 {
     do
@@ -696,11 +696,11 @@ inline void ArithEncDec::ENCODE_RENORMALISE (FILE *s)
 }
 
 
-/******************************************************************************
+/*******************************************************************************
     input code bits until range has been expanded to more than QUARTER. Mimics
     encoder.  FRUGAL_BITS option also keeps track of bitstream input so it can
     work out exactly how many disambiguating bits the encoder put out (1,2,3).
-******************************************************************************/
+*******************************************************************************/
 inline void ArithEncDec::DECODE_RENORMALISE (FILE *s)
 {
     do

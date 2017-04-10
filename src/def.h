@@ -8,35 +8,35 @@ using std::string;
 using std::unordered_map;
 using std::array;
 
-/******************************************************************************
+/*******************************************************************************
     About PHOENIX
-******************************************************************************/
+*******************************************************************************/
 #define VERSION_PHOENIX 1
 #define RELEASE_PHOENIX 0
 
 
-/******************************************************************************
+/*******************************************************************************
     constants
-******************************************************************************/
-#define ALPH_SIZE         5          /// alphabet {A, C, N, G, T} size
-#define ALPH_SUM_SIZE     6          /// ALPHABET_SIZE+1: 1 more col. for 'sum'
-#define LOG2_ALPH_SIZE    2.3219281  /// log2 of 5 (ALPHABET_SIZE)
-#define TABLE_MAX_CTX     12         /// max context depth for building table
-//#define TABLE_MAX_CTX     0         /// max context depth for building table
-#define IR_MAGIC_NUM      4          /// for IR calculation
+*******************************************************************************/
+#define ALPH_SIZE         5           /// alphabet {A, C, N, G, T} size
+#define ALPH_SUM_SIZE     6           /// ALPHABET_SIZE+1: 1 more col. for 'sum'
+#define LOG2_ALPH_SIZE    2.3219281   /// log2 of 5 (ALPHABET_SIZE)
+#define TABLE_MAX_CTX     12          /// max context depth for building table
+//#define TABLE_MAX_CTX     0          /// max context depth for building table
+#define IR_MAGIC_NUM      4           /// for IR calculation
 
-#define DEFAULT_N_THREADS 2          /// default number of threads
+#define DEFAULT_N_THREADS 2           /// default number of threads
 #define N_FREE_THREADS    1
-#define DEFAULT_GAMMA     0.95       /// default gamma (mixture of FCMs)
+#define DEFAULT_GAMMA     0.95        /// default gamma (mixture of FCMs)
 
-#define COMP_FILETYPE     ".co"      /// compressed file type
-#define DECOMP_FILETYPE   ".de"      /// decompressed file type
-#define WATERMARK         20170324   /// used in compression/decompression
-#define BUFFER_SIZE       262144     /// used in decompression
+#define COMP_FILETYPE     ".co"       /// compressed file type
+#define DECOMP_FILETYPE   ".de"       /// decompressed file type
+#define WATERMARK         20170324    /// used in compression/decompression
+#define BUFFER_SIZE       262144      /// used in decompression
 
-#define DOUBLE_TO_INT     65535      /// for converting double to integer
+#define DOUBLE_TO_INT     65535       /// for converting double to integer
 //#define MAX_INT           2147483647 /// maximum possible integer = 2^31-1
-#define MAX_INT           1073741823 /// maximum possible integer = 2^30-1
+#define MAX_INT           1073741823  /// maximum possible integer = 2^30-1
 /// max no. of bases allowed for sum col. of table = (MAX_INT-1)/65535 = 2^15
 #define MAX_N_BASE_SUM    16384
 //#define MAX_N_BASE_SUM    32768
@@ -45,9 +45,9 @@ using std::array;
 //#define MAX_N_BASE        6553
 
 
-/******************************************************************************
+/*******************************************************************************
     typedefs
-******************************************************************************/
+*******************************************************************************/
 typedef uint8_t  U8;
 typedef uint16_t U16;
 typedef uint32_t U32;
@@ -64,29 +64,22 @@ typedef unordered_map< U64 , array< U16, ALPH_SIZE > > htable_t;
 //typedef unordered_map< U64 , array< U64, ALPH_SIZE > > htable_t;
 
 
-/******************************************************************************
+/*******************************************************************************
     lookup tables
-******************************************************************************/
-//static const U64 POWER5[28] =    /// 5^0 to 5^27, which needs less than 64 bits
-//        {
-//                                  1,                  5,                  25,
-//                                125,                625,                3125,
-//                              15625,              78125,              390625,
-//                            1953125,            9765625,            48828125,
-//                          244140625,         1220703125,          6103515625,
-//                        30517578125,       152587890625,        762939453125,
-//                      3814697265625,     19073486328125,      95367431640625,
-//                    476837158203125,   2384185791015625,   11920928955078100,
-//                  59604644775390600, 298023223876953000, 1490116119384770000,
-//                7450580596923830000
-//        };
+*******************************************************************************/
 static const U64 POWER5[28] =    /// 5^0 to 5^27, which needs less than 64 bits
-   {
-       1, 5, 25, 125, 625, 3125, 15625, 78125, 390625, 1953125, 9765625,
-       48828125, 244140625, 1220703125, 6103515625, 30517578125, 152587890625,
-       762939453125, 3814697265625, 19073486328125, 95367431640625,
-       476837158203125, 2384185791015625, 11920928955078100, 59604644775390600,
-       298023223876953000, 1490116119384770000, 7450580596923830000
-   };
+    {
+                           1,                  5,                  25,
+                         125,                625,                3125,
+                       15625,              78125,              390625,
+                     1953125,            9765625,            48828125,
+                   244140625,         1220703125,          6103515625,
+                 30517578125,       152587890625,        762939453125,
+               3814697265625,     19073486328125,      95367431640625,
+             476837158203125,   2384185791015625,   11920928955078100,
+           59604644775390600, 298023223876953000, 1490116119384770000,
+         7450580596923830000
+    };
+
 
 #endif //PHOENIX_DEF_H

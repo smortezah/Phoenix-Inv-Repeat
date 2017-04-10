@@ -14,26 +14,26 @@ FLD_XS="XS"
 FLD_src="src"
 FLD_script="script"
 
-### include par.sh
+### include par.sh, including paramaters
 . $FLD_script/par.sh;
 
 
-GET_HUMAN=0             # download Human choromosomes and make SEQ out of FASTA
-GET_CHIMPANZEE=0        # download Chimpanzee chrs and make SEQ out of FASTA
-GET_GORILLA=0           # download Gorilla chrs and make SEQ out of FASTA
-GET_CHICKEN=0           # download Chicken chrs and make SEQ out of FASTA
-GET_TURKEY=0            # download Turkey chrs and make SEQ out of FASTA
-INSTALL_XS=0            # install "XS" from Github
-INSTALL_GOOSE=0         # install "GOOSE" from Github
-INSTALL_GULL=0          # install "GULL" from Github
-GEN_DATASET=0           # generate datasets using "XS"
-GEN_MUTATIONS=0         # generate mutations using "GOOSE"
-GEN_ARCHAEA=0           # generate archea dataset by "GOOSE" -- output: out#.fa
-RUN_PHOENIX=1           # run Phoenix
-PLOT_RESULT=0           # plot results using "gnuplot"
-BUILD_MATRIX=0          # build matrix from datasets
-PLOT_MATRIX=0           # plot matrix from datasets
-PLOT_MATRIX_ARCHEA=0    # plot matrix Archaea from datasets
+GET_HUMAN=0              # download Human choromosomes and make SEQ out of FASTA
+GET_CHIMPANZEE=0         # download Chimpanzee chrs and make SEQ out of FASTA
+GET_GORILLA=0            # download Gorilla chrs and make SEQ out of FASTA
+GET_CHICKEN=0            # download Chicken chrs and make SEQ out of FASTA
+GET_TURKEY=0             # download Turkey chrs and make SEQ out of FASTA
+INSTALL_XS=0             # install "XS" from Github
+INSTALL_GOOSE=0          # install "GOOSE" from Github
+INSTALL_GULL=0           # install "GULL" from Github
+GEN_DATASET=0            # generate datasets using "XS"
+GEN_MUTATIONS=0          # generate mutations using "GOOSE"
+GEN_ARCHAEA=0            # generate archea dataset by "GOOSE" -- output: out#.fa
+RUN_PHOENIX=1            # run Phoenix
+PLOT_RESULT=0            # plot results using "gnuplot"
+BUILD_MATRIX=0           # build matrix from datasets
+PLOT_MATRIX=0            # plot matrix from datasets
+PLOT_MATRIX_ARCHEA=0     # plot matrix Archaea from datasets
 
 ### reference parameters
 REF_SPECIES=$HUMAN_CHR; REF_SPECIES_NAME=$HUMAN_LBL;
@@ -46,15 +46,15 @@ REF_SPECIES=$HUMAN_CHR; REF_SPECIES_NAME=$HUMAN_LBL;
 tempRefSeqRun=${REF_SPECIES}_SEQ_RUN;    REF_SEQ_RUN=${!tempRefSeqRun}
 
 REF_DATASET="";  for i in MT; do REF_DATASET+=$REF_SPECIES${i}" "; done
-#REF_DATASET="";for i in $REF_SEQ_RUN; do REF_DATASET+=$REF_SPECIES${i}" ";done
+#REF_DATASET=""; for i in $REF_SEQ_RUN; do REF_DATASET+=$REF_SPECIES${i}" ";done
 
-#multiRef="";for i in 21 MT; do multiRef+=$FLD_dataset/$REF_SPECIES${i}" ";done
+#multiRef=""; for i in 21 MT; do multiRef+=$FLD_dataset/$REF_SPECIES${i}" ";done
 #MULTIREF_DATASET="$(echo $multiRef | sed 's/ /,/g')"
 MULTIREF_DATASET="$FLD_dataset/HSMT"
 #MULTIREF_DATASET="y"
 
-REF_SPECIES_LEN=${#REF_SPECIES};           # length of string REF_SPECIES
-((REF_SPECIES_LEN_IND=REF_SPECIES_LEN+1)); # index of len of string REF_SPECIES
+REF_SPECIES_LEN=${#REF_SPECIES};            # length of string REF_SPECIES
+((REF_SPECIES_LEN_IND=REF_SPECIES_LEN+1));  # index of len of string REF_SPECIES
 
 
 ### target parameters
@@ -68,7 +68,7 @@ TAR_SPECIES=$HUMAN_CHR; TAR_SPECIES_NAME=$HUMAN_LBL;
 tempTarSeqRun=${TAR_SPECIES}_SEQ_RUN;    TAR_SEQ_RUN=${!tempTarSeqRun}
 
 TAR_DATASET="";  for i in MT; do TAR_DATASET+=$TAR_SPECIES${i}" "; done
-#TAR_DATASET="";for i in $TAR_SEQ_RUN; do TAR_DATASET+=$TAR_SPECIES${i}" ";done
+#TAR_DATASET=""; for i in $TAR_SEQ_RUN; do TAR_DATASET+=$TAR_SPECIES${i}" ";done
 
 #multiTar="";
 #   for i in MT UP UL; do multiTar+=$FLD_dataset/$TAR_SPECIES${i}" "; done
@@ -76,8 +76,8 @@ TAR_DATASET="";  for i in MT; do TAR_DATASET+=$TAR_SPECIES${i}" "; done
 MULTITAR_DATASET="$FLD_dataset/PTMT"
 #MULTITAR_DATASET="y"
 
-TAR_SPECIES_LEN=${#TAR_SPECIES};           # length of string TAR_SPECIES
-((TAR_SPECIES_LEN_IND=TAR_SPECIES_LEN+1)); # index of len of string TAR_SPECIES
+TAR_SPECIES_LEN=${#TAR_SPECIES};            # length of string TAR_SPECIES
+((TAR_SPECIES_LEN_IND=TAR_SPECIES_LEN+1));  # index of len of string TAR_SPECIES
 
 N_THREADS=4             # number of threads
 INV_REPEATS="0"       # list of inverted repeats
@@ -133,8 +133,7 @@ if [[ $BUILD_MATRIX -eq 1 ]]; then . $FLD_script/build_matrix.sh; fi
 if [[ $PLOT_MATRIX -eq 1 ]]; then . $FLD_script/plot_matrix.sh; fi
 
 #>>>>  plot matrix Archaea from Reference Target correspondence
-if [[ $PLOT_MATRIX_ARCHEA -eq 1 ]];
-    then . $FLD_script/plot_matrix_archaea.sh; fi
+if [[ $PLOT_MATRIX_ARCHEA -eq 1 ]];then . $FLD_script/plot_matrix_archaea.sh; fi
 
 ########################
 cd $FLD_script
