@@ -16,30 +16,51 @@ set term $PIX_FORMAT        # set terminal for output picture format
 ##set xtics 0,5,100                      # set steps for x axis
 #set xtics add ("1" 1)
 #set key bottom right                    # legend position
-##set output "$IR_LBL$ir-$a_LBL$alphaDen-$dataset-bpb.$PIX_FORMAT"       # set output name
-##plot "$FLD_dat/$IR_LBL$ir-$a_LBL$alphaDen-${dataset}.$INF_FILE_TYPE" using 1:2  with linespoints ls 7 title "$IR_LBL=$ir, $a_LBL=1/$alphaDen, $CHR$CURR_CHR"
-##set output "$a_LBL$alphaDen-$dataset-bpb.$PIX_FORMAT"       # set output name
-##plot "$FLD_dat/${IR_LBL}0-$a_LBL$alphaDen-${dataset}.$INF_FILE_TYPE" using 1:2  with linespoints ls 6 title "$IR_LBL=0, $a_LBL=1/$alphaDen, $CHR$CURR_CHR", \
-##     "$FLD_dat/${IR_LBL}1-$a_LBL$alphaDen-${dataset}.$INF_FILE_TYPE" using 1:2  with linespoints ls 7 title "$IR_LBL=1, $a_LBL=1/$alphaDen, $CHR$CURR_CHR"
-#set output "$IR_LBL$ir-$a_LBL$alphaDen-bpb.$PIX_FORMAT"       # set output name
+##set output "$IR_LBL$ir-$a_LBL$alphaDen-$dataset-bpb.$PIX_FORMAT"  #out name
+##plot "$FLD_dat/$IR_LBL$ir-$a_LBL$alphaDen-${dataset}.$INF_FILE_TYPE" \
+## using 1:2  with linespoints ls 7 \
+## title "$IR_LBL=$ir, $a_LBL=1/$alphaDen, $CHR$CURR_CHR"
+##set output "$a_LBL$alphaDen-$dataset-bpb.$PIX_FORMAT"     # set output name
+##plot "$FLD_dat/${IR_LBL}0-$a_LBL$alphaDen-${dataset}.$INF_FILE_TYPE" \
+##  using 1:2  with linespoints ls 6 \
+##  title "$IR_LBL=0, $a_LBL=1/$alphaDen, $CHR$CURR_CHR", \
+##  "$FLD_dat/${IR_LBL}1-$a_LBL$alphaDen-${dataset}.$INF_FILE_TYPE" using 1:2 \
+##  with linespoints ls 7 title "$IR_LBL=1, $a_LBL=1/$alphaDen, $CHR$CURR_CHR"
+#set output "$IR_LBL$ir-$a_LBL$alphaDen-bpb.$PIX_FORMAT"      # set output name
 #set title "IR=$ir,   Alpha=$alphaDen"
-##plot for [i=1:22] "$FLD_dat/$IR_LBL$ir-$a_LBL$alphaDen-HS".i.".$INF_FILE_TYPE" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
-##     "$FLD_dat/$IR_LBL$ir-$a_LBL$alphaDen-HSX.$INF_FILE_TYPE" using 1:2  with linespoints ls 23 title "${CHR} X", \
-##     "$FLD_dat/$IR_LBL$ir-$a_LBL$alphaDen-HSY.$INF_FILE_TYPE" using 1:2  with linespoints ls 24 title "${CHR} Y", \
+##plot for [i=1:22] \
+##  "$FLD_dat/$IR_LBL$ir-$a_LBL$alphaDen-HS".i.".$INF_FILE_TYPE"
+##      using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
+##  "$FLD_dat/$IR_LBL$ir-$a_LBL$alphaDen-HSX.$INF_FILE_TYPE" using 1:2 \
+##      with linespoints ls 23 title "${CHR} X", \
+##  "$FLD_dat/$IR_LBL$ir-$a_LBL$alphaDen-HSY.$INF_FILE_TYPE" using 1:2 \
+##      with linespoints ls 24 title "${CHR} Y", \
 #
 #plot \
-# for [i=1:8]    "$FLD_dat/$IR_LBL$ir-$a_LBL$alphaDen-HS".i.".$INF_FILE_TYPE" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
-# for [i=10:12]  "$FLD_dat/$IR_LBL$ir-$a_LBL$alphaDen-HS".i.".$INF_FILE_TYPE" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
-# for [i=18:18]  "$FLD_dat/$IR_LBL$ir-$a_LBL$alphaDen-HS".i.".$INF_FILE_TYPE" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
-#                "$FLD_dat/$IR_LBL$ir-$a_LBL$alphaDen-HSX.$INF_FILE_TYPE" using 1:2  with linespoints ls 23 title "${CHR} X", \
-# for [i=9:9]    "$FLD_dat/$IR_LBL$ir-$a_LBL$alphaDen-HS".i.".$INF_FILE_TYPE" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
-# for [i=16:16]  "$FLD_dat/$IR_LBL$ir-$a_LBL$alphaDen-HS".i.".$INF_FILE_TYPE" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
-# for [i=19:19]  "$FLD_dat/$IR_LBL$ir-$a_LBL$alphaDen-HS".i.".$INF_FILE_TYPE" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
-## for [i=17:17]  "$FLD_dat/$IR_LBL$ir-$a_LBL$alphaDen-HS".i.".$INF_FILE_TYPE" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
-## for [i=21:21]  "$FLD_dat/$IR_LBL$ir-$a_LBL$alphaDen-HS".i.".$INF_FILE_TYPE" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
-## for [i=22:22]  "$FLD_dat/$IR_LBL$ir-$a_LBL$alphaDen-HS".i.".$INF_FILE_TYPE" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
-## "$FLD_dat/$IR_LBL$ir-$a_LBL$alphaDen-HSY.$INF_FILE_TYPE" using 1:2  with linespoints ls 24 title "${CHR} Y", \
-## for [i=13:15]  "$FLD_dat/$IR_LBL$ir-$a_LBL$alphaDen-HS".i.".$INF_FILE_TYPE" using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
+# for [i=1:8]    "$FLD_dat/$IR_LBL$ir-$a_LBL$alphaDen-HS".i.".$INF_FILE_TYPE" \
+#   using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
+# for [i=10:12]  "$FLD_dat/$IR_LBL$ir-$a_LBL$alphaDen-HS".i.".$INF_FILE_TYPE" \
+#   using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
+# for [i=18:18]  "$FLD_dat/$IR_LBL$ir-$a_LBL$alphaDen-HS".i.".$INF_FILE_TYPE" \
+#   using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
+#       "$FLD_dat/$IR_LBL$ir-$a_LBL$alphaDen-HSX.$INF_FILE_TYPE" using 1:2 \
+#       with linespoints ls 23 title "${CHR} X", \
+# for [i=9:9]    "$FLD_dat/$IR_LBL$ir-$a_LBL$alphaDen-HS".i.".$INF_FILE_TYPE" \
+#   using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
+# for [i=16:16]  "$FLD_dat/$IR_LBL$ir-$a_LBL$alphaDen-HS".i.".$INF_FILE_TYPE" \
+#   using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
+# for [i=19:19]  "$FLD_dat/$IR_LBL$ir-$a_LBL$alphaDen-HS".i.".$INF_FILE_TYPE" \
+#   using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
+## for [i=17:17]  "$FLD_dat/$IR_LBL$ir-$a_LBL$alphaDen-HS".i.".$INF_FILE_TYPE" \
+##  using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
+## for [i=21:21]  "$FLD_dat/$IR_LBL$ir-$a_LBL$alphaDen-HS".i.".$INF_FILE_TYPE" \
+##  using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
+## for [i=22:22]  "$FLD_dat/$IR_LBL$ir-$a_LBL$alphaDen-HS".i.".$INF_FILE_TYPE" \
+##  using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
+## "$FLD_dat/$IR_LBL$ir-$a_LBL$alphaDen-HSY.$INF_FILE_TYPE" using 1:2 \
+##  with linespoints ls 24 title "${CHR} Y", \
+## for [i=13:15]  "$FLD_dat/$IR_LBL$ir-$a_LBL$alphaDen-HS".i.".$INF_FILE_TYPE" \
+##  using 1:2  with linespoints ls "".i."" title "${CHR} ".i."", \
 
 
 ###########################    ctx    ##########################
@@ -47,7 +68,8 @@ set term $PIX_FORMAT        # set terminal for output picture format
 ##set terminal pngcairo size 600, 850
 #set terminal $PIX_FORMAT size 600, 850
 #set output "$IR_LBL$ir-$a_LBL$alphaDen-ctx.$PIX_FORMAT"
-#set multiplot layout 12,2 columnsfirst margins 0.08,0.98,0.06,0.98 spacing 0.013,0.0
+#set multiplot layout 12,2 columnsfirst margins 0.08,0.98,0.06,0.98 \
+#   spacing 0.013,0.0
 #set offset 0,0,graph 0.1, graph 0.1
 #set key top right samplen 2 spacing 1.5 font ",11"
 #
@@ -69,7 +91,8 @@ set term $PIX_FORMAT        # set terminal for output picture format
 #     with lines linetype LT linewidth LW title "".i.""
 #}
 ####   chromosome 12   ###
-#set xtics add ("1" 1, "5" 5, "10" 10, "15" 15, "20" 20, "25" 25, "30" 30, "35" 35, "40" 40, "45" 45, "50  " 50) \
+#set xtics add ("1" 1, "5" 5, "10" 10, "15" 15, "20" 20, "25" 25, "30" 30, \
+#   "35" 35, "40" 40, "45" 45, "50  " 50) \
 #    scale AxisNumScale offset 0.25,0.4 font ",10"
 #plot "$FLD_dat/$IR_LBL$ir-$a_LBL$alphaDen-HS12.$INF_FILE_TYPE" using 1:3 \
 #     with lines linetype LT linewidth LW title "12"
@@ -86,7 +109,8 @@ set term $PIX_FORMAT        # set terminal for output picture format
 #plot "$FLD_dat/$IR_LBL$ir-$a_LBL$alphaDen-HS23.$INF_FILE_TYPE" using 1:3 \
 #     with lines linetype LT linewidth LW title "X"
 ####   chromosome Y   ###
-#set xtics add ("  1" 1, "5" 5, "10" 10, "15" 15, "20" 20, "25" 25, "30" 30, "35" 35, "40" 40, "45" 45, "50" 50) \
+#set xtics add ("  1" 1, "5" 5, "10" 10, "15" 15, "20" 20, "25" 25, "30" 30, \
+#   "35" 35, "40" 40, "45" 45, "50" 50) \
 #    scale AxisNumScale offset 0.25,0.4 font ",10"
 #plot "$FLD_dat/$IR_LBL$ir-$a_LBL$alphaDen-HS24.$INF_FILE_TYPE" using 1:3 \
 #     with lines linetype LT linewidth LW title "Y"

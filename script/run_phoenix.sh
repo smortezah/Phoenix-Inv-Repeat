@@ -7,14 +7,17 @@ for ir in $INV_REPEATS; do
    for tarDataset in $TAR_DATASET; do
 ##   rm -f $IR_LBL$ir-$a_LBL$alphaDen-${dataset}.$INF_FILE_TYPE
 ##   touch $IR_LBL$ir-$a_LBL$alphaDen-$dataset.$INF_FILE_TYPE
-#   echo -e "mut\tmin_bpb\tmin_ctx" >> $IR_LBL$ir-$a_LBL$alphaDen-$dataset.$INF_FILE_TYPE
+#   echo -e "mut\tmin_bpb\tmin_ctx" \
+#    >> $IR_LBL$ir-$a_LBL$alphaDen-$dataset.$INF_FILE_TYPE
 #    for mut in $MUT_LIST; do
 #    rm -f $IR_LBL$ir-$a_LBL$alphaDen-${dataset}_$mut.$INF_FILE_TYPE
 #    touch $IR_LBL$ir-$a_LBL$alphaDen-${dataset}_$mut.$INF_FILE_TYPE
-#    echo -e "# ir\talpha\tctx\tbpb\ttime(s)" >> $IR_LBL$ir-$a_LBL$alphaDen-${dataset}_$mut.$INF_FILE_TYPE
+#    echo -e "# ir\talpha\tctx\tbpb\ttime(s)" \
+#                  >> $IR_LBL$ir-$a_LBL$alphaDen-${dataset}_$mut.$INF_FILE_TYPE
      for ctx in $CTX; do
 #     for((ctx=$MIN_CTX; ctx<=$MAX_CTX; ctx+=1)); do
-#     ./phoenix -m $ir,$ctx,$alphaDen -r $FLD_dataset/$refDataset -t $FLD_dataset/$tarDataset \
+#     ./phoenix -m $ir,$ctx,$alphaDen -r $FLD_dataset/$refDataset \
+#                                     -t $FLD_dataset/$tarDataset
 #      ./phoenix -n 4 -d -m 0,1,100:0,2,10\
       ./phoenix -n 4 -d -m 0,1,100 \
       -r HS21 \
@@ -36,8 +39,10 @@ for ir in $INV_REPEATS; do
 
 ##    # save "min bpb" and "min ctx" for each dataset
 #    minBpbCtx=$(awk 'NR==1 || $4 < minBpb {minBpb=$4; minCtx=$3}; \
-#                END {print minBpb"\t"minCtx}' $IR_LBL$ir-$a_LBL$alphaDen-${dataset}_$mut.$INF_FILE_TYPE)
-#    echo -e "$mut\t$minBpbCtx" >> $IR_LBL$ir-$a_LBL$alphaDen-$dataset.$INF_FILE_TYPE
+#                END {print minBpb"\t"minCtx}' \
+#                    $IR_LBL$ir-$a_LBL$alphaDen-${dataset}_$mut.$INF_FILE_TYPE)
+#    echo -e "$mut\t$minBpbCtx" \
+#                         >> $IR_LBL$ir-$a_LBL$alphaDen-$dataset.$INF_FILE_TYPE
 #   done
   done
  done

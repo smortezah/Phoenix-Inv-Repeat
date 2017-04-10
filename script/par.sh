@@ -48,10 +48,12 @@ CHICKEN_CHROMOSOME="$CHICKEN_CHR_PREFIX$CHR"
 TURKEY_CHROMOSOME="$TURKEY_CHR_PREFIX$CHR"
 
 HS_SEQ_RUN=`seq -s' ' 1 22`; HS_SEQ_RUN+=" X Y MT AL UL UP"
-PT_SEQ_RUN="1 2A 2B "; PT_SEQ_RUN+=`seq -s' ' 3 22`; PT_SEQ_RUN+=" X Y MT UL UP"
+PT_SEQ_RUN="1 2A 2B "; PT_SEQ_RUN+=`seq -s' ' 3 22`;
+    PT_SEQ_RUN+=" X Y MT UL UP"
 GG_SEQ_RUN="1 2A 2B "; GG_SEQ_RUN+=`seq -s' ' 3 22`; GG_SEQ_RUN+=" X MT UL UP"
 A_SEQ_RUN=`seq -s' ' 1 206`
-GGA_SEQ_RUN=`seq -s' ' 1 28`; GGA_SEQ_RUN+=" "; GGA_SEQ_RUN+=`seq -s' ' 30 33`; GGA_SEQ_RUN+=" LG MT W Z UL UP"
+GGA_SEQ_RUN=`seq -s' ' 1 28`; GGA_SEQ_RUN+=" ";
+    GGA_SEQ_RUN+=`seq -s' ' 30 33`; GGA_SEQ_RUN+=" LG MT W Z UL UP"
 MGA_SEQ_RUN=`seq -s' ' 1 30`; MGA_SEQ_RUN+=" MT W Z UL UP"
 
 datasets="$HUMAN_CHR$CURR_CHR"
@@ -63,6 +65,6 @@ COMP_FILE_TYPE="gz"     # compressed file type
 INF_FILE_TYPE="dat"     # information (data) file type
 #INF_FILE_TYPE="csv"     # information (data) file type
 
-PIX_FORMAT=pdf          # output format: pdf, png, svg, eps, epslatex (set output x.y)
-IR_LBL=i                # label for inverted repeat
-a_LBL=a                 # label for alpha denominator
+PIX_FORMAT=pdf   # output format: pdf, png, svg, eps, epslatex (set output x.y)
+IR_LBL=i         # label for inverted repeat
+a_LBL=a          # label for alpha denominator

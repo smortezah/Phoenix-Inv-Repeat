@@ -1,7 +1,7 @@
 #ifndef PHOENIX_ARITHENCDEC_H
 #define PHOENIX_ARITHENCDEC_H
 
-/******************************************************************************
+/*******************************************************************************
   Armando J. Pinho	(ap@ua.pt)
   Morteza Hosseini	(seyedmorteza@ua.pt)
 
@@ -44,7 +44,7 @@ part of each and every copy made of these files.
 
   Revision 1.1  1996/08/07 01:34:11  langs
   Initial revision
-******************************************************************************/
+*******************************************************************************/
 
 
 #include <stdio.h>
@@ -57,16 +57,16 @@ part of each and every copy made of these files.
 using std::cerr;
 
 
-/******************************************************************************
+/*******************************************************************************
     Bit and byte input output functions.
     Input/Output to stdin/stdout 1 bit at a time.
     Also byte i/o and fread/fwrite, so can keep a count of bytes read/written
 
     Once bit functions are used for either the input or output stream, byte
-    based functions are NOT safe to use, unless a flush_{input,output}stream
-    is first called. (Since bits are buffered a char at a time, while bytes
-    are output immediately)
-******************************************************************************/
+    based functions are NOT safe to use, unless a flush_{input,output}stream is
+    first called. (Since bits are buffered a char at a time, while bytes are
+    output immediately)
+*******************************************************************************/
 #define BYTE_SIZE 8
 
 extern unsigned int	_bytes_input, _bytes_output;
@@ -83,12 +83,12 @@ extern int _bitio_tmp;              /// Used by i/o macros to
 #endif								/// keep function ret values
 
 
-/******************************************************************************
+/*******************************************************************************
     #define FAST_BITIO
     Normally count input and output bytes so program can report stats With
     FAST_BITIO set, no counting is maintained, which means file sizes reported
     with the '-v' option will be meaningless, but should improve speed slightly
-******************************************************************************/
+*******************************************************************************/
 #ifdef FAST_BITIO
     #define OUTPUT_BYTE(x, s) 				putc(x, s)
 	#define INPUT_BYTE(s)	  				getc(s)
@@ -133,9 +133,9 @@ int _bitio_tmp;					/// Used by some of the
 
 
 /* ================= USER ADJUSTABLE PARAMETERS =================== */
-/******************************************************************************
+/*******************************************************************************
     Default B_bits and F_bits
-******************************************************************************/
+*******************************************************************************/
 #ifndef B_BITS
 #define B_BITS 32
 #endif
@@ -145,42 +145,41 @@ int _bitio_tmp;					/// Used by some of the
 #endif
 
 
-/******************************************************************************
+/*******************************************************************************
     Change these types for different precision calculations.  They may affect
     the speed of the arithmetic operations (multiplcation, division, shift,
-    etc).  The way the stats module is implemented, the type of freq_value
-    must be able to accomodate f_bits+1 bits, instead of f_bits, to avoid
-    overflows. Ie: For an f_bits of up to 31, type freq_value must be 32 bits.
-******************************************************************************/
+    etc).  The way the stats module is implemented, the type of freq_value must
+    be able to accomodate f_bits+1 bits, instead of f_bits, to avoid overflows.
+    Ie: For an f_bits of up to 31, type freq_value must be 32 bits.
+*******************************************************************************/
 typedef unsigned long	code_value;		/// B_BITS of precision
 typedef unsigned long	freq_value;		/// F_BITS+1 of precision
 typedef unsigned long	div_value;		/// B_BITS-F_BITS of precision
 
 
-/******************************************************************************
+/*******************************************************************************
     MAX_BITS_OUTSTANDING is a bound on bits_outstanding
     If bits_outstanding ever gets above this number (extremely unlikely) the
     program will abort with an error message.
-******************************************************************************/
+*******************************************************************************/
 #define MAX_BITS_OUTSTANDING ((unsigned long)1<<31)
 /* ================= END USER ADJUSTABLE PARAMETERS =================== */
 
 
-/******************************************************************************
+/*******************************************************************************
     Determine maximum bits allowed, based on size of the types used to store
     them.  Also, that MAX_F_BITS <= MAX_B_BITS-2
-******************************************************************************/
+*******************************************************************************/
 #define MAX_B_BITS (int) (sizeof(code_value) * 8)
 #define MAX_F_BITS (int)((sizeof(freq_value)*8)-1 < MAX_B_BITS - 2\
 					  ?  (sizeof(freq_value)*8)-1 : MAX_B_BITS - 2)
 
 
-/******************************************************************************
-    Determine maximum bits allowed, based on size of the types used
-    If varying bits, variables are B_bits, F_bits, Half and Quarter,
-    otherwise #define them.
+/*******************************************************************************
+    Determine maximum bits allowed, based on size of the types used.  If varying
+    bits, variables are B_bits, F_bits, Half and Quarter,otherwise #define them.
     These variables will be read (and possibly changed) by main.c and stats.c
-******************************************************************************/
+*******************************************************************************/
 #define B_bits B_BITS
 #define	F_bits F_BITS
 
@@ -191,9 +190,9 @@ extern char *coder_desc;
 #define Quarter ((code_value) 1 << (B_bits-2))
 
 
-/******************************************************************************
+/*******************************************************************************
     Separate input and output
-******************************************************************************/
+*******************************************************************************/
 /// Input decoding state
 static code_value in_R;						/// code range
 static code_value in_D;						/// = V-L (V offset)
@@ -205,21 +204,20 @@ static code_value out_R;					/// code range
 static unsigned long out_bits_outstanding;	/// follow bit count
 
 
-/////--------------------------------------------------------------------------
+/////---------------------------------------------------------------------------
 
 
 class ArithEncDec
 {
 public:
-    ArithEncDec ();                                         /// constructor
+    ArithEncDec ();                                      /// constructor
 
     void GetInterval         (int*, int*, int*, U8);
     U8   GetSymbol           (int*, int*, int*, int, U8);
-    void WriteNBits          (U64,  int,
-							  FILE*);           /// write N bits to a file
-    int  ReadNBits           (U32,  FILE*);     /// read N bits from a file
-    void AESym               (U8,   int*, int,  FILE*); /// arithmetic encoding
-    U8   ADSym               (U8,   int*, int,  FILE*); /// arithmetic decoding
+    void WriteNBits          (U64,  int,  FILE*);    /// write N bits to a file
+    int  ReadNBits           (U32,  FILE*);          /// read N bits from a file
+    void AESym               (U8,   int*, int,  FILE*);  /// arithmetic encoding
+    U8   ADSym               (U8,   int*, int,  FILE*);  /// arithmetic decoding
     void start_encode        (void);
     void finish_encode       (FILE*);
     void start_decode        (FILE*);
@@ -244,15 +242,15 @@ private:
     inline void DECODE_RENORMALISE   (FILE*);
 };
 
-/******************************************************************************
+/*******************************************************************************
     constructor
-******************************************************************************/
+*******************************************************************************/
 ArithEncDec::ArithEncDec () {}
 
 
-/******************************************************************************
+/*******************************************************************************
 
-******************************************************************************/
+*******************************************************************************/
 void ArithEncDec::GetInterval (int *low, int *high, int *count, U8 symbol)
 {
 	*low = 0;	for (U8 n = 0; n < symbol; n++) *low += count[ n ];
@@ -260,9 +258,9 @@ void ArithEncDec::GetInterval (int *low, int *high, int *count, U8 symbol)
 }
 
 
-/******************************************************************************
+/*******************************************************************************
 
-******************************************************************************/
+*******************************************************************************/
 U8 ArithEncDec::GetSymbol (int *low, int *high, int *count,
 						   int target, U8 nSymbols)
 {
@@ -280,9 +278,9 @@ U8 ArithEncDec::GetSymbol (int *low, int *high, int *count,
 }
 
 
-/******************************************************************************
+/*******************************************************************************
 
-******************************************************************************/
+*******************************************************************************/
 void ArithEncDec::WriteNBits (U64 bits, int nBits, FILE *oFp)
 {
 	while (nBits--)
@@ -293,9 +291,9 @@ void ArithEncDec::WriteNBits (U64 bits, int nBits, FILE *oFp)
 }
 
 
-/******************************************************************************
+/*******************************************************************************
 
-******************************************************************************/
+*******************************************************************************/
 int ArithEncDec::ReadNBits (U32 nBits, FILE *iFp)
 {
 	int bits = 0;
@@ -313,9 +311,9 @@ int ArithEncDec::ReadNBits (U32 nBits, FILE *iFp)
 }
 
 
-/******************************************************************************
+/*******************************************************************************
 
-******************************************************************************/
+*******************************************************************************/
 void ArithEncDec::AESym (U8 symbol, int *counters, int totalCount, FILE *oFp)
 {
 	int low, high;
@@ -325,9 +323,9 @@ void ArithEncDec::AESym (U8 symbol, int *counters, int totalCount, FILE *oFp)
 }
 
 
-/******************************************************************************
+/*******************************************************************************
 
-******************************************************************************/
+*******************************************************************************/
 U8 ArithEncDec::ADSym (U8 nSymbols, int *counters, int totalCount, FILE *iFp)
 {
 	int low, high;
@@ -340,27 +338,25 @@ U8 ArithEncDec::ADSym (U8 nSymbols, int *counters, int totalCount, FILE *iFp)
 }
 
 
-/******************************************************************************
+/*******************************************************************************
     encode a symbol given its low, high and total frequencies
-******************************************************************************/
+*******************************************************************************/
 void ArithEncDec::arithmetic_encode (freq_value low, freq_value high,
 									 freq_value total, FILE *s)
 {
 	/*
     The following pseudocode is a concise (but slow due to arithmetic
-    calculations) description of what is calculated in this function.
-    Note that the division is done before the multiplication.  This is
-    one of the key points of this version of arithmetic coding.  This means
-    that much larger frequency values can be accomodated, but that the integer
-    ratio R/total (code range / frequency range)
-    becomes a worse approximation as the total frequency count
-    is increased.  Therefore less than the whole code range will be
-    allocated to the frequency range.  The whole code range is used by
+    calculations) description of what is calculated in this function. Note that
+    the division is done before the multiplication.  This is one of the key
+    points of this version of arithmetic coding.  This means that much larger
+    frequency values can be accomodated, but that the integer ratio R/total
+    (code range / frequency range) becomes a worse approximation as the total
+    frequency count is increased.  Therefore less than the whole code range will
+    be allocated to the frequency range.  The whole code range is used by
     assigning the symbol at the end of the frequency range (where high==total)
     this excess code range above and beyond its normal code range.  This
-    of course distorts the probabilities slightly,
-    see the paper connected with this program for details and compression
-    results.
+    of course distorts the probabilities slightly, see the paper connected with
+    this program for details and compression results.
 
     Restricting the total frequency range means that the division and
     multiplications can be done to low precision with shifts and adds.
@@ -398,16 +394,15 @@ void ArithEncDec::arithmetic_encode (freq_value low, freq_value high,
 	if (out_bits_outstanding > MAX_BITS_OUTSTANDING)
 	{
 		/*
-        For MAX_BITS_OUTSTANDING to be exceeded is extremely improbable, but
-        it is possible.  For this to occur the COMPRESSED file would need to
-        contain a sequence MAX_BITS_OUTSTANDING bits long (eg: 2^31 bits, or
-        256 megabytes) of all 1 bits or all 0 bits.  This possibility is
-        extremely remote (especially with an adaptive model), and can only
-        occur if the compressed file is greater than MAX_BITS_OUTSTANDING
-        long.  Assuming the compressed file is effectively random,
-        the probability for any 256 megabyte section causing an overflow
-        would be 1 in 2^(2^31).  This is a number approximately 600 million
-        digits long (decimal).
+        For MAX_BITS_OUTSTANDING to be exceeded is extremely improbable, but it
+        is possible.  For this to occur the COMPRESSED file would need to
+        contain a sequence MAX_BITS_OUTSTANDING bits long (eg: 2^31 bits, or 256
+        megabytes) of all 1 bits or all 0 bits.  This possibility is extremely
+        remote (especially with an adaptive model), and can only occur if the
+        compressed file is greater than MAX_BITS_OUTSTANDING long.  Assuming the
+        compressed file is effectively random, the probability for any 256
+        megabyte section causing an overflow would be 1 in 2^(2^31).  This is a
+        number approximately 600 million digits long (decimal).
         */
 
 		cerr << "Bits_outstanding limit reached - File too large\n";
@@ -416,7 +411,7 @@ void ArithEncDec::arithmetic_encode (freq_value low, freq_value high,
 }
 
 
-/******************************************************************************
+/*******************************************************************************
     decode the target value using the current total frequency and the coder's
     state variables
 
@@ -425,17 +420,17 @@ void ArithEncDec::arithmetic_encode (freq_value low, freq_value high,
     storing the ratio in_r = R/total for use by arithmetic_decode()
 
     target = D / (R/total);	* D = V-L.  (Old terminology)
-      * D is the location within the range R that the code value is located
-      * Dividing by (R/total) translates it to its correspoding frequency value
+       * D is the location within the range R that the code value is located
+       * Dividing by (R/total) translates it to its correspoding frequency value
 
     The approximate calculations mean the encoder may have coded outside the
-    valid frequency range (in the excess code range).  This indicates that
-    the symbol at the end of the frequency range was coded.  Hence return end
-    of range (total-1)
+    valid frequency range (in the excess code range).  This indicates that the
+    symbol at the end of the frequency range was coded.  Hence return end of
+    range (total-1)
 
     if (target < total) return target;
     else                return total-1;
-******************************************************************************/
+*******************************************************************************/
 freq_value ArithEncDec::arithmetic_decode_target (freq_value total)
 {
 	freq_value target;
@@ -447,7 +442,7 @@ freq_value ArithEncDec::arithmetic_decode_target (freq_value total)
 }
 
 
-/******************************************************************************
+/*******************************************************************************
     decode the next input symbol
 
     The following code describes this function:
@@ -460,7 +455,7 @@ freq_value ArithEncDec::arithmetic_decode_target (freq_value total)
     else			  R -= low * (R/total);  /// End of range is a special case
  
     DECODE_RENORMALISE;     /// Expand code range and input bits
-******************************************************************************/
+*******************************************************************************/
 void ArithEncDec::arithmetic_decode (freq_value low, freq_value high,
 									 freq_value total, FILE *s)
 {
@@ -476,9 +471,9 @@ void ArithEncDec::arithmetic_decode (freq_value low, freq_value high,
 }
 
 
-/******************************************************************************
+/*******************************************************************************
     start the encoder
-******************************************************************************/
+*******************************************************************************/
 void ArithEncDec::start_encode (void)
 {
 	/// Set initial coding range to [0,Half)
@@ -488,12 +483,12 @@ void ArithEncDec::start_encode (void)
 }
 
 
-/******************************************************************************
+/*******************************************************************************
     finish encoding by outputting follow bits and all the bits in
     L (B_bits long) to make the last symbol unambiguous.  This also means the
     decoder can read them harmlessly as it reads beyond end of what would have
     been valid input.
-******************************************************************************/
+*******************************************************************************/
 void ArithEncDec::finish_encode (FILE *s)
 {
 	int nbits;
@@ -504,52 +499,47 @@ void ArithEncDec::finish_encode (FILE *s)
 
 	/// output the nbits integer bits
 	for (int i = 1; i <= nbits; i++)
-        BIT_PLUS_FOLLOW(((bits >> (nbits - i)) & 1), s);
+		BIT_PLUS_FOLLOW(((bits >> (nbits - i)) & 1), s);
 }
 
 
-/******************************************************************************
+/*******************************************************************************
     start the decoder Fills the decode value in_D from the bitstream.
-    If FRUGAL_BITS is defined only the first call reads in_D from the
-    bitstream.  Subsequent calls will assume the excess bits that had been
-    read but not used (sitting in in_V) are the start of the next coding
-    message, and it will put these into in_D.  (It also initialises in_V to
-    the start of the bitstream)
+    If FRUGAL_BITS is defined only the first call reads in_D from the bitstream.
+    Subsequent calls will assume the excess bits that had been read but not used
+    (sitting in in_V) are the start of the next coding message, and it will put
+    these into in_D.  (It also initialises in_V to the start of the bitstream)
 
     FRUGAL_BITS also means that the first bit (0) was not output, so only take
-    B_bits-1 from the input stream.  Since there are B_bits "read-ahead" in
-    the buffer, on second and subsequent calls retrieve_excess_input_bits()
-    is used and the last bit must be placed back into the input stream.
-******************************************************************************/
+    B_bits-1 from the input stream.  Since there are B_bits "read-ahead" in the
+    buffer, on second and subsequent calls retrieve_excess_input_bits() is used
+    and the last bit must be placed back into the input stream.
+*******************************************************************************/
 void ArithEncDec::start_decode (FILE *s)
 {
     in_D = 0;		/// Initial offset in range is 0
 	in_R = Half;	/// Range = Half
 
-	for (int i = 0; i<B_bits; i++)  ADD_NEXT_INPUT_BIT(in_D, 0, s);  /// Fill D
+	for (int i = 0; i<B_bits; i++)  ADD_NEXT_INPUT_BIT(in_D, 0, s);   /// Fill D
 
-	if (in_D >= Half)
-	{
-		cerr << "Corrupt input file (start_decode())\n";
-		exit(1);
-	}
+	if (in_D >= Half) {cerr<<"Corrupt input file (start_decode())\n"; exit(1);}
 }
 
 
-/******************************************************************************
-    Throw away B_bits in buffer by doing nothing (encoder wrote these for us
-    to consume.) (They were mangled anyway as we only kept V-L, and cannot
-    get back to V)
-******************************************************************************/
+/*******************************************************************************
+    Throw away B_bits in buffer by doing nothing (encoder wrote these for us to
+    consume.) (They were mangled anyway as we only kept V-L, and cannot get back
+    to V)
+*******************************************************************************/
 void ArithEncDec::finish_decode (void)
 {
 	/// No action
 }
 
 
-/******************************************************************************
+/*******************************************************************************
     initialize the bit output function
-******************************************************************************/
+*******************************************************************************/
 void ArithEncDec::startoutputtingbits (void)
 {
 	_out_buffer = 0;
@@ -557,9 +547,9 @@ void ArithEncDec::startoutputtingbits (void)
 }
 
 
-/******************************************************************************
+/*******************************************************************************
     start the bit input function
-******************************************************************************/
+*******************************************************************************/
 void ArithEncDec::startinputtingbits (void)
 {
 	_in_garbage = 0;	/// Number of bytes read past end of file
@@ -567,29 +557,29 @@ void ArithEncDec::startinputtingbits (void)
 }
 
 
-/******************************************************************************
+/*******************************************************************************
     complete outputting bits
-******************************************************************************/
+*******************************************************************************/
 void ArithEncDec::doneoutputtingbits (FILE *s)
 {
 	if (_out_bits_to_go != BYTE_SIZE)
-		OUTPUT_BYTE(_out_buffer << _out_bits_to_go, s);
+        OUTPUT_BYTE(_out_buffer << _out_bits_to_go, s);
 	_out_bits_to_go = BYTE_SIZE;
 }
 
 
-/******************************************************************************
+/*******************************************************************************
     complete inputting bits
-******************************************************************************/
+*******************************************************************************/
 void ArithEncDec::doneinputtingbits (void)
 {
 	_in_bit_ptr = 0;	/// "Wipe" buffer (in case more input follows)
 }
 
 
-/******************************************************************************
+/*******************************************************************************
     Outputs bit 'b' to stdout.  (Builds up a buffer, writing a byte at a time.)
-******************************************************************************/
+*******************************************************************************/
 inline void ArithEncDec::OUTPUT_BIT (int b, FILE *s)
 {
     do
@@ -608,7 +598,7 @@ inline void ArithEncDec::OUTPUT_BIT (int b, FILE *s)
 }
 
 
-/******************************************************************************
+/*******************************************************************************
     Returns a bit from stdin, by shifting 'v' left one bit, and adding next bit
     as lsb (possibly reading upto garbage_bits extra bits beyond valid input)
 
@@ -621,7 +611,7 @@ inline void ArithEncDec::OUTPUT_BIT (int b, FILE *s)
     The buffer is not shifted, instead a bit flag (_in_bit_ptr) is moved to
     point to the next bit that is to be read.  When it is zero, the next byte
     is read, and it is reset to point to the msb.
-******************************************************************************/
+*******************************************************************************/
 inline void ArithEncDec::ADD_NEXT_INPUT_BIT (code_value &v, int garbage_bits,
                                              FILE *s)
 {

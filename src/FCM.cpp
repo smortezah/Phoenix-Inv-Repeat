@@ -182,9 +182,9 @@ void FCM::buildModel (const vector< string > &refsNames,
                             /// update hash table considering IRs
 //                            ++hashTable[ invRepContext ][ iRCtxCurrSym
 //                                                           % ALPH_SIZE ];
-                            if (++hashTable[ invRepContext ][ iRCtxCurrSym
-                                                               % ALPH_SIZE ]
-                                                            >= MAX_N_BASE)
+                            if (++hashTable[ invRepContext ]
+                                           [ iRCtxCurrSym % ALPH_SIZE ]
+                                                                 >= MAX_N_BASE)
                             {
 //                                ++n_div;           /// count no. of divisions
                                 for (U8 j = ALPH_SIZE; j--;)
