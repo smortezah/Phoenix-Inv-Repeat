@@ -29,7 +29,7 @@ GET_CHICKEN=0          # download Chicken chrs and make SEQ out of FASTA
 GET_TURKEY=0           # download Turkey chrs and make SEQ out of FASTA
 GET_ARCHAEA=0          # get Archaea SEQ using "GOOSE" & downloadArchaea.pl
 GET_FUNGI=0            # get Fungi SEQ using "GOOSE" & downloadFungi.pl
-GET_BACTERIA=0         # get Bacteria SEQ using "GOOSE" & downloadBacteria.pl
+GET_BACTERIA=1         # get Bacteria SEQ using "GOOSE" & downloadBacteria.pl
 GET_VIRUSES=0          # get Viruses SEQ using "GOOSE" & downloadViruses.pl
 INSTALL_XS=0           # install "XS" from Github
 INSTALL_GOOSE=0        # install "GOOSE" from Github
@@ -55,8 +55,8 @@ REF_SPECIES=$HUMAN_CHR; REF_SPECIES_NAME=$HUMAN_LBL;
 ### all chromosomes for that species, e.g. HS_SEQ_RUN
 tempRefSeqRun=${REF_SPECIES}_SEQ_RUN;    REF_SEQ_RUN=${!tempRefSeqRun}
 
-REF_DATASET="";  for i in MT; do REF_DATASET+=$REF_SPECIES${i}" "; done
-#REF_DATASET=""; for i in $REF_SEQ_RUN; do REF_DATASET+=$REF_SPECIES${i}" ";done
+#REF_DATASET="";  for i in MT; do REF_DATASET+=$REF_SPECIES${i}" "; done
+REF_DATASET=""; for i in $REF_SEQ_RUN; do REF_DATASET+=$REF_SPECIES${i}" ";done
 
 #multiRef=""; for i in 21 MT; do multiRef+=$FLD_dataset/$REF_SPECIES${i}" ";done
 #MULTIREF_DATASET="$(echo $multiRef | sed 's/ /,/g')"
@@ -80,8 +80,8 @@ TAR_SPECIES=$HUMAN_CHR; TAR_SPECIES_NAME=$HUMAN_LBL;
 ### all chromosomes for that species, e.g. HS_SEQ_RUN
 tempTarSeqRun=${TAR_SPECIES}_SEQ_RUN;    TAR_SEQ_RUN=${!tempTarSeqRun}
 
-TAR_DATASET="";  for i in MT; do TAR_DATASET+=$TAR_SPECIES${i}" "; done
-#TAR_DATASET=""; for i in $TAR_SEQ_RUN; do TAR_DATASET+=$TAR_SPECIES${i}" ";done
+#TAR_DATASET="";  for i in MT; do TAR_DATASET+=$TAR_SPECIES${i}" "; done
+TAR_DATASET=""; for i in $TAR_SEQ_RUN; do TAR_DATASET+=$TAR_SPECIES${i}" ";done
 
 #multiTar="";
 #   for i in MT UP UL; do multiTar+=$FLD_dataset/$TAR_SPECIES${i}" "; done

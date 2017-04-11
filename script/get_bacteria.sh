@@ -4,7 +4,7 @@
 BACTERIA_NAME="bacteria"
 
 ### download FASTA
-perl $FLD_script/downloadBacteria.pl
+#perl $FLD_script/downloadBacteria.pl
 
 
 ### filter results by the word "complete_genome" and split reads

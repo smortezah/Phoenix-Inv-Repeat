@@ -23,15 +23,10 @@ TURKEY_CHR_PREFIX="mga_ref_Turkey_5.0_"
 
 CHR="chr"
 
-#HUMAN_LBL="Human"
 HUMAN_LBL="Homo sapiens"
-#CHIMPANZEE_LBL="Chimpanzee"
 CHIMPANZEE_LBL="Pan troglodytes"
-#GORILLA_LBL="Gorilla"
 GORILLA_LBL="Gorilla gorilla"
-#CHICKEN_LBL="Chicken"
 CHICKEN_LBL="Gallus gallus"
-#TURKEY_LBL="Turkey"
 TURKEY_LBL="Meleagris gallopavo"
 ARCHAEA_LBL="Archaea"
 FUNGI_LBL="Fungi"
@@ -65,7 +60,7 @@ GGA_SEQ_RUN=`seq -s' ' 1 28`; GGA_SEQ_RUN+=" ";
 MGA_SEQ_RUN=`seq -s' ' 1 30`; MGA_SEQ_RUN+=" MT W Z UL UP"
 A_SEQ_RUN=`seq -s' ' 1 206`
 F_SEQ_RUN=`seq -s' ' 1 206`
-B_SEQ_RUN=`seq -s' ' 1 206`
+#B_SEQ_RUN=`seq -s' ' 1 206`
 V_SEQ_RUN=`seq -s' ' 1 5687`
 
 datasets="$HUMAN_CHR$CURR_CHR"
