@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <iomanip>      /// setw, setprecision
 #include <cstring>      /// memset, memcpy
+#include <cmath>        /// std::round
 #include <stdlib.h>
 #include <vector>
 

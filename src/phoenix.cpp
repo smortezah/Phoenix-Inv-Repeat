@@ -110,14 +110,14 @@ int main (int argc, char *argv[])
 //        arrThrSize = (n_models > n_threads)
 //                     ? n_threads : n_models;       /// size of threads array
 //        arrThread = new thread[arrThrSize];
-//        for (U8 i = 0; i < n_models; i += arrThrSize)
+//        for (U16 i = 0; i < n_models; i += arrThrSize)
 //        {
-//            for (U8 j = 0; j < arrThrSize && i + j < n_models; ++j)
+//            for (U16 j = 0; j < arrThrSize && i + j < n_models; ++j)
 //                arrThread[ j ] = thread( &FCM::buildModel, &decModel,
 //                                         decModel.getRefAddr(),
 //                                         decModel.getIR()[i+j],
 //                                         decModel.getCtxDepth()[i+j], i + j );
-//            for (U8 j = 0; j < arrThrSize && i + j < n_models; ++j)
+//            for (U16 j = 0; j < arrThrSize && i + j < n_models; ++j)
 //                arrThread[ j ].join();
 //        }
 //        delete[] arrThread;
@@ -126,12 +126,12 @@ int main (int argc, char *argv[])
 //        /// modify thread array size
 //        arrThrSize = (n_targets > n_threads) ? n_threads : n_targets;
 //        arrThread = new thread[arrThrSize];     /// threads array
-//        for (U8 i = 0; i < n_targets; i += arrThrSize)
+//        for (U16 i = 0; i < n_targets; i += arrThrSize)
 //        {
-//            for (U8 j = 0; j < arrThrSize && i + j < n_targets; ++j)
+//            for (U16 j = 0; j < arrThrSize && i + j < n_targets; ++j)
 //                arrThread[ j ] = thread( &FCM::decompress, &decModel,
 //                                        decModel.getTarAddr()[i+j] );
-//            for (U8 j = 0; j < arrThrSize && i + j < n_targets; ++j)
+//            for (U16 j = 0; j < arrThrSize && i + j < n_targets; ++j)
 //                arrThread[ j ].join();
 //        }
 //        delete[] arrThread;
