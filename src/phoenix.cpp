@@ -66,15 +66,15 @@ int main (int argc, char *argv[])
     /*
     /// compress target(s) using reference(s) model -- multithreaded
     /// max cores in current machine
-    U8 MAX_N_THREADS = (U8) thread::hardware_concurrency();
+    U16 MAX_N_THREADS = (U16) thread::hardware_concurrency();
     /// N_FREE_THREADS considered for other jobs in current system
-    U8 n_threads_available = (U8) ( !MAX_N_THREADS
-                                    ? DEFAULT_N_THREADS - N_FREE_THREADS
-                                    : MAX_N_THREADS - N_FREE_THREADS );
-    U8 n_targets = (U8) mixModel.getTarAddr().size(); /// up to 2^8=256 targets
+    U16 n_threads_available = (U16) ( !MAX_N_THREADS
+                                      ? DEFAULT_N_THREADS - N_FREE_THREADS
+                                      : MAX_N_THREADS - N_FREE_THREADS );
+    U16 n_targets = (U16) mixModel.getTarAddr().size(); ///up to 2^16=65536 tars
  
-    U8 arrThrSize = (n_targets > n_threads_available)
-                    ? n_threads_available : n_targets;
+    U16 arrThrSize = (n_targets > n_threads_available)
+                      ? n_threads_available : n_targets;
     thread *arrThread = new thread[arrThrSize];       /// array of threads
     */
     
