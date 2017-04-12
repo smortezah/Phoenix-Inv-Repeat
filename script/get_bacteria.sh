@@ -4,11 +4,11 @@
 BACTERIA_NAME="bacteria"
 
 ### download FASTA
-#perl $FLD_script/downloadBacteria.pl
+perl $FLD_script/downloadBacteria.pl
 
 
 ### filter results by the word "complete_genome" and split reads
-cat $BACTERIA_NAME.$FILE_TYPE | tr ' ' '_' \
+cat $BACTERIA_NAME.$FTYPE | tr ' ' '_' \
     | $FLD_GOOSE/src/goose-extractreadbypattern complete_genome \
     | $FLD_GOOSE/src/goose-splitreads
 
@@ -17,8 +17,8 @@ cat $BACTERIA_NAME.$FILE_TYPE | tr ' ' '_' \
 mkdir $FLD_dataset/$FLD_bacteria
 
 for i in $B_SEQ_RUN; do
-    grep -v ">" out$i.$FILE_TYPE > $FLD_dataset/$FLD_bacteria/$BACTERIA_CHR$i;
+    grep -v ">" out$i.$FTYPE > $FLD_dataset/$FLD_bacteria/$BACTERIA$i;
 done
 rm -f out*.fa
 
-#mv $BACTERIA_NAME.$FILE_TYPE $FLD_dataset
+#mv $BACTERIA_NAME.$FTYPE $FLD_dataset

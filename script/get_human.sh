@@ -3,29 +3,29 @@
 
 ### download FASTA
 for i in {1..22} X Y MT; do
-    wget $HUMAN_URL/$HUMAN_CHROMOSOME$i.$FILE_TYPE.$COMP_FILE_TYPE;
-    gunzip < $HUMAN_CHROMOSOME$i.$FILE_TYPE.$COMP_FILE_TYPE \
-        > $FLD_chromosomes/$HUMAN_CHR$i.$FILE_TYPE;
-    rm $HUMAN_CHROMOSOME$i.$FILE_TYPE.$COMP_FILE_TYPE
+    wget $HUMAN_URL/$HUMAN_CHROMOSOME$i.$FTYPE.$COMP_FTYPE;
+    gunzip < $HUMAN_CHROMOSOME$i.$FTYPE.$COMP_FTYPE \
+        > $FLD_chromosomes/$HUMAN$i.$FTYPE;
+    rm $HUMAN_CHROMOSOME$i.$FTYPE.$COMP_FTYPE
 done
 
 for i in alts unlocalized unplaced; do
-    wget $HUMAN_URL/$HUMAN_CHR_PREFIX$i.$FILE_TYPE.$COMP_FILE_TYPE;
-    gunzip < $HUMAN_CHR_PREFIX$i.$FILE_TYPE.$COMP_FILE_TYPE \
-        > $FLD_chromosomes/$HUMAN_CHR$i.$FILE_TYPE;
-    rm $HUMAN_CHR_PREFIX$i.$FILE_TYPE.$COMP_FILE_TYPE
+    wget $HUMAN_URL/$HUMAN_CHR_PREFIX$i.$FTYPE.$COMP_FTYPE;
+    gunzip < $HUMAN_CHR_PREFIX$i.$FTYPE.$COMP_FTYPE \
+        > $FLD_chromosomes/$HUMAN$i.$FTYPE;
+    rm $HUMAN_CHR_PREFIX$i.$FTYPE.$COMP_FTYPE
 done
 
 ### rename: HSalts -> HSAL, HSunlocalized -> HSUL, HSunplaced -> HSUP
-mv $FLD_chromosomes/$HUMAN_CHR"alts".$FILE_TYPE \
-    $FLD_chromosomes/$HUMAN_CHR"AL".$FILE_TYPE
-mv $FLD_chromosomes/$HUMAN_CHR"unlocalized".$FILE_TYPE \
-    $FLD_chromosomes/$HUMAN_CHR"UL".$FILE_TYPE
-mv $FLD_chromosomes/$HUMAN_CHR"unplaced".$FILE_TYPE \
-    $FLD_chromosomes/$HUMAN_CHR"UP".$FILE_TYPE
+mv $FLD_chromosomes/$HUMAN"alts".$FTYPE \
+    $FLD_chromosomes/$HUMAN"AL".$FTYPE
+mv $FLD_chromosomes/$HUMAN"unlocalized".$FTYPE \
+    $FLD_chromosomes/$HUMAN"UL".$FTYPE
+mv $FLD_chromosomes/$HUMAN"unplaced".$FTYPE \
+    $FLD_chromosomes/$HUMAN"UP".$FTYPE
 
 ### FASTA -> SEQ
 for i in $HS_SEQ_RUN; do
-    grep -v ">" $FLD_chromosomes/$HUMAN_CHR$i.$FILE_TYPE \
-        > $FLD_dataset/$HUMAN_CHR$i;
+    grep -v ">" $FLD_chromosomes/$HUMAN$i.$FTYPE \
+        > $FLD_dataset/$HUMAN$i;
 done

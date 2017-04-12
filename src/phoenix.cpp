@@ -34,8 +34,8 @@ using std::thread;
 ///////////////////////////////////////////////////////////
 int main (int argc, char *argv[])
 {
-    high_resolution_clock::time_point exeStartTime =    /// Record start time
-            high_resolution_clock::now();
+    high_resolution_clock::time_point exeStartTime =
+            high_resolution_clock::now();   /// Record start time
     
     FCM mixModel;       /// object on memory stack
     
@@ -93,9 +93,9 @@ int main (int argc, char *argv[])
     delete[] arrThread;
     
     /// decompress
-    if (mixModel.getDecompFlag())
-    {
-        FCM decModel;
+//    if (mixModel.getDecompFlag())
+//    {
+//        FCM decModel;
 //        /// reference(s) and target(s) address(es)
 //        for (string s : mixModel.getRefAddr())  decModel.pushRefAddr(s);
 //        for (string s : mixModel.getTarAddr())  decModel.pushTarAddr(s);
@@ -154,17 +154,10 @@ int main (int argc, char *argv[])
 //        cout << "Lossless compression and decompression of '";
 //        for (int i = 0; i < tarsNo-1; ++i) cout << tarNamesPure[ i ] << "', '";
 //        cout << tarNamesPure[ tarsNo - 1 ] << "' was successful.\n";
-    }   /// end decompress
+//    }   /// end decompress
     
-    
-    
-    
-    
-    
-    
-    
-    high_resolution_clock::time_point exeFinishTime =   /// Record end time
-            high_resolution_clock::now();
+    high_resolution_clock::time_point exeFinishTime =
+            high_resolution_clock::now();   /// Record end time
     /// calculate and show duration in seconds
     std::chrono::duration< double > elapsed = exeFinishTime - exeStartTime;
     

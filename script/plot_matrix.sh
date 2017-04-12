@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 
 
-#for ir in $INV_REPEATS; do
+#for ir in $INV_REPS; do
     for alphaDen in $ALPHA_DENS; do
 
 gnuplot <<- EOF
 set terminal $PIX_FORMAT enhanced color size 6.25,2.65     # HS-PT, PT-HS, HS-GG
 #set terminal $PIX_FORMAT enhanced color size 8.3,3.7      # GGA-MGA, MGA-GGA
 
-set output "$REF_SPECIES-$TAR_SPECIES.$PIX_FORMAT"
+set output "$REF-$TAR.$PIX_FORMAT"
 set multiplot layout 1,2 columnsfirst margins 0.0255,0.9148,0.1065,0.992 \
     spacing 0.03,0
 #set multiplot layout 1,2 columnsfirst margins 0.02,0.918,0.08,0.992 \
@@ -50,7 +50,7 @@ set palette defined (0.65 "red", 0.825 "green", 1 "white")  # GGA-MGA, MGA-GGA
 ##set yrange [2:10]
 
 ### reference-target, i0
-#set output "$REF_SPECIES-$TAR_SPECIES.$PIX_FORMAT"
+#set output "$REF-$TAR.$PIX_FORMAT"
 #set title "Inverted repeats not considered"
 #set title "Relative compression: HS-PT\nReference: HS, Target: PT,\
 # inverted repeats: not considered"
@@ -58,26 +58,26 @@ unset colorbox      # remove color palette
 #set rmargin 47.5
 
 XTICS="`head -1 \
-    "$FLD_dat/tot-${IR_LBL}0-$REF_SPECIES-$TAR_SPECIES.$INF_FILE_TYPE" \
-    | awk -v start_ind="$TAR_SPECIES_LEN_IND" \
+    "$FLD_dat/tot-${IR}0-$REF-$TAR.$INF_FTYPE" \
+    | awk -v start_ind="$TAR_LEN_IND" \
     '{for(i=1;i<=NF;i++) printf "%s\t",substr($i,start_ind);}'`"
 set for [i=1:words(XTICS)] xtics ( word(XTICS,i) i-1 ) right @fontTics \
     rotate by 90 offset 0,xticsOffset
-set xlabel "$TAR_SPECIES_NAME" offset 0,xlabelOffset @fontLabelSpecies
-set ylabel "$REF_SPECIES_NAME" offset ylabelOffset,0 @fontLabelSpecies
+set xlabel "$TAR_SNAME" offset 0,xlabelOffset @fontLabelSpecies
+set ylabel "$REF_SNAME" offset ylabelOffset,0 @fontLabelSpecies
 unset ytics
 
 plot "<awk 'NR>1' \
-    '$FLD_dat/tot-${IR_LBL}0-$REF_SPECIES-$TAR_SPECIES.$INF_FILE_TYPE' \
+    '$FLD_dat/tot-${IR}0-$REF-$TAR.$INF_FTYPE' \
     | cut -f2-" matrix with image
 ### ! before any cmd inside gnuplot lets bash command work (e.g. the followings)
-##!awk 'NR>1' $FLD_dat/tot-${IR_LBL}0-$HUMAN_CHR-$CHIMPANZEE_CHR.$INF_FILE_TYPE\
+##!awk 'NR>1' $FLD_dat/tot-${IR}0-$HUMAN-$CHIMPANZEE.$INF_FTYPE\
 ##  | cut -f2- > temp
 ##plot "temp" matrix with image
 ##!rm temp
 
 ### reference-target, i1
-#set output "${IR_LBL}1-$REF_SPECIES-$TAR_SPECIES.$PIX_FORMAT"
+#set output "${IR}1-$REF-$TAR.$PIX_FORMAT"
 #set title "Inverted repeats considered"
 #set title "Relative compression: HS-PT\nReference: HS, Target: PT, \
 #   inverted repeats: considered"
@@ -85,16 +85,16 @@ set colorbox        # draw color palette
 #set lmargin 44.5
 set lmargin 57    # GGA-MGA, MGA-GGA
 
-YTICS="`awk -v start_ind="$REF_SPECIES_LEN_IND" \
+YTICS="`awk -v start_ind="$REF_LEN_IND" \
     'BEGIN{getline}{printf "%s ",substr($1,start_ind)}' \
-    "$FLD_dat/tot-${IR_LBL}0-$REF_SPECIES-$TAR_SPECIES.$INF_FILE_TYPE"`"
+    "$FLD_dat/tot-${IR}0-$REF-$TAR.$INF_FTYPE"`"
 set for [i=1:words(YTICS)] ytics ( word(YTICS,i) i-1 ) center @fontTics \
     offset yticsOffset, 0
 
 unset ylabel
 
 plot "<awk 'NR>1'
-    '$FLD_dat/tot-${IR_LBL}1-$REF_SPECIES-$TAR_SPECIES.$INF_FILE_TYPE' \
+    '$FLD_dat/tot-${IR}1-$REF-$TAR.$INF_FTYPE' \
     | cut -f2-" matrix with image
 
 unset multiplot; set output
@@ -106,7 +106,7 @@ EOF
 
 
 ### difference
-#for ir in $INV_REPEATS; do
+#for ir in $INV_REPS; do
     for alphaDen in $ALPHA_DENS; do
 
 gnuplot <<- EOF
@@ -114,7 +114,7 @@ set terminal $PIX_FORMAT enhanced color size 3.05,2.8   # diff-PT-HS, diff-HS-GG
 #set terminal $PIX_FORMAT enhanced color size 3.0,2.8   # diff-HS-PT
 #set terminal $PIX_FORMAT enhanced color size 3.75,3.65 # diff-GGA-MGA
 #set terminal $PIX_FORMAT enhanced color size 4.3,3.6   # diff-MGA-GGA
-set output "diff-$REF_SPECIES-$TAR_SPECIES.$PIX_FORMAT"
+set output "diff-$REF-$TAR.$PIX_FORMAT"
 #set multiplot layout 1,1 columnsfirst #margins 0.0255,0.9147,0.105,0.992 \
 #   spacing 0.03,0
 #set offset 0,0,graph 0.1, graph 0.1
@@ -159,20 +159,20 @@ set palette defined (-0.05 "white", 0.125 "green", 0.3 "red")
 #set title "Relative compression: HS-PT\nDifference between considering and\
 #   not considering inverted repeats\nReference: HS, Target: PT"
 
-YTICS="`awk -v start_ind="$REF_SPECIES_LEN_IND" \
+YTICS="`awk -v start_ind="$REF_LEN_IND" \
     'BEGIN{getline}{printf "%s ",substr($1,start_ind)}' \
-    "$FLD_dat/diff-$REF_SPECIES-$TAR_SPECIES.$INF_FILE_TYPE"`"
-XTICS="`head -1 "$FLD_dat/diff-$REF_SPECIES-$TAR_SPECIES.$INF_FILE_TYPE" \
-    | awk -v start_ind="$TAR_SPECIES_LEN_IND" \
+    "$FLD_dat/diff-$REF-$TAR.$INF_FTYPE"`"
+XTICS="`head -1 "$FLD_dat/diff-$REF-$TAR.$INF_FTYPE" \
+    | awk -v start_ind="$TAR_LEN_IND" \
     '{for(i=1;i<=NF;i++) printf "%s\t",substr($i,start_ind);}'`"
 set for [i=1:words(XTICS)] xtics ( word(XTICS,i) i-1 ) right @fontTics \
     rotate by 90 offset 0,xticsOffset
 set for [i=1:words(YTICS)] ytics ( word(YTICS,i) i-1 ) @fontTics \
     offset yticsOffset, 0
-set xlabel "$TAR_SPECIES_NAME" offset 0,xlabelOffset @fontLabelSpecies
-set ylabel "$REF_SPECIES_NAME" offset ylabelOffset,0 @fontLabelSpecies
+set xlabel "$TAR_SNAME" offset 0,xlabelOffset @fontLabelSpecies
+set ylabel "$REF_SNAME" offset ylabelOffset,0 @fontLabelSpecies
 
-plot "<awk 'NR>1' '$FLD_dat/diff-$REF_SPECIES-$TAR_SPECIES.$INF_FILE_TYPE' \
+plot "<awk 'NR>1' '$FLD_dat/diff-$REF-$TAR.$INF_FTYPE' \
     | cut -f2-" matrix with image
 
 unset multiplot; set output

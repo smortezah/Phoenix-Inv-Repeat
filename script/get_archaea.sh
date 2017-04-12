@@ -8,7 +8,7 @@ perl $FLD_script/downloadArchaea.pl
 
 
 ### filter results by the word "complete_genome" and split reads
-cat $ARCHAEA_NAME.$FILE_TYPE | tr ' ' '_' \
+cat $ARCHAEA_NAME.$FTYPE | tr ' ' '_' \
     | $FLD_GOOSE/src/goose-extractreadbypattern complete_genome \
     | $FLD_GOOSE/src/goose-splitreads
 
@@ -17,8 +17,8 @@ cat $ARCHAEA_NAME.$FILE_TYPE | tr ' ' '_' \
 mkdir $FLD_dataset/$FLD_archaea
 
 for i in $A_SEQ_RUN; do
-    grep -v ">" out$i.$FILE_TYPE > $FLD_dataset/$FLD_archaea/$ARCHAEA_CHR$i;
+    grep -v ">" out$i.$FTYPE > $FLD_dataset/$FLD_archaea/$ARCHAEA$i;
 done
 rm -f out*.fa
 
-#mv $ARCHAEA_NAME.$FILE_TYPE $FLD_dataset
+#mv $ARCHAEA_NAME.$FTYPE $FLD_dataset

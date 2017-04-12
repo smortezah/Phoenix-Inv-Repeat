@@ -2,12 +2,12 @@
 
 
 ## Archaea
-#for ir in $INV_REPEATS; do
+#for ir in $INV_REPS; do
     for alphaDen in $ALPHA_DENS; do
 
 gnuplot <<- EOF
 set terminal $PIX_FORMAT enhanced color size 8.3,4.15
-set output "$REF_SPECIES-$TAR_SPECIES.$PIX_FORMAT"
+set output "$REF-$TAR.$PIX_FORMAT"
 set multiplot layout 1,2 columnsfirst margins 0.02,0.928,0.20,0.992 \
     spacing 0.03,0
 
@@ -42,7 +42,7 @@ set palette defined (0 "red", 0.5 "green", 1 "white")
 ##set yrange [2:10]
 
 ### reference-target, i0
-#set output "$REF_SPECIES-$TAR_SPECIES.$PIX_FORMAT"
+#set output "$REF-$TAR.$PIX_FORMAT"
 #set title "Inverted repeats not considered"
 #set title "Relative compression: HS-PT\nReference: HS, Target: PT, \
 #   inverted repeats: not considered"
@@ -98,22 +98,22 @@ set xtics( \
             "Th. litor." 32, \
             "Th. sp." 33 \
          ) right @fontTics rotate by 90 offset 0,xticsOffset
-set xlabel "$TAR_SPECIES_NAME" offset 0,xlabelOffset @fontLabelSpecies
-set ylabel "$REF_SPECIES_NAME" offset ylabelOffset,0 @fontLabelSpecies
+set xlabel "$TAR_SNAME" offset 0,xlabelOffset @fontLabelSpecies
+set ylabel "$REF_SNAME" offset ylabelOffset,0 @fontLabelSpecies
 unset ytics
 
 plot "<awk 'NR>1' \
-    '$FLD_dat/tot-${IR_LBL}0-$REF_SPECIES-$TAR_SPECIES.$INF_FILE_TYPE' \
+    '$FLD_dat/tot-${IR}0-$REF-$TAR.$INF_FTYPE' \
     | cut -f2-" matrix with image
 ### ! before any cmd inside gnuplot lets bash command work (e.g. the followings)
 ##!awk 'NR>1' \
-##  $FLD_dat/tot-${IR_LBL}0-$HUMAN_CHR-$CHIMPANZEE_CHR.$INF_FILE_TYPE \
+##  $FLD_dat/tot-${IR}0-$HUMAN-$CHIMPANZEE.$INF_FTYPE \
 ##  | cut -f2- > temp
 ##plot "temp" matrix with image
 ##!rm temp
 
 ### reference-target, i1
-#set output "${IR_LBL}1-$REF_SPECIES-$TAR_SPECIES.$PIX_FORMAT"
+#set output "${IR}1-$REF-$TAR.$PIX_FORMAT"
 #set title "Inverted repeats not considered"
 #set title "Relative compression: HS-PT\nReference: HS, Target: PT, \
 #   inverted repeats: considered"
@@ -174,7 +174,7 @@ set ytics( \
 unset ylabel
 
 plot "<awk 'NR>1' \
-    '$FLD_dat/tot-${IR_LBL}1-$REF_SPECIES-$TAR_SPECIES.$INF_FILE_TYPE' \
+    '$FLD_dat/tot-${IR}1-$REF-$TAR.$INF_FTYPE' \
     | cut -f2-" matrix with image
 
 unset multiplot; set output
@@ -187,12 +187,12 @@ EOF
 
 
 ### difference
-#for ir in $INV_REPEATS; do
+#for ir in $INV_REPS; do
     for alphaDen in $ALPHA_DENS; do
 
 gnuplot <<- EOF
 set terminal $PIX_FORMAT enhanced color size 5,4.3
-set output "diff-$REF_SPECIES-$TAR_SPECIES.$PIX_FORMAT"
+set output "diff-$REF-$TAR.$PIX_FORMAT"
 #set multiplot layout 1,1 columnsfirst #margins 0.0255,0.9147,0.105,0.992 \
 #   spacing 0.03,0
 #set offset 0,0,graph 0.1, graph 0.1
@@ -328,11 +328,11 @@ set ytics(  \
             "Th. sp." 33 \
          ) @fontTics offset yticsOffset,0
 
-set xlabel "$TAR_SPECIES_NAME" offset 0,xlabelOffset @fontLabelSpecies
-set ylabel "$REF_SPECIES_NAME" offset ylabelOffset,0 @fontLabelSpecies
+set xlabel "$TAR_SNAME" offset 0,xlabelOffset @fontLabelSpecies
+set ylabel "$REF_SNAME" offset ylabelOffset,0 @fontLabelSpecies
 
 plot "<awk 'NR>1' \
-    '$FLD_dat/diff-$REF_SPECIES-$TAR_SPECIES.$INF_FILE_TYPE' \
+    '$FLD_dat/diff-$REF-$TAR.$INF_FTYPE' \
     | cut -f2-" matrix with image
 
 unset multiplot; set output

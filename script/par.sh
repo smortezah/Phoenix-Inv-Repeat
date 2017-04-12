@@ -1,6 +1,19 @@
 #!/usr/bin/env bash
 
 
+### folders to be used
+FLD_chromosomes="chromosomes"
+FLD_GOOSE="goose"
+FLD_GULL="GULL"
+FLD_XS="XS"
+FLD_dat="dat"
+FLD_dataset="dataset"
+FLD_archaea="archaea"
+FLD_fungi="fungi"
+FLD_bacteria="bacteria"
+FLD_viruses="viruses"
+FLD_src="src"
+
 # mutations list:   `seq -s' ' 1 10`
 #MUT_LIST="1 2 3 4 5 6 7 8 9 10 12 14 16 18 20 25 30 35 40 45 50"
 
@@ -23,25 +36,25 @@ TURKEY_CHR_PREFIX="mga_ref_Turkey_5.0_"
 
 CHR="chr"
 
-HUMAN_LBL="Homo sapiens"
-CHIMPANZEE_LBL="Pan troglodytes"
-GORILLA_LBL="Gorilla gorilla"
-CHICKEN_LBL="Gallus gallus"
-TURKEY_LBL="Meleagris gallopavo"
-ARCHAEA_LBL="Archaea"
-FUNGI_LBL="Fungi"
-BACTERIA_LBL="Bacteria"
-VIRUSES_LBL="Viruses"
+HUMAN_SNAME="Homo sapiens"
+CHIMPANZEE_SNAME="Pan troglodytes"
+GORILLA_SNAME="Gorilla gorilla"
+CHICKEN_SNAME="Gallus gallus"
+TURKEY_SNAME="Meleagris gallopavo"
+ARCHAEA_SNAME="Archaea"
+FUNGI_SNAME="Fungi"
+BACTERIA_SNAME="Bacteria"
+VIRUSES_SNAME="Viruses"
 
-HUMAN_CHR="HS"
-CHIMPANZEE_CHR="PT"
-GORILLA_CHR="GG"
-CHICKEN_CHR="GGA"
-TURKEY_CHR="MGA"
-ARCHAEA_CHR="A"
-FUNGI_CHR="F"
-BACTERIA_CHR="B"
-VIRUSES_CHR="V"
+HUMAN="HS"
+CHIMPANZEE="PT"
+GORILLA="GG"
+CHICKEN="GGA"
+TURKEY="MGA"
+ARCHAEA="A"
+FUNGI="F"
+BACTERIA="B"
+VIRUSES="V"
 
 CURR_CHR="21"
 chromosomes="$HUMAN_CHR_PREFIX$CHR$CURR_CHR"
@@ -59,19 +72,19 @@ GGA_SEQ_RUN=`seq -s' ' 1 28`; GGA_SEQ_RUN+=" ";
     GGA_SEQ_RUN+=`seq -s' ' 30 33`; GGA_SEQ_RUN+=" LG MT W Z UL UP"
 MGA_SEQ_RUN=`seq -s' ' 1 30`; MGA_SEQ_RUN+=" MT W Z UL UP"
 A_SEQ_RUN=`seq -s' ' 1 206`
-F_SEQ_RUN=`seq -s' ' 1 206`
-#B_SEQ_RUN=`seq -s' ' 1 206`
+F_SEQ_RUN=`seq -s' ' 1 377`
+B_SEQ_RUN=`seq -s' ' 1 3219`
 V_SEQ_RUN=`seq -s' ' 1 5687`
 
-datasets="$HUMAN_CHR$CURR_CHR"
-#datasets="";   for i in $HS_SEQ_RUN; do datasets+=$HUMAN_CHR${i}" "; done
+datasets="$HUMAN$CURR_CHR"
+#datasets="";   for i in $HS_SEQ_RUN; do datasets+=$HUMAN${i}" "; done
 
 
-FILE_TYPE="fa"          # file type
-COMP_FILE_TYPE="gz"     # compressed file type
-INF_FILE_TYPE="dat"     # information (data) file type
-#INF_FILE_TYPE="csv"     # information (data) file type
+FTYPE="fa"          # file type
+COMP_FTYPE="gz"     # compressed file type
+INF_FTYPE="dat"     # information (data) file type
+#INF_FTYPE="csv"     # information (data) file type
 
 PIX_FORMAT=pdf    # output format: pdf, png, svg, eps, epslatex (set output x.y)
-IR_LBL=i          # label for inverted repeat
-a_LBL=a           # label for alpha denominator
+IR=i          # label for inverted repeat
+AL=a           # label for alpha denominator

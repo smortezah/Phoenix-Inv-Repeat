@@ -8,7 +8,7 @@ perl $FLD_script/downloadFungi.pl
 
 
 ### filter results by the word "complete_genome" and split reads
-cat $FUNGI_NAME.$FILE_TYPE | tr ' ' '_' \
+cat $FUNGI_NAME.$FTYPE | tr ' ' '_' \
     | $FLD_GOOSE/src/goose-extractreadbypattern complete_genome \
     | $FLD_GOOSE/src/goose-splitreads
 
@@ -17,8 +17,8 @@ cat $FUNGI_NAME.$FILE_TYPE | tr ' ' '_' \
 mkdir $FLD_dataset/$FLD_fungi
 
 for i in $F_SEQ_RUN; do
-    grep -v ">" out$i.$FILE_TYPE > $FLD_dataset/$FLD_fungi/$FUNGI_CHR$i;
+    grep -v ">" out$i.$FTYPE > $FLD_dataset/$FLD_fungi/$FUNGI$i;
 done
 rm -f out*.fa
 
-#mv $FUNGI_NAME.$FILE_TYPE $FLD_dataset
+#mv $FUNGI_NAME.$FTYPE $FLD_dataset
