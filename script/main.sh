@@ -30,6 +30,13 @@ BUILD_MATRIX=0         # build matrix from datasets
 PLOT_MATRIX=0          # plot matrix from datasets
 PLOT_MATRIX_ARCHEA=0   # plot matrix Archaea from datasets
 
+N_THRD=6               # number of threads
+INV_REPS="0"          # list of inverted repeats
+ALPHA_DENS="100"        # list of alpha denominators
+CTX=2                   # context-order size
+MIN_CTX=10              # min context-order size
+MAX_CTX=11              # max context-order size
+
 ### reference parameters
 #REF=$HUMAN;      REF_SNAME=$HUMAN_SNAME;
 #REF=$CHIMPANZEE; REF_SNAME=$CHIMPANZEE_SNAME;
@@ -43,13 +50,12 @@ REF=$FUNGI;       REF_SNAME=$FUNGI_SNAME;
 ### all chromosomes for that species, e.g. HS_SEQ_RUN
 tempRefSeqRun=${REF}_SEQ_RUN;    REF_RUN=${!tempRefSeqRun}
 
-REF_DATASET="";  for i in 1; do REF_DATASET+=${i}" "; done
+REF_DATASET="";  for i in 1 2; do REF_DATASET+=${i}" "; done
 #REF_DATASET=""; for i in $REF_RUN; do REF_DATASET+=$REF${i}" ";done
 
 #multiRef=""; for i in 21 MT; do multiRef+=$FLD_dataset/$REF${i}" ";done
 #MULTIREF_DATASET="$(echo $multiRef | sed 's/ /,/g')"
 #MULTIREF_DATASET="$FLD_dataset/HSMT"
-#MULTIREF_DATASET="y"
 
 REF_LEN=${#REF};            # length of string REF
 ((REF_LEN_IND=REF_LEN+1));  # index of len of string REF
@@ -79,13 +85,6 @@ MULTITAR_DATASET="$(echo $multiTar | sed 's/ /,/g')"
 
 TAR_LEN=${#TAR};            # length of string TAR
 ((TAR_LEN_IND=TAR_LEN+1));  # index of len of string TAR
-
-N_THREADS=4             # number of threads
-INV_REPS="0"          # list of inverted repeats
-ALPHA_DENS="100"        # list of alpha denominators
-CTX=2                   # context-order size
-MIN_CTX=10              # min context-order size
-MAX_CTX=11              # max context-order size
 
 
 if [[ $GET_HUMAN      -eq 1 ]];    then . $FLD_script/get_human.sh;           fi

@@ -46,20 +46,20 @@ int main (int argc, char *argv[])
     thread *arrThread;  /// array of threads
     
     /// build reference(s) model(s) -- multithreaded
-    U8 n_models   = mixModel.getN_models();
-    U8 n_threads  = mixModel.getN_threads();
-    U8 arrThrSize = (n_models > n_threads)
+    U16 n_models   = mixModel.getN_models();
+    U16 n_threads  = mixModel.getN_threads();
+    U16 arrThrSize = (n_models > n_threads)
                     ? n_threads : n_models;  /// size of threads array
     arrThread = new thread[arrThrSize];
-    for (U8 i = 0; i < n_models; i += arrThrSize)
+    for (U16 i = 0; i < n_models; i += arrThrSize)
     {
         //TODO: aya jaygozini vase sharte "i+j < n_models" hast?
-        for (U8 j = 0; j < arrThrSize && i + j < n_models; ++j)
+        for (U16 j = 0; j < arrThrSize && i + j < n_models; ++j)
             arrThread[ j ] = thread( &FCM::buildModel, &mixModel,
                                      mixModel.getRefAddr(),
                                      mixModel.getIR()[i+j],
                                      mixModel.getCtxDepth()[i+j], i + j );
-        for (U8 j = 0; j < arrThrSize && i + j < n_models; ++j)
+        for (U16 j = 0; j < arrThrSize && i + j < n_models; ++j)
             arrThread[ j ].join();
     }
     delete[] arrThread;
@@ -79,16 +79,16 @@ int main (int argc, char *argv[])
     */
     
     /// compress target(s) using reference(s) model(s) -- multithreaded
-    U8 n_targets = (U8) mixModel.getTarAddr().size();  /// up to 2^8=256 targets
+    U16 n_targets = (U16) mixModel.getTarAddr().size();  /// up to 2^16=65536 targets
     /// modify threads array size
     arrThrSize = (n_targets > n_threads) ? n_threads : n_targets;
     arrThread = new thread[arrThrSize];                /// resize threads array
-    for (U8 i = 0; i < n_targets; i += arrThrSize)
+    for (U16 i = 0; i < n_targets; i += arrThrSize)
     {
-        for (U8 j = 0; j < arrThrSize && i + j < n_targets; ++j)
+        for (U16 j = 0; j < arrThrSize && i + j < n_targets; ++j)
             arrThread[ j ] = thread( &FCM::compress, &mixModel,
                                      mixModel.getTarAddr()[i+j] );
-        for (U8 j = 0; j < arrThrSize && i + j < n_targets; ++j)
+        for (U16 j = 0; j < arrThrSize && i + j < n_targets; ++j)
             arrThread[ j ].join();
     }
     delete[] arrThread;

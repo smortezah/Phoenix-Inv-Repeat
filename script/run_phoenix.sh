@@ -18,7 +18,7 @@ for ir in $INV_REPS; do
                     > $IR$ir-$REF$refNo-$TAR.$INF_FTYPE
                 for ctx in $CTX; do
    #            for((ctx=$MIN_CTX; ctx<=$MAX_CTX; ctx+=1)); do
-                   ./phoenix -n 8 -m $ir,$ctx,$a \
+                   ./phoenix -n $N_THRD -m $ir,$ctx,$a \
                              -r $FLD_dataset/$REF/$refNo -t $MULTITAR_DATASET \
                     >> $IR$ir-$REF$refNo-$TAR.$INF_FTYPE
    #                ./phoenix -n 4 -d -m 0,1,100:0,2,10\
@@ -34,10 +34,10 @@ for ir in $INV_REPS; do
                 done
 #                done
 
-                ## sort results based on target datasets
-#                cat $IR$ir-$REF$refNo-$TAR.$INF_FTYPE \
-#                    | (read -r; printf "%s\n" "$REPLY"; sort -k 2 -V) > zzz
-#                mv zzz $IR$ir-$REF$refNo-$TAR.$INF_FTYPE
+                # sort results based on target datasets
+                cat $IR$ir-$REF$refNo-$TAR.$INF_FTYPE \
+                    | (read -r; printf "%s\n" "$REPLY"; sort -k 2 -V) > zzz
+                mv zzz $IR$ir-$REF$refNo-$TAR.$INF_FTYPE
 
    ##          # save "min bpb" and "min ctx" for each dataset
    #          minBpbCtx=$(awk 'NR==1 || $4 < minBpb {minBpb=$4; minCtx=$3}; \
