@@ -14,11 +14,11 @@ for ir in $INV_REPS; do
    #              touch $IR$ir-$AL$a-${dataset}_$mut.$INF_FTYPE
    #              echo -e "# ir\talpha\tctx\tbpb\ttime(s)" \
    #                 >> $IR$ir-$AL$a-${dataset}_$mut.$INF_FTYPE
-                echo -e "ref($REF)\ttar($TAR)\tir\talpha\tctx\tNRC\ttime(s)" \
+                echo -e "ref($REF)\ttar($TAR)\tNRC\tir\tctx\talpha\ttime(s)" \
                     > $IR$ir-$REF$refNo-$TAR.$INF_FTYPE
                 for ctx in $CTX; do
    #            for((ctx=$MIN_CTX; ctx<=$MAX_CTX; ctx+=1)); do
-                   ./phoenix -n 4 -m $ir,$ctx,$a \
+                   ./phoenix -n 8 -m $ir,$ctx,$a \
                              -r $FLD_dataset/$REF/$refNo -t $MULTITAR_DATASET \
                     >> $IR$ir-$REF$refNo-$TAR.$INF_FTYPE
    #                ./phoenix -n 4 -d -m 0,1,100:0,2,10\
@@ -34,9 +34,9 @@ for ir in $INV_REPS; do
                 done
 #                done
 
-                ## sort results based on target datasets, and add header line
-                cat $IR$ir-$REF$refNo-$TAR.$INF_FTYPE  | sort -k 2 -V > zzz
-#                sed -i '1 i\ref($REF)\ttar($TAR)\tir\talpha\tctx\tNRC\ttime(s)' zzz
+                ## sort results based on target datasets
+#                cat $IR$ir-$REF$refNo-$TAR.$INF_FTYPE \
+#                    | (read -r; printf "%s\n" "$REPLY"; sort -k 2 -V) > zzz
 #                mv zzz $IR$ir-$REF$refNo-$TAR.$INF_FTYPE
 
    ##          # save "min bpb" and "min ctx" for each dataset

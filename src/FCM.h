@@ -10,6 +10,7 @@
 
 using std::string;
 using std::vector;
+using std::chrono::high_resolution_clock;
 
 
 class FCM
@@ -46,6 +47,7 @@ public:
     U8    getN_threads                  () const;   /// get number of threads
     U8    getN_models                   () const;   /// get number of models
 //    U32   getN_div                      () const; /// get number of divisions
+    void  setStartTime    (const high_resolution_clock::time_point&);
     void  setDecompFlag   (bool);                   /// set decompress flag
     void  setN_threads    (U8);                     /// set number of threads
     void  setCompMode     (char);                   /// set compression mode
@@ -69,6 +71,7 @@ public:
 
 private:
     std::mutex     mut;                /// mutex
+    high_resolution_clock::time_point startTime;   /// start time
     
     U8             n_threads;          /// number of threads
     bool           decompFlag;         /// decompress flag

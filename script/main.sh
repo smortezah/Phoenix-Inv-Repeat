@@ -73,10 +73,9 @@ TAR_DATASET="";  for i in 1; do TAR_DATASET+=${i}" "; done
 
 multiTar="";
 #for i in MT UP UL; do multiTar+=$FLD_dataset/$TAR/${i}" "; done
-for i in 1 2 3 4; do multiTar+=$FLD_dataset/$TAR/${i}" "; done
+for i in $TAR_RUN; do multiTar+=$FLD_dataset/$TAR/${i}" "; done
 MULTITAR_DATASET="$(echo $multiTar | sed 's/ /,/g')"
 #MULTITAR_DATASET="$FLD_dataset/PTMT"
-#MULTITAR_DATASET="y"
 
 TAR_LEN=${#TAR};            # length of string TAR
 ((TAR_LEN_IND=TAR_LEN+1));  # index of len of string TAR

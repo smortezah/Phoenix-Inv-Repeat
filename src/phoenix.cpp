@@ -35,9 +35,10 @@ using std::thread;
 int main (int argc, char *argv[])
 {
     high_resolution_clock::time_point exeStartTime =
-            high_resolution_clock::now();   /// Record start time
+            high_resolution_clock::now();
     
     FCM mixModel;       /// object on memory stack
+    mixModel.setStartTime(exeStartTime);    /// Record start time
     
     /// parse the command line
     commandLineParser(argc, argv, mixModel);
@@ -155,16 +156,17 @@ int main (int argc, char *argv[])
 //        for (int i = 0; i < tarsNo-1; ++i) cout << tarNamesPure[ i ] << "', '";
 //        cout << tarNamesPure[ tarsNo - 1 ] << "' was successful.\n";
 //    }   /// end decompress
-    
-    high_resolution_clock::time_point exeFinishTime =
-            high_resolution_clock::now();   /// Record end time
-    /// calculate and show duration in seconds
-    std::chrono::duration< double > elapsed = exeFinishTime - exeStartTime;
-    
-    cout << '\t' << std::fixed << setprecision(3) << elapsed.count() << '\n';
 
-//    cout << "Elapsed time: "
-//         << std::fixed << setprecision(3) << elapsed.count() << '\n';
+
+//    high_resolution_clock::time_point exeFinishTime =
+//            high_resolution_clock::now();   /// Record end time
+//    /// calculate and show duration in seconds
+//    std::chrono::duration< double > elapsed = exeFinishTime - exeStartTime;
+//
+//    cout  /// elapsed time depends on slowest thread
+//            << "Elapsed time: "
+//            << '\t'
+//            << std::fixed << setprecision(3) << elapsed.count() << '\n';
     
     return 0;
 }

@@ -72,7 +72,8 @@ GGA_SEQ_RUN=`seq -s' ' 1 28`; GGA_SEQ_RUN+=" ";
     GGA_SEQ_RUN+=`seq -s' ' 30 33`; GGA_SEQ_RUN+=" LG MT W Z UL UP"
 MGA_SEQ_RUN=`seq -s' ' 1 30`; MGA_SEQ_RUN+=" MT W Z UL UP"
 A_SEQ_RUN=`seq -s' ' 1 206`
-F_SEQ_RUN=`seq -s' ' 1 377`
+#F_SEQ_RUN=`seq -s' ' 1 377`
+F_SEQ_RUN=`seq -s' ' 1 300`
 B_SEQ_RUN=`seq -s' ' 1 3219`
 V_SEQ_RUN=`seq -s' ' 1 5687`
 
