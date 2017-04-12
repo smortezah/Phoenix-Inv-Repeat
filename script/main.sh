@@ -43,13 +43,12 @@ REF=$FUNGI;       REF_SNAME=$FUNGI_SNAME;
 ### all chromosomes for that species, e.g. HS_SEQ_RUN
 tempRefSeqRun=${REF}_SEQ_RUN;    REF_RUN=${!tempRefSeqRun}
 
-#REF_DATASET="";  for i in 1; do REF_DATASET+=$REF${i}" "; done
 REF_DATASET="";  for i in 1; do REF_DATASET+=${i}" "; done
 #REF_DATASET=""; for i in $REF_RUN; do REF_DATASET+=$REF${i}" ";done
 
 #multiRef=""; for i in 21 MT; do multiRef+=$FLD_dataset/$REF${i}" ";done
 #MULTIREF_DATASET="$(echo $multiRef | sed 's/ /,/g')"
-MULTIREF_DATASET="$FLD_dataset/HSMT"
+#MULTIREF_DATASET="$FLD_dataset/HSMT"
 #MULTIREF_DATASET="y"
 
 REF_LEN=${#REF};            # length of string REF
@@ -69,14 +68,14 @@ TAR=$FUNGI;       TAR_SNAME=$FUNGI_SNAME;
 ### all chromosomes for that species, e.g. HS_SEQ_RUN
 tempTarSeqRun=${TAR}_SEQ_RUN;    TAR_RUN=${!tempTarSeqRun}
 
-#TAR_DATASET="";  for i in 1; do TAR_DATASET+=$TAR${i}" "; done
 TAR_DATASET="";  for i in 1; do TAR_DATASET+=${i}" "; done
 #TAR_DATASET=""; for i in $TAR_RUN; do TAR_DATASET+=$TAR${i}" ";done
 
-#multiTar="";
-#   for i in MT UP UL; do multiTar+=$FLD_dataset/$TAR${i}" "; done
-#MULTITAR_DATASET="$(echo $multiTar | sed 's/ /,/g')"
-MULTITAR_DATASET="$FLD_dataset/PTMT"
+multiTar="";
+#for i in MT UP UL; do multiTar+=$FLD_dataset/$TAR/${i}" "; done
+for i in 1 2 3 4; do multiTar+=$FLD_dataset/$TAR/${i}" "; done
+MULTITAR_DATASET="$(echo $multiTar | sed 's/ /,/g')"
+#MULTITAR_DATASET="$FLD_dataset/PTMT"
 #MULTITAR_DATASET="y"
 
 TAR_LEN=${#TAR};            # length of string TAR

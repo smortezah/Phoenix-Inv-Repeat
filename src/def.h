@@ -21,7 +21,7 @@ using std::array;
 #define ALPH_SIZE         5           /// alphabet {A, C, N, G, T} size
 #define ALPH_SUM_SIZE     6           /// ALPHABET_SIZE+1: 1 more col. for 'sum'
 #define LOG2_ALPH_SIZE    2.3219281   /// log2 of 5 (ALPHABET_SIZE)
-#define TABLE_MAX_CTX     12          /// max context depth for building table
+#define TABLE_MAX_CTX     1//12          /// max context depth for building table
 //#define TABLE_MAX_CTX     0          /// max context depth for building table
 #define IR_MAGIC_NUM      4           /// for IR calculation
 
@@ -60,8 +60,8 @@ typedef int64_t  I64;
 /// vaghti bishtar az 65,535 (uint16_t max) shod, hameye adad ha nesf mishan.
 /// ye variable ro ham tanzim kon ke maloom she chand bar nesf kardim
 //typedef unordered_map< string, array< U64, ALPH_SIZE > > htable_str_t;
-typedef unordered_map< U64 , array< U16, ALPH_SIZE > > htable_t;
-//typedef unordered_map< U64 , array< U64, ALPH_SIZE > > htable_t;
+//typedef unordered_map< U64 , array< U16, ALPH_SIZE > > htable_t;
+typedef unordered_map< U64 , array< U64, ALPH_SIZE > > htable_t;
 
 
 /*******************************************************************************
