@@ -31,11 +31,11 @@ PLOT_MATRIX=0          # plot matrix from datasets
 PLOT_MATRIX_ARCHEA=0   # plot matrix Archaea from datasets
 
 N_THRD=10               # number of threads
-INV_REPS="0 1"          # list of inverted repeats
-ALPHA_DENS="100"        # list of alpha denominators
-CTX=20                   # context-order size
-MIN_CTX=10              # min context-order size
-MAX_CTX=11              # max context-order size
+INV_REPS="0 1"         # list of inverted repeats
+ALPHA_DENS="100"       # list of alpha denominators
+CTX=20                 # context-order size
+MIN_CTX=10             # min context-order size
+MAX_CTX=11             # max context-order size
 
 ### reference parameters
 #REF=$HUMAN;      REF_SNAME=$HUMAN_SNAME;
@@ -74,11 +74,11 @@ TAR=$FUNGI;       TAR_SNAME=$FUNGI_SNAME;
 ### all chromosomes for that species, e.g. HS_SEQ_RUN
 tempTarSeqRun=${TAR}_SEQ_RUN;    TAR_RUN=${!tempTarSeqRun}
 
-TAR_DATASET="";  for i in 1; do TAR_DATASET+=${i}" "; done
-#TAR_DATASET=""; for i in $TAR_RUN; do TAR_DATASET+=$TAR${i}" ";done
+#TAR_DATASET="";  for i in 1; do TAR_DATASET+=${i}" "; done
+TAR_DATASET=""; for i in $TAR_RUN; do TAR_DATASET+=$TAR${i}" ";done
 
 multiTar="";
-#for i in 1 2 3 4 5 6 7 8 9 10; do multiTar+=$FLD_dataset/$TAR/${i}" "; done
+#for i in {1..49}; do multiTar+=$FLD_dataset/$TAR/${i}" "; done
 for i in $TAR_RUN; do multiTar+=$FLD_dataset/$TAR/${i}" "; done
 MULTITAR_DATASET="$(echo $multiTar | sed 's/ /,/g')"
 #MULTITAR_DATASET="$FLD_dataset/PTMT"

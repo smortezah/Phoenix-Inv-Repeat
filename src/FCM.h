@@ -21,7 +21,7 @@ public:
     void   initHashTables      ();         /// initialize vector of hash tables
                                                        
     void   buildModel          (const vector<string>&,
-                                bool, U8, U8);      /// build reference(s) model
+                                bool, U8, U16);     /// build reference(s) model
     void   compress            (const string&);     /// compress target file
     void   extractHeader       (const string&);     /// header inf. for decomp.
     void   decompress          (const string&);     /// decompress target file
@@ -44,14 +44,14 @@ public:
 //    U16**                 getTables     () const;   /// get table(s)
     htable_t*             getHashTables () const;   /// get hash table(s)
     bool  getDecompFlag                 () const;   /// get decompress flag
-    U8    getN_threads                  () const;   /// get number of threads
-    U8    getN_models                   () const;   /// get number of models
+    U16   getN_threads                  () const;   /// get number of threads
+    U16   getN_models                   () const;   /// get number of models
 //    U32   getN_div                      () const; /// get number of divisions
     void  setStartTime    (const high_resolution_clock::time_point&);
     void  setDecompFlag   (bool);                   /// set decompress flag
-    void  setN_threads    (U8);                     /// set number of threads
+    void  setN_threads    (U16);                    /// set number of threads
     void  setCompMode     (char);                   /// set compression mode
-    void  setN_models     (U8);                     /// set number of models
+    void  setN_models     (U16);                    /// set number of models
     void  setGamma        (double);                 /// set gamma
 //    void  setN_div        (U32);                   /// set number of divisions
     void  pushTarAddr     (const string&);          /// push back tars. addr.
@@ -73,11 +73,11 @@ private:
     std::mutex     mut;                /// mutex
     high_resolution_clock::time_point startTime;   /// start time
     
-    U8             n_threads;          /// number of threads
+    U16            n_threads;          /// number of threads
     bool           decompFlag;         /// decompress flag
     
     char           compMode;           /// compression mode (table / hash table)
-    U8             n_models;           /// number of models
+    U16            n_models;           /// number of models
     double         gamma;              /// gamma (for mixture of FCMs)
     vector<bool>   invRepeats;         /// inverted repeat(s)
     vector<U8>     ctxDepths;          /// context depthe(s) (SIZE <= 255)

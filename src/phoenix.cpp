@@ -35,10 +35,10 @@ using std::thread;
 int main (int argc, char *argv[])
 {
     high_resolution_clock::time_point exeStartTime =
-            high_resolution_clock::now();
+            high_resolution_clock::now();   /// Record start time
     
     FCM mixModel;       /// object on memory stack
-    mixModel.setStartTime(exeStartTime);    /// Record start time
+    mixModel.setStartTime(exeStartTime);
     
     /// parse the command line
     commandLineParser(argc, argv, mixModel);
