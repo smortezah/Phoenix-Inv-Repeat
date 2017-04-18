@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
 
-for ir in $INV_REPS; do
+for refNo in $REF_DATASET; do
     for a in $ALPHA_DENS; do
-        for refNo in $REF_DATASET; do
+        for ir in $INV_REPS; do
 #            for tarNo in $TAR_DATASET; do
    ##             rm -f $IR$ir-$AL$a-${dataset}.$INF_FTYPE
    ##             touch $IR$ir-$AL$a-$dataset.$INF_FTYPE
