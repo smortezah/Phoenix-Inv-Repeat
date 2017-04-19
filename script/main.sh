@@ -6,10 +6,11 @@ make
 
 FLD_script="script"
 
-### parmaters edefined in par.sh
-. $FLD_script/par.sh;
+. $FLD_script/par.sh;  # parmaters are defined in par.sh
 
-
+#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+# get datasets, install dependencies, run phoenix, plot results
+#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 GET_HUMAN=0            # download Human choromosomes and make SEQ out of FASTA
 GET_CHIMPANZEE=0       # download Chimpanzee chrs and make SEQ out of FASTA
 GET_GORILLA=0          # download Gorilla chrs and make SEQ out of FASTA
@@ -37,7 +38,10 @@ CTX=20                 # context-order size
 MIN_CTX=10             # min context-order size
 MAX_CTX=11             # max context-order size
 
-### reference parameters
+
+#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+# reference parameters
+#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 #REF=$HUMAN;      REF_SNAME=$HUMAN_SNAME;
 #REF=$CHIMPANZEE; REF_SNAME=$CHIMPANZEE_SNAME;
 #REF=$GORILLA;    REF_SNAME=$GORILLA_SNAME;
@@ -61,7 +65,9 @@ REF_LEN=${#REF};            # length of string REF
 ((REF_LEN_IND=REF_LEN+1));  # index of len of string REF
 
 
-### target parameters
+#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+# target parameters
+#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 #TAR=$HUMAN;      TAR_SNAME=$HUMAN_SNAME;
 #TAR=$CHIMPANZEE; TAR_SNAME=$CHIMPANZEE_SNAME;
 #TAR=$GORILLA;    TAR_SNAME=$GORILLA_SNAME;
@@ -87,6 +93,9 @@ TAR_LEN=${#TAR};            # length of string TAR
 ((TAR_LEN_IND=TAR_LEN+1));  # index of len of string TAR
 
 
+#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+# execute
+#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 if [[ $GET_HUMAN      -eq 1 ]];    then . $FLD_script/get_human.sh;           fi
 if [[ $GET_CHIMPANZEE -eq 1 ]];    then . $FLD_script/get_chimpanzee.sh;      fi
 if [[ $GET_GORILLA    -eq 1 ]];    then . $FLD_script/get_gorilla.sh;         fi
