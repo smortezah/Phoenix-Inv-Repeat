@@ -3,17 +3,23 @@
 
 ARCHAEA_NAME="archaea"
 
-### download FASTA
+#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+#   download FASTA
+#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 perl $FLD_script/downloadArchaea.pl
 
 
-### filter results by the word "complete_genome" and split reads
+#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+#   filter results by the word "complete_genome" and split reads
+#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 cat $ARCHAEA_NAME.$FTYPE | tr ' ' '_' \
     | $FLD_GOOSE/src/goose-extractreadbypattern complete_genome \
     | $FLD_GOOSE/src/goose-splitreads
 
 
-### FASTA -> SEQ. rename out$i -> A$i. save in dataset/archaea folder
+#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+#   FASTA -> SEQ. rename out$i -> A$i. save in dataset/archaea folder
+#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 mkdir $FLD_dataset/$FLD_archaea
 
 for i in $A_SEQ_RUN; do

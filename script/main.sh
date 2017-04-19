@@ -9,7 +9,7 @@ FLD_script="script"
 . $FLD_script/par.sh;  # parmaters are defined in par.sh
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-# get datasets, install dependencies, run phoenix, plot results
+#   get datasets, install dependencies, run phoenix, plot results
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 GET_HUMAN=0            # download Human choromosomes and make SEQ out of FASTA
 GET_CHIMPANZEE=0       # download Chimpanzee chrs and make SEQ out of FASTA
@@ -31,6 +31,10 @@ BUILD_MATRIX=1         # build matrix from datasets
 PLOT_MATRIX=0          # plot matrix from datasets
 PLOT_MATRIX_ARCHEA=0   # plot matrix Archaea from datasets
 
+
+#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+#   arguments
+#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 N_THRD=10               # number of threads
 INV_REPS="0 1"         # list of inverted repeats
 ALPHA_DENS="100"       # list of alpha denominators
@@ -40,7 +44,7 @@ MAX_CTX=11             # max context-order size
 
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-# reference parameters
+#   reference parameters
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 #REF=$HUMAN;      REF_SNAME=$HUMAN_SNAME;
 #REF=$CHIMPANZEE; REF_SNAME=$CHIMPANZEE_SNAME;
@@ -66,7 +70,7 @@ REF_LEN=${#REF};            # length of string REF
 
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-# target parameters
+#   target parameters
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 #TAR=$HUMAN;      TAR_SNAME=$HUMAN_SNAME;
 #TAR=$CHIMPANZEE; TAR_SNAME=$CHIMPANZEE_SNAME;
@@ -94,7 +98,7 @@ TAR_LEN=${#TAR};            # length of string TAR
 
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-# execute
+#   execute
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 if [[ $GET_HUMAN      -eq 1 ]];    then . $FLD_script/get_human.sh;           fi
 if [[ $GET_CHIMPANZEE -eq 1 ]];    then . $FLD_script/get_chimpanzee.sh;      fi

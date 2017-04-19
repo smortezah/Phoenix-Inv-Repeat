@@ -3,17 +3,23 @@
 
 BACTERIA_NAME="bacteria"
 
-### download FASTA
+#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+#   download FASTA
+#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 perl $FLD_script/downloadBacteria.pl
 
 
-### filter results by the word "complete_genome" and split reads
+#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+#   filter results by the word "complete_genome" and split reads
+#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 cat $BACTERIA_NAME.$FTYPE | tr ' ' '_' \
     | $FLD_GOOSE/src/goose-extractreadbypattern complete_genome \
     | $FLD_GOOSE/src/goose-splitreads
 
 
-### FASTA -> SEQ. rename out$i -> B$i. save in dataset/bacteria folder
+#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+#   FASTA -> SEQ. rename out$i -> B$i. save in dataset/bacteria folder
+#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 mkdir $FLD_dataset/$FLD_bacteria
 
 for i in $B_SEQ_RUN; do
