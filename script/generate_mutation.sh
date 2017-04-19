@@ -8,8 +8,8 @@ for c in $chromosomes; do
 #            < $FLD_chromosomes/$c.$FTYPE > temp;
 #        cat temp | grep -v ">" > $HUMAN${CURR_CHR}_$x   # remove header line
         goose/src/goose-mutatefasta -s $x -a5 -mr $MRATE " " \
-            < $FLD_chromosomes/$c.$FTYPE \
-            | grep -v ">" > $HUMAN${CURR_CHR}_$x    # remove header line
+         < $FLD_chromosomes/$c.$FTYPE \
+         | grep -v ">" > $HUMAN${CURR_CHR}_$x    # remove header line
     done
 done
 #rm -f temp*

@@ -7,7 +7,7 @@
 for i in {1..22} X Y MT; do
     wget $HUMAN_URL/$HUMAN_CHROMOSOME$i.$FTYPE.$COMP_FTYPE;
     gunzip < $HUMAN_CHROMOSOME$i.$FTYPE.$COMP_FTYPE \
-        > $FLD_chromosomes/$HUMAN$i.$FTYPE;
+     > $FLD_chromosomes/$HUMAN$i.$FTYPE;
     rm $HUMAN_CHROMOSOME$i.$FTYPE.$COMP_FTYPE
 done
 

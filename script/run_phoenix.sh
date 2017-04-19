@@ -34,7 +34,9 @@ for refNo in $REF_DATASET; do
                 done
 #                done
 
-                # sort results based on target datasets
+                #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                #   sort results based on target datasets
+                #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
                 cat $IR$ir-$REF$refNo-$TAR.$INF_FTYPE \
                     | (read -r; printf "%s\n" "$REPLY"; sort -k 2 -V) > zzz
                 mv zzz $IR$ir-$REF$refNo-$TAR.$INF_FTYPE
