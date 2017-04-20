@@ -1,10 +1,13 @@
 #!/usr/bin/env bash
 
 
-#cd $FLD_dat
+FLD_AlCoB="AlCoB-dat"
+FLD_dat=$FLD_AlCoB	# comment for cases other than AlCoB
+
 
 ##//todo. {1..3} TAR ha hastand
-for i in {1..3}; do printf "\t%s" "$i" >> ${TAR}_HORIZ_PAD; done
+#for i in {1..3}; do printf "\t%s" "$i" >> ${TAR}_HORIZ_PAD; done
+for i in $TAR_DATASET; do printf "\t%s" "$i" >> ${TAR}_HORIZ_PAD; done
 echo >> ${TAR}_HORIZ_PAD
 
 for alphaDen in $ALPHA_DENS; do
@@ -15,7 +18,7 @@ for alphaDen in $ALPHA_DENS; do
         cat ${TAR}_HORIZ_PAD > tot-$IR$i-$REF-$TAR.$INF_FTYPE
 
         for c in $REF_DATASET; do
-            awk -F "\t" '{print $3}' $IR$i-$REF$c-$TAR.$INF_FTYPE \
+            awk -F "\t" '{print $3}' $FLD_dat/$IR$i-$REF$c-$TAR.$INF_FTYPE \
              | awk -v ref_ch=$c 'NR == 1 {print ref_ch; next} {print}' \
              | tr '\n' '\t' | tr ',' '.' >> tot-$IR$i-$REF-$TAR.$INF_FTYPE
             echo >> tot-$IR$i-$REF-$TAR.$INF_FTYPE
@@ -33,7 +36,7 @@ for alphaDen in $ALPHA_DENS; do
      >> diff-$REF-$TAR.$INF_FTYPE
 
     #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    # filter NRC > 1
+    # filter NRC > 1 for tot-i0 & tot-i1
     #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     for i in $INV_REPS; do
         cat "${TAR}_HORIZ_PAD" > "temp-tot"

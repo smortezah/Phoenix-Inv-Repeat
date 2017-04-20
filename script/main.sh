@@ -27,7 +27,7 @@ GEN_DATASET=0          # generate datasets using "XS"
 GEN_MUTATIONS=0        # generate mutations using "GOOSE"
 RUN_PHOENIX=0          # run Phoenix
 PLOT_RESULT=0          # plot results using "gnuplot"
-BUILD_MATRIX=1         # build matrix from datasets
+BUILD_MATRIX=0         # build matrix from datasets
 PLOT_MATRIX=0          # plot matrix from datasets
 PLOT_MATRIX_ARCHEA=0   # plot matrix Archaea from datasets
 
@@ -35,10 +35,11 @@ PLOT_MATRIX_ARCHEA=0   # plot matrix Archaea from datasets
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 #   arguments
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-N_THRD=10               # number of threads
+N_THRD=7               # number of threads
 INV_REPS="0 1"         # list of inverted repeats
 ALPHA_DENS="100"       # list of alpha denominators
 CTX=20                 # context-order size
+
 MIN_CTX=10             # min context-order size
 MAX_CTX=11             # max context-order size
 
@@ -58,8 +59,8 @@ REF=$FUNGI;       REF_SNAME=$FUNGI_SNAME;
 ### all chromosomes for that species, e.g. HS_SEQ_RUN
 tempRefSeqRun=${REF}_SEQ_RUN;    REF_RUN=${!tempRefSeqRun}
 
-REF_DATASET="";  for i in {1..3}; do REF_DATASET+=${i}" "; done
-#REF_DATASET=""; for i in $REF_RUN; do REF_DATASET+=${i}" ";done
+#REF_DATASET="";  for i in {1..3}; do REF_DATASET+=${i}" "; done
+REF_DATASET=""; for i in $REF_RUN; do REF_DATASET+=${i}" ";done
 
 #multiRef=""; for i in 21 MT; do multiRef+=$FLD_dataset/$REF${i}" ";done
 #MULTIREF_DATASET="$(echo $multiRef | sed 's/ /,/g')"
@@ -84,8 +85,8 @@ TAR=$FUNGI;       TAR_SNAME=$FUNGI_SNAME;
 ### all chromosomes for that species, e.g. HS_SEQ_RUN
 tempTarSeqRun=${TAR}_SEQ_RUN;    TAR_RUN=${!tempTarSeqRun}
 
-TAR_DATASET="";  for i in {1..3}; do TAR_DATASET+=${i}" "; done
-#TAR_DATASET=""; for i in $TAR_RUN; do TAR_DATASET+=$TAR${i}" ";done
+#TAR_DATASET="";  for i in {1..3}; do TAR_DATASET+=${i}" "; done
+TAR_DATASET=""; for i in $TAR_RUN; do TAR_DATASET+=${i}" ";done
 
 multiTar="";
 #for i in {1..49}; do multiTar+=$FLD_dataset/$TAR/${i}" "; done
@@ -97,7 +98,15 @@ TAR_LEN=${#TAR};            # length of string TAR
 ((TAR_LEN_IND=TAR_LEN+1));  # index of len of string TAR
 
 
+#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+#   create folders, if they don't already exist
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+if [ ! -d $FLD_chromosomes ]; then mkdir -p $FLD_chromosomes; fi
+if [ ! -d $FLD_dat         ]; then mkdir -p $FLD_dat;         fi
+if [ ! -d $FLD_dataset     ]; then mkdir -p $FLD_dataset;     fi
+
+
+#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   
 #   execute
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 if [[ $GET_HUMAN      -eq 1 ]];    then . $FLD_script/get_human.sh;           fi
