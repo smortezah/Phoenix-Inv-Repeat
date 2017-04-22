@@ -16,15 +16,21 @@ cat $FUNGI_NAME.$FTYPE | tr ' ' '_' \
     | $FLD_GOOSE/src/goose-extractreadbypattern complete_genome \
     | $FLD_GOOSE/src/goose-splitreads
 
+if [ ! -d $FLD_chromosomes/$FLD_fungi ]; then 
+    mkdir -p $FLD_chromosomes/$FLD_fungi;
+fi
 
-#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-#   FASTA -> SEQ. rename out$i -> F$i. save in dataset/fungi folder
-#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-mkdir $FLD_dataset/$FLD_fungi
+mv out* $FLD_chromosomes/$FLD_fungi
 
-for i in $F_SEQ_RUN; do
-    grep -v ">" out$i.$FTYPE > $FLD_dataset/$FLD_fungi/$FUNGI$i;
-done
-rm -f out*.fa
 
-#mv $FUNGI_NAME.$FTYPE $FLD_dataset
+##%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+##   FASTA -> SEQ. rename out$i -> F$i. save in dataset/fungi folder
+##%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+#if [ ! -d $FLD_dataset/$FLD_fungi ]; then mkdir -p $FLD_dataset/$FLD_fungi; fi 
+#
+#for i in $F_SEQ_RUN; do
+#    grep -v ">" out$i.$FTYPE > $FLD_dataset/$FLD_fungi/$FUNGI$i;
+#done
+#rm -f out*.fa
+#
+##mv $FUNGI_NAME.$FTYPE $FLD_dataset

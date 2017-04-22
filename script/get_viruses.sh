@@ -20,7 +20,9 @@ cat $VIRUSES_NAME.$FTYPE | tr ' ' '_' \
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 #   FASTA -> SEQ. rename out$i -> V$i. save in dataset/viruses folder
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-mkdir $FLD_dataset/$FLD_viruses
+if [ ! -d $FLD_dataset/$FLD_viruses ]; then 
+    mkdir -p $FLD_dataset/$FLD_viruses; 
+fi
 
 for i in $V_SEQ_RUN; do
     grep -v ">" out$i.$FTYPE > $FLD_dataset/$FLD_viruses/$VIRUSES$i;

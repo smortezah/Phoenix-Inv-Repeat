@@ -20,7 +20,9 @@ cat $BACTERIA_NAME.$FTYPE | tr ' ' '_' \
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 #   FASTA -> SEQ. rename out$i -> B$i. save in dataset/bacteria folder
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-mkdir $FLD_dataset/$FLD_bacteria
+if [ ! -d $FLD_dataset/$FLD_bacteria ]; then 
+    mkdir -p $FLD_dataset/$FLD_bacteria; 
+fi
 
 for i in $B_SEQ_RUN; do
     grep -v ">" out$i.$FTYPE > $FLD_dataset/$FLD_bacteria/$BACTERIA$i;

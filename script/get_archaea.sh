@@ -20,7 +20,9 @@ cat $ARCHAEA_NAME.$FTYPE | tr ' ' '_' \
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 #   FASTA -> SEQ. rename out$i -> A$i. save in dataset/archaea folder
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-mkdir $FLD_dataset/$FLD_archaea
+if [ ! -d $FLD_dataset/$FLD_archaea ]; then 
+    mkdir -p $FLD_dataset/$FLD_archaea; 
+fi
 
 for i in $A_SEQ_RUN; do
     grep -v ">" out$i.$FTYPE > $FLD_dataset/$FLD_archaea/$ARCHAEA$i;
