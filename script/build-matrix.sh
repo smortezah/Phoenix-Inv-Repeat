@@ -5,8 +5,6 @@ FLD_AlCoB="AlCoB-dat"
 FLD_dat=$FLD_AlCoB	# comment for cases other than AlCoB
 
 
-##//todo. {1..3} TAR ha hastand
-#for i in {1..3}; do printf "\t%s" "$i" >> ${TAR}_HORIZ_PAD; done
 for i in $TAR_DATASET; do printf "\t%s" "$i" >> ${TAR}_HORIZ_PAD; done
 echo >> ${TAR}_HORIZ_PAD
 
