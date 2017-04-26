@@ -28,7 +28,7 @@ GEN_MUTATIONS=0        # generate mutations using "GOOSE"
 RUN_PHOENIX=0          # run Phoenix
 PLOT_RESULT=0          # plot results using "gnuplot"
 BUILD_MATRIX=0         # build matrix from datasets
-PLOT=1		       # plot matrix
+PLOT_AlCoB=0	       # plot matrix -- AlCoB conference
 PLOT_MATRIX=0          # plot matrix from datasets
 PLOT_MATRIX_ARCHEA=0   # plot matrix Archaea from datasets
 
@@ -127,7 +127,7 @@ if [[ $GEN_MUTATIONS  -eq 1 ]];    then . $FLD_script/generate-mutation.sh;   fi
 if [[ $RUN_PHOENIX    -eq 1 ]];    then . $FLD_script/run-phoenix.sh;         fi
 if [[ $PLOT_RESULT    -eq 1 ]];    then . $FLD_script/plot-result.sh;         fi
 if [[ $BUILD_MATRIX   -eq 1 ]];    then . $FLD_script/build-matrix.sh;        fi
-if [[ $PLOT           -eq 1 ]];    then . $FLD_script/plot.sh;                fi
+if [[ $PLOT_AlCoB     -eq 1 ]];    then . $FLD_script/plot--AlCoB.sh;          fi
 if [[ $PLOT_MATRIX    -eq 1 ]];    then . $FLD_script/plot-matrix.sh;         fi
 if [[ $PLOT_MATRIX_ARCHEA -eq 1 ]];then . $FLD_script/plot-matrix-archaea.sh; fi
 
