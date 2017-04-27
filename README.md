@@ -23,6 +23,4 @@ Please cite the following papers, if you use <i>Phoenix</i>:
 Please let me know if there is any [issues](https://github.com/smortezah/Phoenix/issues).
 
 ## LICENSE
-GPL v3.
-
-For more information, please visit [GPL v3](http://www.gnu.org/licenses/gpl-3.0.html) license page.
+[GPL v3](http://www.gnu.org/licenses/gpl-3.0.html).
