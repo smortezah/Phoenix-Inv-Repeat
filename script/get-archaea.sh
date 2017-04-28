@@ -26,13 +26,11 @@ mv out* $FLD_chromosomes/$FLD_archaea
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 #   FASTA -> SEQ. rename out$i -> A$i. save in dataset/archaea folder
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-if [ ! -d $FLD_dataset/$FLD_archaea ]; then 
-    mkdir -p $FLD_dataset/$FLD_archaea; 
-fi
+if [ ! -d $FLD_dataset/$FLD_archaea ]; then mkdir -p $FLD_dataset/$ARCHAEA; fi
 
 for i in $A_SEQ_RUN; do
-    grep -v ">" out$i.$FTYPE > $FLD_dataset/$FLD_archaea/$ARCHAEA$i;
+    grep -v ">" $FLD_chromosomes/$FLD_archaea/out$i.$FTYPE \
+     > $FLD_dataset/$ARCHAEA/$i;
 done
-rm -f out*.fa
 
 #mv $ARCHAEA_NAME.$FTYPE $FLD_dataset

@@ -26,13 +26,11 @@ mv out* $FLD_chromosomes/$FLD_bacteria
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 #   FASTA -> SEQ. rename out$i -> B$i. save in dataset/bacteria folder
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-if [ ! -d $FLD_dataset/$FLD_bacteria ]; then 
-    mkdir -p $FLD_dataset/$FLD_bacteria; 
-fi
+if [ ! -d $FLD_dataset/$FLD_bacteria ]; then mkdir -p $FLD_dataset/$BACTERIA; fi
 
 for i in $B_SEQ_RUN; do
-    grep -v ">" out$i.$FTYPE > $FLD_dataset/$FLD_bacteria/$BACTERIA$i;
+    grep -v ">" $FLD_chromosomes/$FLD_bacteria/out$i.$FTYPE \
+     > $FLD_dataset/$BACTERIA/$i;
 done
-rm -f out*.fa
 
 #mv $BACTERIA_NAME.$FTYPE $FLD_dataset
