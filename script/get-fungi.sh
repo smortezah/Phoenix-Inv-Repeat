@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 
 FUNGI_NAME="fungi"

@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 
 for refNo in $REF_DATASET; do

@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 
 XS/XS -ls 100 -n 100000 -rn 0 -f 0.20,0.20,0.20,0.20,0.20 -eh -eo -es datasetXS

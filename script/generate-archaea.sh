@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 
 $FLD_goose/src/goose-splitreads < "$FLD_dataset/DB.mfa"

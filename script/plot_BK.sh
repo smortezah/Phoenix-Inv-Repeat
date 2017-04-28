@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 #
 ##for ir in $INV_REPS; do
