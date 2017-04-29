@@ -17,7 +17,7 @@ GET_GORILLA=0          # download Gorilla chrs and make SEQ out of FASTA
 GET_CHICKEN=0          # download Chicken chrs and make SEQ out of FASTA
 GET_TURKEY=0           # download Turkey chrs and make SEQ out of FASTA
 GET_ARCHAEA=0          # get Archaea SEQ using "GOOSE" & downloadArchaea.pl
-GET_FUNGI=1            # get Fungi SEQ using "GOOSE" & downloadFungi.pl
+GET_FUNGI=0            # get Fungi SEQ using "GOOSE" & downloadFungi.pl
 GET_BACTERIA=0         # get Bacteria SEQ using "GOOSE" & downloadBacteria.pl
 GET_VIRUSES=0          # get Viruses SEQ using "GOOSE" & downloadViruses.pl
 INSTALL_XS=0           # install "XS" from Github
@@ -28,6 +28,7 @@ GEN_MUTATIONS=0        # generate mutations using "GOOSE"
 RUN_PHOENIX=0          # run Phoenix
 PLOT_RESULT=0          # plot results using "gnuplot"
 BUILD_MATRIX=0         # build matrix from datasets
+FILTER=1               # filter total & diff by threshold
 PLOT_AlCoB=0	       # plot matrix -- AlCoB conference
 PLOT_MATRIX=0          # plot matrix from datasets
 PLOT_MATRIX_ARCHEA=0   # plot matrix Archaea from datasets
@@ -54,14 +55,14 @@ MAX_CTX=11             # max context-order size
 #REF=$CHICKEN;    REF_SNAME=$CHICKEN_SNAME;
 #REF=$TURKEY;     REF_SNAME=$TURKEY_SNAME;
 #REF=$ARCHAEA;    REF_SNAME=$ARCHAEA_SNAME;
-#REF=$FUNGI;       REF_SNAME=$FUNGI_SNAME;
+REF=$FUNGI;       REF_SNAME=$FUNGI_SNAME;
 #REF=$BACTERIA;   REF_SNAME=$BACTERIA_SNAME;
-REF=$VIRUSES;    REF_SNAME=$VIRUSES_SNAME;
+#REF=$VIRUSES;    REF_SNAME=$VIRUSES_SNAME;
 ### all chromosomes for that species, e.g. HS_SEQ_RUN
 tempRefSeqRun=${REF}_SEQ_RUN;    REF_RUN=${!tempRefSeqRun}
 
-REF_DATASET="";  for i in {1..500}; do REF_DATASET+=${i}" "; done
-#REF_DATASET=""; for i in $REF_RUN; do REF_DATASET+=${i}" ";done
+#REF_DATASET="";  for i in {1..500}; do REF_DATASET+=${i}" "; done
+REF_DATASET=""; for i in $REF_RUN; do REF_DATASET+=${i}" ";done
 
 #multiRef=""; for i in 21 MT; do multiRef+=$FLD_dataset/$REF${i}" ";done
 #MULTIREF_DATASET="$(echo $multiRef | sed 's/ /,/g')"
@@ -80,14 +81,14 @@ REF_LEN=${#REF};            # length of string REF
 #TAR=$CHICKEN;    TAR_SNAME=$CHICKEN_SNAME;
 #TAR=$TURKEY;     TAR_SNAME=$TURKEY_SNAME;
 #TAR=$ARCHAEA;    TAR_SNAME=$ARCHAEA_SNAME;
-#TAR=$FUNGI;       TAR_SNAME=$FUNGI_SNAME;
+TAR=$FUNGI;       TAR_SNAME=$FUNGI_SNAME;
 #TAR=$BACTERIA;   TAR_SNAME=$BACTERIA_SNAME;
-TAR=$VIRUSES;    TAR_SNAME=$VIRUSES_SNAME;
+#TAR=$VIRUSES;    TAR_SNAME=$VIRUSES_SNAME;
 ### all chromosomes for that species, e.g. HS_SEQ_RUN
 tempTarSeqRun=${TAR}_SEQ_RUN;    TAR_RUN=${!tempTarSeqRun}
 
-TAR_DATASET="";  for i in {1..500}; do TAR_DATASET+=${i}" "; done
-#TAR_DATASET=""; for i in $TAR_RUN; do TAR_DATASET+=${i}" ";done
+#TAR_DATASET="";  for i in {1..500}; do TAR_DATASET+=${i}" "; done
+TAR_DATASET=""; for i in $TAR_RUN; do TAR_DATASET+=${i}" ";done
 
 multiTar="";
 #for i in {1..49}; do multiTar+=$FLD_dataset/$TAR/${i}" "; done
@@ -127,6 +128,7 @@ if [[ $GEN_MUTATIONS  -eq 1 ]];    then . $FLD_script/generate-mutation.sh;   fi
 if [[ $RUN_PHOENIX    -eq 1 ]];    then . $FLD_script/run-phoenix.sh;         fi
 if [[ $PLOT_RESULT    -eq 1 ]];    then . $FLD_script/plot-result.sh;         fi
 if [[ $BUILD_MATRIX   -eq 1 ]];    then . $FLD_script/build-matrix.sh;        fi
+if [[ $FILTER         -eq 1 ]];    then . $FLD_script/filter.sh;              fi
 if [[ $PLOT_AlCoB     -eq 1 ]];    then . $FLD_script/plot--AlCoB.sh;         fi
 if [[ $PLOT_MATRIX    -eq 1 ]];    then . $FLD_script/plot-matrix.sh;         fi
 if [[ $PLOT_MATRIX_ARCHEA -eq 1 ]];then . $FLD_script/plot-matrix-archaea.sh; fi
