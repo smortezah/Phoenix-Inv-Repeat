@@ -29,8 +29,10 @@ mv out* $FLD_chromosomes/$FLD_archaea
 if [ ! -d $FLD_dataset/$FLD_archaea ]; then mkdir -p $FLD_dataset/$ARCHAEA; fi
 
 for i in $A_SEQ_RUN; do
-    grep -v ">" $FLD_chromosomes/$FLD_archaea/out$i.$FTYPE \
-     > $FLD_dataset/$ARCHAEA/$i;
+    cat $FLD_chromosomes/$FLD_archaea/out$i.$FTYPE \
+        | grep -v -e "ERROR" -e "eFetchResult" -e "DOCTYPE" -e "xml version" \
+                  -e "Unable to obtain" | grep -v -x ">" \
+     > $FLD_dataset/$ARCHAEA/$i
 done
 
 #mv $ARCHAEA_NAME.$FTYPE $FLD_dataset

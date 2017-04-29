@@ -31,7 +31,9 @@ mv out* $FLD_chromosomes/$FLD_fungi
 if [ ! -d $FLD_dataset/$FLD_fungi ]; then mkdir -p $FLD_dataset/$FUNGI; fi
 
 for i in $F_SEQ_RUN; do
-    grep -v ">" $FLD_chromosomes/$FLD_fungi/out$i.$FTYPE \
+    cat $FLD_chromosomes/$FLD_fungi/out$i.$FTYPE \
+        | grep -v -e "ERROR" -e "eFetchResult" -e "DOCTYPE" -e "xml version" \
+                  -e "Unable to obtain" | grep -v -x ">" \
      > $FLD_dataset/$FUNGI/$i
 done
 

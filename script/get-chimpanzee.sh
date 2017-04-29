@@ -32,6 +32,8 @@ mv $FLD_chromosomes/$CHIMPANZEE"unplaced".$FTYPE \
 #   FASTA -> SEQ
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 for i in $PT_SEQ_RUN; do
-    grep -v ">" $FLD_chromosomes/$CHIMPANZEE$i.$FTYPE \
-     > $FLD_dataset/$CHIMPANZEE$i;
+    cat $FLD_chromosomes/$CHIMPANZEE$i.$FTYPE \
+        | grep -v -e "ERROR" -e "eFetchResult" -e "DOCTYPE" -e "xml version" \
+                  -e "Unable to obtain" | grep -v -x ">" \
+     > $FLD_dataset/$CHIMPANZEE$i
 done

@@ -34,6 +34,8 @@ mv $FLD_chromosomes/$HUMAN"unplaced".$FTYPE \
 #   FASTA -> SEQ
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 for i in $HS_SEQ_RUN; do
-    grep -v ">" $FLD_chromosomes/$HUMAN$i.$FTYPE \
-     > $FLD_dataset/$HUMAN$i;
+    cat $FLD_chromosomes/$HUMAN$i.$FTYPE \
+        | grep -v -e "ERROR" -e "eFetchResult" -e "DOCTYPE" -e "xml version" \
+                  -e "Unable to obtain" | grep -v -x ">" \
+     > $FLD_dataset/$HUMAN$i
 done
