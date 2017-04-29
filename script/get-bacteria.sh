@@ -31,7 +31,7 @@ if [ ! -d $FLD_dataset/$FLD_bacteria ]; then mkdir -p $FLD_dataset/$BACTERIA; fi
 for i in $B_SEQ_RUN; do
     cat $FLD_chromosomes/$FLD_bacteria/out$i.$FTYPE \
         | grep -v -e "ERROR" -e "eFetchResult" -e "DOCTYPE" -e "xml version" \
-                  -e "Unable to obtain" | grep -v -x ">" \
+                  -e "Unable to obtain" | grep -v ">" \
      > $FLD_dataset/$BACTERIA/$i
 done
 

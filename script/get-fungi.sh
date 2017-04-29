@@ -28,12 +28,12 @@ mv out* $FLD_chromosomes/$FLD_fungi
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 #   FASTA -> SEQ. rename out$i -> F$i. save in dataset/fungi folder
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-if [ ! -d $FLD_dataset/$FLD_fungi ]; then mkdir -p $FLD_dataset/$FUNGI; fi
+if [ ! -d $FLD_dataset/$FUNG ]; then mkdir -p $FLD_dataset/$FUNGI; fi
 
 for i in $F_SEQ_RUN; do
     cat $FLD_chromosomes/$FLD_fungi/out$i.$FTYPE \
         | grep -v -e "ERROR" -e "eFetchResult" -e "DOCTYPE" -e "xml version" \
-                  -e "Unable to obtain" | grep -v -x ">" \
+                  -e "Unable to obtain" | grep -v ">" \
      > $FLD_dataset/$FUNGI/$i
 done
 

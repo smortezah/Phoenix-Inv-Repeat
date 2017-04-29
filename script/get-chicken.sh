@@ -36,6 +36,6 @@ mv $FLD_chromosomes/$CHICKEN"unplaced".$FTYPE \
 for i in $GGA_SEQ_RUN; do
     cat $FLD_chromosomes/$CHICKEN$i.$FTYPE \
         | grep -v -e "ERROR" -e "eFetchResult" -e "DOCTYPE" -e "xml version" \
-                  -e "Unable to obtain" | grep -v -x ">" \
+                  -e "Unable to obtain" | grep -v ">" \
      > $FLD_dataset/$CHICKEN$i
 done
