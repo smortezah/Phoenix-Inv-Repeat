@@ -19,13 +19,13 @@ GET_TURKEY=0           # download Turkey chrs and make SEQ out of FASTA
 GET_ARCHAEA=0          # get Archaea SEQ using "GOOSE" & downloadArchaea.pl
 GET_FUNGI=0            # get Fungi SEQ using "GOOSE" & downloadFungi.pl
 GET_BACTERIA=0         # get Bacteria SEQ using "GOOSE" & downloadBacteria.pl
-GET_VIRUSES=1          # get Viruses SEQ using "GOOSE" & downloadViruses.pl
+GET_VIRUSES=0          # get Viruses SEQ using "GOOSE" & downloadViruses.pl
 INSTALL_XS=0           # install "XS" from Github
 INSTALL_GOOSE=0        # install "GOOSE" from Github
 INSTALL_GULL=0         # install "GULL" from Github
 GEN_DATASET=0          # generate datasets using "XS"
 GEN_MUTATIONS=0        # generate mutations using "GOOSE"
-RUN_PHOENIX=0          # run Phoenix
+RUN_PHOENIX=1          # run Phoenix
 PLOT_RESULT=0          # plot results using "gnuplot"
 BUILD_MATRIX=0         # build matrix from datasets
 FILTER=0               # filter total & diff by threshold
@@ -38,7 +38,7 @@ PLOT_MATRIX_ARCHEA=0   # plot matrix Archaea from datasets
 #   arguments
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 N_THRD=7               # number of threads
-INV_REPS="0 1"         # list of inverted repeats
+INV_REPS="0"         # list of inverted repeats
 ALPHA_DENS="100"       # list of alpha denominators
 CTX=20                 # context-order size
 
@@ -59,10 +59,10 @@ REF=$FUNGI;       REF_SNAME=$FUNGI_SNAME;
 #REF=$BACTERIA;   REF_SNAME=$BACTERIA_SNAME;
 #REF=$VIRUSES;    REF_SNAME=$VIRUSES_SNAME;
 ### all chromosomes for that species, e.g. HS_SEQ_RUN
-tempRefSeqRun=${REF}_SEQ_RUN;    REF_RUN=${!tempRefSeqRun}
+#tempRefSeqRun=${REF}_SEQ_RUN;    REF_RUN=${!tempRefSeqRun}
 
-#REF_DATASET="";  for i in {1..500}; do REF_DATASET+=${i}" "; done
-REF_DATASET=""; for i in $REF_RUN; do REF_DATASET+=${i}" ";done
+REF_DATASET="";  for i in 1; do REF_DATASET+=${i}" "; done
+#REF_DATASET=""; for i in $REF_RUN; do REF_DATASET+=${i}" ";done
 
 #multiRef=""; for i in 21 MT; do multiRef+=$FLD_dataset/$REF${i}" ";done
 #MULTIREF_DATASET="$(echo $multiRef | sed 's/ /,/g')"
@@ -85,16 +85,17 @@ TAR=$FUNGI;       TAR_SNAME=$FUNGI_SNAME;
 #TAR=$BACTERIA;   TAR_SNAME=$BACTERIA_SNAME;
 #TAR=$VIRUSES;    TAR_SNAME=$VIRUSES_SNAME;
 ### all chromosomes for that species, e.g. HS_SEQ_RUN
-tempTarSeqRun=${TAR}_SEQ_RUN;    TAR_RUN=${!tempTarSeqRun}
+#tempTarSeqRun=${TAR}_SEQ_RUN;    TAR_RUN=${!tempTarSeqRun}
 
 #TAR_DATASET="";  for i in {1..500}; do TAR_DATASET+=${i}" "; done
-TAR_DATASET=""; for i in $TAR_RUN; do TAR_DATASET+=${i}" ";done
+#TAR_DATASET=""; for i in $TAR_RUN; do TAR_DATASET+=${i}" ";done
+#TAR_DATASET="1";
 
 multiTar="";
-#for i in {1..49}; do multiTar+=$FLD_dataset/$TAR/${i}" "; done
-for i in $TAR_RUN; do multiTar+=$FLD_dataset/$TAR/${i}" "; done
-MULTITAR_DATASET="$(echo $multiTar | sed 's/ /,/g')"
-#MULTITAR_DATASET="$FLD_dataset/PTMT"
+for i in 1; do multiTar+=$FLD_dataset/$TAR/${i}" "; done
+#for i in $TAR_RUN; do multiTar+=$FLD_dataset/$TAR/${i}" "; done
+#MULTITAR_DATASET="$(echo $multiTar | sed 's/ /,/g')"
+##MULTITAR_DATASET="$FLD_dataset/PTMT"
 
 TAR_LEN=${#TAR};            # length of string TAR
 ((TAR_LEN_IND=TAR_LEN+1));  # index of len of string TAR
