@@ -1,5 +1,5 @@
-#ifndef PHOENIX_DEF_H
-#define PHOENIX_DEF_H
+#ifndef PHOENIXIR_DEF_H
+#define PHOENIXIR_DEF_H
 
 #include <unordered_map>    // hash table
 
@@ -81,4 +81,4 @@ static const U64 POWER5[28] =    // 5^0 to 5^27, which needs less than 64 bits
     };
 
 
-#endif //PHOENIX_DEF_H
+#endif //PHOENIXIR_DEF_H

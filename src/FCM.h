@@ -1,5 +1,5 @@
-#ifndef PHOENIX_FCM_H
-#define PHOENIX_FCM_H
+#ifndef PHOENIXIR_FCM_H
+#define PHOENIXIR_FCM_H
 
 #include <iostream>
 #include <vector>
@@ -90,4 +90,4 @@ private:
 //    htable_str_t hashTable_str;      // hash table (string key)
 };
 
-#endif //PHOENIX_FCM_H
+#endif //PHOENIXIR_FCM_H

@@ -1,5 +1,5 @@
-#ifndef PHOENIX_FUNCTIONS_H
-#define PHOENIX_FUNCTIONS_H
+#ifndef PHOENIXIR_FUNCTIONS_H
+#define PHOENIXIR_FUNCTIONS_H
 
 #include <iostream>
 #include <getopt.h>     // parsing command line
@@ -370,4 +370,4 @@ bool Functions::isFileCorrect (ifstream &fileIn)
 }
 */
 
-#endif //PHOENIX_FUNCTIONS_H
+#endif //PHOENIXIR_FUNCTIONS_H

@@ -1,5 +1,5 @@
-#ifndef PHOENIX_ARITHENCDEC_H
-#define PHOENIX_ARITHENCDEC_H
+#ifndef PHOENIXIR_ARITHENCDEC_H
+#define PHOENIXIR_ARITHENCDEC_H
 
 /*******************************************************************************
   Armando J. Pinho	(ap@ua.pt)
@@ -714,4 +714,4 @@ inline void ArithEncDec::DECODE_RENORMALISE (FILE *s)
 }
 
 
-#endif //PHOENIX_ARITHENCDEC_H
+#endif //PHOENIXIR_ARITHENCDEC_H

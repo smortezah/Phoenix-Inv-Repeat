@@ -58,7 +58,8 @@ int main (int argc, char *argv[])
             arrThread[j] = thread( &FCM::buildModel, &mixModel,
                                    mixModel.getRefAddr(),
                                    mixModel.getIR()[i+j],
-                                   mixModel.getCtxDepth()[i+j], i+j );
+                                   mixModel.getCtxDepth()[i+j],
+                                   i+j );
         for (U16 j = 0; j < arrThrSize && i+j < n_models; ++j)
             if (arrThread[j].joinable())
                 arrThread[j].join();

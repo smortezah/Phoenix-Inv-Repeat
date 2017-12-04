@@ -1,5 +1,5 @@
-#ifndef PHOENIX_MESSAGES_H
-#define PHOENIX_MESSAGES_H
+#ifndef PHOENIXIR_MESSAGES_H
+#define PHOENIXIR_MESSAGES_H
 
 #include <iostream>
 
@@ -14,4 +14,4 @@ public:
     void verbose () const;                                 // show verbose mode
 };
 
-#endif //PHOENIX_MESSAGES_H
+#endif //PHOENIXIR_MESSAGES_H
