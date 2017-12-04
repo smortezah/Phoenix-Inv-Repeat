@@ -16,7 +16,7 @@ To see the options, type:
 `./phoenix -h`
 
 ## CITATION
-Please cite the following papers, if you use <i>Phoenix</i>:
+Please cite the following papers, if you use <i>Phoenix-Inv-Repeat</i>:
 * M. Hosseini, D. Pratas and A.J. Pinho, "On the role of inverted repeats in DNA sequence similarity," *11'th International Conference on Practical Applications of Computational Biology & Bioinformatics (PACBB)*, Springer, June 2017.
 
 ## ISSUES
